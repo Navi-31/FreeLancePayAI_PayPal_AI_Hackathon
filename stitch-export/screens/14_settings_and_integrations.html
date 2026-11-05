@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — Workspace Settings &amp; Integrations</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Geist and Inter Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Verbatim Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#e4e1ea",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "surface-container-low": "#1b1b21",
+            "on-tertiary-fixed": "#3c002b",
+            "error": "#ffb4ab",
+            "surface-bright": "#39383f",
+            "inverse-primary": "#795902",
+            "tertiary": "#ffbadf",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-dim": "#131319",
+            "surface-container-high": "#2a2930",
+            "on-surface": "#e4e1ea",
+            "background": "#131319",
+            "secondary": "#d0bcff",
+            "secondary-container": "#561cc1",
+            "on-secondary-fixed": "#22005c",
+            "secondary-fixed": "#e9ddff",
+            "on-secondary-fixed-variant": "#5417be",
+            "on-primary-container": "#594100",
+            "on-background": "#e4e1ea",
+            "outline": "#9a8f7e",
+            "surface-container": "#1f1f25",
+            "surface": "#131319",
+            "primary-fixed-dim": "#ebc166",
+            "surface-container-highest": "#35343b",
+            "primary": "#f4c86d",
+            "tertiary-container": "#ff8dd2",
+            "inverse-on-surface": "#303036",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary-container": "#d6ad55",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#880067",
+            "error-container": "#93000a",
+            "on-primary-fixed": "#261a00",
+            "tertiary-fixed-dim": "#ffaedb",
+            "on-primary": "#402d00",
+            "outline-variant": "#4e4637",
+            "on-surface-variant": "#d1c5b2",
+            "on-tertiary": "#610048",
+            "surface-tint": "#ebc166",
+            "on-tertiary-container": "#850065",
+            "surface-variant": "#35343b",
+            "on-error": "#690005",
+            "primary-fixed": "#ffdea0",
+            "tertiary-fixed": "#ffd8eb",
+            "on-secondary": "#3b0092"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Geist"],
+            "body-sm": ["Inter"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "display": ["Geist"],
+            "display-mobile": ["Geist"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "label-sm": ["Geist"],
+            "numeric-metric": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          "fontSize": {
+            "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "body-sm": ["0.8125rem", { lineHeight: "1.25rem", letterSpacing: "0.005em", fontWeight: "400" }],
+            "label-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.01em", fontWeight: "500" }],
+            "body-md": ["0.9375rem", { lineHeight: "1.5rem", letterSpacing: "0", fontWeight: "400" }],
+            "display": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "display-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "headline-sm": ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.015em", fontWeight: "500" }],
+            "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "label-sm": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "numeric-metric": ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Executive Glass & Glow Custom Utilities conforming to style tokens */
+    .glass-base {
+      background-color: rgba(23, 23, 32, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .glass-floating {
+      background-color: rgba(30, 29, 41, 0.85);
+      backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(240, 212, 139, 0.20);
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    .gold-halo {
+      box-shadow: 0 20px 50px -15px rgba(214, 173, 85, 0.12);
+    }
+    .violet-halo {
+      box-shadow: 0 0 40px -10px rgba(112, 64, 219, 0.35);
+    }
+    .gold-btn-gradient {
+      background: linear-gradient(135deg, #F0D48B 0%, #D6AD55 100%);
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3);
+    }
+    .gold-btn-gradient:hover {
+      box-shadow: 0 0 20px rgba(240, 212, 139, 0.35);
+    }
+    .violet-btn-gradient {
+      background: linear-gradient(135deg, #9665FF 0%, #7040DB 100%);
+    }
+    .violet-btn-gradient:hover {
+      box-shadow: 0 0 25px rgba(150, 101, 255, 0.45);
+    }
+    /* Slider Range Custom Styling */
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #F4C86D;
+      border: 2px solid #0E0E14;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(244, 200, 109, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex">
+<!-- ========================================================================= -->
+<!-- SIDE NAVIGATION (Derived strictly from Shared Components JSON SideNavBar) -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest backdrop-blur-xl bg-surface-container-lowest/90 border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm border-r border-outline-variant/30 w-64">
+<!-- Top Brand Anchor & Copilot CTA -->
+<div>
+<div class="flex items-center gap-3 px-3 py-3 mb-space-sm">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Autonomous Wealth Engine</div>
+</div>
+</div>
+<!-- Copilot Action CTA -->
+<button class="w-full mb-space-md flex items-center justify-center gap-2 py-2 px-3 rounded-lg violet-btn-gradient text-white font-label-md text-label-md transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span>Trigger Copilot</span>
+</button>
+<!-- Main Navigation Links: Active tab is System (Settings Screen) -->
+<nav class="space-y-1">
+<!-- 1. Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- 2. Payments -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- 3. Intelligence -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md">Intelligence</span>
+</a>
+<!-- 4. Treasury -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="account_balance">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- 5. Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="handyman">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- 6. System (ACTIVE NAVIGATION ITEM) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="settings" data-weight="fill" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-md text-label-md text-primary font-medium">System</span>
+<span class="ml-auto w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</a>
+</nav>
+</div>
+<!-- Footer Rail Tabs -->
+<div class="pt-space-sm border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="shield_lock">shield_lock</span>
+<span class="font-label-sm text-label-sm">Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span>
+<span class="font-label-sm text-label-sm">Telemetry Logs</span>
+</a>
+<!-- System Status Indicator -->
+<div class="px-3 py-2.5 mt-2 rounded bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mesh Latency</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">12ms</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN APP CONTAINER (With Docked Header & Dynamic Content Workspace)       -->
+<!-- ========================================================================= -->
+<div class="flex-1 min-h-screen flex flex-col pl-64">
+<!-- TOP UTILITY NAVBAR (Derived strictly from Shared Components JSON TopNavBar) -->
+<header class="sticky top-0 z-30 w-full bg-surface/80 backdrop-blur-2xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center justify-between px-space-lg py-space-sm w-full">
+<!-- Left: Search and Breadcrumb Trace -->
+<div class="flex items-center gap-6">
+<!-- Search Bar -->
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg" data-icon="search">search</span>
+<input class="w-full pl-9 pr-4 py-1.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-on-surface-variant/60 font-body-sm text-body-sm focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all" placeholder="Search parameters, rails, ledger..." type="text"/>
+</div>
+<!-- Breadcrumbs -->
+<div class="hidden lg:flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+<span>System</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-medium">Workspace Settings</span>
+</div>
+</div>
+<!-- Center: Links from JSON -->
+<nav class="hidden xl:flex items-center gap-6 font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Yield Radar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contracts</a>
+</nav>
+<!-- Right: Actions & User Persona -->
+<div class="flex items-center gap-4">
+<!-- Currency Toggle Badge -->
+<button class="px-3 py-1 rounded bg-surface-container-high border border-outline-variant/40 font-label-sm text-label-sm text-on-surface hover:border-primary/40 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="currency_exchange">currency_exchange</span>
+<span>USD / EUR</span>
+</button>
+<!-- Trailing Icon Cluster -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-2 rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-lg" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</button>
+<button class="p-2 rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors" title="Instant Payout Engine">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="bolt">bolt</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors" title="Help &amp; Telemetry">
+<span class="material-symbols-outlined text-lg" data-icon="help">help</span>
+</button>
+</div>
+<!-- Execute Payout Action -->
+<button class="px-3 py-1.5 rounded-lg bg-surface-container border border-primary/30 font-label-md text-label-md text-primary hover:bg-primary/10 transition-colors active:scale-[0.98]">
+            Execute Payout
+          </button>
+<!-- Executive User Avatar -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant/30">
+<div class="relative w-8 h-8 rounded-full bg-surface-container-high border border-primary flex items-center justify-center overflow-hidden">
+<span class="font-headline-sm text-xs font-semibold text-primary">AV</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- WORKSPACE CANVAS                                                          -->
+<!-- ========================================================================= -->
+<main class="flex-1 p-space-lg lg:p-space-xl max-w-[1600px] w-full mx-auto pb-32">
+<!-- 1. HEADER SECTION -->
+<section class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-space-lg border-b border-outline-variant/20 mb-space-lg">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h1 class="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface">Workspace Settings &amp; Integrations</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high border border-primary/30 text-primary font-label-sm text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="verified_user">verified_user</span>
+              Encrypted Vault Level 4
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+            Configure autonomous AI guardrails, payment gateway rails, tax shielding parameters, and security policies.
+          </p>
+</div>
+<!-- Action CTAs -->
+<div class="flex items-center gap-3 shrink-0">
+<button class="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/30 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+            Discard Changes
+          </button>
+<button class="px-4 py-2 rounded-lg gold-btn-gradient text-on-primary font-label-md text-label-md font-semibold tracking-wide flex items-center gap-2 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm text-on-primary" data-icon="save">save</span>
+<span>Save All Preferences</span>
+</button>
+</div>
+</section>
+<!-- 2. TWO-COLUMN SETTINGS WORKSPACE -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- LEFT COLUMN: SUB-NAVIGATION TABS (w-64 on desktop) -->
+<aside class="lg:col-span-4 xl:col-span-3">
+<div class="glass-base rounded-xl p-space-sm space-y-1 sticky top-24">
+<div class="px-3 py-2 font-label-sm text-label-sm text-outline uppercase tracking-wider">Settings Navigation</div>
+<!-- Tab 1 -->
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-left group">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="business">business</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">1. Business &amp; Profile</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/70 text-xs">Entity &amp; Tax Domicile</div>
+</div>
+</button>
+<!-- Tab 2: SELECTED / ACTIVE -->
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high border-l-2 border-primary text-primary transition-colors text-left gold-halo">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base" data-icon="account_balance_wallet" data-weight="fill" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md font-medium text-primary">2. Payment Rails &amp; PayPal</div>
+<div class="font-body-sm text-body-sm text-primary/80 text-xs">Active Live Integration</div>
+</div>
+<span class="material-symbols-outlined text-base text-primary" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Tab 3 -->
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-left group">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">3. AI Autonomy &amp; Guardrails</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/70 text-xs">Approval-First Governance</div>
+</div>
+</button>
+<!-- Tab 4 -->
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-left group">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="shield">shield</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">4. Tax Shield Escrow</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/70 text-xs">Quarterly IRS Allocations</div>
+</div>
+</button>
+<!-- Tab 5 -->
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-left group">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="currency_exchange">currency_exchange</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">5. Currency &amp; FX Rules</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/70 text-xs">Zero-Slippage Routing</div>
+</div>
+</button>
+<!-- Tab 6 -->
+<button class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-left group">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="key">key</span>
+</div>
+<div class="flex-1">
+<div class="font-label-md text-label-md text-on-surface">6. Security, API &amp; Webhooks</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant/70 text-xs">Passkeys &amp; Ledger Audit</div>
+</div>
+</button>
+</div>
+</aside>
+<!-- RIGHT COLUMN: MAIN SETTINGS CONFIGURATION PANEL -->
+<div class="lg:col-span-8 xl:col-span-9 space-y-space-lg">
+<!-- ========================================================================= -->
+<!-- SECTION A: Primary Payment Gateway Integration (PayPal & Multi-Rail)     -->
+<!-- ========================================================================= -->
+<div class="glass-floating rounded-xl p-6 gold-halo">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">PayPal Commerce &amp; Merchant Vault</h2>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Primary programmatic settlement rail for client billing &amp; payouts</div>
+</div>
+</div>
+<!-- Status Pill -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container border border-primary/30">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-primary font-medium">Connected &amp; Live (Zero Sandbox Latency)</span>
+</div>
+</div>
+<!-- Card Sub-Grid & Telemetry Details -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-5">
+<!-- Merchant Identifier -->
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col justify-between">
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+<span>Merchant Identifier</span>
+<span class="material-symbols-outlined text-xs text-primary" data-icon="lock">lock</span>
+</div>
+<div class="mt-2 font-numeric-metric text-lg text-primary font-mono tracking-tight flex items-center justify-between">
+<span>PPL-MCH-9812-VANCE</span>
+<button class="p-1 hover:text-on-surface text-on-surface-variant transition-colors" title="Copy Identifier">
+<span class="material-symbols-outlined text-sm" data-icon="content_copy">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Webhook Sync Telemetry -->
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col justify-between">
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-between">
+<span>Webhook Synchronization</span>
+<span class="text-xs text-primary font-mono">200 OK</span>
+</div>
+<div class="mt-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-body-md text-body-md text-on-surface">Bidirectional Stream</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">12ms Latency</span>
+</div>
+</div>
+</div>
+<!-- Features Enabled List -->
+<div class="mb-6">
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-3">Active Gateway Features</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+<div class="px-3 py-2 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface">Instant Payouts</span>
+</div>
+<div class="px-3 py-2 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface">Escrow Milestones</span>
+</div>
+<div class="px-3 py-2 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface">Smart Invoicing API</span>
+</div>
+<div class="px-3 py-2 rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface">Webhook Sync</span>
+</div>
+</div>
+</div>
+<!-- Action Buttons Footer -->
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/20">
+<button class="px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface hover:border-primary/40 font-label-md text-label-md transition-colors active:scale-[0.98] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="sync">sync</span>
+<span>Re-authenticate</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest border border-error/30 text-error hover:bg-error/10 font-label-md text-label-md transition-colors active:scale-[0.98] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-error" data-icon="link_off">link_off</span>
+<span>Disconnect Rail</span>
+</button>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- SECTION B: AI Autonomy & Approval-First Guardrails (Fintech UX)            -->
+<!-- ========================================================================= -->
+<div class="glass-floating rounded-xl p-6 violet-halo">
+<div class="flex items-center gap-3 pb-4 border-b border-outline-variant/30">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/40 border border-secondary/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">AI Autonomy &amp; Approval-First Guardrails</h2>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/30 text-secondary font-label-sm text-label-sm">High Security Policy</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Deterministic fiscal controls regulating autonomous agent executions</div>
+</div>
+</div>
+<div class="space-y-4 my-6">
+<!-- Toggle 1: Human Approval (Locked) -->
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex items-start justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-medium text-on-surface">Mandatory Human Approval for Communications</span>
+<span class="material-symbols-outlined text-xs text-primary" data-icon="lock" title="Policy Locked">lock</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    AI will never dispatch overdue notices or settlement terms without freelancer signature.
+                  </p>
+</div>
+<div class="relative inline-flex items-center cursor-not-allowed">
+<!-- Custom Switch Styled in Tailwind -->
+<div class="w-11 h-6 bg-primary rounded-full transition-colors flex items-center px-0.5">
+<div class="w-5 h-5 bg-surface-container-lowest rounded-full shadow-md transform translate-x-5 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="check">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Toggle 2: Autonomous Tax Shield Routing -->
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex items-start justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-medium text-on-surface">Autonomous Tax Shield Routing</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high text-[10px] text-primary font-mono">AUTOMATED</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Instantly transfer 25% of cleared client invoices to isolated high-yield tax vault.
+                  </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-checked:bg-primary rounded-full transition-colors flex items-center px-0.5 peer-focus:ring-2 peer-focus:ring-primary/20">
+<div class="w-5 h-5 bg-surface-container-lowest peer-checked:translate-x-5 rounded-full shadow-md transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-primary peer-checked:inline" data-icon="check">check</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Toggle 3: Automated Late Fee Calculation -->
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex items-start justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-medium text-on-surface">Automated Late Fee Calculation</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Embed contractual 1.5% late fee in overdue reminders after Net-14 maturity.
+                  </p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-checked:bg-primary rounded-full transition-colors flex items-center px-0.5 peer-focus:ring-2 peer-focus:ring-primary/20">
+<div class="w-5 h-5 bg-surface-container-lowest peer-checked:translate-x-5 rounded-full shadow-md transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-primary peer-checked:inline" data-icon="check">check</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Slider: Autonomous Recovery Threshold -->
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30 space-y-3">
+<div class="flex items-center justify-between">
+<div>
+<div class="font-label-md text-label-md font-medium text-on-surface">Autonomous Recovery Threshold</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+                      Trigger cashflow rescue recommendations when liquid runway drops below threshold.
+                    </div>
+</div>
+<div class="px-2.5 py-1 rounded bg-surface-container-high border border-primary/30 font-numeric-metric text-base text-primary font-semibold">
+                    6.0 months
+                  </div>
+</div>
+<!-- Custom Slider Input -->
+<div class="pt-2">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer focus:outline-none" max="12.0" min="1.0" step="0.5" type="range" value="6.0"/>
+<div class="flex justify-between text-xs text-on-surface-variant font-label-sm mt-1">
+<span>1.0 mo (Critical)</span>
+<span class="text-primary font-medium">6.0 mo (Optimal Baseline)</span>
+<span>12.0 mo (Ultra-Conservative)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- SECTION C: Regional, Tax & Invoice Defaults                              -->
+<!-- ========================================================================= -->
+<div class="glass-floating rounded-xl p-6">
+<div class="flex items-center gap-3 pb-4 border-b border-outline-variant/30 mb-5">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="receipt_long">receipt_long</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Regional, Tax &amp; Invoice Defaults</h2>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Standardized parameters applied globally across autonomous invoicing chains</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<!-- Default Base Currency -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block font-medium">
+                  Default Base Currency
+                </label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 pl-3 pr-8 text-on-surface font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none appearance-none">
+<option selected="">USD ($) — United States Dollar</option>
+<option>EUR (€) — Euro Area</option>
+<option>GBP (£) — British Pound</option>
+<option>USDC ($) — USD Coin (Solana Rail)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-base" data-icon="expand_more">expand_more</span>
+</div>
+<p class="font-body-sm text-xs text-on-surface-variant/80">Multi-currency acceptance enabled (EUR, GBP, USDC).</p>
+</div>
+<!-- Default Payment Terms -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block font-medium">
+                  Default Payment Terms
+                </label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 pl-3 pr-8 text-on-surface font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none appearance-none">
+<option>Due On Receipt (Immediate)</option>
+<option>Net-7 (7 Calendar Days)</option>
+<option selected="">Net-14 (Standard Milestone)</option>
+<option>Net-30 (Standard Institutional)</option>
+<option>Custom Milestone Drawdown</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none text-base" data-icon="expand_more">expand_more</span>
+</div>
+<p class="font-body-sm text-xs text-on-surface-variant/80">Contractual terms auto-attached to billing metadata.</p>
+</div>
+<!-- Tax Reserve Ratio -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface block font-medium">
+                  Tax Reserve Ratio
+                </label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 pl-3 pr-10 text-on-surface font-numeric-metric text-base focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="text" value="25.0%"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 font-label-sm text-label-sm text-primary font-medium">AUTO</span>
+</div>
+<p class="font-body-sm text-xs text-on-surface-variant/80">Calibrated for Single LLC / S-Corp Pass-Through.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- ========================================================================= -->
+<!-- FLOATING / DOCKED CONFIRMATION FOOTER                                     -->
+<!-- ========================================================================= -->
+<footer class="sticky bottom-0 z-30 w-full bg-surface-container-lowest/95 backdrop-blur-2xl border-t border-outline-variant/30 py-3.5 px-space-lg shadow-2xl">
+<div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+<!-- Left: Cryptographic Audit Notice -->
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="enhanced_encryption">enhanced_encryption</span>
+<span class="font-body-sm text-body-sm">All modifications are cryptographically signed to your audit ledger.</span>
+</div>
+<!-- Right: Action Buttons -->
+<div class="flex items-center gap-3">
+<button class="px-4 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+            Cancel
+          </button>
+<button class="px-5 py-1.5 rounded-lg gold-btn-gradient text-on-primary font-label-md text-label-md font-semibold tracking-wide flex items-center gap-2 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm text-on-primary" data-icon="check_circle">check_circle</span>
+<span>Save Settings</span>
+</button>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

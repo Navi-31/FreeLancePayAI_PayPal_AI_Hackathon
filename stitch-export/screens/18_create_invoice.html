@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI - Create Invoice</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Script -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#e4e1ea",
+            "tertiary-container": "#ff8dd2",
+            "secondary-container": "#561cc1",
+            "inverse-primary": "#795902",
+            "error-container": "#93000a",
+            "outline-variant": "#4e4637",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary-fixed": "#ffdea0",
+            "surface-container-low": "#1b1b21",
+            "error": "#ffb4ab",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-tint": "#ebc166",
+            "tertiary-fixed-dim": "#ffaedb",
+            "outline": "#9a8f7e",
+            "surface-container-high": "#2a2930",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#3b0092",
+            "surface-variant": "#35343b",
+            "on-tertiary-fixed": "#3c002b",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "on-secondary-fixed-variant": "#5417be",
+            "primary-fixed-dim": "#ebc166",
+            "surface": "#131319",
+            "primary": "#f4c86d",
+            "surface-container-highest": "#35343b",
+            "inverse-on-surface": "#303036",
+            "primary-container": "#d6ad55",
+            "on-primary": "#402d00",
+            "on-primary-fixed": "#261a00",
+            "surface-bright": "#39383f",
+            "on-surface-variant": "#d1c5b2",
+            "on-tertiary": "#610048",
+            "secondary": "#d0bcff",
+            "on-primary-container": "#594100",
+            "secondary-fixed": "#e9ddff",
+            "surface-container": "#1f1f25",
+            "tertiary-fixed": "#ffd8eb",
+            "on-tertiary-fixed-variant": "#880067",
+            "background": "#131319",
+            "on-error": "#690005",
+            "surface-dim": "#131319",
+            "on-surface": "#e4e1ea",
+            "tertiary": "#ffbadf",
+            "on-tertiary-container": "#850065"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "headline-lg": ["Geist"],
+            "display-mobile": ["Geist"],
+            "body-md": ["Inter"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-md": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-sm": ["Geist"],
+            "label-md": ["Geist"],
+            "numeric-metric": ["Geist"],
+            "body-sm": ["Inter"],
+            "display": ["Geist"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .glass-base {
+      background: rgba(23, 23, 32, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .glass-elevated {
+      background: rgba(30, 29, 41, 0.85);
+      backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(240, 212, 139, 0.20);
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .gold-gradient-btn {
+      background: linear-gradient(135deg, #F0D48B 0%, #D6AD55 100%);
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 20px rgba(240, 212, 139, 0.25);
+    }
+    .gold-gradient-btn:hover {
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.3), 0 0 28px rgba(240, 212, 139, 0.45);
+    }
+    .ai-gradient-btn {
+      background: linear-gradient(135deg, #9665FF 0%, #7040DB 50%, #D6AD55 100%);
+      box-shadow: 0 0 30px -5px rgba(150, 101, 255, 0.4);
+    }
+    .ai-gradient-btn:hover {
+      box-shadow: 0 0 35px 0px rgba(150, 101, 255, 0.6);
+    }
+    .violet-glow-panel {
+      box-shadow: 0 0 45px -12px rgba(112, 64, 219, 0.35);
+    }
+    .auric-glow {
+      box-shadow: 0 20px 50px -15px rgba(214, 173, 85, 0.15);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-[#08080D] text-on-surface min-h-screen antialiased flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- SIDEBAR ANCHOR COMPONENT (From Shared Components JSON) -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm w-64">
+<!-- Top Brand Anchor -->
+<div>
+<div class="flex items-center gap-3 px-3 py-4 mb-4 border-b border-outline-variant/20">
+<div class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center border border-primary/30 shadow-[0_0_15px_rgba(244,200,109,0.15)]">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary block leading-none">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mt-1">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Copilot CTA Trigger -->
+<div class="px-2 mb-4">
+<button class="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-secondary-container/30 border border-secondary/30 text-secondary hover:bg-secondary-container/50 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md">Trigger Copilot</span>
+</button>
+</div>
+<!-- Navigation Tabs (Payments is active for Invoices) -->
+<nav class="space-y-1 px-1">
+<!-- Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- Payments (Active State) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- Intelligence -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md">Intelligence</span>
+</a>
+<!-- Treasury -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="account_balance">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="handyman">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- System -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+</nav>
+</div>
+<!-- Footer Rail Tabs -->
+<div class="pt-4 border-t border-outline-variant/20 px-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-base" data-icon="shield_lock">shield_lock</span>
+<span class="font-label-sm text-label-sm">Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-base" data-icon="terminal">terminal</span>
+<span class="font-label-sm text-label-sm">Telemetry Logs</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TOP UTILITY HEADER (Shared Component mapped) -->
+<header class="docked full-width top-0 sticky z-30 backdrop-blur-2xl bg-surface/80 border-b border-outline-variant/30 flex items-center justify-between px-space-lg py-space-sm pl-72">
+<!-- Breadcrumbs / Left Utility -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 font-label-md text-label-md">
+<span class="text-on-surface-variant hover:text-on-surface cursor-pointer">Invoices</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-medium flex items-center gap-1.5">
+          New Invoice <span class="bg-surface-container-high px-2 py-0.5 rounded text-xs text-primary border border-primary/20">#FP-8850</span>
+</span>
+</div>
+<div class="h-4 w-px bg-outline-variant/40 ml-2"></div>
+<div class="hidden xl:flex items-center gap-1.5 text-xs text-secondary bg-secondary-container/20 border border-secondary/30 px-2.5 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-xs" data-icon="bolt">bolt</span>
+<span>Auto-Sync Engaged</span>
+</div>
+</div>
+<!-- Navigation Quick Links -->
+<div class="hidden lg:flex items-center gap-6 font-label-md text-label-md text-on-surface-variant">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Yield Radar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contracts</a>
+</div>
+<!-- Actions & User Section -->
+<div class="flex items-center gap-3">
+<button class="px-3.5 py-1.5 rounded-lg border border-outline-variant/50 text-on-surface hover:bg-surface-container/80 transition-colors font-label-md text-label-md">
+        Save Draft
+      </button>
+<button class="gold-gradient-btn px-4 py-1.5 rounded-lg font-label-md text-label-md text-[#08080D] font-semibold flex items-center gap-2 transition-transform duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="payments">payments</span>
+<span>Create &amp; Send via PayPal</span>
+</button>
+<!-- Currency Switcher -->
+<div class="h-6 w-px bg-outline-variant/30 mx-1"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2 py-1 rounded border border-outline-variant/20">USD / EUR</span>
+<!-- Notification & Help Triggers -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button class="p-1.5 rounded-lg hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="notifications">notifications</span>
+</button>
+<button class="p-1.5 rounded-lg hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="help">help</span>
+</button>
+</div>
+<!-- Avatar Profile -->
+<div class="w-8 h-8 rounded-full ring-2 ring-primary/60 p-0.5 bg-surface-container-high flex items-center justify-center text-xs font-semibold text-primary">
+        AV
+      </div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="flex-1 pl-72 pr-8 py-6 max-w-[1680px] w-full mx-auto">
+<!-- Page Header -->
+<div class="mb-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface flex items-center gap-3">
+            Create New Invoice
+            <span class="text-xs px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary font-label-sm">
+              Vault Verified
+            </span>
+</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 max-w-3xl">
+            Draft manually or let AI Copilot extract line items, calculate tax shields, and enforce milestone terms.
+          </p>
+</div>
+<!-- Mode Switcher Bar -->
+<div class="flex items-center p-1 rounded-xl bg-surface-container-lowest border border-outline-variant/40 shadow-inner">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface border border-secondary/40 shadow-[0_0_20px_rgba(150,101,255,0.25)] transition-all">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md font-medium text-secondary">AI Smart Generator</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/40 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="edit">edit</span>
+<span class="font-label-md text-label-md">Manual Custom Builder</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dual Column Architecture: 60% Form / 40% Live Preview -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT / MAIN FORM COLUMN (60% width -> 7 cols or 7/12) -->
+<div class="lg:col-span-7 space-y-6">
+<!-- SECTION A: AI Conversational Prompt Box -->
+<div class="glass-elevated violet-glow-panel rounded-xl p-5 border border-secondary/30 relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-48 h-48 bg-secondary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">AI Autonomous Prompt &amp; Ingestion</h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/30 px-2.5 py-0.5 rounded-full border border-secondary/30">
+              Copilot v4.2 Ready
+            </span>
+</div>
+<div class="relative mb-3">
+<textarea class="w-full bg-[#101016] border border-secondary/30 rounded-lg p-3.5 text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none font-body-md text-body-md" placeholder="e.g., 'Invoice Acme Corp $8,500 for Design System Sprint II, milestone 2 of 3, net-14 payment terms with 20% tax reserve and PayPal business processing'..." rows="3">Invoice Acme Corp $8,500 for Design System Sprint II, milestone 2 of 3, net-14 payment terms with 20% tax reserve and PayPal business processing</textarea>
+</div>
+<!-- AI Action Buttons -->
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/40 bg-[#171720]/80 text-on-surface hover:border-secondary/50 font-label-sm text-label-sm flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="upload_file">upload_file</span>
+<span>Extract from Contract PDF</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/40 bg-[#171720]/80 text-on-surface hover:border-secondary/50 font-label-sm text-label-sm flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="history">history</span>
+<span>Re-use Previous Client Terms</span>
+</button>
+</div>
+<button class="ai-gradient-btn px-4 py-2 rounded-lg font-label-md text-label-md text-white font-medium flex items-center gap-2 transition-transform duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="bolt">bolt</span>
+<span>Generate Invoice with Copilot</span>
+</button>
+</div>
+</div>
+<!-- SECTION B: Extracted / Editable Client & Metadata -->
+<div class="glass-base rounded-xl p-5 border border-white/5 space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="business">business</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Client &amp; Invoice Attributes</h3>
+</div>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              Auto-Matched
+            </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Client Selector -->
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Client Identity</label>
+<div class="relative">
+<select class="w-full bg-[#101016] border border-outline-variant/30 rounded-lg px-3 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md appearance-none">
+<option selected="">Acme Corp (billing@acmecorp.com)</option>
+<option>Synthetix Labs LLC (finance@synthetix.io)</option>
+<option>OmniMedia Partners (ap@omnimediagroup.com)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant pointer-events-none text-base" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Invoice Number -->
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Invoice Protocol Number</label>
+<div class="relative">
+<input class="w-full bg-[#101016] border border-outline-variant/30 rounded-lg px-3 py-2 text-primary font-medium focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" type="text" value="#FP-8850"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-primary text-base" data-icon="lock">lock</span>
+</div>
+</div>
+<!-- Currency & Issue Date -->
+<div class="grid grid-cols-2 gap-2">
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Currency</label>
+<select class="w-full bg-[#101016] border border-outline-variant/30 rounded-lg px-3 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md">
+<option selected="">USD ($)</option>
+<option>EUR (€)</option>
+<option>GBP (£)</option>
+</select>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Issue Date</label>
+<input class="w-full bg-[#101016] border border-outline-variant/30 rounded-lg px-3 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" type="text" value="Oct 14, 2025"/>
+</div>
+</div>
+<!-- Due Date & Terms -->
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Due Date &amp; Terms</label>
+<input class="w-full bg-[#101016] border border-outline-variant/30 rounded-lg px-3 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" type="text" value="Net-14 (Due Oct 28, 2025)"/>
+</div>
+<!-- Payment Channel -->
+<div class="md:col-span-2">
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Settlement Channel Protocol</label>
+<div class="grid grid-cols-3 gap-3">
+<label class="flex items-center gap-2 p-2.5 rounded-lg border border-primary/40 bg-primary/5 cursor-pointer">
+<input checked="" class="text-primary focus:ring-primary border-outline-variant" name="payment_channel" type="radio"/>
+<span class="font-label-md text-label-md text-primary font-medium">PayPal Business</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-lg border border-outline-variant/30 bg-[#101016] hover:border-outline-variant cursor-pointer">
+<input class="text-primary focus:ring-primary border-outline-variant" name="payment_channel" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface-variant">Stripe Connect</span>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-lg border border-outline-variant/30 bg-[#101016] hover:border-outline-variant cursor-pointer">
+<input class="text-primary focus:ring-primary border-outline-variant" name="payment_channel" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface-variant">SWIFT Wire</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION C: Line Items Builder -->
+<div class="glass-base rounded-xl p-5 border border-white/5 space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="format_list_bulleted">format_list_bulleted</span>
+                Line Items Builder
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Extracted dynamically from prompt context</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface text-xs font-label-sm border border-outline-variant/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="add">add</span> Add Milestone Clause
+              </button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead>
+<tr class="border-b border-outline-variant/30 text-on-surface-variant font-label-sm text-label-sm">
+<th class="pb-2 font-medium">Description</th>
+<th class="pb-2 font-medium w-24">Qty / Hrs</th>
+<th class="pb-2 font-medium w-28">Unit Rate</th>
+<th class="pb-2 font-medium w-20">Tax %</th>
+<th class="pb-2 font-medium w-24 text-right">Total ($)</th>
+<th class="pb-2 font-medium w-10 text-center"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Item 1 -->
+<tr>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2.5 py-1 text-on-surface text-xs focus:border-primary outline-none" type="text" value="Design System Architecture &amp; Token Taxonomy"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface text-xs focus:border-primary outline-none" type="number" value="40"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface text-xs focus:border-primary outline-none" type="text" value="150.00"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface-variant text-xs focus:border-primary outline-none" type="text" value="0%"/>
+</td>
+<td class="py-2.5 text-right font-medium text-primary text-xs">
+                    $6,000.00
+                  </td>
+<td class="py-2.5 text-center">
+<button class="text-on-surface-variant/40 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+<!-- Item 2 -->
+<tr>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2.5 py-1 text-on-surface text-xs focus:border-primary outline-none" type="text" value="Component Library Prototype (Figma + Code Tokens)"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface text-xs focus:border-primary outline-none" type="number" value="15"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface text-xs focus:border-primary outline-none" type="text" value="150.00"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface-variant text-xs focus:border-primary outline-none" type="text" value="0%"/>
+</td>
+<td class="py-2.5 text-right font-medium text-primary text-xs">
+                    $2,250.00
+                  </td>
+<td class="py-2.5 text-center">
+<button class="text-on-surface-variant/40 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+<!-- Item 3 -->
+<tr>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2.5 py-1 text-on-surface text-xs focus:border-primary outline-none" type="text" value="Executive Review &amp; Handoff Workshop"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface text-xs focus:border-primary outline-none" type="number" value="1"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface text-xs focus:border-primary outline-none" type="text" value="250.00"/>
+</td>
+<td class="py-2.5 pr-2">
+<input class="w-full bg-[#101016] border border-outline-variant/20 rounded px-2 py-1 text-on-surface-variant text-xs focus:border-primary outline-none" type="text" value="0%"/>
+</td>
+<td class="py-2.5 text-right font-medium text-primary text-xs">
+                    $250.00
+                  </td>
+<td class="py-2.5 text-center">
+<button class="text-on-surface-variant/40 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between pt-2">
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-dashed border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/50 text-xs font-label-md transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>
+<span>+ Add Line Item</span>
+</button>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Computed Line Items Subtotal:</span>
+<span class="font-numeric-metric text-lg text-primary font-semibold ml-2">$8,500.00</span>
+</div>
+</div>
+</div>
+<!-- SECTION D: Autonomous Tax & Fee Shielding -->
+<div class="glass-base rounded-xl p-5 border border-white/5 space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="shield">shield</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Autonomous Tax &amp; Fee Shielding</h3>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/20 px-2 py-0.5 rounded border border-secondary/30">
+              IRS Schedule-C Protected
+            </span>
+</div>
+<div class="space-y-3">
+<!-- Toggle 1: Tax Shield -->
+<label class="flex items-center justify-between p-3 rounded-lg bg-[#101016] border border-outline-variant/30 hover:border-secondary/40 cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<input checked="" class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container" type="checkbox"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface block font-medium">Auto-deduct 20% for Autonomous Tax Shield ($1,700.00)</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Instantly locks reserve into the high-yield tax vault upon invoice settlement.</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-lg" data-icon="auto_awesome">auto_awesome</span>
+</label>
+<!-- Toggle 2: PayPal Fee -->
+<label class="flex items-center justify-between p-3 rounded-lg bg-[#101016] border border-outline-variant/30 hover:border-secondary/40 cursor-pointer transition-colors">
+<div class="flex items-center gap-3">
+<input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary bg-surface-container" type="checkbox"/>
+<div>
+<span class="font-label-md text-label-md text-on-surface block font-medium">Pass PayPal Processing Fee (2.9% + $0.30) to Client</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Adds $246.80 fee reimbursement line to retain exact gross payout.</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-lg" data-icon="percent">percent</span>
+</label>
+</div>
+<!-- Client Notes -->
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant mb-1.5">Executive Client Notes &amp; Terms</label>
+<textarea class="w-full bg-[#101016] border border-outline-variant/30 rounded-lg p-2.5 text-on-surface text-body-sm font-body-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" rows="2">Thank you for your business. Payment via PayPal Business link or wire transfer.</textarea>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: LIVE INTERACTIVE INVOICE PREVIEW (40% width -> 5 cols or 5/12) -->
+<div class="lg:col-span-5 sticky top-20">
+<!-- Document Wrapper -->
+<div class="glass-elevated auric-glow rounded-xl p-6 border border-white/10 relative overflow-hidden flex flex-col justify-between">
+<!-- Watermark & Background Ambient Gold Accent -->
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div>
+<!-- Header Preview -->
+<div class="flex items-start justify-between border-b border-outline-variant/20 pb-5 mb-5">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-primary-container/20 border border-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold text-primary tracking-tight">FreelancePay AI</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant pl-9">Autonomous Yield Settlement</div>
+</div>
+<div class="text-right">
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-primary/15 border border-primary/30 text-primary text-xs font-semibold uppercase tracking-wider mb-1">
+                  Draft Preview
+                </span>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">#FP-8850</div>
+</div>
+</div>
+<!-- Freelancer vs Client Entity Blocks -->
+<div class="grid grid-cols-2 gap-4 pb-5 border-b border-outline-variant/20 text-xs">
+<div>
+<span class="text-on-surface-variant font-label-sm text-label-sm block mb-1">ISSUED BY</span>
+<span class="text-on-surface font-semibold block">Alex Vance</span>
+<span class="text-on-surface-variant block">Senior Design Technologist</span>
+<span class="text-on-surface-variant block">alex.vance@executive.ai</span>
+<span class="text-primary font-label-sm block mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span> Verified Merchant
+                </span>
+</div>
+<div>
+<span class="text-on-surface-variant font-label-sm text-label-sm block mb-1">BILLED TO</span>
+<span class="text-on-surface font-semibold block">Acme Corp</span>
+<span class="text-on-surface-variant block">billing@acmecorp.com</span>
+<span class="text-on-surface-variant block">100 Broadway, Ste 400</span>
+<span class="text-on-surface-variant block">New York, NY 10005</span>
+</div>
+</div>
+<!-- Timeline Indicators -->
+<div class="grid grid-cols-3 gap-2 py-3 bg-[#101016]/60 rounded-lg px-3 border border-outline-variant/20 my-4 text-xs">
+<div>
+<span class="text-on-surface-variant block font-label-sm">Issue Date</span>
+<span class="text-on-surface font-medium">Oct 14, 2025</span>
+</div>
+<div>
+<span class="text-on-surface-variant block font-label-sm">Terms</span>
+<span class="text-on-surface font-medium">Net-14</span>
+</div>
+<div>
+<span class="text-on-surface-variant block font-label-sm">Due Date</span>
+<span class="text-primary font-medium">Oct 28, 2025</span>
+</div>
+</div>
+<!-- Live Line Items Summary -->
+<div class="space-y-2 mb-5">
+<div class="text-xs font-label-sm text-on-surface-variant flex justify-between pb-1 border-b border-outline-variant/20">
+<span>ITEM DETAILS</span>
+<span>AMOUNT</span>
+</div>
+<div class="flex justify-between items-center text-xs py-1">
+<div class="max-w-[70%]">
+<span class="text-on-surface block font-medium truncate">Design System Architecture &amp; Token Taxonomy</span>
+<span class="text-on-surface-variant text-[11px]">40 hrs × $150.00/hr</span>
+</div>
+<span class="text-on-surface font-medium">$6,000.00</span>
+</div>
+<div class="flex justify-between items-center text-xs py-1">
+<div class="max-w-[70%]">
+<span class="text-on-surface block font-medium truncate">Component Library Prototype</span>
+<span class="text-on-surface-variant text-[11px]">15 hrs × $150.00/hr</span>
+</div>
+<span class="text-on-surface font-medium">$2,250.00</span>
+</div>
+<div class="flex justify-between items-center text-xs py-1">
+<div class="max-w-[70%]">
+<span class="text-on-surface block font-medium truncate">Executive Review &amp; Handoff Workshop</span>
+<span class="text-on-surface-variant text-[11px]">1 session</span>
+</div>
+<span class="text-on-surface font-medium">$250.00</span>
+</div>
+</div>
+<!-- Financial Calculation Tally -->
+<div class="border-t border-outline-variant/20 pt-3 space-y-1.5 text-xs">
+<div class="flex justify-between text-on-surface-variant">
+<span>Subtotal</span>
+<span class="text-on-surface font-medium">$8,500.00</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Tax / VAT (0.00%)</span>
+<span>$0.00</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>PayPal Fee Offset</span>
+<span>$0.00</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs" data-icon="lock">lock</span> Auto Tax Shield (20% Reserve)
+                </span>
+<span class="text-secondary">-$1,700.00 (Isolated)</span>
+</div>
+<div class="border-t border-primary/20 pt-2 mt-2 flex justify-between items-baseline">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">Total Payable</span>
+<span class="font-numeric-metric text-2xl text-primary font-bold tracking-tight">$8,500.00 USD</span>
+</div>
+</div>
+<!-- Note Callout -->
+<div class="mt-4 p-2.5 rounded bg-surface-container-low border border-outline-variant/30 text-[11px] text-on-surface-variant">
+<span class="text-primary font-medium">Payment Note:</span> Thank you for your business. Payment via PayPal Business link or wire transfer.
+            </div>
+</div>
+<!-- Bottom Actions inside preview -->
+<div class="mt-6 pt-4 border-t border-outline-variant/30 grid grid-cols-3 gap-2">
+<button class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-label-md border border-outline-variant/30 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span>Preview PDF</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-label-md border border-outline-variant/30 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="link">link</span>
+<span>Copy Link</span>
+</button>
+<button class="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-label-md border border-outline-variant/30 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="mail">mail</span>
+<span>Test Email</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

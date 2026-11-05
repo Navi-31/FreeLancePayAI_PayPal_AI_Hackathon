@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — What-If Financial Simulator</title>
+<!-- Material Symbols Outlined font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Geist & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#303036",
+            "outline": "#9a8f7e",
+            "on-primary": "#402d00",
+            "on-error": "#690005",
+            "on-surface": "#e4e1ea",
+            "surface-container": "#1f1f25",
+            "on-primary-fixed": "#261a00",
+            "inverse-primary": "#795902",
+            "surface-dim": "#131319",
+            "on-tertiary-container": "#850065",
+            "on-background": "#e4e1ea",
+            "secondary-container": "#561cc1",
+            "primary-container": "#d6ad55",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "secondary": "#d0bcff",
+            "surface-variant": "#35343b",
+            "primary-fixed": "#ffdea0",
+            "error": "#ffb4ab",
+            "surface-container-highest": "#35343b",
+            "outline-variant": "#4e4637",
+            "on-secondary-fixed-variant": "#5417be",
+            "tertiary-container": "#ff8dd2",
+            "surface-container-low": "#1b1b21",
+            "tertiary-fixed": "#ffd8eb",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container-lowest": "#0e0e14",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary": "#f4c86d",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#2a2930",
+            "on-tertiary": "#610048",
+            "on-primary-container": "#594100",
+            "on-surface-variant": "#d1c5b2",
+            "surface": "#131319",
+            "tertiary": "#ffbadf",
+            "primary-fixed-dim": "#ebc166",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed": "#e9ddff",
+            "tertiary-fixed-dim": "#ffaedb",
+            "on-secondary": "#3b0092",
+            "error-container": "#93000a",
+            "background": "#131319",
+            "on-tertiary-fixed": "#3c002b",
+            "surface-bright": "#39383f",
+            "on-tertiary-fixed-variant": "#880067",
+            "surface-tint": "#ebc166"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "numeric-metric": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "display": ["Geist"],
+            "display-mobile": ["Geist"],
+            "label-sm": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 9999px;
+      background: #f4c86d;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(244, 200, 109, 0.6);
+      margin-top: -6px;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      background: #35343b;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #4e4637;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col selection:bg-primary-container selection:text-on-primary-container">
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: SideNavBar (collapsible rail sidebar, 6 tabs + footer) -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30 text-on-surface">
+<div class="flex flex-col justify-between h-full p-space-sm w-64">
+<!-- Top Brand Anchor Section -->
+<div>
+<div class="flex items-center gap-3 px-3 py-4 mb-2">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary via-primary-container to-secondary-container flex items-center justify-center p-[1px] shadow-sm">
+<div class="w-full h-full bg-surface-container-lowest rounded-[10px] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant/80">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Quick AI Copilot Trigger -->
+<button class="w-full mb-4 px-3 py-2 rounded-lg bg-secondary-container/20 border border-secondary/30 text-secondary hover:bg-secondary-container/30 transition-all duration-150 flex items-center justify-between group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+<span class="font-label-md text-label-md">Trigger Copilot</span>
+</div>
+<span class="font-label-sm text-label-sm opacity-60 group-hover:opacity-100">⌘K</span>
+</button>
+<!-- Main Nav Rail Tabs (6 tabs from JSON) -->
+<nav class="space-y-1">
+<!-- 1. Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- 2. Payments -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- 3. Intelligence (ACTIVE PARENT DESTINATION) -->
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md font-medium">Intelligence</span>
+<span class="ml-auto w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</a>
+<!-- Sub-tree within Intelligence -->
+<div class="pl-8 pr-2 py-1 space-y-1">
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-label-sm text-primary bg-primary/10 font-semibold border border-primary/20" href="#">
+<span>What-If Simulator</span>
+<span class="material-symbols-outlined text-xs" data-icon="science">science</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span>Predictive Cashflow</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-md text-xs font-label-sm text-on-surface-variant hover:text-on-surface transition-colors" href="#">
+<span>Tax Allocation Engine</span>
+</a>
+</div>
+</div>
+<!-- 4. Treasury -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="account_balance">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- 5. Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="handyman">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- 6. System -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+</nav>
+</div>
+<!-- Footer Rail Tabs -->
+<div class="border-t border-outline-variant/30 pt-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="shield_lock">shield_lock</span>
+<span class="font-label-sm text-label-sm">Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span class="font-label-sm text-label-sm">Telemetry Logs</span>
+</a>
+<div class="px-3 py-2 text-[10px] text-outline tracking-wider flex items-center justify-between font-label-sm">
+<span>RUNNING V2.4.9</span>
+<span class="text-primary font-semibold">ONLINE</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: TopNavBar (desktop utility header docked full-width)   -->
+<!-- ========================================================================= -->
+<header class="docked full-width top-0 sticky z-30 flex items-center justify-between px-space-lg py-space-sm w-full pl-72 bg-surface/80 backdrop-blur-2xl border-b border-outline-variant/30 shadow-sm">
+<!-- Left Search Cluster -->
+<div class="flex items-center gap-4 flex-1 max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-base" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-9 pr-3 py-1.5 text-xs text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 font-body-sm transition-all" placeholder="Search scenarios, transactions, clients..." type="text"/>
+</div>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden xl:flex items-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Treasury Stream</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Yield Radar</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Tax Shield</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contracts</a>
+</nav>
+<!-- Trailing Actions & Monogram -->
+<div class="flex items-center gap-3">
+<!-- Currency Switcher -->
+<button class="px-2.5 py-1 rounded bg-surface-container border border-outline-variant/40 text-on-surface-variant font-label-sm text-label-sm hover:text-on-surface transition-colors">
+        USD / EUR
+      </button>
+<!-- Trailing Icon Cluster -->
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-lg" data-icon="notifications">notifications</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary absolute top-1.5 right-1.5"></span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Instant Sync">
+<span class="material-symbols-outlined text-lg" data-icon="bolt">bolt</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Help">
+<span class="material-symbols-outlined text-lg" data-icon="help">help</span>
+</button>
+</div>
+<!-- Execute Payout Action Button -->
+<button class="bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-label-md text-label-md font-semibold px-3.5 py-1.5 rounded-lg shadow-sm hover:shadow-[0_0_15px_rgba(240,212,139,0.35)] transition-all duration-150 active:scale-[0.98]">
+        Execute Payout
+      </button>
+<!-- Executive Monogram / Profile Avatar -->
+<div class="w-8 h-8 rounded-full border-2 border-primary/70 p-[2px] cursor-pointer hover:border-primary transition-colors ml-1">
+<div class="w-full h-full rounded-full bg-surface-container-high flex items-center justify-center text-xs font-semibold text-primary font-headline-sm" title="Executive User Profile Avatar with Gold Status Ring">
+          AP
+        </div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE CONTENT CANVAS                                             -->
+<!-- ========================================================================= -->
+<main class="flex-1 ml-64 pl-8 pr-8 py-6 space-y-6 max-w-[1600px]">
+<!-- WORKSPACE HEADER & ACTION CONTROLS -->
+<section class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-outline-variant/20">
+<div class="space-y-1.5">
+<div class="flex items-center gap-3">
+<h1 class="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface flex items-center gap-3">
+            What-If Financial Simulator
+          </h1>
+<span class="px-2.5 py-1 rounded-full text-xs font-label-sm font-semibold bg-secondary-container/20 text-secondary border border-secondary/30 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            Sandbox Simulation Environment — Zero Real-World Execution
+          </span>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md">
+          Explore strategic business decisions and stress-test your cashflow before executing.
+        </p>
+</div>
+<!-- Action Controls Group -->
+<div class="flex items-center gap-2.5 self-start lg:self-auto">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface-variant font-label-md text-label-md hover:text-on-surface hover:bg-surface-container-high transition-all flex items-center gap-1.5 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="refresh">refresh</span>
+          Reset to Baseline
+        </button>
+<button class="px-3.5 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:border-primary/50 transition-all flex items-center gap-1.5 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="bookmark">bookmark</span>
+          Save Scenario
+        </button>
+<button class="px-4 py-2 rounded-lg bg-gradient-to-r from-[#9665FF] to-[#7040DB] text-white font-label-md text-label-md font-medium shadow-sm hover:shadow-[0_0_20px_rgba(150,101,255,0.4)] transition-all flex items-center gap-1.5 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="compare_arrows">compare_arrows</span>
+          Compare Saved Scenarios (3)
+        </button>
+</div>
+</section>
+<!-- TOP PRESET SCENARIO SELECTOR (Horizontal Glass Rails) -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Simulated Strategy Blueprints</span>
+<span class="font-label-sm text-label-sm text-outline">Showing 5 of 12 Presets</span>
+</div>
+<div class="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
+<!-- Preset 1: ACTIVE -->
+<div class="min-w-[270px] flex-1 p-3.5 rounded-xl bg-surface-container-high/90 border-2 border-primary/80 shadow-[0_0_20px_rgba(244,200,109,0.15)] backdrop-blur-xl cursor-pointer transition-all relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-primary/10 rounded-bl-full pointer-events-none"></div>
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-sm font-semibold bg-primary/20 text-primary border border-primary/40">ACTIVE SCENARIO</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="schedule">schedule</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-medium text-on-surface group-hover:text-primary transition-colors">Biggest Client Pays 20 Days Late</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Stress-tests Acme Corp &amp; Horizon delays</p>
+</div>
+<!-- Preset 2 -->
+<div class="min-w-[270px] flex-1 p-3.5 rounded-xl bg-surface-container/60 hover:bg-surface-container border border-outline-variant/30 backdrop-blur-xl cursor-pointer transition-all hover:border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-sm font-semibold bg-surface-variant text-on-surface-variant">EXPANSION</span>
+<span class="material-symbols-outlined text-outline text-base" data-icon="trending_up">trending_up</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-medium text-on-surface">Increase Rates by 15%</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Retainer and hourly expansion model</p>
+</div>
+<!-- Preset 3 -->
+<div class="min-w-[270px] flex-1 p-3.5 rounded-xl bg-surface-container/60 hover:bg-surface-container border border-outline-variant/30 backdrop-blur-xl cursor-pointer transition-all hover:border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-sm font-semibold bg-error-container/20 text-error border border-error/30">WORST CASE</span>
+<span class="material-symbols-outlined text-error text-base" data-icon="crisis_alert">crisis_alert</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-medium text-on-surface">Lose Largest Retainer</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Apex Media termination (-$12k/mo shock)</p>
+</div>
+<!-- Preset 4 -->
+<div class="min-w-[270px] flex-1 p-3.5 rounded-xl bg-surface-container/60 hover:bg-surface-container border border-outline-variant/30 backdrop-blur-xl cursor-pointer transition-all hover:border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-sm font-semibold bg-surface-variant text-on-surface-variant">GROWTH</span>
+<span class="material-symbols-outlined text-outline text-base" data-icon="add_card">add_card</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-medium text-on-surface">Land 2 Enterprise Projects</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Growth runway simulation (+$16,000)</p>
+</div>
+<!-- Preset 5 -->
+<div class="min-w-[270px] flex-1 p-3.5 rounded-xl bg-surface-container/60 hover:bg-surface-container border border-outline-variant/30 backdrop-blur-xl cursor-pointer transition-all hover:border-outline-variant">
+<div class="flex items-center justify-between mb-2">
+<span class="px-2 py-0.5 rounded text-[10px] font-label-sm font-semibold bg-secondary-container/20 text-secondary">SAVINGS</span>
+<span class="material-symbols-outlined text-secondary text-base" data-icon="savings">savings</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-medium text-on-surface">Save 25% to High-Yield Vault</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Continuous wealth velocity &amp; tax moat</p>
+</div>
+<!-- Preset 6: Create Custom -->
+<button class="min-w-[200px] p-3.5 rounded-xl border border-dashed border-outline-variant/60 hover:border-primary/60 hover:bg-surface-container/40 flex flex-col items-center justify-center gap-1.5 transition-all group">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-base text-primary" data-icon="add">add</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors font-medium">Create Custom Scenario</span>
+</button>
+</div>
+</section>
+<!-- INTERACTIVE SCENARIO CONFIGURATION CONTROLS -->
+<section class="p-5 rounded-2xl bg-surface-container-low/90 border border-outline-variant/30 backdrop-blur-2xl shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="tune">tune</span>
+<span class="font-headline-sm text-headline-sm font-medium text-on-surface">Stress-Test Variable Calibration</span>
+<span class="text-xs font-label-sm text-outline px-2 py-0.5 bg-surface-container rounded border border-outline-variant/30">Real-Time Recalculation Engine</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-label-sm text-on-surface-variant">Simulation Horizon:</span>
+<div class="flex p-0.5 rounded-lg bg-surface-container border border-outline-variant/30">
+<button class="px-2.5 py-1 rounded text-xs font-label-sm text-on-surface-variant hover:text-on-surface">30d</button>
+<button class="px-2.5 py-1 rounded text-xs font-label-sm text-on-surface-variant hover:text-on-surface">60d</button>
+<button class="px-2.5 py-1 rounded text-xs font-label-sm bg-primary text-on-primary font-semibold shadow-xs">90 Days</button>
+<button class="px-2.5 py-1 rounded text-xs font-label-sm text-on-surface-variant hover:text-on-surface">180d</button>
+</div>
+</div>
+</div>
+<!-- Variable Sliders Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Variable 1 -->
+<div class="space-y-2 p-3.5 rounded-xl bg-surface-container/40 border border-outline-variant/20">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface-variant">Client Payment Delay Offset</label>
+<span class="font-label-md text-label-md font-semibold text-primary px-2 py-0.5 bg-primary/10 rounded border border-primary/30">+20 Days</span>
+</div>
+<input class="w-full" max="45" min="-10" type="range" value="20"/>
+<div class="flex justify-between text-[11px] font-label-sm text-outline">
+<span>-10d (Accelerated)</span>
+<span>0d (Baseline)</span>
+<span>+45d (Critical Delay)</span>
+</div>
+</div>
+<!-- Variable 2 -->
+<div class="space-y-2 p-3.5 rounded-xl bg-surface-container/40 border border-outline-variant/20">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface-variant">Revenue Volatility / Price Delta</label>
+<span class="font-label-md text-label-md font-semibold text-secondary px-2 py-0.5 bg-secondary/10 rounded border border-secondary/30">+0%</span>
+</div>
+<input class="w-full" max="50" min="-50" type="range" value="0"/>
+<div class="flex justify-between text-[11px] font-label-sm text-outline">
+<span>-50% (Depression)</span>
+<span>Baseline</span>
+<span>+50% (Expansion)</span>
+</div>
+</div>
+<!-- Variable 3 -->
+<div class="space-y-2 p-3.5 rounded-xl bg-surface-container/40 border border-outline-variant/20">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface-variant">Monthly OPEX Adjustment</label>
+<span class="font-label-md text-label-md font-semibold text-on-surface px-2 py-0.5 bg-surface-variant rounded border border-outline-variant/40">-$0 / mo</span>
+</div>
+<input class="w-full" max="2000" min="-1000" type="range" value="0"/>
+<div class="flex justify-between text-[11px] font-label-sm text-outline">
+<span>-$1,000/mo (Austerity)</span>
+<span>$0/mo</span>
+<span>+$2,000/mo (Expansion)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SIDE-BY-SIDE FINANCIAL COMPARISON -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- CARD 1: CURRENT BASELINE (Metallic Gold accents) -->
+<div class="p-6 rounded-2xl bg-surface-container-low/90 border border-primary/30 backdrop-blur-2xl shadow-[0_15px_40px_-15px_rgba(244,200,109,0.08)] relative overflow-hidden">
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center justify-between pb-4 mb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">CURRENT BASELINE</h2>
+<span class="font-label-sm text-label-sm text-outline">Verified Ledger Data • 0 Modifications</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded text-xs font-label-sm font-semibold bg-primary/20 text-primary border border-primary/30">
+            Gold Standard
+          </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="p-3.5 rounded-xl bg-surface-container/60 border border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Available Balance</span>
+<div class="font-numeric-metric text-numeric-metric font-semibold text-primary mt-0.5">$42,880.50</div>
+<span class="text-[11px] font-label-sm text-outline">Liquid across 3 operating vaults</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container/60 border border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Financial Runway</span>
+<div class="font-numeric-metric text-numeric-metric font-semibold text-on-surface mt-0.5">8.4 Months</div>
+<span class="text-[11px] font-label-sm text-primary">Optimal operating capacity</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-3 pt-2 text-sm border-t border-outline-variant/15">
+<div>
+<div class="font-label-sm text-label-sm text-outline">90-Day Inflows</div>
+<div class="font-label-md text-label-md font-semibold text-on-surface mt-0.5">+$54,600.00</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline">90-Day Outflows</div>
+<div class="font-label-md text-label-md font-semibold text-error mt-0.5">-$19,400.00</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline">Lowest Projected</div>
+<div class="font-label-md text-label-md font-semibold text-primary mt-0.5">$37,200.00</div>
+</div>
+</div>
+<!-- Safety Buffer Meter -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="check_circle">check_circle</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Safety Buffer Status</span>
+</div>
+<span class="font-label-md text-label-md font-semibold text-primary">100% Protected (+$17,200 over buffer)</span>
+</div>
+</div>
+<!-- CARD 2: SIMULATED SCENARIO (Electric Violet & Warning Amber) -->
+<div class="p-6 rounded-2xl bg-surface-container-low/90 border border-secondary/40 backdrop-blur-2xl shadow-[0_15px_40px_-15px_rgba(150,101,255,0.15)] relative overflow-hidden">
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-secondary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex items-center justify-between pb-4 mb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-secondary/20 border border-secondary/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-lg" data-icon="crisis_alert">crisis_alert</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-secondary">SIMULATED SCENARIO</h2>
+<span class="font-label-sm text-label-sm text-outline">Biggest Client Pays 20d Late</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded text-xs font-label-sm font-semibold bg-error-container/30 text-error border border-error/40 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="warning">warning</span>
+            Buffer Breach Risk
+          </span>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="p-3.5 rounded-xl bg-surface-container/60 border border-error/30 bg-error-container/5">
+<span class="font-label-sm text-label-sm text-error">Lowest Projected Balance</span>
+<div class="font-numeric-metric text-numeric-metric font-semibold text-error mt-0.5">$14,800.00</div>
+<span class="text-[11px] font-label-sm text-error font-medium">Breaches $20,000 buffer on Day 38!</span>
+</div>
+<div class="p-3.5 rounded-xl bg-surface-container/60 border border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Simulated Runway</span>
+<div class="font-numeric-metric text-numeric-metric font-semibold text-on-surface mt-0.5">5.2 Months</div>
+<span class="text-[11px] font-label-sm text-error">-3.2 month contraction</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-3 pt-2 text-sm border-t border-outline-variant/15">
+<div>
+<div class="font-label-sm text-label-sm text-outline">Day 45 Inflow Impact</div>
+<div class="font-label-md text-label-md font-semibold text-error mt-0.5">Delayed -$10,000</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline">Liquidity Gap</div>
+<div class="font-label-md text-label-md font-semibold text-error mt-0.5">-$5,200.00</div>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-outline">Squeeze Duration</div>
+<div class="font-label-md text-label-md font-semibold text-secondary mt-0.5">Nov 18 – Dec 02</div>
+</div>
+</div>
+<!-- Safety Buffer Meter Breached -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-base" data-icon="report_problem">report_problem</span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Buffer Impairment</span>
+</div>
+<span class="font-label-md text-label-md font-semibold text-error">26% Impairment (Day 38 to 58)</span>
+</div>
+</div>
+</section>
+<!-- INTERACTIVE COMPARISON CHART & VISUALIZATION -->
+<section class="p-6 rounded-2xl bg-surface-container-low/90 border border-outline-variant/30 backdrop-blur-2xl shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface flex items-center gap-2">
+<span>90-Day Trajectory Stress-Test</span>
+<span class="text-xs px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-sm">Dynamic Sparkline &amp; Forecast</span>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Overlaying Baseline vs. Simulated Cash Flow against $20,000 Minimum Reserve Floor</p>
+</div>
+<!-- Legend -->
+<div class="flex flex-wrap items-center gap-4 text-xs font-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-3.5 h-1 bg-primary rounded-full"></span>
+<span class="text-on-surface">Baseline Projection</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3.5 h-1 bg-secondary rounded-full border border-dashed border-secondary"></span>
+<span class="text-secondary">Simulated Trajectory (+20d Delay)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3.5 h-1 bg-error rounded-full"></span>
+<span class="text-error font-medium">$20k Safety Buffer Floor</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 bg-error/15 border border-error/40 rounded-sm"></span>
+<span class="text-on-surface-variant">Vulnerability Window</span>
+</div>
+</div>
+</div>
+<!-- Vector Chart Canvas -->
+<div class="relative w-full h-72 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20 p-4 flex flex-col justify-between overflow-hidden">
+<!-- Grid horizontal lines -->
+<div class="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 opacity-20">
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+<div class="border-b border-outline"></div>
+</div>
+<!-- Shaded Vulnerability Window (Day 38 to Day 58) -->
+<div class="absolute top-0 bottom-8 left-[38%] width-[22%] w-[22%] bg-gradient-to-b from-error/10 to-transparent border-x border-dashed border-error/40 pointer-events-none flex items-start justify-center pt-3">
+<span class="text-[10px] font-label-sm text-error bg-surface-container-lowest/90 px-2 py-0.5 rounded border border-error/30 font-semibold tracking-wider">
+            20-DAY VULNERABILITY WINDOW
+          </span>
+</div>
+<!-- Critical Buffer Threshold Line ($20,000 level) -->
+<div class="absolute top-[64%] left-0 right-0 border-b border-dashed border-error z-10 pointer-events-none flex justify-end pr-4">
+<span class="text-[10px] font-label-sm text-error bg-surface-container-lowest/95 px-1.5 py-0.5 rounded -translate-y-3 font-semibold">
+            Safety Buffer Threshold: $20,000.00
+          </span>
+</div>
+<!-- High-Precision SVG Chart Lines -->
+<div class="absolute inset-0 pt-6 pb-8 px-6">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="baselineGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#f4c86d" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#f4c86d" stop-opacity="0.0"></stop>
+</lineargradient>
+<lineargradient id="simulatedGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#9665FF" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#9665FF" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Baseline Area & Line (Gold) -->
+<path d="M 0,160 Q 200,140 380,130 T 600,100 T 800,80 L 1000,50 L 1000,300 L 0,300 Z" fill="url(#baselineGradient)"></path>
+<path d="M 0,160 Q 200,140 380,130 T 600,100 T 800,80 L 1000,50" fill="none" stroke="#f4c86d" stroke-linecap="round" stroke-width="3"></path>
+<!-- Simulated Line (Violet - Dips below buffer at Day 38 to 58) -->
+<path d="M 0,160 Q 200,145 380,160 C 420,230 480,265 520,260 C 560,250 580,160 620,130 T 800,110 L 1000,80" fill="none" stroke="#d0bcff" stroke-dasharray="6,6" stroke-linecap="round" stroke-width="3"></path>
+<!-- Key Indicator Dots -->
+<!-- Baseline Safe Node -->
+<circle cx="480" cy="115" fill="#f4c86d" r="5" stroke="#131319" stroke-width="2"></circle>
+<!-- Simulated Low Node ($14,800 breach) -->
+<circle cx="500" cy="262" fill="#ffb4ab" r="6" stroke="#690005" stroke-width="2"></circle>
+<!-- Recovery Node -->
+<circle cx="620" cy="130" fill="#9665FF" r="5" stroke="#131319" stroke-width="2"></circle>
+</svg>
+</div>
+<!-- Annotation Callout at Dip -->
+<div class="absolute left-[45%] top-[72%] bg-surface-container-high/95 border border-error/50 p-2 rounded-lg backdrop-blur-md shadow-lg pointer-events-none z-20">
+<div class="text-[10px] font-label-sm font-semibold text-error flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+            Breach: $14,800.00 (Day 38)
+          </div>
+<div class="text-[9px] font-body-sm text-on-surface-variant">-$5,200 deficit below buffer</div>
+</div>
+<!-- Chart X-Axis Labels -->
+<div class="flex justify-between items-end text-[11px] font-label-sm text-outline z-10 pt-4 px-2">
+<span>Day 0 (Today)</span>
+<span>Day 15</span>
+<span>Day 30</span>
+<span class="text-error font-medium">Day 45 (Inflow Delay)</span>
+<span class="text-secondary font-medium">Day 60 (Recovery)</span>
+<span>Day 75</span>
+<span>Day 90 (Horizon End)</span>
+</div>
+</div>
+</section>
+<!-- AI SCENARIO INTERPRETATION PANEL & PREEMPTIVE MITIGATIONS -->
+<section class="p-6 rounded-2xl bg-gradient-to-br from-surface-container-low via-surface-container-low to-secondary-container/10 border border-secondary/40 backdrop-blur-2xl shadow-[0_0_40px_-10px_rgba(112,64,219,0.2)]">
+<!-- AI Verdict Header -->
+<div class="flex items-start gap-4 mb-5">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#9665FF] to-[#7040DB] flex items-center justify-center text-white shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">AI Strategic Verdict</h2>
+<span class="px-2 py-0.5 rounded text-[10px] font-label-sm font-semibold bg-secondary-container/40 text-secondary border border-secondary/40">Synthesized 99.4% Confidence</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+            A 20-day delay on Horizon Studio ($8,500) would cause your liquid reserves to breach your $20,000 minimum operating buffer between <strong class="text-error font-medium">Nov 18 and Dec 02</strong>. While your business remains solvent, this squeeze blocks planned Q4 equipment investments.
+          </p>
+</div>
+</div>
+<!-- Recommended Preemptive Mitigations Header -->
+<div class="pt-4 border-t border-outline-variant/20">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="shield">shield</span>
+            Recommended Preemptive Mitigations
+          </span>
+<span class="text-xs font-label-sm text-outline">Select actions to apply simulation overlay</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Mitigation 1 -->
+<div class="p-4 rounded-xl bg-surface-container/70 border border-outline-variant/30 hover:border-secondary/50 transition-all flex flex-col justify-between group">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-secondary-container/40 text-secondary font-label-sm text-xs flex items-center justify-center font-bold">1</span>
+<span class="text-[11px] font-label-sm text-primary font-semibold">+$4,250 Buffer</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Mandate 50% upfront milestone payment on upcoming contracts.
+              </p>
+</div>
+<button class="mt-3 w-full py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-xs font-label-sm text-on-surface group-hover:text-secondary transition-colors flex items-center justify-center gap-1">
+<span>Stage Contract Clause</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Mitigation 2 -->
+<div class="p-4 rounded-xl bg-surface-container/70 border border-outline-variant/30 hover:border-secondary/50 transition-all flex flex-col justify-between group">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-secondary-container/40 text-secondary font-label-sm text-xs flex items-center justify-center font-bold">2</span>
+<span class="text-[11px] font-label-sm text-primary font-semibold">Instant Liquidity</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Shift $3,000 from High-Yield Treasury Vault to Operating checking before Nov 15.
+              </p>
+</div>
+<button class="mt-3 w-full py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-xs font-label-sm text-on-surface group-hover:text-secondary transition-colors flex items-center justify-center gap-1">
+<span>Queue Auto-Transfer</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Mitigation 3 -->
+<div class="p-4 rounded-xl bg-surface-container/70 border border-outline-variant/30 hover:border-secondary/50 transition-all flex flex-col justify-between group">
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-secondary-container/40 text-secondary font-label-sm text-xs flex items-center justify-center font-bold">3</span>
+<span class="text-[11px] font-label-sm text-primary font-semibold">T+0 Clearing</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+                Activate PayPal Escrow fast-clearing feature for Horizon Studio invoice.
+              </p>
+</div>
+<button class="mt-3 w-full py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-xs font-label-sm text-on-surface group-hover:text-secondary transition-colors flex items-center justify-center gap-1">
+<span>Enable Fast-Clear</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- MANDATORY DISCLAIMER FOOTER -->
+<footer class="pt-4 pb-10 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-on-surface-variant">
+<div class="flex items-center gap-2 text-xs font-body-sm text-outline">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="info">info</span>
+<span>Simulations are strictly hypothetical modeling tools. No actual invoices, bank transfers, or subscriptions are modified.</span>
+</div>
+<div class="flex items-center gap-4 text-xs font-label-sm text-outline">
+<span>Model Version: 3.12-MonteCarlo</span>
+<span>Refreshed: Just Now</span>
+</div>
+</footer>
+</main>
+</body></html>

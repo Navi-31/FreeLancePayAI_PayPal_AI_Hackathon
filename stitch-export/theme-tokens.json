@@ -1,0 +1,168 @@
+{
+  "displayName": "FreelancePay AI",
+  "theme": {
+    "colorMode": "DARK",
+    "font": "GEIST",
+    "roundness": "ROUND_EIGHT",
+    "customColor": "#d6ad55",
+    "headlineFont": "GEIST",
+    "bodyFont": "INTER",
+    "labelFont": "GEIST",
+    "namedColors": {
+      "primary_fixed_dim": "#ebc166",
+      "on_secondary": "#3b0092",
+      "on_primary_fixed": "#261a00",
+      "surface_dim": "#131319",
+      "tertiary_fixed": "#ffd8eb",
+      "on_tertiary": "#610048",
+      "on_surface": "#e4e1ea",
+      "error": "#ffb4ab",
+      "tertiary_fixed_dim": "#ffaedb",
+      "on_primary_container": "#594100",
+      "surface_container_high": "#2a2930",
+      "on_error": "#690005",
+      "on_background": "#e4e1ea",
+      "on_primary": "#402d00",
+      "primary_container": "#d6ad55",
+      "tertiary": "#ffbadf",
+      "primary": "#f4c86d",
+      "on_secondary_fixed_variant": "#5417be",
+      "inverse_surface": "#e4e1ea",
+      "surface_container_low": "#1b1b21",
+      "on_tertiary_container": "#850065",
+      "surface_container": "#1f1f25",
+      "outline_variant": "#4e4637",
+      "on_secondary_fixed": "#22005c",
+      "surface_tint": "#ebc166",
+      "surface_container_lowest": "#0e0e14",
+      "inverse_on_surface": "#303036",
+      "secondary_fixed_dim": "#d0bcff",
+      "on_primary_fixed_variant": "#5c4300",
+      "inverse_primary": "#795902",
+      "surface": "#131319",
+      "surface_container_highest": "#35343b",
+      "error_container": "#93000a",
+      "background": "#131319",
+      "tertiary_container": "#ff8dd2",
+      "outline": "#9a8f7e",
+      "surface_bright": "#39383f",
+      "secondary": "#d0bcff",
+      "primary_fixed": "#ffdea0",
+      "secondary_fixed": "#e9ddff",
+      "on_tertiary_fixed_variant": "#880067",
+      "secondary_container": "#561cc1",
+      "on_error_container": "#ffdad6",
+      "surface_variant": "#35343b",
+      "on_surface_variant": "#d1c5b2",
+      "on_tertiary_fixed": "#3c002b",
+      "on_secondary_container": "#c3abff"
+    },
+    "designMd": "---\nname: FreelancePay AI\ncolors:\n  surface: '#131319'\n  surface-dim: '#131319'\n  surface-bright: '#39383f'\n  surface-container-lowest: '#0e0e14'\n  surface-container-low: '#1b1b21'\n  surface-container: '#1f1f25'\n  surface-container-high: '#2a2930'\n  surface-container-highest: '#35343b'\n  on-surface: '#e4e1ea'\n  on-surface-variant: '#d1c5b2'\n  inverse-surface: '#e4e1ea'\n  inverse-on-surface: '#303036'\n  outline: '#9a8f7e'\n  outline-variant: '#4e4637'\n  surface-tint: '#ebc166'\n  primary: '#f4c86d'\n  on-primary: '#402d00'\n  primary-container: '#d6ad55'\n  on-primary-container: '#594100'\n  inverse-primary: '#795902'\n  secondary: '#d0bcff'\n  on-secondary: '#3b0092'\n  secondary-container: '#561cc1'\n  on-secondary-container: '#c3abff'\n  tertiary: '#ffbadf'\n  on-tertiary: '#610048'\n  tertiary-container: '#ff8dd2'\n  on-tertiary-container: '#850065'\n  error: '#ffb4ab'\n  on-error: '#690005'\n  error-container: '#93000a'\n  on-error-container: '#ffdad6'\n  primary-fixed: '#ffdea0'\n  primary-fixed-dim: '#ebc166'\n  on-primary-fixed: '#261a00'\n  on-primary-fixed-variant: '#5c4300'\n  secondary-fixed: '#e9ddff'\n  secondary-fixed-dim: '#d0bcff'\n  on-secondary-fixed: '#22005c'\n  on-secondary-fixed-variant: '#5417be'\n  tertiary-fixed: '#ffd8eb'\n  tertiary-fixed-dim: '#ffaedb'\n  on-tertiary-fixed: '#3c002b'\n  on-tertiary-fixed-variant: '#880067'\n  background: '#131319'\n  on-background: '#e4e1ea'\n  surface-variant: '#35343b'\ntypography:\n  display:\n    fontFamily: Geist\n    fontSize: 3.5rem\n    fontWeight: '600'\n    lineHeight: 4rem\n    letterSpacing: -0.03em\n  display-mobile:\n    fontFamily: Geist\n    fontSize: 2.25rem\n    fontWeight: '600'\n    lineHeight: 2.75rem\n    letterSpacing: -0.025em\n  headline-lg:\n    fontFamily: Geist\n    fontSize: 2.5rem\n    fontWeight: '600'\n    lineHeight: 3rem\n    letterSpacing: -0.025em\n  headline-lg-mobile:\n    fontFamily: Geist\n    fontSize: 1.75rem\n    fontWeight: '600'\n    lineHeight: 2.25rem\n    letterSpacing: -0.02em\n  headline-md:\n    fontFamily: Geist\n    fontSize: 1.75rem\n    fontWeight: '500'\n    lineHeight: 2.25rem\n    letterSpacing: -0.02em\n  headline-sm:\n    fontFamily: Geist\n    fontSize: 1.25rem\n    fontWeight: '500'\n    lineHeight: 1.75rem\n    letterSpacing: -0.015em\n  body-lg:\n    fontFamily: Inter\n    fontSize: 1.125rem\n    fontWeight: '400'\n    lineHeight: 1.75rem\n    letterSpacing: -0.01em\n  body-md:\n    fontFamily: Inter\n    fontSize: 0.9375rem\n    fontWeight: '400'\n    lineHeight: 1.5rem\n    letterSpacing: '0'\n  body-sm:\n    fontFamily: Inter\n    fontSize: 0.8125rem\n    fontWeight: '400'\n    lineHeight: 1.25rem\n    letterSpacing: 0.005em\n  label-md:\n    fontFamily: Geist\n    fontSize: 0.875rem\n    fontWeight: '500'\n    lineHeight: 1.25rem\n    letterSpacing: 0.01em\n  label-sm:\n    fontFamily: Geist\n    fontSize: 0.75rem\n    fontWeight: '600'\n    lineHeight: 1rem\n    letterSpacing: 0.04em\n  numeric-metric:\n    fontFamily: Geist\n    fontSize: 2rem\n    fontWeight: '600'\n    lineHeight: 2.25rem\n    letterSpacing: -0.03em\nrounded:\n  sm: 0.25rem\n  DEFAULT: 0.5rem\n  md: 0.75rem\n  lg: 1rem\n  xl: 1.5rem\n  full: 9999px\nspacing:\n  gutter: 1.5rem\n  gutter-sm: 1rem\n  margin: 2.5rem\n  margin-mobile: 1.25rem\n  space-xs: 0.25rem\n  space-sm: 0.5rem\n  space-md: 1rem\n  space-lg: 1.5rem\n  space-xl: 2.5rem\n---\n\n## Brand & Style\nThe design system embodies the executive precision of an elite private wealth concierge merged with next-generation autonomous AI tooling. It caters to high-earning independent operators, consultants, and creative technologists who demand institutional-grade financial telemetry without bureaucratic friction.\n\nThe aesthetic philosophy balances **Atmospheric Glassmorphism** with **Technical Precision Minimalist luxury**:\n- Deep, obsidian voids provide a canvas of zero visual noise.\n- Metallic champagne and auric gold accents signify liquidity, yield, and high-value transactions.\n- Deep electric violet radiant glows demarcate autonomous algorithmic intelligence, predictive cash-flow calculations, and automated tax actions.\n- Interfaces evoke confidence, exclusivity, calm focus, and total fiscal mastery.\n\n## Colors\nThe palette is rooted in ultra-deep tonal surfaces punctuated by luminescent metallic and spectral accents.\n\n### Tonal Foundations\n- **Base Canvas (Obsidian Void)**: `#08080D` \u2014 Foundational background, absorbing ambient light.\n- **Surface Level 1 (Rich Charcoal)**: `#101016` \u2014 Primary structural surface and modular panels.\n- **Surface Level 2 (Elevated Glass Base)**: `#171720` (at 75\u201385% alpha) \u2014 Elevated card backplates.\n- **Surface Level 3 (Active Glass / Hover)**: `#1E1D29` \u2014 Active, modal, or focused interactive layers.\n\n### Brand Accents & Signals\n- **Primary (Metallic Gold)**: `#D6AD55` \u2014 Currency indicators, finalized payouts, and high-priority CTAs.\n- **Primary Light (Champagne Gold)**: `#F0D48B` \u2014 Highlight states, value readouts, metric metrics, and gradient terminals.\n- **Secondary (Deep Electric Violet)**: `#7040DB` \u2014 Autonomous engine operations, predictive actions, and smart routing.\n- **Secondary Bright (Violet Glow)**: `#9665FF` \u2014 Focus boundaries, AI processing indicators, and interactive telemetry lines.\n- **Tertiary (Subtle Magenta)**: `#D83DA8` \u2014 Tax optimization nodes, invoice velocity markers, and attention vectors.\n- **Warning / Pending (Warm Yellow)**: `#F4CF45` \u2014 Escrow holds, client signature pending, and liquidity cautions.\n\n### Text & Boundaries\n- **Text High Contrast**: `#F7F7FA` (pure readability on deep surfaces).\n- **Text Muted**: `#9E9EA8` (secondary metadata and metric labels).\n- **Glass Borders**: `rgba(240, 212, 139, 0.12)` for auric structures; `rgba(255, 255, 255, 0.08)` for passive divisions.\n\n## Typography\nTypographic rhythm combines **Geist** for crisp, architectural headers and financial tabular data, alongside **Inter** for sustained readability in multi-column transaction feeds, contract text, and assistant conversational streams.\n\n### Formatting Directives\n- **Financial Figures**: All numerical readouts (balances, invoices, tax set-asides) must enforce tabular numerals (`font-feature-settings: \"tnum\" on, \"cv01\" on`).\n- **Letter Spacing**: Display and header levels enforce negative tracking to maintain density and high-end editorial gravitas.\n- **Labels & Overlines**: System badges, transaction tags, and state micro-labels must use `label-sm` rendered in uppercase with positive tracking (+0.04em).\n\n## Layout & Spacing\nThe layout operates on an uncompromising 8pt mathematical cadence within a fluid responsive grid.\n\n### Grid Architecture\n- **Desktop (1440px+)**: 12-column layout with 24px (`1.5rem`) gutters and a max canvas width of 1600px. Persistent analytical utility rail or AI terminal dock.\n- **Tablet (768px \u2013 1439px)**: 8-column layout with 16px (`1rem`) gutters, collateral drawers collapsing into overlays.\n- **Mobile (< 768px)**: 4-column layout with 12px gutters and 20px (`margin-mobile`) horizontal boundary padding.\n\n### Spacing Philosophy\nNegative space is treated as an active luxury material. Generous internal padding prevents density fatigue across dense financial dashboards. Dense data clusters (such as split invoice items) use `space-xs` and `space-sm`, while top-tier layout containers and AI execution summaries separate via `space-xl`.\n\n## Elevation & Depth\nDepth is produced via light transmission and optical refraction, avoiding opaque drop shadows.\n\n### Glassmorphism Stack\n- **Level 1 (Base Panel)**: `#171720` at 80% opacity, layered with `backdrop-filter: blur(16px)` and a continuous edge stroke of `1px solid rgba(255, 255, 255, 0.05)`.\n- **Level 2 (Interactive Floating Glass)**: `#1E1D29` at 85% opacity, `backdrop-filter: blur(24px)`, with top edge highlighted by `1px solid rgba(240, 212, 139, 0.20)` (auric reflection).\n- **Level 3 (Modal / Command Palette)**: `#101016` at 92% opacity, `backdrop-filter: blur(32px)`, bordered by `1px solid rgba(150, 101, 255, 0.25)`.\n\n### Chromatic Light Emissions\n- **Intelligence Field**: Modals driven by the AI copilot generate a soft, omnidirectional radiance: `0 0 40px -10px rgba(112, 64, 219, 0.35)`.\n- **Gold Liquidity Halo**: Focused treasury or revenue cards deploy an ultra-diffuse auric presence: `0 20px 50px -15px rgba(214, 173, 85, 0.12)`.\n\n## Shapes\nThe design system employs a calibrated modern curvature (Level 2), projecting engineered elegance.\n- **Micro Elements**: Checkboxes, toggle tracks, and secondary badges use `0.375rem` to `0.5rem` (`roundedness: 2`).\n- **Inputs & Interactive Controls**: Form fields and buttons standardize on `0.75rem` (`rounded-md`).\n- **Containers & Glass Panels**: Financial summary cards and AI insight blocks utilize `1rem` (`rounded-lg`).\n- **Floating HUDs & Modal Hubs**: Standardized at `1.5rem` (`rounded-xl`).\n- **Continuous Tangency**: All nested shapes preserve internal concentricity, matching outer corner radius minus internal padding.\n\n## Components\n\n### Buttons & Interactive Triggers\n- **Primary (Auric Payout / Action)**: Linear gradient background (`135deg, #F0D48B 0%, #D6AD55 100%`) with deep `#08080D` text in `label-md` weight. Subdued bottom inner shadow (`inset 0 -1px 0 rgba(0,0,0,0.3)`). Hover generates a subtle gold glow (`0 0 20px rgba(240, 212, 139, 0.35)`).\n- **Secondary (AI Synthesized Action)**: Electric violet gradient (`135deg, #9665FF 0%, #7040DB 100%`) with pure white text and atmospheric violet bloom on hover.\n- **Glass / Ghost**: Base of `#171720` at 50% opacity, bordered by `rgba(255, 255, 255, 0.08)`. Text rendered in `#F7F7FA`.\n\n### Glass Cards\n- Built using elevated Level 1 and Level 2 surfaces.\n- Incorporate a 1px linear gradient border (`to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.01)`).\n- Headers include a Lucide icon rendered inside a 36x36px soft pill with a subtle violet or gold surface wash.\n\n### Form Inputs & Telemetry Fields\n- Deep charcoal fill (`#101016`) set inside a 1px border (`rgba(255, 255, 255, 0.08)`).\n- **Focus State**: Border transitions to Champagne Gold (`#F0D48B`) with an ambient outer ring `0 0 0 3px rgba(214, 173, 85, 0.15)`.\n- Numeric inputs automatically surface inline currency indicators (`USD`, `EUR`, `SOL`, `BTC`) locked in muted uppercase `label-sm`.\n\n### Chips & Badges\n- **Settled / Invoiced**: Glass background with `#F0D48B` typography, auric dot status indicator.\n- **AI Automated**: `#7040DB` at 15% opacity with `#9665FF` text, featuring an animated spark/pulse.\n- **Escrow / Pending**: `#F4CF45` at 12% opacity with warm yellow text.\n\n### Selection Controls (Checkboxes & Radios)\n- Base: Unchecked states exhibit a 1px hollow frame in `rgba(255, 255, 255, 0.20)` over `#101016`.\n- Active: Filled with primary gold gradient, displaying an obsidian vector checkmark or nested radio dot.\n\n### Specialized System Elements\n- **Autonomous Stream Feed**: Infinite-scroll micro-ledger detailing automated fractional tax allocations, client view triggers, and auto-conversion rates.\n- **Dynamic Yield Sparkline**: Minimalist SVG vector charts using gradient stroke (`#9665FF` transitioning to `#F0D48B`) set against frictionless transparent baselines.",
+    "colorVariant": "FIDELITY",
+    "overridePrimaryColor": "#d6ad55",
+    "overrideSecondaryColor": "#7040db",
+    "overrideTertiaryColor": "#d83da8",
+    "overrideNeutralColor": "#101016",
+    "spacingScale": 2,
+    "typography": {
+      "display": {
+        "fontFamily": "Geist",
+        "fontSize": "3.5rem",
+        "fontWeight": "600",
+        "lineHeight": "4rem",
+        "letterSpacing": "-0.03em"
+      },
+      "body-sm": {
+        "fontFamily": "Inter",
+        "fontSize": "0.8125rem",
+        "fontWeight": "400",
+        "lineHeight": "1.25rem",
+        "letterSpacing": "0.005em"
+      },
+      "label-md": {
+        "fontFamily": "Geist",
+        "fontSize": "0.875rem",
+        "fontWeight": "500",
+        "lineHeight": "1.25rem",
+        "letterSpacing": "0.01em"
+      },
+      "headline-md": {
+        "fontFamily": "Geist",
+        "fontSize": "1.75rem",
+        "fontWeight": "500",
+        "lineHeight": "2.25rem",
+        "letterSpacing": "-0.02em"
+      },
+      "headline-lg-mobile": {
+        "fontFamily": "Geist",
+        "fontSize": "1.75rem",
+        "fontWeight": "600",
+        "lineHeight": "2.25rem",
+        "letterSpacing": "-0.02em"
+      },
+      "label-sm": {
+        "fontFamily": "Geist",
+        "fontSize": "0.75rem",
+        "fontWeight": "600",
+        "lineHeight": "1rem",
+        "letterSpacing": "0.04em"
+      },
+      "body-md": {
+        "fontFamily": "Inter",
+        "fontSize": "0.9375rem",
+        "fontWeight": "400",
+        "lineHeight": "1.5rem",
+        "letterSpacing": "0"
+      },
+      "headline-sm": {
+        "fontFamily": "Geist",
+        "fontSize": "1.25rem",
+        "fontWeight": "500",
+        "lineHeight": "1.75rem",
+        "letterSpacing": "-0.015em"
+      },
+      "headline-lg": {
+        "fontFamily": "Geist",
+        "fontSize": "2.5rem",
+        "fontWeight": "600",
+        "lineHeight": "3rem",
+        "letterSpacing": "-0.025em"
+      },
+      "display-mobile": {
+        "fontFamily": "Geist",
+        "fontSize": "2.25rem",
+        "fontWeight": "600",
+        "lineHeight": "2.75rem",
+        "letterSpacing": "-0.025em"
+      },
+      "body-lg": {
+        "fontFamily": "Inter",
+        "fontSize": "1.125rem",
+        "fontWeight": "400",
+        "lineHeight": "1.75rem",
+        "letterSpacing": "-0.01em"
+      },
+      "numeric-metric": {
+        "fontFamily": "Geist",
+        "fontSize": "2rem",
+        "fontWeight": "600",
+        "lineHeight": "2.25rem",
+        "letterSpacing": "-0.03em"
+      }
+    },
+    "spacing": {
+      "space-xl": "2.5rem",
+      "margin": "2.5rem",
+      "gutter": "1.5rem",
+      "margin-mobile": "1.25rem",
+      "space-sm": "0.5rem",
+      "space-md": "1rem",
+      "space-xs": "0.25rem",
+      "space-lg": "1.5rem",
+      "gutter-sm": "1rem"
+    },
+    "headlineFontFamily": "Geist",
+    "bodyFontFamily": "Inter",
+    "labelFontFamily": "Geist"
+  }
+}

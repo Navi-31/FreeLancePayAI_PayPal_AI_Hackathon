@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — AI Financial Copilot</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "inverse-on-surface": "#303036",
+            "outline": "#9a8f7e",
+            "on-primary": "#402d00",
+            "on-error": "#690005",
+            "on-surface": "#e4e1ea",
+            "surface-container": "#1f1f25",
+            "on-primary-fixed": "#261a00",
+            "inverse-primary": "#795902",
+            "surface-dim": "#131319",
+            "on-tertiary-container": "#850065",
+            "on-background": "#e4e1ea",
+            "secondary-container": "#561cc1",
+            "primary-container": "#d6ad55",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "secondary": "#d0bcff",
+            "surface-variant": "#35343b",
+            "primary-fixed": "#ffdea0",
+            "error": "#ffb4ab",
+            "surface-container-highest": "#35343b",
+            "outline-variant": "#4e4637",
+            "on-secondary-fixed-variant": "#5417be",
+            "tertiary-container": "#ff8dd2",
+            "surface-container-low": "#1b1b21",
+            "tertiary-fixed": "#ffd8eb",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container-lowest": "#0e0e14",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary": "#f4c86d",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#2a2930",
+            "on-tertiary": "#610048",
+            "on-primary-container": "#594100",
+            "on-surface-variant": "#d1c5b2",
+            "surface": "#131319",
+            "tertiary": "#ffbadf",
+            "primary-fixed-dim": "#ebc166",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed": "#e9ddff",
+            "tertiary-fixed-dim": "#ffaedb",
+            "on-secondary": "#3b0092",
+            "error-container": "#93000a",
+            "background": "#131319",
+            "on-tertiary-fixed": "#3c002b",
+            "surface-bright": "#39383f",
+            "on-tertiary-fixed-variant": "#880067",
+            "surface-tint": "#ebc166"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "space-md": "1rem"
+          },
+          fontFamily: {
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "numeric-metric": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "display": ["Geist"],
+            "display-mobile": ["Geist"],
+            "label-sm": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          fontSize: {
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "body-sm": ["0.8125rem", { lineHeight: "1.25rem", letterSpacing: "0.005em", fontWeight: "400" }],
+            "label-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.01em", fontWeight: "500" }],
+            "body-md": ["0.9375rem", { lineHeight: "1.5rem", letterSpacing: "0", fontWeight: "400" }],
+            "numeric-metric": ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "headline-sm": ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.015em", fontWeight: "500" }],
+            "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "display": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "display-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "label-sm": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(209, 197, 178, 0.15);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(209, 197, 178, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-secondary-container selection:text-secondary">
+<!-- ========================================================================= -->
+<!-- 1. SHARED COMPONENT: SideNavBar (collapsible_rail_sidebar)                 -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm border-r border-outline-variant/30 w-64">
+<!-- Top Branding & Navigation -->
+<div class="flex flex-col gap-5">
+<!-- Brand Monogram Emblem -->
+<div class="flex items-center gap-3 px-3 py-2">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-center relative overflow-hidden shadow-[0_0_15px_rgba(244,200,109,0.15)]">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent pointer-events-none"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70 tracking-wide">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Primary Copilot Trigger CTA -->
+<div class="px-2">
+<button class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-secondary-container to-secondary-container/80 text-on-surface hover:brightness-110 border border-secondary/30 shadow-[0_0_20px_rgba(112,64,219,0.35)] transition-all duration-150 active:scale-[0.98] group">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-md text-label-md font-medium text-white">Trigger Copilot</span>
+</div>
+<span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-container-lowest/60 text-secondary border border-secondary/30">⌘K</span>
+</button>
+</div>
+<!-- Navigation Tabs: Overview, Payments, Intelligence (ACTIVE), Treasury, Tools, System -->
+<nav class="flex flex-col gap-1 px-1 mt-1">
+<!-- Overview (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-outline">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- Payments (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-outline">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- Intelligence (ACTIVE MATCH per instructions) -->
+<div class="flex flex-col">
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary transition-all duration-150 active:scale-[0.98]" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md text-primary font-medium">Intelligence</span>
+</div>
+<span class="material-symbols-outlined text-xs text-primary/80">expand_more</span>
+</a>
+<!-- Sub-level items reflecting deep routing context -->
+<div class="ml-4 pl-4 border-l border-outline-variant/30 mt-1 flex flex-col gap-1 py-1">
+<a class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-secondary font-medium bg-secondary-container/20 border border-secondary/20" href="#">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary shadow-[0_0_6px_#9665FF]"></span>
+<span class="font-label-sm text-label-sm text-secondary">AI Copilot</span>
+</a>
+<a class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container/40 transition-colors" href="#">
+<span class="w-1.5 h-1.5 rounded-full bg-outline/40"></span>
+<span class="font-label-sm text-label-sm">Predictive Cashflow</span>
+</a>
+<a class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container/40 transition-colors" href="#">
+<span class="w-1.5 h-1.5 rounded-full bg-outline/40"></span>
+<span class="font-label-sm text-label-sm">Risk Matrix</span>
+</a>
+</div>
+</div>
+<!-- Treasury (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-outline">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- Tools (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-outline">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- System (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-outline">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+</nav>
+</div>
+<!-- Footer Tab Elements: Security Vault, Telemetry Logs -->
+<div class="flex flex-col gap-1 border-t border-outline-variant/30 pt-3 px-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant/80 hover:text-on-surface hover:bg-surface-container/60 transition-colors text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-outline text-base">shield_lock</span>
+<span>Security Vault</span>
+<span class="ml-auto text-[10px] text-primary/80 font-mono">256b</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant/80 hover:text-on-surface hover:bg-surface-container/60 transition-colors text-label-sm font-label-sm" href="#">
+<span class="material-symbols-outlined text-outline text-base">terminal</span>
+<span>Telemetry Logs</span>
+<span class="ml-auto w-2 h-2 rounded-full bg-emerald-400/80 shadow-[0_0_6px_#34d399]"></span>
+</a>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- 2. SHARED COMPONENT: TopNavBar (desktop_utility_header)                    -->
+<!-- ========================================================================= -->
+<header class="docked full-width top-0 sticky z-30 backdrop-blur-2xl bg-surface/80 border-b border-outline-variant/30">
+<div class="flex items-center justify-between px-space-lg py-space-sm w-full pl-72">
+<!-- Left Search Bar -->
+<div class="flex items-center gap-6">
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+<input class="w-full bg-surface-container-lowest/80 border border-outline-variant/30 rounded-lg pl-9 pr-8 py-1.5 text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all" placeholder="Search telemetry, vaults, entities..." type="text"/>
+<span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-outline font-mono border border-outline-variant/40 rounded px-1">/</span>
+</div>
+<!-- Desktop Navigation Links: Treasury Stream, Yield Radar, Tax Shield, Contracts -->
+<nav class="hidden xl:flex items-center gap-6 text-label-md font-label-md">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Yield Radar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contracts</a>
+</nav>
+</div>
+<!-- Right Utility Controls -->
+<div class="flex items-center gap-3">
+<!-- Trailing Secondary: USD / EUR Switch -->
+<div class="flex items-center p-0.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-high text-primary font-medium">USD</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors">EUR</button>
+</div>
+<!-- Trailing Icons: notifications, bolt, help -->
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Quick AI Actions">
+<span class="material-symbols-outlined text-xl text-secondary">bolt</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Documentation">
+<span class="material-symbols-outlined text-xl">help</span>
+</button>
+</div>
+<!-- Trailing Primary Action: Execute Payout -->
+<button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed font-label-md text-label-md font-semibold hover:brightness-105 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(244,200,109,0.2)]">
+<span class="material-symbols-outlined text-base font-semibold">arrow_outward</span>
+<span>Execute Payout</span>
+</button>
+<div class="h-5 w-[1px] bg-outline-variant/30 mx-1"></div>
+<!-- User Profile Avatar with Gold Status Ring -->
+<div class="flex items-center gap-2 pl-1 cursor-pointer group">
+<div class="w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-primary via-primary-container to-secondary">
+<img class="w-full h-full rounded-full object-cover" data-alt="Sophisticated executive portrait of a senior financial architect in minimalist dark obsidian turtleneck, soft golden studio rim light reflecting subtly on confident expression with deep charcoal gradient background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsLkjrRzd6HbaSgTCnodwZG8Seb88blUH0QA9PvKAtFOO1ueE7QIrJCXM3C4kHV-86-Ai4iQn5Az8XZicA6i1tQfH5Ajz32yIJAOwTweS0ozibcHLc1o_ph3Hd34mnyhCfk3MKbkluslHfuF8ivntBVt6YoWrCiXVh4e2PetNSsbn9UTDLPGNkKCktyhAcegBRW-DwpnPNywChfAgAhBAkLYf6q28sBlklkhr3hA9i"/>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-colors text-base">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- 3. MAIN WORKSPACE CANVAS (Three-column layout, ml-64 responsive anchor)   -->
+<!-- ========================================================================= -->
+<main class="ml-64 min-h-[calc(100vh-65px)] bg-surface-dim/40 flex flex-col">
+<!-- Sub-Header: Title, Chips & Live Sync Status -->
+<div class="px-8 py-5 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-lowest/60 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="font-headline-md text-headline-md font-semibold text-on-surface tracking-tight">AI Financial Copilot</h1>
+<!-- Sparkling AI Chip Indicator -->
+<div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-container/20 border border-secondary/40 shadow-[0_0_12px_rgba(150,101,255,0.25)]">
+<span class="material-symbols-outlined text-secondary text-sm animate-pulse" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-sm text-label-sm font-medium text-secondary">Copilot v4.2 Neural Active</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 mt-0.5">Your freelance business, understood.</p>
+</div>
+</div>
+<!-- Top Indicators: PayPal Vault, Sync, Session Controls -->
+<div class="flex items-center gap-3">
+<!-- PayPal Business Connection Vault Badge -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-primary text-base">lock</span>
+<span class="text-on-surface-variant">Connected:</span>
+<span class="text-on-surface font-medium flex items-center gap-1">
+            PayPal Business <span class="text-emerald-400 font-mono text-[10px]">(Vault Secured)</span>
+</span>
+</div>
+<!-- Sync Indicator -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-label-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse"></span>
+<span class="text-on-surface-variant">Sync:</span>
+<span class="text-primary font-medium">100% Real-time</span>
+</div>
+<!-- Session History Button -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/30 text-on-surface font-label-md text-label-md hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-base text-outline">history</span>
+<span>Session History</span>
+</button>
+<!-- New Conversation Quick Action -->
+<button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-secondary-container/40 border border-secondary/40 text-secondary hover:bg-secondary-container/60 transition-all font-label-md text-label-md">
+<span class="material-symbols-outlined text-base">add</span>
+<span>New Conversation</span>
+</button>
+</div>
+</div>
+<!-- 3-COLUMN HIGH DENSITY GRID -->
+<div class="flex-1 grid grid-cols-12 overflow-hidden h-[calc(100vh-140px)]">
+<!-- ===================================================================== -->
+<!-- COLUMN 1: LEFT CONVERSATION & MEMORY VAULT (w-64 ~ Col span 2.5/3)    -->
+<!-- ===================================================================== -->
+<section class="col-span-12 lg:col-span-3 xl:col-span-2 border-r border-outline-variant/30 bg-surface-container-lowest/40 p-4 flex flex-col justify-between overflow-y-auto custom-scrollbar">
+<div class="flex flex-col gap-5">
+<!-- New Conversation Button with Violet Glow -->
+<button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-secondary-container to-secondary-container/90 text-white font-label-md text-label-md font-medium border border-secondary/50 shadow-[0_0_22px_rgba(150,101,255,0.35)] hover:shadow-[0_0_30px_rgba(150,101,255,0.5)] hover:brightness-110 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-lg">add_comment</span>
+<span>New Conversation</span>
+</button>
+<!-- Section: Recent Conversations -->
+<div>
+<div class="flex items-center justify-between px-2 mb-2">
+<span class="font-label-sm text-label-sm text-outline tracking-wider uppercase font-semibold">Recent Conversations</span>
+<span class="material-symbols-outlined text-outline text-sm">schedule</span>
+</div>
+<div class="flex flex-col gap-1">
+<!-- Item 1: Active/Recent (Today) -->
+<a class="group flex items-start gap-2.5 p-2.5 rounded-lg bg-surface-container-high/90 border border-secondary/30 transition-all text-left" href="#">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface font-medium truncate">Overdue Collections Audit</span>
+<span class="font-label-sm text-label-sm text-secondary/80 flex items-center gap-1 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Today, Active
+                  </span>
+</div>
+</a>
+<!-- Item 2: Q4 Tax Reserve Strategy -->
+<a class="group flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-surface-container/60 transition-colors text-left border border-transparent hover:border-outline-variant/20" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface text-base mt-0.5">forum</span>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface truncate">Q4 Tax Reserve Strategy</span>
+<span class="font-label-sm text-label-sm text-outline mt-0.5">Yesterday</span>
+</div>
+</a>
+<!-- Item 3: Client Delay Risk: Acme Corp -->
+<a class="group flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-surface-container/60 transition-colors text-left border border-transparent hover:border-outline-variant/20" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface text-base mt-0.5">warning</span>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface truncate">Client Delay Risk: Acme Corp</span>
+<span class="font-label-sm text-label-sm text-outline mt-0.5">3 days ago</span>
+</div>
+</a>
+<!-- Item 4: Affordability Test: MacBook Pro M3 -->
+<a class="group flex items-start gap-2.5 p-2.5 rounded-lg hover:bg-surface-container/60 transition-colors text-left border border-transparent hover:border-outline-variant/20" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface text-base mt-0.5">shopping_cart</span>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface truncate">Affordability Test: MacBook Pro M3</span>
+<span class="font-label-sm text-label-sm text-outline mt-0.5">Nov 2</span>
+</div>
+</a>
+</div>
+</div>
+<!-- Section: Saved Financial Insights -->
+<div>
+<div class="flex items-center justify-between px-2 mb-2">
+<span class="font-label-sm text-label-sm text-outline tracking-wider uppercase font-semibold">Saved Financial Insights</span>
+<span class="material-symbols-outlined text-outline text-sm">bookmark</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Insight 1: Acme Corp 14d Net Lag -->
+<div class="p-3 rounded-lg bg-surface-container-low border border-primary/20 flex flex-col gap-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-primary">Acme Corp 14d Net Lag</span>
+<span class="material-symbols-outlined text-primary text-xs">trending_down</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 text-[11px] leading-relaxed">
+                  Accounts payable systematically defers payouts until firm reminder wave.
+                </p>
+</div>
+<!-- Insight 2: Recurring SaaS Bloat -->
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 flex flex-col gap-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-error">Recurring SaaS Bloat</span>
+<span class="font-mono text-[11px] text-error font-medium">-$420/yr</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80 text-[11px] leading-relaxed">
+                  3 unallocated testing subscriptions flagged for immediate cull.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Telemetry Memory Health -->
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-[11px] font-mono text-outline">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Context Buffer
+          </span>
+<span>94.2k / 128k</span>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- COLUMN 2: CENTER CONVERSATION THREAD & INTERACTIVE CARDS (Flex-1)     -->
+<!-- ===================================================================== -->
+<section class="col-span-12 lg:col-span-6 xl:col-span-7 flex flex-col justify-between overflow-y-auto custom-scrollbar bg-surface/50 relative">
+<!-- Conversation Scroll Canvas -->
+<div class="p-6 md:p-8 flex flex-col gap-6 max-w-4xl mx-auto w-full">
+<!-- User Prompt Message -->
+<div class="flex items-start justify-end gap-3">
+<div class="flex flex-col items-end max-w-xl">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-sm text-label-sm text-outline">You</span>
+<span class="font-mono text-[10px] text-outline">10:42 AM</span>
+</div>
+<div class="px-5 py-3.5 rounded-2xl rounded-tr-xs bg-surface-container-high border border-outline-variant/40 text-on-surface font-body-md text-body-md shadow-md">
+                "Who owes me money right now, and which client is the riskiest to my cashflow?"
+              </div>
+</div>
+<div class="w-8 h-8 rounded-full p-[1px] bg-primary/40 shrink-0 mt-6">
+<img class="w-full h-full rounded-full object-cover" data-alt="Close up minimal luxury executive avatar portrait with auric gold subtle lighting against obsidian backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnWNFRzuIMlqKi79zZEGUeSSR4nadWWLkwXbvGKANA7Aq5L-f6Qmisp3UZtaPubqV6NAZfqoulXvfzfW77ntGWzG4HTVlZ-0-ezqXvWcPA2jc2Pbn9eJ7FtjFOBv7sYsR4_On3ROsFz5Tv5Shy-n6bgvG05DznZXtaetb36u9MFJjr1ks7FwsF4POr9daHw5VttAJGKoZRsIPf97bzImMGg_Dg_I7ZQs8OU5MXc5SD"/>
+</div>
+</div>
+<!-- AI Response Cluster -->
+<div class="flex items-start gap-3.5">
+<!-- AI Avatar Badge with Electric Violet Aura -->
+<div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-secondary-container via-surface-container-high to-surface-container-lowest border border-secondary/50 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(150,101,255,0.35)] mt-1">
+<span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex flex-col gap-4 flex-1">
+<!-- AI Meta Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md font-semibold text-white">FreelancePay Neural Copilot</span>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-secondary-container/20 text-secondary border border-secondary/30">Verified Audit</span>
+</div>
+<span class="font-mono text-[11px] text-outline">Synthesized in 420ms</span>
+</div>
+<!-- Main Text Explanation -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/30 text-on-surface font-body-md text-body-md leading-relaxed backdrop-blur-md">
+                You currently have <strong class="text-primary font-semibold">$14,200</strong> in outstanding invoices across <span class="text-white font-medium">5 clients</span>. <span class="text-primary-fixed underline decoration-primary/40 underline-offset-4 font-semibold">Acme Corp</span> represents your highest single risk vector (<strong class="text-error font-medium">$1,500 overdue by 14 days</strong>) with an AP hold pattern.
+              </div>
+<!-- ============================================================= -->
+<!-- STRUCTURED FINANCIAL CARD IN CHAT                             -->
+<!-- ============================================================= -->
+<div class="rounded-xl border border-outline-variant/30 bg-surface-container-low/90 backdrop-blur-xl p-5 shadow-[0_8px_30px_rgba(0,0,0,0.5)] flex flex-col gap-5">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">pie_chart</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Outstanding Receivables Matrix</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Real-time ledger audit</span>
+</div>
+<!-- 4 Micro Metrics -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<!-- Metric 1: Total Outstanding -->
+<div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant/80">Total Outstanding</span>
+<span class="font-numeric-metric text-xl font-bold text-on-surface mt-1">$14,200</span>
+<span class="font-label-sm text-[11px] text-outline mt-0.5">5 Pending Invoices</span>
+</div>
+<!-- Metric 2: Overdue Amount -->
+<div class="p-3 rounded-lg bg-surface-container-lowest border border-error/20 flex flex-col relative overflow-hidden">
+<div class="absolute right-0 top-0 w-12 h-12 bg-error/5 rounded-full blur-xl pointer-events-none"></div>
+<span class="font-label-sm text-label-sm text-error/90 font-medium">Overdue Amount</span>
+<span class="font-numeric-metric text-xl font-bold text-error mt-1">$3,500</span>
+<span class="font-label-sm text-[11px] text-error/70 mt-0.5">2 Critical Holds</span>
+</div>
+<!-- Metric 3: Highest Outstanding -->
+<div class="p-3 rounded-lg bg-surface-container-lowest border border-primary/20 flex flex-col">
+<span class="font-label-sm text-label-sm text-primary/90 font-medium">Highest Outstanding</span>
+<span class="font-numeric-metric text-xl font-bold text-primary mt-1">Acme Corp</span>
+<span class="font-label-sm text-[11px] text-primary/80 mt-0.5">$1,500 at 14d lag</span>
+</div>
+<!-- Metric 4: Avg Collection Time -->
+<div class="p-3 rounded-lg bg-surface-container-lowest border border-outline-variant/20 flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant/80">Avg Collection</span>
+<span class="font-numeric-metric text-xl font-bold text-secondary mt-1">11.4 Days</span>
+<span class="font-label-sm text-[11px] text-emerald-400 mt-0.5">↓ 1.8d vs peer baseline</span>
+</div>
+</div>
+<!-- Mini Data Table of Top Outstanding Invoices -->
+<div class="overflow-x-auto rounded-lg border border-outline-variant/20 bg-surface-container-lowest">
+<table class="w-full text-left border-collapse text-body-sm font-body-sm">
+<thead>
+<tr class="border-b border-outline-variant/20 text-outline text-[11px] font-label-sm uppercase tracking-wider bg-surface-container/40">
+<th class="py-2.5 px-3 font-semibold">Client</th>
+<th class="py-2.5 px-3 font-semibold">Invoice #</th>
+<th class="py-2.5 px-3 font-semibold text-right">Amount</th>
+<th class="py-2.5 px-3 font-semibold">Status / Due</th>
+<th class="py-2.5 px-3 font-semibold text-right">Risk Score</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-on-surface">
+<!-- Row 1: Acme Corp -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 font-medium flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span>Acme Corp</span>
+</td>
+<td class="py-3 px-3 font-mono text-outline">#FP-8848</td>
+<td class="py-3 px-3 font-mono font-medium text-right text-primary">$1,500.00</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-error/10 text-error border border-error/20">
+                            14d Overdue
+                          </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-semibold text-error text-xs">
+<span class="material-symbols-outlined text-xs">priority_high</span> High
+                          </span>
+</td>
+</tr>
+<!-- Row 2: Horizon Studio -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 font-medium flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span>Horizon Studio</span>
+</td>
+<td class="py-3 px-3 font-mono text-outline">#FP-8849</td>
+<td class="py-3 px-3 font-mono font-medium text-right text-on-surface">$8,500.00</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container text-on-surface-variant border border-outline-variant/30">
+                            Due in 3d
+                          </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-medium text-emerald-400 text-xs">
+<span class="material-symbols-outlined text-xs">check_circle</span> Low
+                          </span>
+</td>
+</tr>
+<!-- Row 3: Lumina Labs -->
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3 px-3 font-medium flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+<span>Lumina Labs</span>
+</td>
+<td class="py-3 px-3 font-mono text-outline">#FP-8846</td>
+<td class="py-3 px-3 font-mono font-medium text-right text-on-surface">$4,800.00</td>
+<td class="py-3 px-3">
+<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container text-on-surface-variant border border-outline-variant/30">
+                            Due in 12d
+                          </span>
+</td>
+<td class="py-3 px-3 text-right">
+<span class="inline-flex items-center gap-1 font-medium text-amber-400 text-xs">
+<span class="material-symbols-outlined text-xs">remove</span> Moderate
+                          </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- ============================================================= -->
+<!-- AI ACTION PROPOSAL CARD (Approval-First UX Pattern)           -->
+<!-- ============================================================= -->
+<div class="rounded-xl border border-secondary/40 bg-gradient-to-b from-surface-container-high/90 to-surface-container-lowest p-5 shadow-[0_0_35px_rgba(112,64,219,0.25)] flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="p-1 rounded-md bg-secondary-container text-secondary">
+<span class="material-symbols-outlined text-base">send_and_archive</span>
+</div>
+<span class="font-label-md text-label-md font-semibold text-white">Recommended Algorithmic Action</span>
+</div>
+<span class="text-xs font-mono text-secondary px-2 py-0.5 rounded-full bg-secondary-container/20 border border-secondary/30">Tier-2 Firm Protocol</span>
+</div>
+<div class="flex flex-col gap-2">
+<p class="font-body-md text-body-md text-on-surface font-medium">
+                    Proposed Action: <span class="text-white">Dispatch Tier-2 Firm Notice via PayPal Verified Relay to Acme Corp (Sarah Jenkins).</span>
+</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-1">
+<div class="p-2.5 rounded-lg bg-surface-container-lowest/70 border border-outline-variant/20 flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-secondary">psychology</span> Telemetry Reason
+                      </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                        AP viewing detected 4 times; historical payment follows firm notice within 48h.
+                      </span>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-lowest/70 border border-primary/20 flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_up</span> Expected Impact
+                      </span>
+<span class="font-body-sm text-body-sm text-on-surface">
+<strong class="text-primary">+$1,500</strong> recovered before Nov 15 payroll obligations.
+                      </span>
+</div>
+</div>
+</div>
+<!-- Interactive Buttons: Review Draft, Approve & Dispatch, Decline -->
+<div class="flex flex-wrap items-center gap-2.5 pt-2 border-t border-outline-variant/20">
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary-fixed font-label-md text-label-md font-semibold hover:brightness-105 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(244,200,109,0.25)]">
+<span class="material-symbols-outlined text-base">verified_user</span>
+<span>Approve &amp; Dispatch (Requires Signature)</span>
+</button>
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-bright border border-outline-variant/30 font-label-md text-label-md transition-colors">
+<span class="material-symbols-outlined text-base text-outline">description</span>
+<span>Review Draft</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg text-outline hover:text-error hover:bg-surface-container/60 transition-colors font-label-md text-label-md">
+                    Decline
+                  </button>
+</div>
+<!-- Governance Compliance Footnote -->
+<div class="flex items-center gap-2 text-[11px] text-outline font-label-sm bg-surface-container-lowest/40 px-3 py-1.5 rounded-md border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm text-outline">gavel</span>
+<span>AI cannot execute financial or communication actions without explicit freelancer authorization.</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Suggested Prompt Pills -->
+<div class="flex flex-col gap-2 pt-2">
+<span class="text-outline text-label-sm font-label-sm tracking-wide">Suggested Inquiries</span>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:border-secondary/50 hover:bg-surface-container transition-all text-label-sm font-label-sm flex items-center gap-1.5 group">
+<span class="material-symbols-outlined text-xs text-secondary group-hover:rotate-45 transition-transform">north_east</span>
+<span>Can I afford a $1,200 laptop?</span>
+</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:border-secondary/50 hover:bg-surface-container transition-all text-label-sm font-label-sm flex items-center gap-1.5 group">
+<span class="material-symbols-outlined text-xs text-secondary group-hover:rotate-45 transition-transform">north_east</span>
+<span>What did I earn this quarter?</span>
+</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:border-secondary/50 hover:bg-surface-container transition-all text-label-sm font-label-sm flex items-center gap-1.5 group">
+<span class="material-symbols-outlined text-xs text-secondary group-hover:rotate-45 transition-transform">north_east</span>
+<span>How can I improve my profitability?</span>
+</button>
+<button class="px-3 py-1.5 rounded-full bg-surface-container-low border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:border-secondary/50 hover:bg-surface-container transition-all text-label-sm font-label-sm flex items-center gap-1.5 group">
+<span class="material-symbols-outlined text-xs text-secondary group-hover:rotate-45 transition-transform">north_east</span>
+<span>Which invoices should I follow up on today?</span>
+</button>
+</div>
+</div>
+</div>
+<!-- =================================================================== -->
+<!-- BOTTOM COMPOSER DOCK                                                -->
+<!-- =================================================================== -->
+<div class="sticky bottom-0 p-4 md:px-8 md:pb-6 bg-gradient-to-t from-surface via-surface/95 to-transparent backdrop-blur-md">
+<div class="max-w-4xl mx-auto rounded-2xl bg-surface-container-lowest/90 border border-outline-variant/40 p-2 shadow-[0_-5px_25px_rgba(0,0,0,0.6)] flex flex-col gap-2">
+<!-- Main Input Field -->
+<div class="flex items-center gap-2 px-3 pt-1">
+<input class="w-full bg-transparent border-none text-on-surface placeholder:text-outline font-body-md text-body-md focus:ring-0 focus:outline-none py-2" placeholder="Ask Copilot about cashflow, unpaid invoices, tax reserves, or scenario analysis..." type="text"/>
+</div>
+<!-- Composer Toolbars & Model Badge -->
+<div class="flex items-center justify-between px-2 pt-1 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<!-- Attach Contract/Receipt -->
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container text-label-sm font-label-sm transition-colors">
+<span class="material-symbols-outlined text-base">attach_file</span>
+<span>Attach Contract/Receipt</span>
+</button>
+<!-- Prompt Library -->
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container text-label-sm font-label-sm transition-colors">
+<span class="material-symbols-outlined text-base">auto_stories</span>
+<span>Prompt Library</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<!-- Neural Model Badge -->
+<div class="hidden sm:flex items-center gap-1 text-[11px] font-mono text-outline">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Claude 3.5 Sonnet / Neural Financial Finetune</span>
+</div>
+<!-- Send Button with Violet Arrow -->
+<button class="w-9 h-9 rounded-xl bg-gradient-to-r from-secondary-container to-secondary flex items-center justify-center text-white hover:brightness-110 shadow-[0_0_15px_rgba(150,101,255,0.4)] active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- COLUMN 3: RIGHT CONTEXTUAL INTELLIGENCE SNAPSHOT (w-80 ~ Span 3)      -->
+<!-- ===================================================================== -->
+<section class="col-span-12 lg:col-span-3 xl:col-span-3 border-l border-outline-variant/30 bg-surface-container-lowest/50 p-5 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
+<!-- Snapshot Header -->
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">analytics</span>
+<span class="font-headline-sm text-sm font-semibold tracking-tight text-on-surface">Intelligence Snapshot</span>
+</div>
+<span class="material-symbols-outlined text-outline text-base">tune</span>
+</div>
+<!-- Metric 1: Current Available Liquidity (Auric Gold Highlight) -->
+<div class="p-4 rounded-xl bg-gradient-to-b from-surface-container-high/90 to-surface-container-lowest border border-primary/40 relative overflow-hidden shadow-[0_10px_30px_-10px_rgba(214,173,85,0.15)]">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-medium tracking-wide">Available Liquidity</span>
+<span class="material-symbols-outlined text-primary text-base" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+</div>
+<div class="mt-2">
+<span class="font-numeric-metric text-2xl font-bold text-primary tracking-tight">$42,880.50</span>
+</div>
+<div class="flex items-center justify-between mt-2 pt-2 border-t border-primary/10 text-[11px] font-mono text-outline">
+<span>PayPal Vault: $34,120</span>
+<span class="text-emerald-400">+4.8% APY High-Yield</span>
+</div>
+</div>
+<!-- Metric Cards Grid: Outstanding Invoices & Projected Burn -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Outstanding Invoices -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">Outstanding</span>
+<span class="font-numeric-metric text-lg font-bold text-on-surface mt-1">$14,200.00</span>
+<span class="text-[10px] text-error font-medium mt-0.5">5 Invoices Open</span>
+</div>
+<!-- 30-Day Projected Burn -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col">
+<span class="font-label-sm text-label-sm text-outline">30d Est. Burn</span>
+<span class="font-numeric-metric text-lg font-bold text-on-surface mt-1">$6,420.00</span>
+<span class="text-[10px] text-outline font-medium mt-0.5">OpEx + Estimated Tax</span>
+</div>
+</div>
+<!-- Runway Progress Gauge -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Financial Runway</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-mono bg-emerald-400/10 text-emerald-400 border border-emerald-400/20 font-semibold">Secure</span>
+</div>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="font-numeric-metric text-2xl font-bold text-white">8.4</span>
+<span class="font-body-sm text-body-sm text-outline">Months of zero revenue</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden mt-1">
+<div class="bg-gradient-to-r from-secondary to-primary h-full rounded-full" style="width: 70%"></div>
+</div>
+<span class="text-[11px] text-outline mt-0.5 font-label-sm">Calculated at current $6.4k/mo fixed operating baseline</span>
+</div>
+<!-- Active Cashflow Alert Banner (Amber/Violet Glow) -->
+<div class="p-4 rounded-xl bg-gradient-to-r from-secondary-container/20 to-amber-950/20 border border-amber-500/30 flex flex-col gap-2.5 relative shadow-[0_0_20px_rgba(244,200,109,0.08)]">
+<div class="flex items-center gap-2 text-amber-400">
+<span class="material-symbols-outlined text-base">notification_important</span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wider uppercase">Active Cashflow Alert</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface leading-relaxed text-xs">
+            Overdue alert: <strong class="text-amber-300">Acme Corp $1,500</strong> delaying Q4 tax vault sync.
+          </p>
+</div>
+<!-- Recommended Quick Action CTA Card -->
+<div class="p-4 rounded-xl bg-surface-container-high/80 border border-secondary/30 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-medium">Recommended Routine</span>
+<span class="material-symbols-outlined text-secondary text-sm">electric_bolt</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-xs">
+            Activate autonomous multi-channel liquidity safeguard to protect tax reserves.
+          </p>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md font-semibold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_0_15px_rgba(150,101,255,0.3)]">
+<span class="material-symbols-outlined text-base">emergency_home</span>
+<span>Run Cashflow Rescue Mode</span>
+</button>
+</div>
+<!-- Micro Sparkline Telemetry Card -->
+<div class="mt-auto pt-3 border-t border-outline-variant/20 flex flex-col gap-2">
+<div class="flex items-center justify-between text-[11px] font-mono text-outline">
+<span>Treasury Velocity</span>
+<span class="text-primary">+12.4% MoM</span>
+</div>
+<!-- Minimalist Vector Sparkline -->
+<div class="h-9 w-full flex items-end gap-1 pt-1">
+<div class="flex-1 bg-surface-container-high rounded-t h-[40%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t h-[60%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t h-[50%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t h-[75%]"></div>
+<div class="flex-1 bg-surface-container-high rounded-t h-[65%]"></div>
+<div class="flex-1 bg-secondary/60 rounded-t h-[85%]"></div>
+<div class="flex-1 bg-primary rounded-t h-[95%]"></div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

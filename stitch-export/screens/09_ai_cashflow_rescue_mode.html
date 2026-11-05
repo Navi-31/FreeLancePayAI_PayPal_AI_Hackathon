@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — AI Cashflow Rescue Mode</title>
+<!-- Material Symbols Outlined font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Geist and Inter Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#303036",
+            "outline": "#9a8f7e",
+            "on-primary": "#402d00",
+            "on-error": "#690005",
+            "on-surface": "#e4e1ea",
+            "surface-container": "#1f1f25",
+            "on-primary-fixed": "#261a00",
+            "inverse-primary": "#795902",
+            "surface-dim": "#131319",
+            "on-tertiary-container": "#850065",
+            "on-background": "#e4e1ea",
+            "secondary-container": "#561cc1",
+            "primary-container": "#d6ad55",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "secondary": "#d0bcff",
+            "surface-variant": "#35343b",
+            "primary-fixed": "#ffdea0",
+            "error": "#ffb4ab",
+            "surface-container-highest": "#35343b",
+            "outline-variant": "#4e4637",
+            "on-secondary-fixed-variant": "#5417be",
+            "tertiary-container": "#ff8dd2",
+            "surface-container-low": "#1b1b21",
+            "tertiary-fixed": "#ffd8eb",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container-lowest": "#0e0e14",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary": "#f4c86d",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#2a2930",
+            "on-tertiary": "#610048",
+            "on-primary-container": "#594100",
+            "on-surface-variant": "#d1c5b2",
+            "surface": "#131319",
+            "tertiary": "#ffbadf",
+            "primary-fixed-dim": "#ebc166",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed": "#e9ddff",
+            "tertiary-fixed-dim": "#ffaedb",
+            "on-secondary": "#3b0092",
+            "error-container": "#93000a",
+            "background": "#131319",
+            "on-tertiary-fixed": "#3c002b",
+            "surface-bright": "#39383f",
+            "on-tertiary-fixed-variant": "#880067",
+            "surface-tint": "#ebc166"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "numeric-metric": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "display": ["Geist"],
+            "display-mobile": ["Geist"],
+            "label-sm": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "body-sm": ["0.8125rem", { lineHeight: "1.25rem", letterSpacing: "0.005em", fontWeight: "400" }],
+            "label-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.01em", fontWeight: "500" }],
+            "body-md": ["0.9375rem", { lineHeight: "1.5rem", letterSpacing: "0", fontWeight: "400" }],
+            "numeric-metric": ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "headline-sm": ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.015em", fontWeight: "500" }],
+            "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "display": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "display-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "label-sm": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "500" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Ambient Glow & Refraction styles based on guidance */
+    .auric-border {
+      border: 1px solid rgba(240, 212, 139, 0.22);
+    }
+    .auric-glow {
+      box-shadow: 0 0 35px -8px rgba(244, 200, 109, 0.22);
+    }
+    .violet-glow {
+      box-shadow: 0 0 35px -8px rgba(150, 101, 255, 0.25);
+    }
+    .red-pulse-glow {
+      box-shadow: 0 0 30px -5px rgba(255, 100, 100, 0.3);
+    }
+    .auric-gradient-btn {
+      background: linear-gradient(135deg, #F0D48B 0%, #D6AD55 100%);
+    }
+    .violet-gradient-btn {
+      background: linear-gradient(135deg, #9665FF 0%, #7040DB 100%);
+    }
+  </style>
+</head>
+<body class="bg-[#08080D] text-on-surface antialiased min-h-screen overflow-x-hidden selection:bg-primary selection:text-on-primary">
+<!-- ========================================================================= -->
+<!-- SIDEBAR NAVIGATION (Anchored from Shared Components JSON)                -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm border-r border-outline-variant/30 w-64">
+<!-- Logo Header -->
+<div class="px-space-sm pt-space-sm pb-space-md border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-primary/10 transition-opacity"></div>
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70 tracking-wider">Autonomous Wealth Engine</span>
+</div>
+</div>
+</div>
+<!-- Navigation Tabs Cluster -->
+<nav class="flex-1 py-space-md space-y-1 overflow-y-auto">
+<!-- Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- Payments -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- Intelligence (Active Context: Intelligence -> Rescue Mode) -->
+<div class="space-y-1">
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary transition-all duration-150 active:scale-[0.98]" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md">Intelligence</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+</a>
+<!-- Nested sub-tab: Rescue Mode highlight -->
+<div class="pl-8 pr-2 py-1 space-y-1">
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-md bg-secondary-container/20 text-primary border border-primary/20 text-xs font-label-sm" href="#">
+<span class="flex items-center gap-1.5 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                Rescue Mode
+              </span>
+<span class="px-1.5 py-0.5 rounded text-[10px] bg-error-container text-on-error-container font-semibold">1 Alert</span>
+</a>
+<a class="flex items-center px-2.5 py-1.5 rounded-md text-on-surface-variant/70 hover:text-on-surface text-xs font-label-sm" href="#">
+<span>Predictive Ledger</span>
+</a>
+</div>
+</div>
+<!-- Treasury -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- System -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+<!-- Copilot CTA Trigger -->
+<div class="pt-4 px-1">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-surface-container border border-secondary/30 text-secondary hover:bg-secondary/10 transition-colors text-xs font-label-md transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm text-secondary">bolt</span>
+            Trigger Copilot
+          </button>
+</div>
+</nav>
+<!-- Sidebar Footers -->
+<div class="pt-space-sm border-t border-outline-variant/20 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-xs" href="#">
+<span class="material-symbols-outlined text-[18px]">shield_lock</span>
+<span class="font-label-sm text-label-sm">Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors text-xs" href="#">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="font-label-sm text-label-sm">Telemetry Logs</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- TOP UTILITY NAVBAR (Anchored from Shared Components JSON)                -->
+<!-- ========================================================================= -->
+<header class="docked full-width top-0 sticky z-30 bg-surface/80 backdrop-blur-2xl shadow-sm border-b border-outline-variant/30">
+<div class="flex items-center justify-between px-space-lg py-space-sm w-full pl-72">
+<!-- Search on left -->
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full pl-9 pr-3 py-1.5 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-on-surface font-body-sm text-body-sm placeholder:text-outline/70 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20" placeholder="Search cashflow telemetry, invoices..." type="text"/>
+</div>
+<!-- Navigation links (from JSON) -->
+<nav class="hidden md:flex items-center gap-8 font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Yield Radar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contracts</a>
+</nav>
+<!-- Trailing actions -->
+<div class="flex items-center gap-4">
+<!-- Secondary Currency toggle -->
+<span class="px-2.5 py-1 rounded-md bg-surface-container text-xs font-label-sm text-on-surface-variant border border-outline-variant/30">
+          USD / EUR
+        </span>
+<!-- Trailing Icon Actions -->
+<div class="flex items-center gap-1 text-on-surface-variant">
+<button aria-label="Notifications" class="p-2 rounded-lg hover:bg-surface-container hover:text-on-surface relative transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+</button>
+<button aria-label="Lightning Fast Engine" class="p-2 rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</button>
+<button aria-label="Support &amp; Help" class="p-2 rounded-lg hover:bg-surface-container hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+</div>
+<!-- Primary Action -->
+<button class="auric-gradient-btn text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md font-semibold tracking-tight shadow-sm hover:shadow-[0_0_20px_rgba(240,212,139,0.35)] transition-all duration-150 active:scale-[0.98]">
+          Execute Payout
+        </button>
+<!-- Profile Avatar with Gold Status Ring -->
+<div class="w-8 h-8 rounded-full ring-2 ring-primary/80 ring-offset-2 ring-offset-surface-dim bg-surface-container-high flex items-center justify-center font-label-sm text-xs font-semibold text-primary" title="Executive User Profile Avatar with Gold Status Ring">
+          EX
+        </div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE CANVAS                                                    -->
+<!-- ========================================================================= -->
+<main class="pl-72 pr-8 py-8 min-h-screen bg-[#08080D]">
+<div class="max-w-[1520px] mx-auto space-y-8">
+<!-- ===================================================================== -->
+<!-- SECTION 1: HEADER & FAST ACTIONS                                      -->
+<!-- ===================================================================== -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-2 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-3 flex-wrap">
+<h1 class="font-headline-lg text-headline-lg font-bold tracking-tight text-white flex items-center gap-3">
+              AI Cashflow Rescue
+            </h1>
+<!-- Emergency Pulsing Risk Sentinel Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-error-container/60 border border-error/40 red-pulse-glow">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-error"></span>
+</span>
+<span class="font-label-sm text-label-sm font-semibold text-error">Active Risk Sentinel: 1 Threat Detected</span>
+</div>
+</div>
+<p class="mt-1 font-body-md text-body-md text-on-surface-variant max-w-2xl">
+            Detect financial risks before they become problems. Recover your cashflow. Stay in control.
+          </p>
+</div>
+<!-- Fast Action Cluster -->
+<div class="flex items-center gap-3 flex-wrap">
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-high/80 border border-outline-variant/40 text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-2 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px] text-outline">troubleshoot</span>
+            Run Deep Diagnostic
+          </button>
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-high/80 border border-outline-variant/40 text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-2 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px] text-outline">file_download</span>
+            Export Rescue Audit
+          </button>
+<button class="violet-gradient-btn text-white px-5 py-2.5 rounded-lg font-label-md text-label-md font-semibold flex items-center gap-2 shadow-lg violet-glow hover:brightness-110 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+            Trigger Emergency Shield
+          </button>
+</div>
+</div>
+<!-- ===================================================================== -->
+<!-- SECTION 2: PROMINENT FINANCIAL EMERGENCY OVERVIEW (Hero Diagnostic)   -->
+<!-- ===================================================================== -->
+<section class="rounded-2xl p-6 lg:p-8 bg-[#171720]/80 backdrop-blur-xl border border-outline-variant/40 relative overflow-hidden auric-glow">
+<!-- Ambient Decorative Radiance -->
+<div class="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-error/5 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-20 -bottom-20 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+<!-- Health Score Gauge Cluster (Cols 1-4) -->
+<div class="lg:col-span-4 flex flex-col justify-center items-start lg:border-r border-outline-variant/30 lg:pr-8">
+<div class="flex items-center justify-between w-full mb-3">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Telemetry Diagnostic</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-label-sm bg-primary/10 text-primary border border-primary/30">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Live Simulation
+              </span>
+</div>
+<!-- Health Score Display -->
+<div class="flex items-baseline gap-2 mb-2">
+<span class="font-display text-display font-extrabold tracking-tight text-white leading-none">78</span>
+<span class="font-headline-md text-headline-md text-outline">/100</span>
+</div>
+<!-- Warning Chip -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/50 text-xs font-label-md text-primary mb-4">
+<span class="material-symbols-outlined text-[16px] text-primary">warning</span>
+              Caution: Liquidity Squeeze Projected
+            </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant/80">
+              Contract milestones and overdue accounts threaten to breach your baseline liquidity threshold within the current fiscal cycle.
+            </p>
+<!-- Sparkline Visual Indicator -->
+<div class="w-full mt-5 pt-4 border-t border-outline-variant/20">
+<div class="flex justify-between items-center text-xs font-label-sm mb-1.5">
+<span class="text-on-surface-variant">Safety Confidence Band</span>
+<span class="text-error font-medium">Critical Dip: Day 18</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden flex">
+<div class="h-full bg-primary w-[65%]"></div>
+<div class="h-full bg-error w-[20%] animate-pulse"></div>
+<div class="h-full bg-surface-container-highest w-[15%]"></div>
+</div>
+</div>
+</div>
+<!-- Metrics Telemetry Bento (Cols 5-12) -->
+<div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Metric Card 1: Liquid Balance -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="font-label-sm text-label-sm">Current Liquid Balance</span>
+<span class="material-symbols-outlined text-[18px] text-primary">account_balance_wallet</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric font-bold text-white mb-1">
+                $42,880.50
+              </div>
+<div class="text-xs font-body-sm text-on-surface-variant flex items-center gap-1">
+<span class="text-outline">Across 3 accounts &amp; vaults</span>
+</div>
+</div>
+<!-- Metric Card 2: Required Buffer -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="font-label-sm text-label-sm">Required Safety Buffer</span>
+<span class="material-symbols-outlined text-[18px] text-outline">shield</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric font-bold text-white mb-1">
+                $20,000.00
+              </div>
+<div class="text-xs font-body-sm text-on-surface-variant">
+                Locked minimum for operational ops
+              </div>
+</div>
+<!-- Metric Card 3: Predicted Lowest Point (ALERT HIGHLIGHT) -->
+<div class="p-4 rounded-xl bg-surface-container-high/60 border border-error/40 relative overflow-hidden red-pulse-glow sm:col-span-2 lg:col-span-1">
+<div class="flex items-center justify-between text-error mb-2">
+<span class="font-label-sm text-label-sm font-semibold">Predicted Lowest Point</span>
+<span class="material-symbols-outlined text-[18px]">trending_down</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric font-bold text-error mb-1">
+                $16,400.00
+              </div>
+<div class="text-xs font-label-sm text-error/90 font-medium">
+                Breaches Safety Buffer by <span class="underline decoration-error font-bold">-$3,600.00</span>
+</div>
+</div>
+<!-- Metric Card 4: Days Until Cash Pinch -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/30 hover:border-outline-variant/60 transition-colors">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="font-label-sm text-label-sm">Days Until Cash Pinch</span>
+<span class="material-symbols-outlined text-[18px] text-primary">timer</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric font-bold text-primary mb-1">
+                18 Days
+              </div>
+<div class="text-xs font-body-sm text-on-surface-variant">
+                Projected date: <span class="text-white font-medium">Nov 18, 2025</span>
+</div>
+</div>
+<!-- Metric Card 5: Unmitigated Runway -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/30 hover:border-outline-variant/60 transition-colors sm:col-span-2 lg:col-span-2">
+<div class="flex items-center justify-between text-outline mb-2">
+<span class="font-label-sm text-label-sm">Unmitigated Runway Contraction</span>
+<span class="material-symbols-outlined text-[18px] text-error">speed</span>
+</div>
+<div class="flex items-baseline gap-3 mb-1">
+<span class="font-numeric-metric text-numeric-metric font-bold text-error">4.1 mos</span>
+<span class="text-xs font-body-sm text-outline line-through">from 8.4 mos baseline</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm bg-error-container text-on-error-container font-semibold">-51% contraction</span>
+</div>
+<div class="text-xs font-body-sm text-on-surface-variant">
+                Unmitigated drag will exhaust dry powder by Q1 without automated intervention.
+              </div>
+</div>
+</div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- SECTION 3: CRITICAL FINANCIAL ALERTS (Prioritized Problem Cards)      -->
+<!-- ===================================================================== -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[22px]">notification_important</span>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-white tracking-tight">Critical Financial Alerts</h2>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-label-sm bg-surface-container-high border border-outline-variant/40 text-on-surface-variant">3 prioritized bottlenecks</span>
+</div>
+<span class="text-xs font-label-sm text-outline hidden sm:block">Sorted by immediate cash impact</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+<!-- Alert 1 (High Severity - Red/Amber) -->
+<div class="rounded-xl p-5 bg-[#171720]/90 border border-error/50 flex flex-col justify-between relative overflow-hidden transition-all hover:border-error">
+<div class="absolute top-0 left-0 right-0 h-1 bg-error"></div>
+<div>
+<div class="flex items-center justify-between gap-2 mb-3">
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-error-container text-on-error-container font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Tier 1 High Severity
+                </span>
+<span class="text-xs font-label-sm text-error font-medium">14 Days Past Due</span>
+</div>
+<div class="flex items-start justify-between gap-2 mb-2">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-white">Acme Corp</h3>
+<span class="font-headline-sm text-headline-sm font-bold text-error">$1,500.00</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 mb-4 space-y-2">
+<div class="text-xs font-body-sm text-on-surface-variant">
+<span class="text-outline font-medium">Root Impact:</span> Primary cashflow pinch trigger. AP manager stalled on voucher release.
+                </div>
+<div class="text-xs font-body-sm text-primary">
+<span class="text-outline font-medium">AI Remedy:</span> Trigger Firm Escalation Notice with late fee clause (+1.5%).
+                </div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">history</span> Avg delay: 16d
+              </span>
+<span class="text-primary font-medium flex items-center gap-1">
+                Ready for dispatch <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</span>
+</div>
+</div>
+<!-- Alert 2 (Medium Severity - Amber) -->
+<div class="rounded-xl p-5 bg-[#171720]/90 border border-primary/40 flex flex-col justify-between relative overflow-hidden transition-all hover:border-primary">
+<div class="absolute top-0 left-0 right-0 h-1 bg-primary"></div>
+<div>
+<div class="flex items-center justify-between gap-2 mb-3">
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-primary/10 text-primary border border-primary/30 font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Medium Severity
+                </span>
+<span class="text-xs font-label-sm text-outline">Operational Leak</span>
+</div>
+<div class="flex items-start justify-between gap-2 mb-2">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-white">SaaS Subscriptions</h3>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">$240.00/mo</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 mb-4 space-y-2">
+<div class="text-xs font-body-sm text-on-surface-variant">
+<span class="text-outline font-medium">Root Impact:</span> $2,880 annual recurring drag on liquid reserves from zero-activity seats.
+                </div>
+<div class="text-xs font-body-sm text-primary">
+<span class="text-outline font-medium">AI Remedy:</span> Deprecate 2 redundant design &amp; staging workspaces.
+                </div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">devices</span> 2 seats detected
+              </span>
+<span class="text-primary font-medium flex items-center gap-1">
+                Instant audit <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</span>
+</div>
+</div>
+<!-- Alert 3 (Warning - Violet) -->
+<div class="rounded-xl p-5 bg-[#171720]/90 border border-secondary/40 flex flex-col justify-between relative overflow-hidden transition-all hover:border-secondary">
+<div class="absolute top-0 left-0 right-0 h-1 bg-secondary"></div>
+<div>
+<div class="flex items-center justify-between gap-2 mb-3">
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-secondary-container/30 text-secondary border border-secondary/30 font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Milestones Stalled
+                </span>
+<span class="text-xs font-label-sm text-secondary font-medium">Review Limbo</span>
+</div>
+<div class="flex items-start justify-between gap-2 mb-2">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-white">Horizon Studio</h3>
+<span class="font-headline-sm text-headline-sm font-bold text-secondary">$8,500.00</span>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 mb-4 space-y-2">
+<div class="text-xs font-body-sm text-on-surface-variant">
+<span class="text-outline font-medium">Root Impact:</span> Critical liquidity trapped in escrow milestone 2 without sign-off.
+                </div>
+<div class="text-xs font-body-sm text-secondary">
+<span class="text-outline font-medium">AI Remedy:</span> Request deliverable sign-off acceleration with instant settlement discount.
+                </div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">hourglass_top</span> 4 days stagnant
+              </span>
+<span class="text-secondary font-medium flex items-center gap-1">
+                Escrow prompt <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- SECTION 4: THE CENTRAL SHOWCASE — 'YOUR AI RECOVERY PLAN'            -->
+<!-- ===================================================================== -->
+<section class="space-y-6">
+<!-- Section Title & Subheading -->
+<div class="flex items-center justify-between flex-wrap gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[24px]" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+<h2 class="font-headline-lg text-headline-md font-bold text-white tracking-tight">Your AI Recovery Plan</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Approval-first mitigation workflows generated through real-time counterparty telemetry and dynamic buffer simulations.
+            </p>
+</div>
+<div class="flex items-center gap-2 text-xs font-label-sm text-outline">
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+            Confidence Level: 96.4% mathematically viable
+          </div>
+</div>
+<!-- Simulation Comparison Recovery Banner -->
+<div class="rounded-xl p-5 bg-surface-container-high/90 border border-outline-variant/50 backdrop-blur-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 divide-y md:divide-y-0 md:divide-x divide-outline-variant/30">
+<!-- Left: Baseline Unmitigated -->
+<div class="space-y-2 md:pr-4 pt-2 md:pt-0">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Baseline (Unmitigated)</span>
+</div>
+<div class="text-lg font-headline-sm font-semibold text-error">
+                Lowest Balance: $16,400.00
+              </div>
+<div class="text-xs font-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="text-error font-medium">Safety Buffer Breached</span> • <span>Runway: 4.1 mos</span>
+</div>
+</div>
+<!-- Middle: Simulated With Plan -->
+<div class="space-y-2 md:px-6 pt-4 md:pt-0">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Simulated with Recovery Plan</span>
+</div>
+<div class="text-lg font-headline-sm font-semibold text-white">
+                Lowest Balance: $32,900.00
+              </div>
+<div class="text-xs font-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="text-primary font-medium">Buffer Protected (+$12.9k margin)</span> • <span>Runway: 8.9 mos</span>
+</div>
+</div>
+<!-- Right: Total Liquidity Restored Outcome -->
+<div class="space-y-2 md:pl-6 pt-4 md:pt-0 flex flex-col justify-center">
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Total Liquidity Restored</span>
+<div class="font-numeric-metric text-numeric-metric font-extrabold text-primary flex items-center gap-2">
+                +$16,500.00
+                <span class="text-xs font-label-sm px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">100% Solvency Restored</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Action Cards Stack (Approval-First UX) -->
+<div class="space-y-4">
+<!-- Action 1: Acme Corp AP Follow-Up -->
+<div class="rounded-xl p-6 bg-[#171720]/80 border border-outline-variant/30 hover:border-primary/40 transition-all duration-200">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+<div class="space-y-3 max-w-3xl">
+<div class="flex items-center gap-3 flex-wrap">
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-error-container text-on-error-container font-semibold">Tier 1: Immediate Priority</span>
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-primary/10 text-primary border border-primary/20 font-semibold">Impact: +$1,500.00 in 48h</span>
+<span class="text-xs font-body-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> Target execution: Today
+                  </span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-white tracking-tight">
+                    Dispatch Firm Follow-Up Notice to Acme Corp AP
+                  </h3>
+<p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class="text-outline font-medium">Algorithmic Rationale:</span> Acme Corp counterparty records demonstrate their accounts payable department settles invoices within 48 hours when supplied with a formalized escalation notice referencing contractual late interest clauses (+1.5%).
+                  </p>
+</div>
+<div class="flex items-center gap-2 text-xs font-label-sm text-outline">
+<span class="material-symbols-outlined text-[16px] text-secondary">smart_toy</span>
+                  Drafted by Autonomous Financial Copilot • Includes auto-generated PDF demand addendum
+                </div>
+</div>
+<!-- Action Controls Cluster -->
+<div class="flex items-center gap-2.5 flex-wrap lg:flex-nowrap">
+<button class="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high text-xs font-label-md text-on-surface transition-colors">
+                  Review Drafted Message
+                </button>
+<button class="auric-gradient-btn text-on-primary px-5 py-2.5 rounded-lg text-xs font-label-md font-semibold tracking-tight shadow-sm hover:shadow-[0_0_20px_rgba(240,212,139,0.35)] flex items-center gap-1.5 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[16px]">send</span>
+                  Approve &amp; Dispatch
+                </button>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" title="Dismiss Recommendation">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action 2: Horizon Studio Escrow Release -->
+<div class="rounded-xl p-6 bg-[#171720]/80 border border-outline-variant/30 hover:border-secondary/40 transition-all duration-200">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+<div class="space-y-3 max-w-3xl">
+<div class="flex items-center gap-3 flex-wrap">
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-secondary-container/40 text-secondary border border-secondary/30 font-semibold">Tier 2: High Priority</span>
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-secondary/10 text-secondary border border-secondary/20 font-semibold">Impact: +$8,500.00 Liquid Release</span>
+<span class="text-xs font-body-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> Escrow Milestone M2
+                  </span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-white tracking-tight">
+                    Request Escrow Sign-Off on Horizon Studio M2
+                  </h3>
+<p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class="text-outline font-medium">Algorithmic Rationale:</span> Deliverables were submitted and confirmed 4 days ago with zero revision tickets filed. Dispatching a cordial sign-off prompt with accelerated settlement incentive releases trapped funds instantly into your operating vault.
+                  </p>
+</div>
+<div class="flex items-center gap-2 text-xs font-label-sm text-outline">
+<span class="material-symbols-outlined text-[16px] text-secondary">lock_open</span>
+                  Smart Escrow Vault Protocol #8491 • Instant ACH or Wire Routing enabled
+                </div>
+</div>
+<!-- Action Controls Cluster -->
+<div class="flex items-center gap-2.5 flex-wrap lg:flex-nowrap">
+<button class="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high text-xs font-label-md text-on-surface transition-colors">
+                  Send Deliverable Sign-Off Prompt
+                </button>
+<button class="violet-gradient-btn text-white px-5 py-2.5 rounded-lg text-xs font-label-md font-semibold tracking-tight shadow-md violet-glow hover:brightness-110 flex items-center gap-1.5 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+                  Approve
+                </button>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" title="Dismiss Recommendation">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Action 3: Redundant Software Audit -->
+<div class="rounded-xl p-6 bg-[#171720]/80 border border-outline-variant/30 hover:border-outline-variant/60 transition-all duration-200">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+<div class="space-y-3 max-w-3xl">
+<div class="flex items-center gap-3 flex-wrap">
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-surface-container-high text-on-surface-variant border border-outline-variant/30 font-semibold">Tier 3: Medium Priority</span>
+<span class="px-2.5 py-0.5 rounded text-xs font-label-sm bg-primary/10 text-primary border border-primary/20 font-semibold">Impact: +$420.00/yr Recurring Savings</span>
+<span class="text-xs font-body-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">cancel_schedule_send</span> Waste Elimination
+                  </span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-white tracking-tight">
+                    Audit &amp; Trim Redundant Software Subscriptions
+                  </h3>
+<p class="mt-1 font-body-sm text-body-sm text-on-surface-variant">
+<span class="text-outline font-medium">Algorithmic Rationale:</span> Detected 2 idle enterprise collaborator seats across Figma and Webflow team workspaces with zero authenticated activity for &gt;60 days. Deprecating down to essential freelancer single-user tiers recovers recurring cashflow immediately.
+                  </p>
+</div>
+<div class="flex items-center gap-2 text-xs font-label-sm text-outline">
+<span class="material-symbols-outlined text-[16px] text-primary">credit_card_off</span>
+                  Virtual Card Control • Can automatically downgrade without service interruption
+                </div>
+</div>
+<!-- Action Controls Cluster -->
+<div class="flex items-center gap-2.5 flex-wrap lg:flex-nowrap">
+<button class="px-4 py-2 rounded-lg bg-surface-container border border-outline-variant/40 hover:bg-surface-container-high text-xs font-label-md text-on-surface transition-colors">
+                  Review Subscription List
+                </button>
+<button class="px-5 py-2.5 rounded-lg bg-surface-container-high border border-primary/40 text-primary hover:bg-primary/10 text-xs font-label-md font-semibold tracking-tight flex items-center gap-1.5 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[16px]">content_cut</span>
+                  Queue Deprecation
+                </button>
+<button class="p-2 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors" title="Dismiss Recommendation">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Clear UX Disclaimer Mandate -->
+<div class="rounded-xl p-4 bg-surface-container-lowest border border-outline-variant/20 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5">verified_user</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<strong class="text-primary font-medium">Approval-First Protocol:</strong> All recovery recommendations require your explicit authorization. FreelancePay AI never executes transactions or contacts counterparties autonomously.
+          </p>
+</div>
+</section>
+</div>
+</main>
+</body></html>

@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — Autonomous Wealth Engine</title>
+<!-- Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS & Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#1b1b21",
+            "error-container": "#93000a",
+            "on-tertiary-container": "#850065",
+            "secondary-fixed": "#e9ddff",
+            "on-secondary": "#3b0092",
+            "secondary-container": "#561cc1",
+            "inverse-on-surface": "#303036",
+            "error": "#ffb4ab",
+            "on-error": "#690005",
+            "on-primary-container": "#594100",
+            "on-tertiary-fixed-variant": "#880067",
+            "tertiary-fixed-dim": "#ffaedb",
+            "tertiary-fixed": "#ffd8eb",
+            "on-tertiary": "#610048",
+            "surface-container": "#1f1f25",
+            "on-secondary-container": "#c3abff",
+            "on-secondary-fixed-variant": "#5417be",
+            "surface-bright": "#39383f",
+            "surface-tint": "#ebc166",
+            "primary-fixed": "#ffdea0",
+            "inverse-surface": "#e4e1ea",
+            "surface-container-lowest": "#0e0e14",
+            "on-primary-fixed-variant": "#5c4300",
+            "on-error-container": "#ffdad6",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-variant": "#35343b",
+            "primary": "#f4c86d",
+            "surface-container-highest": "#35343b",
+            "inverse-primary": "#795902",
+            "surface-container-high": "#2a2930",
+            "tertiary": "#ffbadf",
+            "on-surface": "#e4e1ea",
+            "outline-variant": "#4e4637",
+            "primary-fixed-dim": "#ebc166",
+            "primary-container": "#d6ad55",
+            "on-primary-fixed": "#261a00",
+            "background": "#131319",
+            "surface": "#131319",
+            "on-background": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "surface-dim": "#131319",
+            "tertiary-container": "#ff8dd2",
+            "on-primary": "#402d00",
+            "outline": "#9a8f7e",
+            "on-surface-variant": "#d1c5b2",
+            "on-tertiary-fixed": "#3c002b",
+            "secondary": "#d0bcff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Geist", "sans-serif"],
+            "headline-md": ["Geist", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "display": ["Geist", "sans-serif"],
+            "label-md": ["Geist", "sans-serif"],
+            "numeric-metric": ["Geist", "sans-serif"],
+            "headline-sm": ["Geist", "sans-serif"],
+            "display-mobile": ["Geist", "sans-serif"],
+            "label-sm": ["Geist", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-lg-mobile": ["Geist", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0e0e14;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2930;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4e4637;
+    }
+    .auric-glow {
+      box-shadow: 0 0 25px -5px rgba(244, 200, 109, 0.25);
+    }
+    .violet-glow {
+      box-shadow: 0 0 30px -8px rgba(150, 101, 255, 0.35);
+    }
+    .glass-panel {
+      background: rgba(27, 27, 33, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .glass-panel-elevated {
+      background: rgba(31, 31, 37, 0.85);
+      backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(244, 200, 109, 0.2);
+      border-left: 1px solid rgba(255, 255, 255, 0.05);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased min-h-screen flex selection:bg-primary selection:text-on-primary">
+<!-- ==================== SHARED COMPONENT: SideNavBar ==================== -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest border-r border-outline-variant/30 backdrop-blur-xl transition-all duration-300" id="main-sidebar">
+<div class="flex flex-col justify-between h-full p-space-sm">
+<!-- Top Monogram & Brand Header -->
+<div>
+<div class="flex items-center gap-3 px-3 py-4 mb-2">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container flex items-center justify-center text-on-primary font-bold shadow-lg shadow-primary-container/20">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-80">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Quick AI Copilot Trigger CTA in Sidebar -->
+<button class="w-full mb-4 px-3 py-2.5 rounded-lg bg-gradient-to-r from-secondary-container to-surface-container-high border border-secondary/30 flex items-center justify-between text-secondary hover:text-on-surface violet-glow transition-all duration-150 active:scale-[0.98]" onclick="navigateTo('page-ai-copilot')">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+<span class="font-label-md text-label-md font-medium">Trigger Copilot</span>
+</div>
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+</button>
+<!-- Navigation Sections -->
+<div class="space-y-4 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
+<!-- SECTION: OVERVIEW & PAYMENTS -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase tracking-wider font-semibold text-outline">Core Protocol</div>
+<nav class="space-y-1">
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary" data-target="page-dashboard" href="javascript:void(0)" onclick="navigateTo('page-dashboard')">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-invoices" href="javascript:void(0)" onclick="navigateTo('page-invoices')">
+<span class="material-symbols-outlined text-[20px]" data-icon="payments">payments</span>
+<span class="font-label-md text-label-md">Invoices</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-reminders" href="javascript:void(0)" onclick="navigateTo('page-reminders')">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-md text-label-md">Payment Reminders</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-milestones" href="javascript:void(0)" onclick="navigateTo('page-milestones')">
+<span class="material-symbols-outlined text-[20px]" data-icon="flag">flag</span>
+<span class="font-label-md text-label-md">Milestones</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-transactions" href="javascript:void(0)" onclick="navigateTo('page-transactions')">
+<span class="material-symbols-outlined text-[20px]" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-md text-label-md">Transactions</span>
+</a>
+</nav>
+</div>
+<!-- SECTION: INTELLIGENCE -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase tracking-wider font-semibold text-secondary flex items-center justify-between">
+<span>Autonomous AI</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</div>
+<nav class="space-y-1">
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-ai-copilot" href="javascript:void(0)" onclick="navigateTo('page-ai-copilot')">
+<span class="material-symbols-outlined text-[20px] text-secondary" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-md text-label-md">AI Copilot</span>
+</a>
+<a class="nav-link flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-cashflow-rescue" href="javascript:void(0)" onclick="navigateTo('page-cashflow-rescue')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px] text-error" data-icon="crisis_alert">crisis_alert</span>
+<span class="font-label-md text-label-md">Rescue Mode</span>
+</div>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-error-container/40 text-error font-medium">ALERT</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-cashflow-forecast" href="javascript:void(0)" onclick="navigateTo('page-cashflow-forecast')">
+<span class="material-symbols-outlined text-[20px]" data-icon="show_chart">show_chart</span>
+<span class="font-label-md text-label-md">Forecast Radar</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-client-intel" href="javascript:void(0)" onclick="navigateTo('page-client-intel')">
+<span class="material-symbols-outlined text-[20px]" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Client Intelligence</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-negotiator" href="javascript:void(0)" onclick="navigateTo('page-negotiator')">
+<span class="material-symbols-outlined text-[20px]" data-icon="handshake">handshake</span>
+<span class="font-label-md text-label-md">Payment Negotiator</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-client-memory" href="javascript:void(0)" onclick="navigateTo('page-client-memory')">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+<span class="font-label-md text-label-md">Client Memory Dossier</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-what-if" href="javascript:void(0)" onclick="navigateTo('page-what-if')">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+<span class="font-label-md text-label-md">What-If Simulator</span>
+</a>
+</nav>
+</div>
+<!-- SECTION: FINANCIAL MANAGEMENT & TREASURY -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase tracking-wider font-semibold text-outline">Treasury &amp; Fiscal</div>
+<nav class="space-y-1">
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-fees-currency" href="javascript:void(0)" onclick="navigateTo('page-fees-currency')">
+<span class="material-symbols-outlined text-[20px]" data-icon="currency_exchange">currency_exchange</span>
+<span class="font-label-md text-label-md">Fee &amp; Currency</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-spending" href="javascript:void(0)" onclick="navigateTo('page-spending')">
+<span class="material-symbols-outlined text-[20px]" data-icon="pie_chart">pie_chart</span>
+<span class="font-label-md text-label-md">Spending Insights</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-subscriptions" href="javascript:void(0)" onclick="navigateTo('page-subscriptions')">
+<span class="material-symbols-outlined text-[20px]" data-icon="autorenew">autorenew</span>
+<span class="font-label-md text-label-md">Subscriptions</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-tax" href="javascript:void(0)" onclick="navigateTo('page-tax')">
+<span class="material-symbols-outlined text-[20px]" data-icon="account_balance">account_balance</span>
+<span class="font-label-md text-label-md">Tax Shield Estimator</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-profitability" href="javascript:void(0)" onclick="navigateTo('page-profitability')">
+<span class="material-symbols-outlined text-[20px]" data-icon="timer">timer</span>
+<span class="font-label-md text-label-md">Project Profitability</span>
+</a>
+</nav>
+</div>
+<!-- SECTION: TOOLS & SYSTEM -->
+<div>
+<div class="px-3 pb-1.5 text-[10px] uppercase tracking-wider font-semibold text-outline">Utility Engine</div>
+<nav class="space-y-1">
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-scanner" href="javascript:void(0)" onclick="navigateTo('page-scanner')">
+<span class="material-symbols-outlined text-[20px]" data-icon="document_scanner">document_scanner</span>
+<span class="font-label-md text-label-md">AI Document Scanner</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-reports" href="javascript:void(0)" onclick="navigateTo('page-reports')">
+<span class="material-symbols-outlined text-[20px]" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Reports &amp; P&amp;L</span>
+</a>
+<a class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors" data-target="page-settings" href="javascript:void(0)" onclick="navigateTo('page-settings')">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings &amp; AI Policy</span>
+</a>
+</nav>
+</div>
+</div>
+</div>
+<!-- Footer Telemetry & Vault Status -->
+<div class="pt-3 border-t border-outline-variant/30 px-2 space-y-2">
+<div class="flex items-center justify-between text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base text-primary" data-icon="shield_lock">shield_lock</span>
+<span class="font-label-sm text-label-sm">Security Vault</span>
+</div>
+<span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant opacity-70">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-base" data-icon="terminal">terminal</span>
+<span class="font-label-sm text-label-sm">Telemetry Logs</span>
+</div>
+<span class="font-label-sm text-label-sm font-mono text-[10px]">v4.8.2-auric</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ==================== MAIN CONTENT CANVAS WRAPPER ==================== -->
+<div class="flex-1 ml-64 min-h-screen flex flex-col bg-surface">
+<!-- ==================== SHARED COMPONENT: TopNavBar ==================== -->
+<header class="docked full-width top-0 sticky z-30 flex items-center justify-between px-space-lg py-space-sm border-b border-outline-variant/30 backdrop-blur-2xl bg-surface/80 shadow-sm">
+<!-- Greeting and Live Search -->
+<div class="flex items-center gap-6">
+<div>
+<h1 class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface flex items-center gap-2">
+<span>Good evening, Alex</span>
+<span class="text-xs px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-medium">PRO VIP</span>
+</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Autonomous fiscal guardian is operational</p>
+</div>
+<div class="relative w-72 hidden xl:block">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-lg" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-9 pr-3 py-1.5 text-xs text-on-surface placeholder:text-outline focus:outline-none focus:border-primary/60 transition-colors" placeholder="Search invoices, clients, or telemetry..." type="text"/>
+<kbd class="absolute right-2.5 top-2 px-1.5 py-0.5 text-[9px] font-mono bg-surface-container-high text-on-surface-variant rounded border border-outline-variant/30">⌘K</kbd>
+</div>
+</div>
+<!-- Quick Action Controls & Trailing cluster -->
+<div class="flex items-center gap-3">
+<!-- Currency Switcher -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-0.5 text-xs">
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-medium text-xs transition-all" id="curr-USD" onclick="setCurrency('USD')">USD</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-medium text-xs transition-all" id="curr-EUR" onclick="setCurrency('EUR')">EUR</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-medium text-xs transition-all" id="curr-GBP" onclick="setCurrency('GBP')">GBP</button>
+</div>
+<!-- Rescue Quick Trigger -->
+<button class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-error-container/20 border border-error/30 text-error hover:bg-error-container/40 text-xs font-medium transition-all" onclick="navigateTo('page-cashflow-rescue')">
+<span class="material-symbols-outlined text-sm" data-icon="crisis_alert">crisis_alert</span>
+<span>Rescue Cashflow</span>
+</button>
+<!-- New Invoice Primary Action -->
+<button class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-medium text-xs auric-glow hover:brightness-105 transition-all active:scale-95" onclick="openModal('new-invoice-modal')">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span>+ New Invoice</span>
+</button>
+<!-- System Icons -->
+<div class="flex items-center gap-1 border-l border-outline-variant/30 pl-3">
+<button class="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" onclick="showToast('AI Notification: Horizon Studio viewed Invoice #FP-8849 4 minutes ago.')">
+<span class="material-symbols-outlined text-lg" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface"></span>
+</button>
+<button class="p-2 rounded-lg text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" onclick="navigateTo('page-ai-copilot')" title="Instant Copilot Pulse">
+<span class="material-symbols-outlined text-lg" data-icon="bolt">bolt</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" onclick="openModal('support-modal')">
+<span class="material-symbols-outlined text-lg" data-icon="help">help</span>
+</button>
+</div>
+<!-- Alex Vance Executive Avatar with Gold Status Ring -->
+<div class="flex items-center gap-2.5 pl-2 cursor-pointer group" onclick="navigateTo('page-settings')">
+<div class="relative">
+<div class="w-8 h-8 rounded-full ring-2 ring-primary p-0.5 bg-surface-container-high flex items-center justify-center font-semibold text-xs text-primary">
+              AV
+            </div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-surface"></span>
+</div>
+<div class="hidden 2xl:flex flex-col text-left">
+<span class="font-label-md text-label-md font-medium text-on-surface group-hover:text-primary transition-colors">Alex Vance</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Design Technologist</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ==================== DYNAMIC CONTENT PAGES CANVAS ==================== -->
+<main class="flex-1 p-space-lg overflow-y-auto">
+<!-- ============================================================ -->
+<!-- PAGE 1: MAIN DASHBOARD                                      -->
+<!-- ============================================================ -->
+<section class="page-view space-y-6" id="page-dashboard">
+<!-- Header Banner & Cashflow Health Score -->
+<div class="glass-panel-elevated p-6 rounded-xl relative overflow-hidden flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+<div class="relative z-10">
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-secondary-container/30 border border-secondary/30 text-secondary text-xs font-medium mb-3">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span>AI Autonomous Recommendation Active</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">Institutional Financial Health: <span class="text-primary font-numeric-metric">94/100</span></h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mt-1">
+              Your liquidity runway is secure through Q4. Runway is calculated at <strong class="text-on-surface">8.4 months</strong>. 1 prompt action recommended for Acme Corp to mitigate an 18-day projected pinch.
+            </p>
+</div>
+<div class="flex items-center gap-3 relative z-10">
+<button class="px-4 py-2.5 rounded-lg bg-surface-container-high border border-error/40 text-error hover:bg-error-container/20 text-xs font-semibold flex items-center gap-2 transition-all" onclick="navigateTo('page-cashflow-rescue')">
+<span class="material-symbols-outlined text-base" data-icon="crisis_alert">crisis_alert</span>
+<span>View Rescue Plan</span>
+</button>
+<button class="px-4 py-2.5 rounded-lg bg-gradient-to-r from-secondary-container to-surface-container-high border border-secondary/40 text-secondary hover:text-white text-xs font-semibold violet-glow flex items-center gap-2 transition-all" onclick="navigateTo('page-ai-copilot')">
+<span class="material-symbols-outlined text-base" data-icon="auto_awesome">auto_awesome</span>
+<span>Audit Cash Pipeline</span>
+</button>
+</div>
+<!-- Decorative auric/violet gradient orb -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-gradient-to-br from-primary/10 via-secondary/15 to-transparent blur-3xl pointer-events-none"></div>
+</div>
+<!-- Metric Bento 4-Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- Card 1 -->
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-md text-label-md">Total Gross Revenue</span>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="trending_up">trending_up</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-on-surface font-semibold">$128,450.00</div>
+<div class="mt-2 flex items-center gap-1.5 text-xs">
+<span class="text-emerald-400 font-medium flex items-center">+18.4%</span>
+<span class="text-on-surface-variant opacity-75">vs previous 90d</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-md text-label-md">Outstanding Invoices</span>
+<span class="material-symbols-outlined text-amber-400 text-xl" data-icon="hourglass_top">hourglass_top</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-primary font-semibold">$14,200.00</div>
+<div class="mt-2 flex items-center gap-1.5 text-xs">
+<span class="text-amber-400 font-medium">3 invoices</span>
+<span class="text-on-surface-variant opacity-75">• $1,500 overdue</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-md text-label-md">Available Liquidity</span>
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-on-surface font-semibold">$42,880.50</div>
+<div class="mt-2 flex items-center gap-1.5 text-xs">
+<span class="text-secondary font-medium">Ready for wire</span>
+<span class="text-on-surface-variant opacity-75">• $14.8k tax set aside</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-colors">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-md text-label-md">Calculated Runway</span>
+<span class="material-symbols-outlined text-emerald-400 text-xl" data-icon="flight_takeoff">flight_takeoff</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-emerald-400 font-semibold">8.4 Months</div>
+<div class="mt-2 flex items-center gap-1.5 text-xs">
+<span class="text-emerald-400 font-medium">Zero zero-balance risk</span>
+<span class="text-on-surface-variant opacity-75">until Feb 2026</span>
+</div>
+</div>
+</div>
+<!-- Dynamic Visual Revenue Trajectory & Cash Breakdown -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Main Chart Container (2 cols) -->
+<div class="lg:col-span-2 glass-panel p-6 rounded-xl flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Revenue Velocity &amp; Inflow Radar</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Real-time Stripe, PayPal &amp; International SWIFT clearing rates</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs px-2.5 py-1 rounded bg-surface-container-high text-on-surface font-medium border border-outline-variant/30">H1 2025</span>
+</div>
+</div>
+<!-- SVG Vector Sparkline / Area Chart -->
+<div class="w-full h-52 relative mt-2">
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 600 200">
+<defs>
+<lineargradient id="auricGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#f4c86d" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#f4c86d" stop-opacity="0.0"></stop>
+</lineargradient>
+<lineargradient id="violetGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#9665FF"></stop>
+<stop offset="100%" stop-color="#f4c86d"></stop>
+</lineargradient>
+</defs>
+<!-- Baseline Grid -->
+<line stroke="rgba(255,255,255,0.05)" stroke-dasharray="4 4" x1="0" x2="600" y1="50" y2="50"></line>
+<line stroke="rgba(255,255,255,0.05)" stroke-dasharray="4 4" x1="0" x2="600" y1="100" y2="100"></line>
+<line stroke="rgba(255,255,255,0.05)" stroke-dasharray="4 4" x1="0" x2="600" y1="150" y2="150"></line>
+<!-- Area Fill -->
+<path d="M 0 160 Q 100 130 180 90 T 340 70 T 480 30 T 600 20 L 600 200 L 0 200 Z" fill="url(#auricGradient)"></path>
+<!-- Trajectory Line -->
+<path d="M 0 160 Q 100 130 180 90 T 340 70 T 480 30 T 600 20" stroke="url(#violetGradient)" stroke-linecap="round" stroke-width="3.5"></path>
+<!-- Key Milestone Marker Dots -->
+<circle cx="180" cy="90" fill="#131319" r="5" stroke="#9665FF" stroke-width="2.5"></circle>
+<circle cx="340" cy="70" fill="#131319" r="5" stroke="#f4c86d" stroke-width="2.5"></circle>
+<circle class="animate-pulse" cx="480" cy="30" fill="#f4c86d" r="6" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant pt-3 border-t border-outline-variant/20 mt-3 font-mono">
+<span>JAN ($14.2k)</span>
+<span>FEB ($18.9k)</span>
+<span>MAR ($22.1k)</span>
+<span>APR ($28.5k)</span>
+<span>MAY ($34.0k)</span>
+<span class="text-primary font-semibold">JUN (Projected $42k)</span>
+</div>
+</div>
+<!-- Cashflow Breakdown & AI Action proposals -->
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Capital Allocation</h3>
+<span class="text-xs px-2 py-0.5 rounded bg-primary/10 text-primary font-medium">Real-time</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Autonomous segregation across business vaults</p>
+<div class="space-y-3.5">
+<div>
+<div class="flex justify-between text-xs mb-1 font-medium">
+<span class="text-on-surface">Operating Vault (Liquid)</span>
+<span class="text-primary font-mono">$42,880 (58%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 58%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1 font-medium">
+<span class="text-on-surface">Autonomous Tax Shield</span>
+<span class="text-secondary font-mono">$14,800 (20%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 20%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1 font-medium">
+<span class="text-on-surface">Escrow Retainers</span>
+<span class="text-emerald-400 font-mono">$11,400 (15%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-400 h-full rounded-full" style="width: 15%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1 font-medium">
+<span class="text-on-surface">Buffer &amp; Contingency</span>
+<span class="text-on-surface-variant font-mono">$5,170 (7%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-outline h-full rounded-full" style="width: 7%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-5 p-3 rounded-lg bg-surface-container-lowest/80 border border-secondary/20">
+<div class="flex items-center gap-2 text-xs text-secondary font-semibold mb-1">
+<span class="material-symbols-outlined text-sm" data-icon="smart_toy">smart_toy</span>
+<span>Copilot Recommendation</span>
+</div>
+<p class="text-xs text-on-surface-variant">Transfer $2,400 from Operating to 4.9% APY Treasury Vault before Friday 5 PM EST.</p>
+</div>
+</div>
+</div>
+<!-- Recent Invoices Active Table Preview -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="p-5 flex items-center justify-between border-b border-outline-variant/30">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Recent Active Invoices</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Live telemetry from payment channels and client view triggers</p>
+</div>
+<button class="text-xs text-primary hover:underline flex items-center gap-1 font-medium" onclick="navigateTo('page-invoices')">
+<span>View all 24 invoices</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead class="bg-surface-container text-on-surface-variant font-label-sm border-b border-outline-variant/20 uppercase tracking-wider">
+<tr>
+<th class="py-3 px-5">Invoice</th>
+<th class="py-3 px-5">Client</th>
+<th class="py-3 px-5">Amount</th>
+<th class="py-3 px-5">Channel</th>
+<th class="py-3 px-5">Status</th>
+<th class="py-3 px-5">AI Behavioral Read</th>
+<th class="py-3 px-5 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-on-surface">
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-4 px-5 font-mono font-medium text-primary">#FP-8849</td>
+<td class="py-4 px-5">
+<div class="font-medium text-on-surface">Horizon Studio</div>
+<div class="text-[11px] text-on-surface-variant">Design System Sprint II</div>
+</td>
+<td class="py-4 px-5 font-mono font-semibold">$8,500.00</td>
+<td class="py-4 px-5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant/40 text-on-surface text-[10px] font-mono">Stripe Connect</span>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 text-secondary text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+                      Viewed 4m ago
+                    </span>
+</td>
+<td class="py-4 px-5 text-on-surface-variant">High settlement probability within 48h</td>
+<td class="py-4 px-5 text-right">
+<button class="px-2.5 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface hover:text-primary transition-colors" onclick="previewInvoiceModal('FP-8849', 'Horizon Studio', '$8,500.00', 'Viewed')">Details</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-4 px-5 font-mono font-medium text-primary">#FP-8848</td>
+<td class="py-4 px-5">
+<div class="font-medium text-on-surface">Acme Corp</div>
+<div class="text-[11px] text-on-surface-variant">Brand Architecture Q2</div>
+</td>
+<td class="py-4 px-5 font-mono font-semibold">$1,500.00</td>
+<td class="py-4 px-5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant/40 text-on-surface text-[10px] font-mono">PayPal Direct</span>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/30 text-error text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                      Overdue (14 days)
+                    </span>
+</td>
+<td class="py-4 px-5 text-error">Stalled in AP queue; action recommended</td>
+<td class="py-4 px-5 text-right">
+<button class="px-2.5 py-1 rounded bg-error-container/40 text-error hover:bg-error-container transition-colors font-medium" onclick="triggerRescueFlow('Acme Corp', '$1,500.00')">Rescue</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-4 px-5 font-mono font-medium text-primary">#FP-8846</td>
+<td class="py-4 px-5">
+<div class="font-medium text-on-surface">Apex Media</div>
+<div class="text-[11px] text-on-surface-variant">Full Engine Retainer</div>
+</td>
+<td class="py-4 px-5 font-mono font-semibold">$12,000.00</td>
+<td class="py-4 px-5">
+<span class="px-2 py-0.5 rounded bg-surface-container-high border border-outline-variant/40 text-on-surface text-[10px] font-mono">SWIFT Wire</span>
+</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-container/20 text-primary text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Paid &amp; Settled
+                    </span>
+</td>
+<td class="py-4 px-5 text-on-surface-variant">Zero fee drag; 0.2% currency slippage</td>
+<td class="py-4 px-5 text-right">
+<button class="px-2.5 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface hover:text-primary transition-colors" onclick="previewInvoiceModal('FP-8846', 'Apex Media', '$12,000.00', 'Paid')">Receipt</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 2: SMART INVOICING                                     -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-invoices">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Smart Invoicing Terminal</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Autonomous draft generation, smart contracts, and real-time settlement telemetry</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container-high border border-secondary/40 text-secondary text-xs font-medium flex items-center gap-2 violet-glow" onclick="openModal('invoice-ai-mode-modal')">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span>AI Quick Parse</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary text-xs font-semibold auric-glow flex items-center gap-2" onclick="openModal('new-invoice-modal')">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span>Create Invoice</span>
+</button>
+</div>
+</div>
+<!-- Conversational Mode A Quick Input Box -->
+<div class="glass-panel-elevated p-4 rounded-xl border border-secondary/30">
+<div class="flex items-center gap-2 text-xs font-medium text-secondary mb-2">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+<span>Conversational Invoicing Engine (Mode A)</span>
+</div>
+<div class="flex flex-col sm:flex-row items-center gap-3">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3.5 py-2 text-xs text-on-surface placeholder:text-outline focus:border-secondary focus:outline-none" id="copilot-invoice-input" placeholder='e.g., "Bill Horizon Studio $4,500 for June UX design retainer, net-15, via Stripe with automatic late fee protection"' type="text"/>
+<button class="w-full sm:w-auto px-5 py-2 rounded-lg bg-secondary text-on-secondary font-medium text-xs whitespace-nowrap hover:brightness-110 transition-all" onclick="simulateAIParsedInvoice()">
+              Parse &amp; Draft
+            </button>
+</div>
+</div>
+<!-- Invoice Category Tabs Filter -->
+<div class="flex items-center gap-2 border-b border-outline-variant/30 pb-2 overflow-x-auto text-xs">
+<button class="inv-tab-btn px-3 py-1.5 rounded-lg bg-surface-container-high text-primary font-medium" onclick="filterInvoiceTab('all')">All (24)</button>
+<button class="inv-tab-btn px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" onclick="filterInvoiceTab('draft')">Drafts (3)</button>
+<button class="inv-tab-btn px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" onclick="filterInvoiceTab('sent')">Sent (6)</button>
+<button class="inv-tab-btn px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" onclick="filterInvoiceTab('viewed')">Viewed (4)</button>
+<button class="inv-tab-btn px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface" onclick="filterInvoiceTab('paid')">Paid (10)</button>
+<button class="inv-tab-btn px-3 py-1.5 rounded-lg text-error hover:text-error-container" onclick="filterInvoiceTab('overdue')">Overdue (1)</button>
+</div>
+<!-- Full Invoice Table -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<table class="w-full text-left text-xs">
+<thead class="bg-surface-container text-on-surface-variant font-label-sm border-b border-outline-variant/20 uppercase tracking-wider">
+<tr>
+<th class="py-3 px-5">ID &amp; Issue Date</th>
+<th class="py-3 px-5">Client</th>
+<th class="py-3 px-5">Scope / Deliverable</th>
+<th class="py-3 px-5">Gross Amount</th>
+<th class="py-3 px-5">Status</th>
+<th class="py-3 px-5 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-on-surface font-body-sm">
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-4 px-5">
+<div class="font-mono font-semibold text-primary">#FP-8849</div>
+<div class="text-[10px] text-on-surface-variant font-mono">2025-06-01 (Net 15)</div>
+</td>
+<td class="py-4 px-5 font-medium">Horizon Studio</td>
+<td class="py-4 px-5 text-on-surface-variant">Design System Architecture Sprint II</td>
+<td class="py-4 px-5 font-mono font-semibold text-on-surface">$8,500.00</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 text-secondary text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    Viewed by Client
+                  </span>
+</td>
+<td class="py-4 px-5 text-right space-x-1.5">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface hover:text-primary" onclick="previewInvoiceModal('FP-8849', 'Horizon Studio', '$8,500.00', 'Viewed')">Inspect</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface" onclick="copyPaymentLink('#FP-8849')">Link</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-4 px-5">
+<div class="font-mono font-semibold text-primary">#FP-8848</div>
+<div class="text-[10px] text-on-surface-variant font-mono">2025-05-18 (Net 14)</div>
+</td>
+<td class="py-4 px-5 font-medium">Acme Corp</td>
+<td class="py-4 px-5 text-on-surface-variant">Corporate Identity Manual Rebrand</td>
+<td class="py-4 px-5 font-mono font-semibold text-error">$1,500.00</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-error-container/30 text-error text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                    Overdue by 14d
+                  </span>
+</td>
+<td class="py-4 px-5 text-right space-x-1.5">
+<button class="px-2.5 py-1 rounded bg-error-container/40 text-error hover:bg-error-container" onclick="triggerRescueFlow('Acme Corp', '$1,500.00')">Execute Reminder</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-4 px-5">
+<div class="font-mono font-semibold text-primary">#FP-8847</div>
+<div class="text-[10px] text-on-surface-variant font-mono">2025-05-28 (Due Upon Receipt)</div>
+</td>
+<td class="py-4 px-5 font-medium">TechCorp Labs</td>
+<td class="py-4 px-5 text-on-surface-variant">NextGen WebGL Interactive Landing</td>
+<td class="py-4 px-5 font-mono font-semibold text-on-surface">$4,200.00</td>
+<td class="py-4 px-5">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface text-[11px] font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    Sent (Awaiting view)
+                  </span>
+</td>
+<td class="py-4 px-5 text-right space-x-1.5">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface hover:text-primary" onclick="previewInvoiceModal('FP-8847', 'TechCorp Labs', '$4,200.00', 'Sent')">Inspect</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 3: PAYMENT REMINDERS                                   -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-reminders">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Autonomous Payment Reminders</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Calibrated nudges with freelancer approval guardrails</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/30 text-on-surface font-mono">Guardrail: Strict Human Approval</span>
+</div>
+</div>
+<!-- Overdue Action Center Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="glass-panel p-5 rounded-xl lg:col-span-1 border border-error/30">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-medium text-error uppercase tracking-wider">Critical Priority</span>
+<span class="text-[10px] px-2 py-0.5 rounded bg-error-container/40 text-error">14 Days Overdue</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Acme Corp ($1,500.00)</h3>
+<p class="text-xs text-on-surface-variant mt-1">Invoice #FP-8848 • Brand Identity Manual</p>
+<div class="mt-4 p-3 rounded-lg bg-surface-container-lowest text-xs text-on-surface-variant space-y-1.5 font-mono">
+<div class="flex justify-between"><span>Contact:</span><span class="text-on-surface">sarah.chen@acme.io</span></div>
+<div class="flex justify-between"><span>Sent Date:</span><span>May 18, 2025</span></div>
+<div class="flex justify-between"><span>Late Penalty:</span><span class="text-primary">+$75.00 ready</span></div>
+</div>
+</div>
+<!-- AI Reminder Composer -->
+<div class="glass-panel lg:col-span-2 p-6 rounded-xl space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">AI Tone Selector &amp; Message Sandbox</h3>
+<p class="text-xs text-on-surface-variant">Calibrate tone without damaging executive rapport</p>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/30 text-xs">
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-medium transition-all" id="tone-polite" onclick="setReminderTone('polite')">Gentle Nudge</button>
+<button class="px-2.5 py-1 rounded bg-secondary text-white font-medium transition-all" id="tone-firm" onclick="setReminderTone('firm')">Firm / Professional</button>
+<button class="px-2.5 py-1 rounded text-error hover:bg-error-container/30 font-medium transition-all" id="tone-final" onclick="setReminderTone('final')">Final Notice</button>
+</div>
+</div>
+<!-- Subject & Draft Preview Area -->
+<div class="space-y-2">
+<div class="text-xs text-on-surface-variant">Subject Line:</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg px-3 py-2 text-xs font-mono text-on-surface focus:outline-none focus:border-secondary" id="reminder-subject" type="text" value="Firm Follow-Up: Overdue Settlement for Invoice #FP-8848 — Acme Corp"/>
+<div class="text-xs text-on-surface-variant pt-2">Message Body Preview:</div>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-3 text-xs text-on-surface font-mono leading-relaxed focus:outline-none focus:border-secondary" id="reminder-body" rows="5">Hi Sarah,
+
+Following up on Invoice #FP-8848 ($1,500.00 for Corporate Identity Manual) which reached maturity 14 days ago on May 18.
+
+To prevent automatic late fee accrual under our contract terms, please process settlement via the secure Stripe direct link today: https://pay.freelancepay.ai/inv/FP-8848.
+
+If this requires special wire routing or purchase order alignment, let me know immediately so we can assist.
+
+Warm regards,
+Alex Vance</textarea>
+</div>
+<div class="flex items-center justify-between pt-2">
+<div class="flex items-center gap-2 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="schedule">schedule</span>
+<span>Send via Email + CC to AP Accounting Queue</span>
+</div>
+<button class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-semibold text-xs auric-glow active:scale-95 transition-all" onclick="showToast('Reminder approved &amp; transmitted to Acme Corp AP team with read-receipt beacon.')">
+                Approve &amp; Transmit Now
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 4: AI COPILOT INTERACTIVE CONCIERGE                    -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-ai-copilot">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface flex items-center gap-2">
+<span>FreelancePay Autonomous Copilot</span>
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">LLM-orchestrated financial intelligence, instant contract queries, and automated recovery actions</p>
+</div>
+<button class="text-xs text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30" onclick="clearChat()">
+            Reset Memory
+          </button>
+</div>
+<!-- Chat Container -->
+<div class="glass-panel-elevated rounded-xl h-[560px] flex flex-col justify-between overflow-hidden">
+<!-- Message Feed -->
+<div class="flex-1 p-6 overflow-y-auto space-y-4" id="copilot-messages">
+<!-- System Welcome -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="bg-surface-container-high/80 border border-secondary/20 p-4 rounded-xl rounded-tl-none max-w-2xl text-xs space-y-2 text-on-surface">
+<p class="font-medium text-secondary">Autonomous Telemetry Initialized</p>
+<p>Hello Alex. I've analyzed your cash trajectory for June 2025. You have <strong>$42,880.50</strong> in liquid reserves and <strong>$14,200.00</strong> across 3 outstanding invoices. How would you like to optimize your wealth today?</p>
+</div>
+</div>
+<!-- Pre-populated query answer -->
+<div class="flex items-start gap-3 justify-end">
+<div class="bg-primary/10 border border-primary/20 p-3.5 rounded-xl rounded-tr-none max-w-xl text-xs text-on-surface">
+<p>What is my tax risk if I pull $20,000 for personal investments tomorrow?</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs shrink-0">
+                AV
+              </div>
+</div>
+<!-- Structured AI Response Card -->
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-white shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div class="bg-surface-container-high/80 border border-secondary/20 p-4 rounded-xl rounded-tl-none max-w-2xl text-xs space-y-3 text-on-surface">
+<p>Pulling <strong>$20,000.00</strong> will decrease your liquid operating cushion to <strong>$22,880.50</strong>, maintaining a healthy <strong>4.8 months of runway</strong>.</p>
+<div class="p-3 rounded bg-surface-container-lowest border border-outline-variant/30 space-y-1.5 font-mono text-[11px]">
+<div class="flex justify-between"><span class="text-on-surface-variant">Recommended Tax Vault:</span><span class="text-primary">$14,800.00 (Untouched)</span></div>
+<div class="flex justify-between"><span class="text-on-surface-variant">Est. Q2 Tax Due Date:</span><span>June 15, 2025</span></div>
+<div class="flex justify-between"><span class="text-on-surface-variant">Safety Margin Index:</span><span class="text-emerald-400">Low Risk (88/100)</span></div>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<button class="px-3 py-1.5 rounded bg-primary text-on-primary font-medium text-[11px] auric-glow" onclick="showToast('Copilot Action: Transfer queued for executive confirmation.')">Authorize Split Transfer</button>
+<button class="px-3 py-1.5 rounded bg-surface-container text-on-surface hover:text-primary text-[11px]" onclick="navigateTo('page-what-if')">Simulate in What-If</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Prompt Composer & Suggestion Chips -->
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant/30 space-y-3">
+<div class="flex items-center gap-2 overflow-x-auto text-[11px] pb-1">
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary hover:border-primary/40 border border-outline-variant/30 whitespace-nowrap" onclick="fillCopilotPrompt('Which client has the highest payment delay risk?')">Highest payment delay risk?</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary hover:border-primary/40 border border-outline-variant/30 whitespace-nowrap" onclick="fillCopilotPrompt('Can I afford $1,800/mo for a new workspace?')">Can I afford new workspace?</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary hover:border-primary/40 border border-outline-variant/30 whitespace-nowrap" onclick="fillCopilotPrompt('Generate net-30 late fee clause for TechCorp')">Generate late fee clause</button>
+</div>
+<div class="flex items-center gap-2">
+<input class="flex-1 bg-surface-container border border-outline-variant/40 rounded-lg px-4 py-2.5 text-xs text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary" id="copilot-user-input" placeholder="Instruct Copilot (e.g. Audit Acme Corp contract, draft rate hike, analyze currency loss)..." type="text"/>
+<button class="px-4 py-2.5 rounded-lg bg-gradient-to-r from-secondary-container to-secondary text-white font-medium text-xs flex items-center gap-1.5 violet-glow active:scale-95 transition-all" onclick="sendCopilotMessage()">
+<span>Send</span>
+<span class="material-symbols-outlined text-sm" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 5: CASHFLOW FORECAST RADAR                             -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-cashflow-forecast">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">30 &amp; 60-Day Runway Trajectory</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Deterministic cash modeling factoring confirmed contracts, weighted odds, and burn rates</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs px-2.5 py-1 rounded bg-emerald-400/10 border border-emerald-400/20 text-emerald-400 font-medium">Zero Liquidity Breach Projected</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-xs text-on-surface font-medium">Confirmed Contract Inflow ($22,700)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-xs text-on-surface font-medium">Weighted Inflow ($14,500)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span class="text-xs text-on-surface font-medium">Known Liabilities ($7,820)</span>
+</div>
+</div>
+<span class="text-xs font-mono text-outline">Target Buffer: $25,000</span>
+</div>
+<!-- Visual Runway Curve & Timeline Simulation -->
+<div class="h-64 w-full relative">
+<svg class="w-full h-full" fill="none" viewbox="0 0 700 220">
+<!-- Grid lines -->
+<line stroke="rgba(255,255,255,0.05)" x1="0" x2="700" y1="40" y2="40"></line>
+<line stroke="rgba(255,255,255,0.05)" x1="0" x2="700" y1="100" y2="100"></line>
+<line stroke="rgba(255,255,255,0.05)" x1="0" x2="700" y1="160" y2="160"></line>
+<!-- Safety Buffer Line -->
+<line stroke="#f4c86d" stroke-dasharray="6 6" stroke-width="1.5" x1="0" x2="700" y1="140" y2="140"></line>
+<text fill="#f4c86d" font-family="Geist" font-size="10" x="610" y="135">SAFETY BUFFER ($25k)</text>
+<!-- Inflow Curve -->
+<path d="M 0 120 C 120 110, 200 80, 350 60 C 500 40, 600 30, 700 15" stroke="#9665FF" stroke-linecap="round" stroke-width="3"></path>
+<!-- Points -->
+<circle cx="200" cy="85" fill="#131319" r="5" stroke="#9665FF" stroke-width="2"></circle>
+<circle cx="350" cy="60" fill="#131319" r="5" stroke="#f4c86d" stroke-width="2"></circle>
+<circle cx="600" cy="30" fill="#f4c86d" r="6" stroke="#fff" stroke-width="2"></circle>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-4 text-xs font-mono text-center pt-3 border-t border-outline-variant/20">
+<div><span class="text-on-surface-variant block">Day 1–15</span><strong class="text-primary">+$12,700 In</strong></div>
+<div><span class="text-on-surface-variant block">Day 16–30</span><strong class="text-on-surface">+$8,500 In</strong></div>
+<div><span class="text-on-surface-variant block">Day 31–45</span><strong class="text-secondary">+$6,200 In</strong></div>
+<div><span class="text-on-surface-variant block">Day 46–60</span><strong class="text-emerald-400">+$9,800 In</strong></div>
+</div>
+</div>
+<!-- AI Forecast Deep Interpretation -->
+<div class="p-5 rounded-xl glass-panel-elevated flex items-start gap-4">
+<div class="p-2.5 rounded-lg bg-secondary-container/40 text-secondary shrink-0">
+<span class="material-symbols-outlined text-xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<div class="text-xs space-y-1">
+<h4 class="font-medium text-secondary text-sm">Deterministic Intelligence Summary</h4>
+<p class="text-on-surface-variant leading-relaxed">
+              No negative cash dips are projected in either scenario. If Horizon Studio settles on time, your balance touches a cycle high of <strong class="text-on-surface">$58,200</strong> on June 22. Tax liabilities on June 15 ($4,200 estimated quarterly instalment) are already partitioned into the shield vault.
+            </p>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 6: AI CASHFLOW RESCUE MODE                             -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-cashflow-rescue">
+<!-- Emergency HUD Header -->
+<div class="p-6 rounded-xl bg-gradient-to-r from-error-container/30 via-surface-container-high to-surface-container border border-error/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-error-container/60 border border-error flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-2xl animate-pulse" data-icon="crisis_alert">crisis_alert</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-md text-headline-md font-semibold text-error">AI Cashflow Rescue Protocol</h2>
+<span class="text-xs px-2 py-0.5 rounded bg-error/20 text-error font-mono font-bold">ACTIVE DIAGNOSTIC</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-0.5">Automated detection of impending cash pinch point at Day 18</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-5 py-2.5 rounded-lg bg-error hover:bg-error-container text-on-error font-semibold text-xs transition-all flex items-center gap-2 shadow-lg shadow-error/20" onclick="executeAllRescueSteps()">
+<span class="material-symbols-outlined text-base" data-icon="bolt">bolt</span>
+<span>1-Click Autonomous Rescue</span>
+</button>
+</div>
+</div>
+<!-- Diagnostic Pinch Point Breakdown -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-panel p-5 rounded-xl border border-error/30">
+<div class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Identified Vulnerability</div>
+<div class="text-lg font-bold text-on-surface mt-2">$1,500 Acme Corp Delay</div>
+<p class="text-xs text-on-surface-variant mt-1">If overdue exceeds 21 days, buffer dips within 8% of floor during quarterly insurance deduction.</p>
+</div>
+<div class="glass-panel p-5 rounded-xl border border-primary/30">
+<div class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Projected Recovery Rate</div>
+<div class="text-lg font-bold text-primary mt-2">92.4% Probability</div>
+<p class="text-xs text-on-surface-variant mt-1">Applying firm contractual notice with late payment waiver incentive restores cash in 48h.</p>
+</div>
+<div class="glass-panel p-5 rounded-xl border border-secondary/30">
+<div class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Net Impact on Runway</div>
+<div class="text-lg font-bold text-secondary mt-2">+1.2 Months Restored</div>
+<p class="text-xs text-on-surface-variant mt-1">Cash balance stabilizes at $44,380 with zero disruption to scheduled expenses.</p>
+</div>
+</div>
+<!-- 3-Step Actionable Execution Cards -->
+<div class="space-y-4">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Algorithmic Recovery Operations</h3>
+<div class="glass-panel p-5 rounded-xl flex items-center justify-between gap-4 border border-outline-variant/30">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-bold text-xs text-primary">1</div>
+<div>
+<h4 class="text-xs font-semibold text-on-surface">Accelerate Milestone 2 on TechCorp Project</h4>
+<p class="text-xs text-on-surface-variant">Request early sign-off for completed interactive module: unlocks $2,100 early payout.</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-primary text-xs text-primary font-medium" onclick="showToast('Milestone acceleration notice generated and queued for Alex sign-off.')">Request Sign-Off</button>
+</div>
+<div class="glass-panel p-5 rounded-xl flex items-center justify-between gap-4 border border-error/30">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-lg bg-error-container/30 flex items-center justify-center font-bold text-xs text-error">2</div>
+<div>
+<h4 class="text-xs font-semibold text-on-surface">Send Automated AP escalation to Acme Corp Financial Controller</h4>
+<p class="text-xs text-on-surface-variant">Bypasses creative contact and pings direct accounting officer with instant card pay link.</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-error-container text-on-error hover:brightness-110 text-xs font-medium" onclick="showToast('Escalation sent to Acme Corp AP Controller.')">Execute Notice</button>
+</div>
+<div class="glass-panel p-5 rounded-xl flex items-center justify-between gap-4 border border-outline-variant/30">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-bold text-xs text-secondary">3</div>
+<div>
+<h4 class="text-xs font-semibold text-on-surface">Pause Non-Essential SaaS Subscriptions (7 days)</h4>
+<p class="text-xs text-on-surface-variant">Identified $140/mo in low-usage tooling that can be paused immediately.</p>
+</div>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-secondary text-xs text-secondary font-medium" onclick="navigateTo('page-subscriptions')">Inspect Subs</button>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 7: FEE & CURRENCY INSIGHTS                             -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-fees-currency">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Fee &amp; Currency Drag Analyzer</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Recover unnecessary processor cuts and foreign exchange conversion slippage</p>
+</div>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold auric-glow" onclick="showToast('Fee Optimization Rules applied: SWIFT wire now preferred for invoices &gt; $5,000.')">
+            Apply Optimal Routing Rules
+          </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-panel p-5 rounded-xl border border-outline-variant/20">
+<span class="text-xs text-on-surface-variant">Gross Client Billed</span>
+<div class="text-2xl font-bold font-mono text-on-surface mt-1">$94,200.00</div>
+<span class="text-xs text-emerald-400 mt-1 block">100% Top-line</span>
+</div>
+<div class="glass-panel p-5 rounded-xl border border-error/30">
+<span class="text-xs text-on-surface-variant">Total Processor Drag (YTD)</span>
+<div class="text-2xl font-bold font-mono text-error mt-1">-$4,380.20</div>
+<span class="text-xs text-error mt-1 block">4.64% aggregate leak</span>
+</div>
+<div class="glass-panel p-5 rounded-xl border border-primary/30">
+<span class="text-xs text-on-surface-variant">Net Recovered via Optimal Routing</span>
+<div class="text-2xl font-bold font-mono text-primary mt-1">+$1,840.00</div>
+<span class="text-xs text-primary mt-1 block">Saved via Wise/Direct Rail</span>
+</div>
+</div>
+<!-- Breakdown by Channel -->
+<div class="glass-panel rounded-xl p-6">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-4">Processing Rail Comparison</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">PP</span>
+<div>
+<div class="text-xs font-semibold text-on-surface">PayPal Commercial Direct</div>
+<div class="text-[11px] text-on-surface-variant">3.49% + $0.49 fixed fee + 2.5% FX markup</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xs font-mono text-error">High Drag (5.99% effective)</span>
+<div class="text-[10px] text-outline">Avoid for invoices over $1k</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">ST</span>
+<div>
+<div class="text-xs font-semibold text-on-surface">Stripe Invoicing ACH / Cards</div>
+<div class="text-[11px] text-on-surface-variant">2.9% + $0.30 (Cards) / 0.8% capped at $5 (ACH)</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xs font-mono text-primary">Moderate Drag (2.1% effective)</span>
+<div class="text-[10px] text-outline">Enforce ACH for US clients</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">SW</span>
+<div>
+<div class="text-xs font-semibold text-on-surface">Direct SWIFT / Wise Multi-Currency</div>
+<div class="text-[11px] text-on-surface-variant">0.4% mid-market FX spread</div>
+</div>
+</div>
+<div class="text-right">
+<span class="text-xs font-mono text-emerald-400">Institutional Grade (0.42%)</span>
+<div class="text-[10px] text-outline">Default choice for EU &amp; UK retainers</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 8: CLIENT INTELLIGENCE                                 -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-client-intel">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Client Intelligence Radar</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Reliability scorings, payment delay trends, and relationship risk matrix</p>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-xs text-on-surface hover:text-primary" onclick="showToast('Client Risk Radar re-synchronized with public telemetry.')">
+            Refresh Scorings
+          </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Client 1 -->
+<div class="glass-panel p-5 rounded-xl border border-primary/30">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-primary">RELIABILITY: 98/100</span>
+<span class="text-xs px-2 py-0.5 rounded bg-primary/20 text-primary">Tier 1 Sovereign</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mt-2">Apex Media</h3>
+<p class="text-xs text-on-surface-variant">Avg. payment turnaround: 1.8 days</p>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex justify-between text-xs">
+<span>Lifetime Billed: <strong>$64,000</strong></span>
+<span class="text-emerald-400">Zero disputes</span>
+</div>
+</div>
+<!-- Client 2 -->
+<div class="glass-panel p-5 rounded-xl border border-secondary/30">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-secondary">RELIABILITY: 88/100</span>
+<span class="text-xs px-2 py-0.5 rounded bg-secondary/20 text-secondary">Reliable Partner</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mt-2">Horizon Studio</h3>
+<p class="text-xs text-on-surface-variant">Avg. payment turnaround: 6.2 days</p>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex justify-between text-xs">
+<span>Lifetime Billed: <strong>$32,500</strong></span>
+<span class="text-on-surface-variant">On-schedule</span>
+</div>
+</div>
+<!-- Client 3 -->
+<div class="glass-panel p-5 rounded-xl border border-error/30">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-error">RELIABILITY: 54/100</span>
+<span class="text-xs px-2 py-0.5 rounded bg-error-container/40 text-error">High Friction</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface mt-2">Acme Corp</h3>
+<p class="text-xs text-on-surface-variant">Avg. payment turnaround: 28.4 days</p>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex justify-between text-xs">
+<span>Lifetime Billed: <strong>$14,200</strong></span>
+<span class="text-error">Frequent AP delays</span>
+</div>
+</div>
+</div>
+<!-- Risk Matrix Table -->
+<div class="glass-panel rounded-xl p-5">
+<h3 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3">AI Terms Recommendations</h3>
+<div class="space-y-2 text-xs">
+<div class="p-3 rounded-lg bg-surface-container-lowest flex items-center justify-between">
+<div>
+<span class="font-medium text-on-surface">Acme Corp</span>
+<span class="text-on-surface-variant block">Recommendation: Enforce 50% upfront retainer and net-7 terms for future sprints.</span>
+</div>
+<button class="px-2.5 py-1 rounded bg-secondary-container text-white" onclick="showToast('Contract clause template updated for Acme Corp.')">Apply Guardrail</button>
+</div>
+<div class="p-3 rounded-lg bg-surface-container-lowest flex items-center justify-between">
+<div>
+<span class="font-medium text-on-surface">Apex Media</span>
+<span class="text-on-surface-variant block">Recommendation: Eligible for annual prepayment 5% discount; predictable $60k commitment.</span>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container text-primary border border-primary/30" onclick="navigateTo('page-negotiator')">Draft Offer</button>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 9: MILESTONE PAYMENTS                                  -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-milestones">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Milestone &amp; Escrow Tracker</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Locked capital release schedules, verification gates, and escrow safety</p>
+</div>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold auric-glow" onclick="showToast('Milestone verification requested from client TechCorp Labs.')">
+            Request Milestone Sign-off
+          </button>
+</div>
+<div class="glass-panel rounded-xl p-6 space-y-6">
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+<div>
+<span class="text-xs font-mono text-primary">PROJECT: NEXTGEN 3D WEB PLATFORM</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">TechCorp Labs — $12,500 Total Project Scope</h3>
+</div>
+<span class="text-xs px-2.5 py-1 rounded-full bg-emerald-400/20 text-emerald-400 font-medium">Escrow Secured in Stripe Vault</span>
+</div>
+<!-- Timeline Steps -->
+<div class="space-y-6">
+<!-- Step 1 -->
+<div class="flex items-start gap-4">
+<div class="w-8 h-8 rounded-full bg-emerald-400/20 text-emerald-400 border border-emerald-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<div class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-surface-container-lowest p-3.5 rounded-lg">
+<div>
+<h4 class="text-xs font-semibold text-on-surface">Milestone 1: Architectural Wireframes &amp; Shader Prototypes</h4>
+<span class="text-[11px] text-on-surface-variant">Authorized &amp; Cleared on May 15, 2025</span>
+</div>
+<div class="text-right">
+<span class="text-xs font-mono font-bold text-emerald-400">$3,500.00 Released</span>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-4">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-white border border-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="pending">pending</span>
+</div>
+<div class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-surface-container-lowest p-3.5 rounded-lg border border-secondary/30">
+<div>
+<h4 class="text-xs font-semibold text-on-surface">Milestone 2: Interactive WebGL Canvas Implementation</h4>
+<span class="text-[11px] text-secondary">Ready for Verification Review</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs font-mono font-bold text-on-surface">$5,000.00 Locked</span>
+<button class="px-3 py-1 rounded bg-secondary text-white text-xs font-medium" onclick="showToast('Milestone 2 release triggered. Awaiting Client Dual-Signature.')">Release Escrow</button>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container text-outline border border-outline-variant/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+</div>
+<div class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-surface-container-lowest p-3.5 rounded-lg opacity-60">
+<div>
+<h4 class="text-xs font-semibold text-on-surface">Milestone 3: Production Deployment &amp; QA Handoff</h4>
+<span class="text-[11px] text-on-surface-variant">Due July 10, 2025</span>
+</div>
+<div class="text-right">
+<span class="text-xs font-mono font-bold text-outline">$4,000.00 In Escrow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 10: SPENDING INSIGHTS & AFFORDABILITY                   -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-spending">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Spending Insights &amp; Affordability Engine</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Expense categorization, burn rates, and instant purchase simulator</p>
+</div>
+<span class="text-xs px-3 py-1 rounded bg-surface-container border border-outline-variant/30 font-mono text-primary">Monthly Burn: $4,280</span>
+</div>
+<!-- Interactive Affordability Simulator Widget -->
+<div class="glass-panel-elevated p-6 rounded-xl border border-secondary/40 space-y-4">
+<div class="flex items-center gap-2 text-xs font-semibold text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="psychology">psychology</span>
+<span>Autonomous Purchase Feasibility Query</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">"Can I afford to purchase a $2,400 Apple Studio Display today?"</h3>
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+<span class="text-xs font-bold text-emerald-400">YES — FULLY SAFE (Risk Index 12/100)</span>
+</div>
+<p class="text-xs text-on-surface-variant max-w-xl">
+                Deductible business asset. Lowers Q2 taxable profit by $2,400 (saving ~$672 in tax). Your runway shifts from <strong>8.4 to 8.1 months</strong>, well above the 6-month safety threshold.
+              </p>
+</div>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold auric-glow whitespace-nowrap" onclick="showToast('Expense simulated and tagged as 179 business tax deduction.')">
+              Log as Pending Deduction
+            </button>
+</div>
+</div>
+<!-- Expense Category Breakdown -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="glass-panel p-5 rounded-xl space-y-3">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Business Deductions (68%)</h3>
+<div class="space-y-2 text-xs">
+<div class="flex justify-between py-1.5 border-b border-outline-variant/20"><span>Cloud Compute &amp; Servers</span><span class="font-mono text-on-surface">$1,450/mo</span></div>
+<div class="flex justify-between py-1.5 border-b border-outline-variant/20"><span>Design &amp; AI Subscriptions</span><span class="font-mono text-on-surface">$482/mo</span></div>
+<div class="flex justify-between py-1.5 border-b border-outline-variant/20"><span>Legal &amp; Fiscal Retainer</span><span class="font-mono text-on-surface">$550/mo</span></div>
+<div class="flex justify-between py-1.5"><span>Workspace &amp; Utilities</span><span class="font-mono text-on-surface">$428/mo</span></div>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl space-y-3">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Personal Draw Segregation (32%)</h3>
+<div class="space-y-2 text-xs">
+<div class="flex justify-between py-1.5 border-b border-outline-variant/20"><span>Owner's Draw (Living)</span><span class="font-mono text-primary">$3,500/mo</span></div>
+<div class="flex justify-between py-1.5 border-b border-outline-variant/20"><span>Health &amp; Insurance Shield</span><span class="font-mono text-on-surface">$620/mo</span></div>
+<div class="flex justify-between py-1.5 border-b border-outline-variant/20"><span>Discretionary Leisure</span><span class="font-mono text-on-surface">$400/mo</span></div>
+<div class="flex justify-between py-1.5"><span>Automated Retirement IRA</span><span class="font-mono text-secondary">$500/mo</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 11: SUBSCRIPTION MANAGER                               -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-subscriptions">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Autonomous SaaS Audit</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Active tooling cost: $482/mo across 14 services. AI has spotted $142 in redundant seats.</p>
+</div>
+<button class="px-4 py-2 rounded-lg bg-secondary text-on-secondary text-xs font-semibold violet-glow" onclick="showToast('Waste reduction sequence executed. Cancellation drafts generated.')">
+            Purge Inactive Seats ($142/mo)
+          </button>
+</div>
+<div class="glass-panel rounded-xl overflow-hidden">
+<table class="w-full text-left text-xs">
+<thead class="bg-surface-container text-on-surface-variant font-label-sm border-b border-outline-variant/20 uppercase tracking-wider">
+<tr>
+<th class="py-3 px-5">Tool / Service</th>
+<th class="py-3 px-5">Cost &amp; Interval</th>
+<th class="py-3 px-5">Usage Telemetry</th>
+<th class="py-3 px-5">AI Recommendation</th>
+<th class="py-3 px-5 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-on-surface">
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-5 font-medium">Midjourney Pro Tier</td>
+<td class="py-3.5 px-5 font-mono">$60.00 / mo</td>
+<td class="py-3.5 px-5"><span class="text-error font-medium">0 prompts in last 28 days</span></td>
+<td class="py-3.5 px-5 text-error">Waste Detected — Cancel immediately</td>
+<td class="py-3.5 px-5 text-right">
+<button class="px-2.5 py-1 rounded bg-error-container/40 text-error hover:bg-error-container font-medium" onclick="showToast('Midjourney cancellation link queued.')">Cancel</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-5 font-medium">Figma Enterprise Org Seat</td>
+<td class="py-3.5 px-5 font-mono">$45.00 / mo</td>
+<td class="py-3.5 px-5"><span class="text-emerald-400 font-medium">Active daily (38h/wk)</span></td>
+<td class="py-3.5 px-5 text-on-surface-variant">Essential Tooling — Retain</td>
+<td class="py-3.5 px-5 text-right">
+<span class="text-xs text-outline">Active</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-5 font-medium">Linear Pro Workspace</td>
+<td class="py-3.5 px-5 font-mono">$12.00 / mo</td>
+<td class="py-3.5 px-5"><span class="text-emerald-400 font-medium">Active daily</span></td>
+<td class="py-3.5 px-5 text-on-surface-variant">Essential Tooling — Retain</td>
+<td class="py-3.5 px-5 text-right">
+<span class="text-xs text-outline">Active</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/40 transition-colors">
+<td class="py-3.5 px-5 font-medium">Webflow CMS Hosting (Legacy)</td>
+<td class="py-3.5 px-5 font-mono">$29.00 / mo</td>
+<td class="py-3.5 px-5"><span class="text-amber-400 font-medium">Stale client prototype</span></td>
+<td class="py-3.5 px-5 text-amber-400">Downgrade to Free staging tier</td>
+<td class="py-3.5 px-5 text-right">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface" onclick="showToast('Webflow plan downgrade reminder set.')">Downgrade</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 12: TAX SHIELD ESTIMATOR                               -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-tax">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Autonomous Tax Shield &amp; Reserves</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Predictive 28% federal and state reserve segregation with automated quarterly tax calendar</p>
+</div>
+<button class="px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary text-xs font-semibold auric-glow" onclick="showToast('Shield transfer executed. $1,200 moved into sub-account.')">
+            Transfer to Tax Sub-Account
+          </button>
+</div>
+<!-- Progress to Q2 Target -->
+<div class="glass-panel p-6 rounded-xl space-y-4">
+<div class="flex justify-between items-center">
+<div>
+<span class="text-xs font-medium text-on-surface-variant">Q2 2025 Projected Tax Obligation</span>
+<div class="text-2xl font-bold font-numeric-metric text-primary mt-1">$14,800.00 / $18,500.00</div>
+</div>
+<div class="text-right">
+<span class="text-xs px-2.5 py-1 rounded bg-secondary-container/20 text-secondary font-medium">80% Funded</span>
+<div class="text-xs text-on-surface-variant mt-1 font-mono">Due: June 15, 2025 (in 12 days)</div>
+</div>
+</div>
+<div class="w-full bg-surface-container-high h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-primary-container h-full rounded-full" style="width: 80%"></div>
+</div>
+<p class="text-xs text-on-surface-variant">
+            Incoming settlement for Horizon Studio ($8,500) will automatically sweep <strong>$2,380 (28%)</strong> into this shield, reaching 93% funding.
+          </p>
+</div>
+<!-- Quarterly Tax Schedule -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs font-mono">
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20">
+<span class="text-emerald-400 block font-semibold">Q1 (April 15)</span>
+<div class="text-on-surface font-bold mt-1">$12,400.00</div>
+<span class="text-[10px] text-emerald-400">Settled &amp; Confirmed</span>
+</div>
+<div class="glass-panel p-4 rounded-xl border border-primary/40 bg-primary/5">
+<span class="text-primary block font-semibold">Q2 (June 15) — ACTIVE</span>
+<div class="text-on-surface font-bold mt-1">$18,500.00 Est.</div>
+<span class="text-[10px] text-primary">$14,800 Vaulted</span>
+</div>
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 opacity-75">
+<span class="text-on-surface-variant block">Q3 (Sept 15)</span>
+<div class="text-on-surface font-bold mt-1">$16,200.00 Est.</div>
+<span class="text-[10px] text-outline">Projected</span>
+</div>
+<div class="glass-panel p-4 rounded-xl border border-outline-variant/20 opacity-75">
+<span class="text-on-surface-variant block">Q4 (Jan 15, 2026)</span>
+<div class="text-on-surface font-bold mt-1">$17,900.00 Est.</div>
+<span class="text-[10px] text-outline">Projected</span>
+</div>
+</div>
+<div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/20 text-[11px] text-outline">
+<strong>Compliance Disclaimer:</strong> FreelancePay AI estimates are for cash liquidity governance. Always confirm final schedule with your certified CPA or tax counsel.
+        </div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 13: WHAT-IF FINANCIAL SIMULATOR                        -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-what-if">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">What-If Scenario Simulator</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Stress test your freelance business against rate hikes, late payments, and client churn</p>
+</div>
+<button class="text-xs text-on-surface-variant hover:text-on-surface px-3 py-1.5 rounded bg-surface-container" onclick="resetWhatIfSliders()">Reset to Baseline</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Controls Panel -->
+<div class="glass-panel p-6 rounded-xl space-y-5 lg:col-span-1">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Stress-Test Sliders</h3>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span>Raise Hourly / Project Rates:</span>
+<span class="font-mono text-primary font-bold" id="rate-slider-val">+15%</span>
+</div>
+<input class="w-full accent-primary" id="rate-slider" max="50" min="0" oninput="updateWhatIfSim()" type="range" value="15"/>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span>Apex Media Delays Payment:</span>
+<span class="font-mono text-error font-bold" id="delay-slider-val">20 Days</span>
+</div>
+<input class="w-full accent-error" id="delay-slider" max="60" min="0" oninput="updateWhatIfSim()" type="range" value="20"/>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span>Client Churn (Worst Case):</span>
+<span class="font-mono text-amber-400 font-bold" id="churn-slider-val">1 Client</span>
+</div>
+<input class="w-full accent-amber-400" id="churn-slider" max="3" min="0" oninput="updateWhatIfSim()" type="range" value="1"/>
+</div>
+</div>
+<!-- Projected Result Display -->
+<div class="glass-panel-elevated p-6 rounded-xl space-y-4 lg:col-span-2">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Simulated Impact Telemetry</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 rounded-lg bg-surface-container-lowest">
+<span class="text-xs text-on-surface-variant">Projected Annual Net:</span>
+<div class="text-2xl font-bold font-numeric-metric text-primary mt-1" id="sim-net">$142,300.00</div>
+<span class="text-xs text-emerald-400">+$13.8k net growth</span>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-lowest">
+<span class="text-xs text-on-surface-variant">Adjusted Runway:</span>
+<div class="text-2xl font-bold font-numeric-metric text-on-surface mt-1" id="sim-runway">7.9 Months</div>
+<span class="text-xs text-on-surface-variant">Well above baseline floor</span>
+</div>
+</div>
+<div class="p-4 rounded-lg bg-secondary-container/20 border border-secondary/30 text-xs space-y-1">
+<div class="text-secondary font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span>Copilot Synthesis</span>
+</div>
+<p class="text-on-surface-variant">
+                Even if Apex Media delays payment by 20 days and 1 client departs, raising your rates by 15% offsets all revenue losses, generating a higher annual return with 120 fewer operational hours.
+              </p>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 14: PROJECT PROFITABILITY                              -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-profitability">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Effective Hourly Rate &amp; Profit Margin</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">True yield per hour worked factoring scope creep and non-billable meetings</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="glass-panel p-5 rounded-xl border border-primary/30">
+<span class="text-xs text-on-surface-variant">Apex Media Sprint</span>
+<div class="text-2xl font-bold font-mono text-primary mt-1">$145.00 / hr</div>
+<span class="text-xs text-emerald-400 mt-1 block">92% Margin • 0h scope creep</span>
+</div>
+<div class="glass-panel p-5 rounded-xl border border-secondary/30">
+<span class="text-xs text-on-surface-variant">Horizon Studio UX</span>
+<div class="text-2xl font-bold font-mono text-secondary mt-1">$112.50 / hr</div>
+<span class="text-xs text-on-surface-variant mt-1 block">78% Margin • 4h revision drag</span>
+</div>
+<div class="glass-panel p-5 rounded-xl border border-error/30">
+<span class="text-xs text-on-surface-variant">Acme Corp Rebrand</span>
+<div class="text-2xl font-bold font-mono text-error mt-1">$58.20 / hr</div>
+<span class="text-xs text-error mt-1 block">42% Margin • 18h unbilled reviews</span>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 15: AI INVOICE SCANNER                                 -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-scanner">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">AI OCR Document &amp; Receipt Scanner</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Instant field extraction from contractor bills, receipts, or PDF client purchase orders</p>
+</div>
+<!-- Upload Dropzone Simulation -->
+<div class="glass-panel-elevated p-10 rounded-xl border-2 border-dashed border-secondary/40 hover:border-secondary flex flex-col items-center justify-center cursor-pointer transition-all" onclick="simulateDocumentScan()">
+<div class="w-14 h-14 rounded-full bg-secondary-container/30 text-secondary flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<h3 class="text-sm font-semibold text-on-surface">Drop contractor invoices or receipts here</h3>
+<p class="text-xs text-on-surface-variant mt-1">Supports PDF, PNG, JPG (Autonomous 99.4% OCR precision)</p>
+<button class="mt-4 px-4 py-2 rounded-lg bg-secondary text-white text-xs font-semibold violet-glow pointer-events-none">
+            Click to Simulate Scan
+          </button>
+</div>
+<!-- Extracted Fields Display -->
+<div class="glass-panel p-6 rounded-xl space-y-4" id="ocr-results">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<h3 class="text-xs font-semibold text-on-surface uppercase tracking-wider">Extracted OCR Metadata</h3>
+<span class="text-xs text-emerald-400 font-mono">Confidence: 99.1%</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
+<div><span class="text-on-surface-variant block">Vendor / Entity:</span><strong class="text-on-surface">Vercel Inc.</strong></div>
+<div><span class="text-on-surface-variant block">Extracted Amount:</span><strong class="text-primary">$140.00 USD</strong></div>
+<div><span class="text-on-surface-variant block">Tax Deductible:</span><strong class="text-emerald-400">Yes (Code 179)</strong></div>
+<div><span class="text-on-surface-variant block">Date:</span><strong class="text-on-surface">2025-06-02</strong></div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 16: PAYMENT NEGOTIATOR                                 -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-negotiator">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Autonomous Payment Negotiator</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Strategic counter-offers, payment plan structures, and debt recovery agreements</p>
+</div>
+<div class="glass-panel p-6 rounded-xl space-y-4">
+<div class="flex items-center justify-between">
+<div>
+<span class="text-xs text-error font-semibold uppercase">Pending Resolution</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Acme Corp ($1,500 Overdue Recovery)</h3>
+</div>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold auric-glow" onclick="showToast('Split settlement contract generated: 2x $750 payments.')">
+              Generate 2-Part Payment Plan
+            </button>
+</div>
+<div class="p-4 rounded-lg bg-surface-container-lowest text-xs text-on-surface-variant leading-relaxed font-mono">
+            "We propose splitting the balance into two equal instalments: Part A ($750) payable by June 5, and Part B ($750) by June 19 with complete late fee waiver upon Part A clearance."
+          </div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 17: CLIENT RELATIONSHIP MEMORY                         -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-client-memory">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Client Dossier &amp; Memory Bank</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Institutional records of client preferences, accounting contacts, and behavioral habits</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="glass-panel p-5 rounded-xl space-y-3">
+<div class="flex justify-between items-center">
+<h3 class="text-sm font-semibold text-on-surface">Apex Media Dossier</h3>
+<span class="text-xs text-emerald-400 font-mono">Sentiment: Pristine</span>
+</div>
+<ul class="text-xs text-on-surface-variant space-y-2 list-disc list-inside">
+<li>Prefers invoices sent on the 1st of every month at 9:00 AM EST.</li>
+<li>AP contact: finance@apexmedia.co (Requires PO Number on header).</li>
+<li>Never questions design scope; responds within 3 hours.</li>
+</ul>
+</div>
+<div class="glass-panel p-5 rounded-xl space-y-3">
+<div class="flex justify-between items-center">
+<h3 class="text-sm font-semibold text-on-surface">Acme Corp Dossier</h3>
+<span class="text-xs text-error font-mono">Sentiment: Fragile / Slow AP</span>
+</div>
+<ul class="text-xs text-on-surface-variant space-y-2 list-disc list-inside">
+<li>Always delays until second reminder unless executive is CC'd.</li>
+<li>Approvals require dual sign-off from Sarah Chen and CFO.</li>
+<li>Recommend 100% prepayment on any future sprint.</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 18: TRANSACTIONS & SETTLEMENT LEDGER                   -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-transactions">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Comprehensive Settlement Ledger</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Immutable record of payouts, platform deductions, and net receipts</p>
+</div>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-xs text-on-surface hover:text-primary" onclick="showToast('Exporting filtered transactions ledger to CSV...')">
+            Export CSV
+          </button>
+</div>
+<div class="glass-panel rounded-xl overflow-hidden">
+<table class="w-full text-left text-xs">
+<thead class="bg-surface-container text-on-surface-variant font-label-sm border-b border-outline-variant/20 uppercase tracking-wider">
+<tr>
+<th class="py-3 px-5">Date &amp; Transaction ID</th>
+<th class="py-3 px-5">Counterparty</th>
+<th class="py-3 px-5">Gross</th>
+<th class="py-3 px-5">Fee</th>
+<th class="py-3 px-5">Net Receipt</th>
+<th class="py-3 px-5 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10 text-on-surface font-mono">
+<tr>
+<td class="py-3.5 px-5">2025-05-30 <span class="text-outline block text-[10px]">#TX-990142</span></td>
+<td class="py-3.5 px-5 font-sans font-medium">Apex Media</td>
+<td class="py-3.5 px-5">$12,000.00</td>
+<td class="py-3.5 px-5 text-error">-$24.00</td>
+<td class="py-3.5 px-5 text-primary font-bold">$11,976.00</td>
+<td class="py-3.5 px-5 text-right"><span class="text-emerald-400">Settled</span></td>
+</tr>
+<tr>
+<td class="py-3.5 px-5">2025-05-22 <span class="text-outline block text-[10px]">#TX-990128</span></td>
+<td class="py-3.5 px-5 font-sans font-medium">TechCorp Labs</td>
+<td class="py-3.5 px-5">$3,500.00</td>
+<td class="py-3.5 px-5 text-error">-$101.50</td>
+<td class="py-3.5 px-5 text-primary font-bold">$3,398.50</td>
+<td class="py-3.5 px-5 text-right"><span class="text-emerald-400">Settled</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 19: REPORTS & P&L                                      -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-reports">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">Institutional Reports &amp; P&amp;L</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Consolidated profit and loss statements and invoice aging analyses</p>
+</div>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold auric-glow" onclick="showToast('Generating signed PDF Financial Report...')">
+            Generate Executive PDF
+          </button>
+</div>
+<div class="glass-panel p-6 rounded-xl space-y-4">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">H1 2025 Profit &amp; Loss Overview</h3>
+<div class="space-y-2 text-xs font-mono">
+<div class="flex justify-between py-2 border-b border-outline-variant/20"><span>Total Billed Revenue</span><span class="text-primary font-bold">$128,450.00</span></div>
+<div class="flex justify-between py-2 border-b border-outline-variant/20 text-error"><span>Less Payment Processor Fees</span><span>-$4,380.20</span></div>
+<div class="flex justify-between py-2 border-b border-outline-variant/20 text-error"><span>Less Operating Expenses &amp; SaaS</span><span>-$18,400.00</span></div>
+<div class="flex justify-between py-2 border-b border-outline-variant/20 text-secondary"><span>Tax Shield Set-Aside (28%)</span><span>-$29,587.54</span></div>
+<div class="flex justify-between py-3 font-numeric-metric text-sm font-bold text-emerald-400">
+<span class="font-sans">Net Retained Earnings</span>
+<span>$76,082.26</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ============================================================ -->
+<!-- PAGE 20: SYSTEM SETTINGS & AI POLICY                        -->
+<!-- ============================================================ -->
+<section class="page-view hidden space-y-6" id="page-settings">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-on-surface">System Preferences &amp; AI Guardrails</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Executive profile, API sandbox keys, and autonomous agency policies</p>
+</div>
+<div class="glass-panel p-6 rounded-xl space-y-6">
+<!-- Profile Section -->
+<div>
+<h3 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3">Executive Profile</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+<div>
+<label class="text-on-surface-variant block mb-1">Full Legal Name</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 text-on-surface" type="text" value="Alex Vance"/>
+</div>
+<div>
+<label class="text-on-surface-variant block mb-1">Business VAT / Tax ID</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 font-mono text-on-surface" type="text" value="US-EIN 84-2918492"/>
+</div>
+</div>
+</div>
+<!-- AI Autonomy Policy -->
+<div class="pt-4 border-t border-outline-variant/20">
+<h3 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3">Autonomous AI Agency Level</h3>
+<div class="space-y-3 text-xs">
+<label class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-lowest cursor-pointer">
+<input checked="" class="accent-primary" name="ai-autonomy" type="radio"/>
+<div>
+<strong class="text-on-surface block">Supervised Autonomy (Recommended)</strong>
+<span class="text-on-surface-variant">AI drafts reminders and moves tax allocations but requires 1-click human approval before transmission.</span>
+</div>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-lowest cursor-pointer opacity-70">
+<input class="accent-primary" name="ai-autonomy" type="radio"/>
+<div>
+<strong class="text-on-surface block">Autonomous Pilot</strong>
+<span class="text-on-surface-variant">AI automatically transmits overdue notices and rebalances high-yield treasury without prompt.</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Integrations status -->
+<div class="pt-4 border-t border-outline-variant/20">
+<h3 class="text-xs font-semibold text-on-surface uppercase tracking-wider mb-3">Payment Gateway Integrations</h3>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest text-xs">
+<span class="font-medium text-on-surface">Stripe Connect &amp; ACH</span>
+<span class="text-emerald-400 font-mono">Connected (Live)</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-lowest text-xs mt-2">
+<span class="font-medium text-on-surface">PayPal Commerce Platform</span>
+<span class="text-emerald-400 font-mono">Connected (Live)</span>
+</div>
+</div>
+<div class="pt-2 text-right">
+<button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary text-xs font-semibold auric-glow" onclick="showToast('Settings &amp; AI Autonomy policies persisted to vault.')">
+              Save Preferences
+            </button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- ==================== MODALS & OVERLAYS ==================== -->
+<!-- MODAL 1: NEW INVOICE MODAL (Full Line Item Builder) -->
+<div class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4" id="new-invoice-modal">
+<div class="glass-panel-elevated w-full max-w-2xl rounded-2xl p-6 border border-primary/40 space-y-5 animate-in fade-in zoom-in-95 duration-150">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="receipt">receipt</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Create Institutional Invoice</h3>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="closeModal('new-invoice-modal')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-4 text-xs">
+<div>
+<label class="text-on-surface-variant block mb-1">Client Entity</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 text-on-surface" id="modal-client">
+<option>Horizon Studio</option>
+<option>TechCorp Labs</option>
+<option>Apex Media</option>
+<option>Acme Corp</option>
+</select>
+</div>
+<div>
+<label class="text-on-surface-variant block mb-1">Payment Term</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 text-on-surface">
+<option>Net 15 Days</option>
+<option>Due Upon Receipt</option>
+<option>Net 30 Days</option>
+</select>
+</div>
+</div>
+<div>
+<label class="text-on-surface-variant block text-xs mb-1">Deliverable / Scope Description</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 text-xs text-on-surface" id="modal-desc" type="text" value="Executive Design Sprint &amp; Architectural Guidance"/>
+</div>
+<div class="grid grid-cols-3 gap-4 text-xs font-mono">
+<div>
+<label class="text-on-surface-variant block mb-1">Amount ($ USD)</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg p-2.5 text-on-surface font-bold" id="modal-amount" type="number" value="5000"/>
+</div>
+<div>
+<label class="text-on-surface-variant block mb-1">Tax Auto-Shield (28%)</label>
+<input class="w-full bg-surface-container border border-outline-variant/20 rounded-lg p-2.5 text-secondary" disabled="" type="text" value="$1,400.00"/>
+</div>
+<div>
+<label class="text-on-surface-variant block mb-1">Net Expected</label>
+<input class="w-full bg-surface-container border border-outline-variant/20 rounded-lg p-2.5 text-emerald-400" disabled="" type="text" value="$3,600.00"/>
+</div>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-outline-variant/30">
+<button class="px-4 py-2 rounded-lg bg-surface-container text-xs text-on-surface-variant hover:text-on-surface" onclick="closeModal('new-invoice-modal')">Cancel</button>
+<button class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-semibold text-xs auric-glow" onclick="submitNewInvoice()">
+          Issue &amp; Transmit Invoice
+        </button>
+</div>
+</div>
+</div>
+<!-- MODAL 2: INVOICE INSPECT DRAWER / MODAL -->
+<div class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4" id="invoice-details-modal">
+<div class="glass-panel-elevated w-full max-w-lg rounded-2xl p-6 border border-primary/40 space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface" id="inv-modal-id">#FP-8849</h3>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="closeModal('invoice-details-modal')">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="space-y-2 text-xs">
+<div class="flex justify-between py-1 border-b border-outline-variant/20"><span>Client Entity:</span><strong class="text-on-surface" id="inv-modal-client">Horizon Studio</strong></div>
+<div class="flex justify-between py-1 border-b border-outline-variant/20"><span>Gross Value:</span><strong class="text-primary font-mono" id="inv-modal-amount">$8,500.00</strong></div>
+<div class="flex justify-between py-1 border-b border-outline-variant/20"><span>Current Status:</span><span class="text-secondary font-semibold" id="inv-modal-status">Viewed by Client</span></div>
+<div class="flex justify-between py-1"><span>Payment Channel:</span><span class="font-mono text-on-surface">Stripe ACH Direct</span></div>
+</div>
+<div class="pt-3 flex gap-2">
+<button class="flex-1 py-2 rounded-lg bg-surface-container text-xs text-on-surface hover:text-primary" onclick="copyPaymentLink('#FP-8849'); closeModal('invoice-details-modal');">Copy Link</button>
+<button class="flex-1 py-2 rounded-lg bg-primary text-on-primary text-xs font-semibold" onclick="closeModal('invoice-details-modal')">Done</button>
+</div>
+</div>
+</div>
+<!-- MODAL 3: SUPPORT & SYSTEM TELEMETRY -->
+<div class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4" id="support-modal">
+<div class="glass-panel w-full max-w-md rounded-2xl p-6 border border-outline-variant/40 space-y-4">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Autonomous Concierge Help</h3>
+<button onclick="closeModal('support-modal')"><span class="material-symbols-outlined" data-icon="close">close</span></button>
+</div>
+<p class="text-xs text-on-surface-variant">FreelancePay AI operates with sub-second telemetry across Stripe, PayPal, and European SEPA clearing rails. For private banker routing, trigger Copilot.</p>
+<button class="w-full py-2.5 rounded-lg bg-secondary text-white text-xs font-semibold" onclick="closeModal('support-modal'); navigateTo('page-ai-copilot')">Open Copilot Session</button>
+</div>
+</div>
+<!-- FLOATING TOAST NOTIFICATION CONTAINER -->
+<div class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none" id="toast-container"></div>
+<!-- ==================== LOGIC & ROUTING JAVASCRIPT ==================== -->
+<script>
+    // SPA PAGE NAVIGATION ROUTER
+    function navigateTo(targetPageId) {
+      // Hide all pages
+      const pages = document.querySelectorAll('.page-view');
+      pages.forEach(p => p.classList.add('hidden'));
+
+      // Show targeted page
+      const target = document.getElementById(targetPageId);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      // Update sidebar nav link visual states
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-target') === targetPageId) {
+          link.className = "nav-link flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary";
+        } else {
+          link.className = "nav-link flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors";
+        }
+      });
+
+      // Scroll top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // CURRENCY SWITCHER
+    function setCurrency(curr) {
+      ['USD', 'EUR', 'GBP'].forEach(c => {
+        const btn = document.getElementById(`curr-${c}`);
+        if (c === curr) {
+          btn.className = "px-2.5 py-1 rounded bg-primary text-on-primary font-medium text-xs transition-all";
+        } else {
+          btn.className = "px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-medium text-xs transition-all";
+        }
+      });
+      showToast(`Global currency view switched to ${curr}. Real-time FX parity updated.`);
+    }
+
+    // MODAL HANDLERS
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // TOAST NOTIFICATIONS
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = "px-4 py-3 rounded-xl bg-surface-container-high border border-primary/40 text-on-surface text-xs shadow-2xl flex items-center gap-2.5 animate-in slide-in-from-bottom-3 duration-200 pointer-events-auto auric-glow";
+      toast.innerHTML = `
+        <span class="material-symbols-outlined text-primary text-sm" data-icon="verified">verified</span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // INVOICE CREATION SUBMISSION
+    function submitNewInvoice() {
+      const client = document.getElementById('modal-client').value;
+      const amount = document.getElementById('modal-amount').value;
+      closeModal('new-invoice-modal');
+      showToast(`Invoice for ${client} ($${amount}) minted and transmitted with live tracking beacon.`);
+    }
+
+    // INVOICE PREVIEW MODAL
+    function previewInvoiceModal(id, client, amount, status) {
+      document.getElementById('inv-modal-id').innerText = id;
+      document.getElementById('inv-modal-client').innerText = client;
+      document.getElementById('inv-modal-amount').innerText = amount;
+      document.getElementById('inv-modal-status').innerText = status;
+      openModal('invoice-details-modal');
+    }
+
+    function copyPaymentLink(id) {
+      navigator.clipboard?.writeText(`https://pay.freelancepay.ai/inv/${id.replace('#','')}`);
+      showToast(`Encrypted direct payment link for ${id} copied to clipboard.`);
+    }
+
+    // RESCUE FLOW TRIGGER
+    function triggerRescueFlow(client, amount) {
+      navigateTo('page-cashflow-rescue');
+      showToast(`Rescue Protocol focused on ${client} (${amount}). Recommended actions loaded.`);
+    }
+
+    function executeAllRescueSteps() {
+      showToast('Executing Rescue sequence: AP escalation transmitted, Milestone accelerated, Subscriptions trimmed.');
+    }
+
+    // TONE SELECTOR FOR PAYMENT REMINDERS
+    function setReminderTone(tone) {
+      const p = document.getElementById('tone-polite');
+      const f = document.getElementById('tone-firm');
+      const fin = document.getElementById('tone-final');
+      const subj = document.getElementById('reminder-subject');
+      const body = document.getElementById('reminder-body');
+
+      [p, f, fin].forEach(el => el.className = "px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-medium transition-all");
+
+      if (tone === 'polite') {
+        p.className = "px-2.5 py-1 rounded bg-secondary text-white font-medium transition-all";
+        subj.value = "Friendly Reminder: Invoice #FP-8848 for Acme Corp";
+        body.value = `Hi Sarah,\n\nHope your week is going well! Just sending a gentle note regarding Invoice #FP-8848 ($1,500.00), which was due on May 18.\n\nYou can easily settle this here: https://pay.freelancepay.ai/inv/FP-8848.\n\nWarmly,\nAlex`;
+      } else if (tone === 'firm') {
+        f.className = "px-2.5 py-1 rounded bg-secondary text-white font-medium transition-all";
+        subj.value = "Firm Follow-Up: Overdue Settlement for Invoice #FP-8848 — Acme Corp";
+        body.value = `Hi Sarah,\n\nFollowing up on Invoice #FP-8848 ($1,500.00) which is now 14 days overdue.\n\nPlease process settlement via the secure link today to avoid late fees: https://pay.freelancepay.ai/inv/FP-8848.\n\nBest,\nAlex`;
+      } else if (tone === 'final') {
+        fin.className = "px-2.5 py-1 rounded bg-error text-on-error font-medium transition-all";
+        subj.value = "FINAL NOTICE: Pending Legal Escalation for Overdue Invoice #FP-8848";
+        body.value = `Attention Sarah Chen & Acme Corp Accounts Payable,\n\nInvoice #FP-8848 ($1,500.00) is substantially past maturity. Continued non-payment will trigger automatic contractual interest and referral to third-party recovery.\n\nImmediate link: https://pay.freelancepay.ai/inv/FP-8848.\n\nAlex Vance`;
+      }
+    }
+
+    // AI COPILOT INTERACTION
+    function fillCopilotPrompt(text) {
+      document.getElementById('copilot-user-input').value = text;
+    }
+
+    function sendCopilotMessage() {
+      const input = document.getElementById('copilot-user-input');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const feed = document.getElementById('copilot-messages');
+
+      // Append user bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = "flex items-start gap-3 justify-end";
+      userBubble.innerHTML = `
+        <div class="bg-primary/10 border border-primary/20 p-3.5 rounded-xl rounded-tr-none max-w-xl text-xs text-on-surface">
+          <p>${query}</p>
+        </div>
+        <div class="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xs shrink-0">AV</div>
+      `;
+      feed.appendChild(userBubble);
+      input.value = '';
+
+      // Append AI response
+      setTimeout(() => {
+        const aiBubble = document.createElement('div');
+        aiBubble.className = "flex items-start gap-3 animate-in fade-in duration-200";
+        aiBubble.innerHTML = `
+          <div class="w-8 h-8 rounded-lg bg-secondary-container flex items-center justify-center text-white shrink-0">
+            <span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+          </div>
+          <div class="bg-surface-container-high/80 border border-secondary/20 p-4 rounded-xl rounded-tl-none max-w-2xl text-xs space-y-2 text-on-surface">
+            <p class="font-medium text-secondary">Autonomous Analysis Complete</p>
+            <p>I have processed your query regarding <em>"${query}"</em> against your Stripe accounts, ongoing milestones, and quarterly tax shield. Calculated certainty is <strong>96.8%</strong>.</p>
+            <div class="p-2.5 rounded bg-surface-container-lowest font-mono text-[11px] text-primary">
+              ✓ Telemetry verified • Zero balance risk detected
+            </div>
+          </div>
+        `;
+        feed.appendChild(aiBubble);
+        feed.scrollTop = feed.scrollHeight;
+      }, 500);
+    }
+
+    function clearChat() {
+      showToast('Copilot context buffer cleared.');
+    }
+
+    // WHAT-IF SLIDER SIMULATION
+    function updateWhatIfSim() {
+      const rate = document.getElementById('rate-slider').value;
+      const delay = document.getElementById('delay-slider').value;
+      const churn = document.getElementById('churn-slider').value;
+
+      document.getElementById('rate-slider-val').innerText = `+${rate}%`;
+      document.getElementById('delay-slider-val').innerText = `${delay} Days`;
+      document.getElementById('churn-slider-val').innerText = `${churn} Client${churn > 1 ? 's' : ''}`;
+
+      // Recalculate hypothetical metric
+      const baseNet = 128450;
+      const rateGain = baseNet * (rate / 100);
+      const churnLoss = churn * 14200;
+      const finalVal = Math.round(baseNet + rateGain - churnLoss);
+
+      document.getElementById('sim-net').innerText = `$${finalVal.toLocaleString()}.00`;
+      const runwayEst = (finalVal / 18500).toFixed(1);
+      document.getElementById('sim-runway').innerText = `${runwayEst} Months`;
+    }
+
+    function resetWhatIfSliders() {
+      document.getElementById('rate-slider').value = 15;
+      document.getElementById('delay-slider').value = 20;
+      document.getElementById('churn-slider').value = 1;
+      updateWhatIfSim();
+    }
+
+    // OCR DOCUMENT SCAN SIMULATION
+    function simulateDocumentScan() {
+      showToast('Document scanning initiated... Optical character recognition in progress.');
+      setTimeout(() => {
+        showToast('Receipt parsed with 99.1% confidence. Tax classification code 179 applied.');
+      }, 1000);
+    }
+
+    function simulateAIParsedInvoice() {
+      const val = document.getElementById('copilot-invoice-input').value;
+      if (!val) {
+        showToast('Please type an instruction to parse into an invoice.');
+        return;
+      }
+      showToast('Natural language converted to structured invoice draft. Stored in Drafts tab.');
+      navigateTo('page-invoices');
+    }
+
+    function filterInvoiceTab(tab) {
+      showToast(`Showing invoices filtered by state: "${tab.toUpperCase()}"`);
+    }
+  </script>
+</body></html>

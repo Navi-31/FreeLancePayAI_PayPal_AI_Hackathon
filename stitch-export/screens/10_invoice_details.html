@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Invoice #FP-8848 • FreelancePay AI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#e4e1ea",
+            "tertiary-container": "#ff8dd2",
+            "secondary-container": "#561cc1",
+            "inverse-primary": "#795902",
+            "error-container": "#93000a",
+            "outline-variant": "#4e4637",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary-fixed": "#ffdea0",
+            "surface-container-low": "#1b1b21",
+            "error": "#ffb4ab",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-tint": "#ebc166",
+            "tertiary-fixed-dim": "#ffaedb",
+            "outline": "#9a8f7e",
+            "surface-container-high": "#2a2930",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#3b0092",
+            "surface-variant": "#35343b",
+            "on-tertiary-fixed": "#3c002b",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "on-secondary-fixed-variant": "#5417be",
+            "primary-fixed-dim": "#ebc166",
+            "surface": "#131319",
+            "primary": "#f4c86d",
+            "surface-container-highest": "#35343b",
+            "inverse-on-surface": "#303036",
+            "primary-container": "#d6ad55",
+            "on-primary": "#402d00",
+            "on-primary-fixed": "#261a00",
+            "surface-bright": "#39383f",
+            "on-surface-variant": "#d1c5b2",
+            "on-tertiary": "#610048",
+            "secondary": "#d0bcff",
+            "on-primary-container": "#594100",
+            "secondary-fixed": "#e9ddff",
+            "surface-container": "#1f1f25",
+            "tertiary-fixed": "#ffd8eb",
+            "on-tertiary-fixed-variant": "#880067",
+            "background": "#131319",
+            "on-error": "#690005",
+            "surface-dim": "#131319",
+            "on-surface": "#e4e1ea",
+            "tertiary": "#ffbadf",
+            "on-tertiary-container": "#850065"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "headline-lg": ["Geist"],
+            "display-mobile": ["Geist"],
+            "body-md": ["Inter"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-md": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-sm": ["Geist"],
+            "label-md": ["Geist"],
+            "numeric-metric": ["Geist"],
+            "body-sm": ["Inter"],
+            "display": ["Geist"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen antialiased selection:bg-primary-container selection:text-on-primary">
+<!-- SIDEBAR NAVIGATION (Shared Component Anchor) -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm border-r border-outline-variant/30 w-64">
+<div>
+<!-- Brand Header -->
+<div class="flex items-center gap-3 px-3 py-4 mb-4">
+<div class="w-10 h-10 rounded-xl bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary dark:text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-outline tracking-wider uppercase">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Copilot Action CTA -->
+<div class="px-2 mb-6">
+<button class="w-full py-2.5 px-3 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-label-md text-label-md flex items-center justify-between hover:bg-surface-container-high/80 transition-all duration-150 active:scale-[0.98]">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="bolt">bolt</span>
+              Trigger Copilot
+            </span>
+<span class="px-1.5 py-0.5 rounded text-outline bg-surface-container-highest font-label-sm text-label-sm">⌘K</span>
+</button>
+</div>
+<!-- Main Navigation Links -->
+<nav class="space-y-1 px-2">
+<!-- Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="dashboard">dashboard</span>
+<span>Overview</span>
+</a>
+<!-- Payments (Active Context for Invoices) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-primary" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="flex-1">Payments</span>
+<span class="px-2 py-0.5 rounded-full text-on-primary-fixed bg-primary text-on-primary font-label-sm text-label-sm leading-none">1 Overdue</span>
+</a>
+<!-- Intelligence -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="auto_awesome">auto_awesome</span>
+<span>Intelligence</span>
+</a>
+<!-- Treasury -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="account_balance">account_balance</span>
+<span>Treasury</span>
+</a>
+<!-- Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="handyman">handyman</span>
+<span>Tools</span>
+</a>
+<!-- System -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="settings">settings</span>
+<span>System</span>
+</a>
+</nav>
+</div>
+<!-- Footer Rail Utility -->
+<div class="pt-4 border-t border-outline-variant/30 px-2 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="shield_lock">shield_lock</span>
+<span>Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-outline" data-icon="terminal">terminal</span>
+<span>Telemetry Logs</span>
+</a>
+<div class="px-3 py-3 mt-2 bg-surface-container rounded-lg border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Tax Shield Active</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">99.98%</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- TOP UTILITY APP BAR (Shared Component Anchor) -->
+<header class="docked full-width top-0 sticky z-30 bg-surface/80 backdrop-blur-2xl border-b border-outline-variant/30 pl-64">
+<div class="flex items-center justify-between px-space-lg py-space-sm w-full">
+<!-- Breadcrumb & Back Action -->
+<div class="flex items-center gap-4">
+<a class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-base" data-icon="arrow_back">arrow_back</span>
+<span>Back to Invoices</span>
+</a>
+<div class="h-4 w-px bg-outline-variant/40"></div>
+<div class="flex items-center gap-2 font-label-md text-label-md">
+<span class="text-on-surface-variant">Invoices</span>
+<span class="text-outline">/</span>
+<span class="text-primary font-medium">#FP-8848 (Acme Corp)</span>
+</div>
+</div>
+<!-- Header Center Links & Utility Search -->
+<div class="hidden xl:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Yield Radar</a>
+<a class="text-primary font-medium border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Contracts</a>
+</div>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center gap-3">
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-1.5 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+<span>Download PDF</span>
+</button>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-1.5 transition-all duration-150 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="edit">edit</span>
+<span>Edit Invoice</span>
+</button>
+<button class="px-4 py-1.5 rounded-lg bg-surface-container-high border border-secondary/40 text-secondary hover:bg-secondary/10 transition-colors font-label-md text-label-md flex items-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined text-base" data-icon="auto_awesome">auto_awesome</span>
+<span>Send AI Reminder</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/30 mx-1"></div>
+<!-- Currency & Profile -->
+<span class="px-2 py-1 rounded bg-surface-container font-label-sm text-label-sm text-outline">USD / EUR</span>
+<div class="w-8 h-8 rounded-full border border-primary/60 bg-surface-container-high flex items-center justify-center text-primary font-label-sm text-label-sm font-semibold">
+          AV
+        </div>
+</div>
+</div>
+</header>
+<!-- MAIN VIEW CANVAS (Offset for docked sidebar) -->
+<main class="pl-64 min-h-screen pb-16 bg-surface">
+<div class="max-w-[1520px] mx-auto px-8 pt-8 space-y-8">
+<!-- HEADER EXECUTIVE SUMMARY BLOCK -->
+<section class="bg-surface-container-low/80 backdrop-blur-2xl rounded-xl border border-white/5 p-6 shadow-2xl relative overflow-hidden">
+<!-- Ambient Auric & Violet Light Highlights -->
+<div class="absolute -top-24 -left-24 w-72 h-72 bg-secondary-container/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -right-24 w-72 h-72 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+<div class="space-y-2">
+<div class="flex items-center gap-3">
+<h1 class="font-headline-lg text-headline-lg font-semibold text-on-surface tracking-tight">Invoice #FP-8848</h1>
+<!-- Overdue Status Badge -->
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-error-container/40 border border-error/50 text-error font-label-sm text-label-sm tracking-wider uppercase">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span>OVERDUE (14 DAYS)</span>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant flex items-center gap-2">
+<span class="text-on-surface font-medium">Acme Corp</span>
+<span class="text-outline">•</span>
+<span>Brand Architecture Q2 Retainer & Vector Identity</span>
+</p>
+<div class="flex flex-wrap items-center gap-6 pt-1 text-on-surface-variant font-label-md text-label-md">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-outline" data-icon="calendar_today">calendar_today</span>
+<span>Issued: <strong class="text-on-surface font-medium">Oct 2, 2025</strong></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-error" data-icon="event_busy">event_busy</span>
+<span>Due Date: <strong class="text-error font-medium">Oct 16, 2025 (14 Days Overdue)</strong></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-outline" data-icon="pin">pin</span>
+<span>PO Reference: <strong class="text-on-surface font-medium">ACM-2025-098</strong></span>
+</div>
+</div>
+</div>
+<!-- Executive Action Cluster -->
+<div class="flex flex-wrap items-center gap-3">
+<button class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary-fixed to-primary text-on-primary-fixed font-label-md text-label-md font-semibold shadow-lg hover:shadow-primary/20 transition-all duration-150 active:scale-[0.98] flex items-center gap-2">
+<span class="material-symbols-outlined text-base" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span>Rescue Cashflow</span>
+</button>
+<button class="px-4 py-2.5 rounded-lg bg-secondary-container text-on-secondary-container border border-secondary/40 font-label-md text-label-md font-medium hover:bg-secondary-container/80 transition-all duration-150 active:scale-[0.98] flex items-center gap-2">
+<span class="material-symbols-outlined text-base" data-icon="auto_awesome">auto_awesome</span>
+<span>Trigger AI Follow-up</span>
+</button>
+<button class="px-4 py-2.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-base" data-icon="content_copy">content_copy</span>
+<span>Duplicate</span>
+</button>
+<button class="px-4 py-2.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md flex items-center gap-2">
+<span class="material-symbols-outlined text-base" data-icon="check_circle">check_circle</span>
+<span>Mark as Paid</span>
+</button>
+</div>
+</div>
+</section>
+<!-- AI BEHAVIORAL RISK & TELEMETRY INSIGHT BANNER -->
+<section class="rounded-xl border border-secondary/30 bg-gradient-to-r from-surface-container-low via-surface-container to-surface-container-low p-5 relative overflow-hidden shadow-xl">
+<div class="absolute inset-0 bg-secondary/5 backdrop-blur-xl"></div>
+<div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/30 border border-secondary/40 flex items-center justify-center text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="psychology" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="font-label-sm text-label-sm tracking-wider uppercase text-secondary font-semibold">AI Risk & Behavioral Analysis</span>
+<span class="px-2 py-0.2 rounded text-[11px] bg-primary/20 text-primary border border-primary/30">Delayed Sign-Off Detected</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed max-w-4xl">
+                Invoice #FP-8848 was viewed <strong class="text-primary font-medium">4 times</strong> by AP department on Oct 14, but payment release stalled in manager sign-off queue. Historical settlement delay for Acme Corp is <strong class="text-on-surface font-medium">18.2 days</strong>. Predicted settlement within <strong class="text-primary font-semibold">72h</strong> if Follow-Up Level 2 is dispatched.
+              </p>
+</div>
+</div>
+<div class="shrink-0">
+<button class="px-4 py-2 rounded-lg bg-surface-container-high border border-secondary text-secondary hover:bg-secondary hover:text-on-secondary transition-all duration-150 font-label-md text-label-md font-medium shadow-sm flex items-center gap-2">
+<span>Review Recommended Notice</span>
+<span class="material-symbols-outlined text-base" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- 2-COLUMN MAIN CONTENT GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN (65% width => 8 cols) -->
+<div class="lg:col-span-8 space-y-6">
+<!-- INVOICE PAPER CARD (Level 1 Surface Glass) -->
+<div class="bg-surface-container-lowest/80 backdrop-blur-2xl rounded-xl border border-white/5 p-8 shadow-2xl relative">
+<div class="flex flex-col md:flex-row justify-between items-start border-b border-outline-variant/30 pb-8 gap-6">
+<!-- Issuer Info -->
+<div class="space-y-1.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Issuer / Remit To</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Alex Vance Studio</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Austin, TX • alex@vance.design</p>
+<div class="inline-flex items-center gap-2 font-label-sm text-label-sm text-outline pt-1">
+<span>Tax ID: XX-XXXX901</span>
+<span>•</span>
+<span>DUNS: 88-109-4412</span>
+</div>
+</div>
+<!-- Bill To & Terms -->
+<div class="space-y-1.5 md:text-right">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Billed To</span>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Acme Corp</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Attn: Sarah Jenkins, VP Brand</p>
+<p class="font-body-sm text-body-sm text-outline">billing@acmecorp.com • New York, NY</p>
+<div class="pt-2 flex flex-col md:items-end gap-1">
+<span class="px-2.5 py-0.5 rounded bg-surface-container border border-outline-variant/40 font-label-sm text-label-sm text-primary">Terms: Net-14</span>
+<span class="font-label-sm text-label-sm text-outline">PayPal Invoice Ref: #PAYPAL-INV-994182</span>
+</div>
+</div>
+</div>
+<!-- Line Items Table -->
+<div class="pt-6">
+<h4 class="font-label-sm text-label-sm uppercase tracking-wider text-outline mb-4">Itemized Billable Deliverables</h4>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30 text-outline font-label-sm text-label-sm">
+<th class="py-3 pr-4 font-medium uppercase tracking-wider">Description</th>
+<th class="py-3 px-4 font-medium uppercase tracking-wider text-right">Units / Rate</th>
+<th class="py-3 pl-4 font-medium uppercase tracking-wider text-right">Total</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-md text-body-md">
+<!-- Item 1 -->
+<tr>
+<td class="py-4 pr-4">
+<div class="font-medium text-on-surface">Brand Strategy Discovery & Stakeholder Alignment</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Executive leadership interviews, competitive audit matrix, and positioning thesis</div>
+</td>
+<td class="py-4 px-4 text-right font-numeric-metric text-base text-on-surface-variant whitespace-nowrap">
+                        25 hrs @ $175.00/hr
+                      </td>
+<td class="py-4 pl-4 text-right font-headline-sm text-headline-sm font-medium text-on-surface whitespace-nowrap">
+                        $4,375.00
+                      </td>
+</tr>
+<!-- Item 2 -->
+<tr>
+<td class="py-4 pr-4">
+<div class="font-medium text-on-surface">Visual Identity Guidelines & Vector Design</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Primary marks, responsive lockups, dark/light variations, and master asset pack</div>
+</td>
+<td class="py-4 px-4 text-right font-numeric-metric text-base text-on-surface-variant whitespace-nowrap">
+                        20 hrs @ $175.00/hr
+                      </td>
+<td class="py-4 pl-4 text-right font-headline-sm text-headline-sm font-medium text-on-surface whitespace-nowrap">
+                        $3,500.00
+                      </td>
+</tr>
+<!-- Item 3 -->
+<tr>
+<td class="py-4 pr-4">
+<div class="font-medium text-on-surface">Typography Licensing & Color Palette Master</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Commercial desktop/web webfont licenses & chromatic lab spectrum definitions</div>
+</td>
+<td class="py-4 px-4 text-right font-numeric-metric text-base text-on-surface-variant whitespace-nowrap">
+                        Flat Rate
+                      </td>
+<td class="py-4 pl-4 text-right font-headline-sm text-headline-sm font-medium text-on-surface whitespace-nowrap">
+                        $1,500.00
+                      </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Financial Breakdown Card -->
+<div class="mt-8 pt-6 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between gap-6 bg-surface-container/40 p-6 rounded-xl border border-outline-variant/20">
+<!-- Telemetry Metadata Note -->
+<div class="max-w-xs space-y-3">
+<div class="flex items-center gap-2 text-primary font-label-sm text-label-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-base" data-icon="lock">lock</span>
+<span>Autonomous Clearing Pipeline</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  Upon settlement into Vance Vault, system automatically executes fractional splitting via Smart Rules. Tax reserves are isolated instantly.
+                </p>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="verified_user">verified_user</span>
+<span>End-to-End Escrow Protection</span>
+</div>
+</div>
+<!-- Mathematical Breakdown -->
+<div class="w-full md:w-80 space-y-3">
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>Subtotal</span>
+<span class="font-medium text-on-surface">$9,375.00</span>
+</div>
+<div class="flex justify-between items-center font-body-md text-body-md text-on-surface-variant">
+<span>Less Deposit Paid (Oct 2)</span>
+<span class="font-medium text-primary">-$7,875.00</span>
+</div>
+<div class="h-px bg-outline-variant/30 my-2"></div>
+<div class="flex justify-between items-baseline pt-1">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-surface">Current Amount Due</span>
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">$1,500.00 <span class="font-label-sm text-label-sm text-outline">USD</span></span>
+</div>
+<!-- Deductions & Autonomous Calculations -->
+<div class="pt-3 space-y-2 text-outline font-label-sm text-label-sm border-t border-outline-variant/20">
+<div class="flex justify-between items-center">
+<span>Projected PayPal Fee (2.9%):</span>
+<span class="text-on-surface-variant">$43.80</span>
+</div>
+<div class="flex justify-between items-center">
+<span>Net Estimative Receivable:</span>
+<span class="text-on-surface font-medium">$1,456.20</span>
+</div>
+<div class="flex justify-between items-center p-2 rounded bg-surface-container-high border border-outline-variant/30 text-on-surface">
+<span class="flex items-center gap-1.5 text-secondary font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="shield">shield</span>
+                      Tax Shield (20% reserved):
+                    </span>
+<span class="font-semibold text-secondary">$291.24</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RECENT CONTRACT ATTACHMENTS & AUDIT STAMP -->
+<div class="bg-surface-container-low rounded-xl border border-white/5 p-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-2xl" data-icon="description">description</span>
+</div>
+<div>
+<h5 class="font-headline-sm text-headline-sm font-medium text-on-surface">Master Service Agreement (MSA) — Addendum C</h5>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Digitally countersigned by Sarah Jenkins on Oct 1, 2025 • SHA-256 Verified</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-md text-label-md flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="visibility">visibility</span>
+<span>View MSA</span>
+</button>
+</div>
+</div>
+<!-- RIGHT COLUMN (35% width => 4 cols) -->
+<div class="lg:col-span-4 space-y-6">
+<!-- FAST ACTION PANEL (Executive Quick-Triggers) -->
+<div class="bg-surface-container-low/90 backdrop-blur-2xl rounded-xl border border-white/5 p-6 shadow-xl space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Fast Actions</h3>
+<span class="material-symbols-outlined text-primary text-base" data-icon="bolt">bolt</span>
+</div>
+<div class="space-y-2.5">
+<button class="w-full py-3 px-4 rounded-lg bg-secondary-container/40 border border-secondary/40 text-on-secondary-container hover:bg-secondary-container/60 transition-all font-label-md text-label-md font-medium flex items-center justify-between group active:scale-[0.98]">
+<div class="flex items-center gap-3 text-left">
+<span class="material-symbols-outlined text-secondary" data-icon="mark_email_unread">mark_email_unread</span>
+<span>Send Firm AI Follow-up Email</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-3 px-4 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-container-high transition-all font-label-md text-label-md flex items-center justify-between group active:scale-[0.98]">
+<div class="flex items-center gap-3 text-left">
+<span class="material-symbols-outlined text-primary" data-icon="percent">percent</span>
+<span>Issue PayPal Late Fee Notice (+1.5%)</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-3 px-4 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-container-high transition-all font-label-md text-label-md flex items-center justify-between group active:scale-[0.98]">
+<div class="flex items-center gap-3 text-left">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="call_split">call_split</span>
+<span>Propose Split Settlement ($750 now / $750 in 14d)</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- PAYMENT METHOD & ROUTING BOX -->
+<div class="bg-surface-container-low/90 backdrop-blur-2xl rounded-xl border border-white/5 p-6 shadow-xl space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Payment & Routing</h3>
+<span class="material-symbols-outlined text-primary text-base" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<div class="space-y-3">
+<div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/20 space-y-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Target Settlement Rail</span>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-md text-label-md font-medium text-on-surface">PayPal Business Vault</span>
+<span class="px-2 py-0.5 rounded text-[11px] bg-primary/10 text-primary font-medium border border-primary/20">Connected</span>
+</div>
+<div class="font-body-sm text-body-sm text-outline truncate pt-0.5">
+                  vance-design-vault@paypal.com
+                </div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container border border-outline-variant/20 font-label-md text-label-md">
+<span class="text-on-surface-variant">Instant Payout Eligible</span>
+<span class="text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+                  Yes (Zero hold)
+                </span>
+</div>
+</div>
+</div>
+<!-- LIVE AUDIT & ACTIVITY TIMELINE -->
+<div class="bg-surface-container-low/90 backdrop-blur-2xl rounded-xl border border-white/5 p-6 shadow-xl space-y-5">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Live Audit & Activity</h3>
+<span class="material-symbols-outlined text-outline text-base" data-icon="history">history</span>
+</div>
+<!-- Vertical Timeline Track -->
+<div class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-outline-variant/30">
+<!-- Timeline Item 1 -->
+<div class="relative">
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-outline border-2 border-surface"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Oct 2, 2025</span>
+<span class="font-label-sm text-label-sm text-outline">09:41 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Invoice Created & Dispatched via PayPal Business API
+                </p>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative">
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-outline border-2 border-surface"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Oct 4, 2025</span>
+<span class="font-label-sm text-label-sm text-outline">14:18 PM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Delivered to Sarah Jenkins (Opened and verified)
+                </p>
+</div>
+<!-- Timeline Item 3 -->
+<div class="relative">
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-secondary border-2 border-surface"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-secondary">Oct 14, 2025</span>
+<span class="font-label-sm text-label-sm text-outline">11:02 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">
+                  Viewed by AP Controller (IP: New York, NY • Session ID: #AP-88)
+                </p>
+</div>
+<!-- Timeline Item 4 -->
+<div class="relative">
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-error border-2 border-surface"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-error">Oct 16, 2025</span>
+<span class="font-label-sm text-label-sm text-error/80">Net-14 Reached</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Payment Due Date Reached (Zero payment received)
+                </p>
+</div>
+<!-- Timeline Item 5 -->
+<div class="relative">
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-outline border-2 border-surface"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Oct 22, 2025</span>
+<span class="font-label-sm text-label-sm text-outline">Polite Nudge</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Polite Automated Reminder sent (Delivered to AP Queue)
+                </p>
+</div>
+<!-- Timeline Item 6 (Active / Today) -->
+<div class="relative">
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-error animate-ping"></div>
+<div class="absolute -left-6 top-1.5 w-2.5 h-2.5 rounded-full bg-error border-2 border-surface"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-error">Today</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] bg-error-container text-on-error-container font-semibold uppercase">Escalated</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">
+                  Overdue Flag escalated to Rescue Mode. Algorithmic cash recovery active.
+                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

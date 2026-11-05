@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — Project Profitability Intelligence</title>
+<!-- Google Fonts & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS & Theme Setup -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#e4e1ea",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "surface-container-low": "#1b1b21",
+            "on-tertiary-fixed": "#3c002b",
+            "error": "#ffb4ab",
+            "surface-bright": "#39383f",
+            "inverse-primary": "#795902",
+            "tertiary": "#ffbadf",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-dim": "#131319",
+            "surface-container-high": "#2a2930",
+            "on-surface": "#e4e1ea",
+            "background": "#131319",
+            "secondary": "#d0bcff",
+            "secondary-container": "#561cc1",
+            "on-secondary-fixed": "#22005c",
+            "secondary-fixed": "#e9ddff",
+            "on-secondary-fixed-variant": "#5417be",
+            "on-primary-container": "#594100",
+            "on-background": "#e4e1ea",
+            "outline": "#9a8f7e",
+            "surface-container": "#1f1f25",
+            "surface": "#131319",
+            "primary-fixed-dim": "#ebc166",
+            "surface-container-highest": "#35343b",
+            "primary": "#f4c86d",
+            "tertiary-container": "#ff8dd2",
+            "inverse-on-surface": "#303036",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary-container": "#d6ad55",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#880067",
+            "error-container": "#93000a",
+            "on-primary-fixed": "#261a00",
+            "tertiary-fixed-dim": "#ffaedb",
+            "on-primary": "#402d00",
+            "outline-variant": "#4e4637",
+            "on-surface-variant": "#d1c5b2",
+            "on-tertiary": "#610048",
+            "surface-tint": "#ebc166",
+            "on-tertiary-container": "#850065",
+            "surface-variant": "#35343b",
+            "on-error": "#690005",
+            "primary-fixed": "#ffdea0",
+            "tertiary-fixed": "#ffd8eb",
+            "on-secondary": "#3b0092"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "gutter": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Geist"],
+            "body-sm": ["Inter"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "display": ["Geist"],
+            "display-mobile": ["Geist"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "label-sm": ["Geist"],
+            "numeric-metric": ["Geist"],
+            "headline-md": ["Geist"]
+          },
+          "fontSize": {
+            "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "body-sm": ["0.8125rem", { lineHeight: "1.25rem", letterSpacing: "0.005em", fontWeight: "400" }],
+            "label-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.01em", fontWeight: "500" }],
+            "body-md": ["0.9375rem", { lineHeight: "1.5rem", letterSpacing: "0", fontWeight: "400" }],
+            "display": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "display-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "headline-sm": ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.015em", fontWeight: "500" }],
+            "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "label-sm": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "numeric-metric": ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #0e0e14;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #2a2930;
+      border-radius: 9999px;
+    }
+    .glow-violet {
+      box-shadow: 0 0 35px -8px rgba(150, 101, 255, 0.28);
+    }
+    .glow-gold {
+      box-shadow: 0 16px 40px -15px rgba(214, 173, 85, 0.18);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen overflow-x-hidden selection:bg-primary selection:text-on-primary">
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT 1: SideNavBar (Fixed Left Rail)                          -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm border-r border-outline-variant/30 w-64">
+<!-- Top Brand Header -->
+<div class="flex flex-col gap-4 px-2 pt-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-container p-[1px] flex items-center justify-center glow-gold">
+<div class="w-full h-full bg-surface-container-lowest rounded-[11px] flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Copilot Primary Trigger CTA -->
+<button class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-gradient-to-r from-secondary-container/50 to-surface-container-high border border-secondary/30 text-on-surface font-label-md text-label-md hover:border-secondary/60 transition-all duration-150 active:scale-[0.98] glow-violet group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-medium text-secondary">Trigger Copilot</span>
+</div>
+<kbd class="text-[10px] font-label-sm text-on-surface-variant bg-surface-container-lowest px-1.5 py-0.5 rounded border border-outline-variant/40">⌘K</kbd>
+</button>
+</div>
+<!-- Main Navigation Cluster -->
+<!-- Mapping Rule: User is on Intelligence -> Project Profitability. Active Tab = 'Intelligence' -->
+<nav class="flex flex-col gap-1 my-3 overflow-y-auto custom-scroll pr-1">
+<!-- Tab 0: Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#overview">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- Tab 1: Payments -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#payments">
+<span class="material-symbols-outlined text-xl">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- Tab 2: Intelligence (ACTIVE PER SPEC) -->
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary transition-all duration-150 active:scale-[0.98]" href="#intelligence">
+<span class="material-symbols-outlined text-xl text-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md flex-1">Intelligence</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</a>
+<!-- Sub-navigation under Intelligence -->
+<div class="pl-8 pr-1 py-1 flex flex-col gap-1">
+<a class="flex items-center justify-between py-1.5 px-2.5 rounded text-primary bg-primary/10 border-l border-primary font-label-sm text-label-sm font-semibold" href="#profitability">
+<span>Project Profitability</span>
+<span class="material-symbols-outlined text-xs">arrow_right</span>
+</a>
+<a class="flex items-center py-1.5 px-2.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container/40 font-label-sm text-label-sm transition-colors" href="#yield-radar">
+<span>Yield Radar</span>
+</a>
+<a class="flex items-center py-1.5 px-2.5 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container/40 font-label-sm text-label-sm transition-colors" href="#tax-shield">
+<span>Tax Shield AI</span>
+</a>
+</div>
+</div>
+<!-- Tab 3: Treasury -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#treasury">
+<span class="material-symbols-outlined text-xl">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- Tab 4: Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#tools">
+<span class="material-symbols-outlined text-xl">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- Tab 5: System -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#system">
+<span class="material-symbols-outlined text-xl">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+</nav>
+<!-- Sidebar Footer Cluster -->
+<div class="flex flex-col gap-2 pt-3 border-t border-outline-variant/30">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 font-label-sm text-label-sm transition-colors" href="#vault">
+<span class="material-symbols-outlined text-lg">shield_lock</span>
+<span>Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 font-label-sm text-label-sm transition-colors" href="#telemetry">
+<span class="material-symbols-outlined text-lg">terminal</span>
+<span>Telemetry Logs</span>
+</a>
+<!-- Live System Metric Pill -->
+<div class="mt-1 px-3 py-2 bg-surface-container-low rounded-lg border border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Model Sync</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-medium">99.98%</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT 2: TopNavBar (Docked Sticky Header)                      -->
+<!-- ========================================================================= -->
+<header class="docked full-width top-0 sticky z-30 bg-surface/80 backdrop-blur-2xl shadow-sm border-b border-outline-variant/30">
+<div class="flex items-center justify-between px-space-lg py-space-sm w-full pl-72">
+<!-- Left: Breadcrumb & Search -->
+<div class="flex items-center gap-6 flex-1 max-w-xl">
+<!-- Breadcrumb Indicator -->
+<div class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
+<span class="hover:text-on-surface transition-colors cursor-pointer">Intelligence</span>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-medium">Project Profitability</span>
+</div>
+<!-- Global In-Context Search -->
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">search</span>
+<input class="w-full bg-surface-container-lowest/80 text-on-surface text-label-sm font-label-sm pl-9 pr-3 py-1.5 rounded-lg border border-outline-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 placeholder:text-on-surface-variant/60" placeholder="Search telemetry, contracts, clients..." type="text"/>
+</div>
+</div>
+<!-- Right: Sub-nav links, Currency Toggle, Icon Actions & CTAs -->
+<div class="flex items-center gap-4">
+<!-- Desktop Nav Links -->
+<nav class="hidden xl:flex items-center gap-5 mr-2">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#treasury-stream">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#yield-radar-nav">Yield Radar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#tax-shield-nav">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#contracts-nav">Contracts</a>
+</nav>
+<!-- Currency Switcher Pill -->
+<div class="flex items-center bg-surface-container-low p-1 rounded-lg border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2 py-0.5 rounded bg-surface-container-high text-primary font-medium shadow-xs">USD</button>
+<span class="text-outline-variant px-0.5">/</span>
+<button class="px-2 py-0.5 rounded text-on-surface-variant hover:text-on-surface transition-colors">EUR</button>
+</div>
+<!-- Icon Action Cluster -->
+<div class="flex items-center gap-1 border-l border-outline-variant/30 pl-3">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-lg">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-surface"></span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-secondary hover:text-secondary-fixed hover:bg-surface-container transition-colors" title="Instant Copilot Execution">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Knowledge Base">
+<span class="material-symbols-outlined text-lg">help</span>
+</button>
+</div>
+<!-- Trailing Primary Action (Execute Payout) -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-md text-label-md font-semibold shadow-md hover:brightness-105 active:scale-[0.98] transition-all glow-gold">
+<span class="material-symbols-outlined text-lg">bolt</span>
+<span>Execute Payout</span>
+</button>
+<!-- Executive User Profile Avatar with Gold Status Ring -->
+<div class="flex items-center pl-2">
+<div class="relative cursor-pointer group">
+<div class="w-9 h-9 rounded-full ring-2 ring-primary/80 ring-offset-2 ring-offset-surface overflow-hidden bg-surface-container-high flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A distinguished executive portrait of a private wealth consultant with sharp cinematic rim lighting in an obsidian minimalist penthouse office. Deep black and champagne gold tones prevail, projecting extreme elegance, sovereign autonomy, and institutional precision with ultra subtle reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7MjWl71wRL1NGvBSyUZX9RbPjGVmtfjTMjIpCKWonKEPIm7YpRn5wbxR-6AvzGbsIDeoju1rr8Qn_F_7hRdNgA2eHRD0BngByZPe74fIiP14zt9N7AAfKcQOho3fgbLCBkbIbS8uZfG39bN_jQUf9o9cGMX5mqtpqlROb2UbHvvXhgT9b8xdQguAyy9OTk0Lmyt2-aPr198sZv9D2JVWQ_bHTYyq4UjsHcIHfPBR3"/>
+</div>
+<div class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-surface"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE CANVAS                                                     -->
+<!-- ========================================================================= -->
+<main class="pl-72 pr-space-lg py-space-lg max-w-[1600px] flex flex-col gap-space-xl">
+<!-- 1. HEADER SECTION & TELEMETRY CONTROLS -->
+<section class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center gap-3">
+<h1 class="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface">
+            Project Profitability Intelligence
+          </h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/30 border border-secondary/40 text-secondary font-label-sm text-label-sm glow-violet">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            Real-Time Margin Telemetry
+          </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+          Discover which projects drive genuine profit, audit hidden cost leakage, and calibrate effective hourly yield across institutional engagements.
+        </p>
+</div>
+<!-- Action Group -->
+<div class="flex items-center flex-wrap gap-2.5">
+<!-- Client Filter Dropdown -->
+<div class="relative">
+<button class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm text-primary">domain</span>
+<span>All Clients (7)</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">expand_more</span>
+</button>
+</div>
+<!-- Date Range Filter -->
+<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm text-primary">calendar_today</span>
+<span>YTD 2025</span>
+<span class="text-xs text-on-surface-variant">Jan 1 – Present</span>
+</div>
+<!-- Log Hours & Expenses Primary Button -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-high border border-primary/40 hover:border-primary text-primary font-label-md text-label-md font-semibold transition-all duration-150 active:scale-[0.98] hover:bg-primary/10">
+<span class="material-symbols-outlined text-base">add_circle</span>
+<span>+ Log Hours & Expenses</span>
+</button>
+</div>
+</section>
+<!-- 2. KPI METRIC CARDS (4 CARDS GRID) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-gutter">
+<!-- Card 1: Total Project Revenue -->
+<div class="p-space-md rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-white/5 relative overflow-hidden flex flex-col justify-between group hover:border-primary/40 transition-all glow-gold">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium uppercase tracking-wider">Total Project Revenue</span>
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+</div>
+</div>
+<div class="my-3">
+<div class="font-numeric-metric text-numeric-metric text-on-surface tracking-tight font-semibold">
+            $142,650.00
+          </div>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center gap-0.5 text-primary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+              +18.4%
+            </span>
+<span class="text-on-surface-variant text-label-sm font-label-sm">vs previous cycle</span>
+</div>
+</div>
+<!-- Sparkline Vector Minimalist Decoration -->
+<div class="w-full h-8 pt-1 flex items-end">
+<svg class="w-full h-7 overflow-visible" fill="none" preserveaspectratio="none" viewbox="0 0 100 24">
+<path d="M0 18 Q 20 22, 35 12 T 70 8 T 100 2" stroke="url(#goldGradient)" stroke-linecap="round" stroke-width="2.5"></path>
+<defs>
+<lineargradient id="goldGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#9665FF"></stop>
+<stop offset="100%" stop-color="#F4C86D"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+</div>
+<!-- Card 2: Total Direct Costs & Fees -->
+<div class="p-space-md rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-white/5 relative flex flex-col justify-between hover:border-outline-variant/50 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium uppercase tracking-wider">Total Direct Costs & Fees</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-lg">receipt_long</span>
+</div>
+</div>
+<div class="my-3">
+<div class="font-numeric-metric text-numeric-metric text-on-surface tracking-tight font-semibold">
+            $26,180.00
+          </div>
+<div class="flex items-center gap-2 mt-1 text-on-surface-variant font-label-sm text-label-sm">
+<span>Gateway Drag: <strong class="text-on-surface font-medium">$3.8k</strong></span>
+<span>•</span>
+<span>Hosting: <strong class="text-on-surface font-medium">$22.3k</strong></span>
+</div>
+</div>
+<!-- Ratio Breakdown Progress Strip -->
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden flex mt-2">
+<div class="bg-primary-container h-full" style="width: 14.5%;" title="Stripe / Wire Fees (14.5%)"></div>
+<div class="bg-secondary h-full" style="width: 85.5%;" title="Subcontracts & Compute (85.5%)"></div>
+</div>
+</div>
+<!-- Card 3: Net Realized Profit -->
+<div class="p-space-md rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-emerald-500/20 relative flex flex-col justify-between hover:border-emerald-500/40 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium uppercase tracking-wider">Net Realized Profit</span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-label-sm text-label-sm font-semibold">
+            High Yield
+          </span>
+</div>
+<div class="my-3">
+<div class="font-numeric-metric text-numeric-metric text-on-surface tracking-tight font-semibold">
+            $116,470.00
+          </div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-headline-sm text-headline-sm text-emerald-400 font-semibold">81.6%</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Net Profit Margin</span>
+</div>
+</div>
+<!-- Profit Integrity Bar -->
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-emerald-400 h-full rounded-full" style="width: 81.6%;"></div>
+</div>
+</div>
+<!-- Card 4: Effective Hourly Yield -->
+<div class="p-space-md rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-secondary/20 relative flex flex-col justify-between hover:border-secondary/40 transition-all glow-violet">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium uppercase tracking-wider">Effective Hourly Yield</span>
+<div class="w-8 h-8 rounded-lg bg-secondary/15 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+</div>
+<div class="my-3">
+<div class="font-numeric-metric text-numeric-metric text-on-surface tracking-tight font-semibold flex items-baseline gap-1">
+<span>$148.50</span>
+<span class="font-body-md text-body-md text-on-surface-variant font-normal">/ hr</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="text-secondary font-label-sm text-label-sm font-semibold">+35% efficiency delta</span>
+<span class="text-on-surface-variant text-label-sm font-label-sm">vs $110.00 baseline</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20 text-[11px] text-on-surface-variant">
+<span>784 Total Billed Hrs</span>
+<span class="text-secondary font-medium">92% Autonomous Tracked</span>
+</div>
+</div>
+</section>
+<!-- 3. INTERACTIVE PROFITABILITY MATRIX & ANALYTICS (2-COLUMN BENTO) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- LEFT COLUMN: Yield Comparison Chart (7 / 12) -->
+<div class="lg:col-span-7 p-space-lg rounded-xl bg-surface-container-low/90 backdrop-blur-xl border border-white/5 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">
+              Effective Hourly Yield vs. Target Rate
+            </h2>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+              Audited realization rates across active retainer and fixed-price projects
+            </span>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-0.5 border-t-2 border-dashed border-primary"></span>
+<span class="font-label-sm text-label-sm text-primary">Benchmark ($120/hr)</span>
+</div>
+</div>
+</div>
+<!-- Chart Canvas / Visualization Bars -->
+<div class="relative flex flex-col gap-5 pt-4">
+<!-- Target Benchmark Line across visualization -->
+<div class="absolute left-32 right-0 top-0 bottom-8 pointer-events-none z-10 flex">
+<!-- Positioned at ($120 / $220 max = ~54.5%) of the bar area -->
+<div class="h-full border-r-2 border-dashed border-primary/60 relative" style="left: 54.5%;">
+<span class="absolute -top-3.5 -translate-x-1/2 bg-surface-container-high px-1.5 py-0.5 rounded text-[10px] text-primary font-semibold border border-primary/40">
+                Target $120
+              </span>
+</div>
+</div>
+<!-- Project Bar 1: Vault Protocol -->
+<div class="flex items-center gap-4">
+<div class="w-32 truncate text-right">
+<span class="font-label-md text-label-md text-on-surface font-medium block truncate">Vault Protocol</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cryptographic UI</span>
+</div>
+<div class="flex-1 bg-surface-container rounded-lg h-7 relative flex items-center p-1 overflow-hidden">
+<div class="h-full rounded bg-gradient-to-r from-secondary to-primary flex items-center justify-end pr-2 transition-all duration-500" style="width: 88.6%;">
+<span class="font-label-sm text-label-sm font-semibold text-surface-container-lowest">$195 / hr</span>
+</div>
+</div>
+</div>
+<!-- Project Bar 2: Horizon Design System -->
+<div class="flex items-center gap-4">
+<div class="w-32 truncate text-right">
+<span class="font-label-md text-label-md text-on-surface font-medium block truncate">Horizon Studio</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Design System 2.0</span>
+</div>
+<div class="flex-1 bg-surface-container rounded-lg h-7 relative flex items-center p-1 overflow-hidden">
+<div class="h-full rounded bg-gradient-to-r from-secondary-container to-secondary flex items-center justify-end pr-2 transition-all duration-500" style="width: 84.1%;">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">$185 / hr</span>
+</div>
+</div>
+</div>
+<!-- Project Bar 3: Apex Media Retainer -->
+<div class="flex items-center gap-4">
+<div class="w-32 truncate text-right">
+<span class="font-label-md text-label-md text-on-surface font-medium block truncate">Apex Media</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Executive Retainer</span>
+</div>
+<div class="flex-1 bg-surface-container rounded-lg h-7 relative flex items-center p-1 overflow-hidden">
+<div class="h-full rounded bg-gradient-to-r from-primary-container to-primary flex items-center justify-end pr-2 transition-all duration-500" style="width: 73.6%;">
+<span class="font-label-sm text-label-sm font-semibold text-on-primary">$162 / hr</span>
+</div>
+</div>
+</div>
+<!-- Project Bar 4: Lumina Labs -->
+<div class="flex items-center gap-4">
+<div class="w-32 truncate text-right">
+<span class="font-label-md text-label-md text-on-surface font-medium block truncate">Lumina Labs</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">AI Telemetry Portal</span>
+</div>
+<div class="flex-1 bg-surface-container rounded-lg h-7 relative flex items-center p-1 overflow-hidden">
+<div class="h-full rounded bg-surface-container-high flex items-center justify-end pr-2 transition-all duration-500" style="width: 50.9%;">
+<span class="font-label-sm text-label-sm font-medium text-on-surface-variant">$112 / hr</span>
+</div>
+</div>
+</div>
+<!-- Project Bar 5: Acme Corp (Margin Compressed) -->
+<div class="flex items-center gap-4">
+<div class="w-32 truncate text-right">
+<span class="font-label-md text-label-md text-on-surface font-medium block truncate">Acme Corp</span>
+<span class="font-label-sm text-label-sm text-error">Brand Architecture</span>
+</div>
+<div class="flex-1 bg-surface-container rounded-lg h-7 relative flex items-center p-1 overflow-hidden">
+<div class="h-full rounded bg-error/40 border border-error/60 flex items-center justify-end pr-2 transition-all duration-500" style="width: 40.0%;">
+<span class="font-label-sm text-label-sm font-semibold text-error">$88 / hr (Deficit)</span>
+</div>
+</div>
+</div>
+<!-- Chart Baseline Axis Marks -->
+<div class="flex items-center justify-between pl-36 pt-2 text-[11px] text-on-surface-variant border-t border-outline-variant/30">
+<span>$0/hr</span>
+<span>$50/hr</span>
+<span>$100/hr</span>
+<span class="text-primary font-medium">$120/hr Target</span>
+<span>$150/hr</span>
+<span>$200/hr</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-label-sm text-on-surface-variant">
+<span>Formula: (Gross Contract Revenue - Direct Third-Party Ops) ÷ Actual Time Consumed</span>
+<a class="text-primary hover:underline font-medium" href="#full-analytics">Deep-Dive Calibration →</a>
+</div>
+</div>
+<!-- RIGHT COLUMN: AI Margin & Pricing Intelligence (5 / 12) -->
+<div class="lg:col-span-5 p-space-lg rounded-xl bg-surface-container-lowest/90 backdrop-blur-2xl border border-secondary/30 relative flex flex-col justify-between glow-violet">
+<div>
+<!-- Header with AI Glow -->
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-secondary/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">
+                AI Margin & Pricing Intelligence
+              </h2>
+</div>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary/10 px-2 py-0.5 rounded border border-secondary/20 font-medium">
+              Autonomous Audit
+            </span>
+</div>
+<!-- Alert 1 (High Performer) -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 border border-primary/30 mb-3.5 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-primary font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-base">verified</span>
+<span>High Performer: Vault Protocol</span>
+</div>
+<span class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded">+62% Above Target</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Vault Protocol Redesign delivers <strong>$195/hr</strong> effective yield due to streamlined smart contracts scope. Recommend bumping baseline SOW minimum by <strong>+20%</strong> for recurring sprint extensions.
+            </p>
+</div>
+<!-- Alert 2 (Margin Compression Warning) -->
+<div class="p-3.5 rounded-lg bg-surface-container/60 border border-error/30 mb-4 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 text-error font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-base">warning</span>
+<span>Margin Compression: Acme Corp</span>
+</div>
+<span class="text-[11px] font-semibold text-error bg-error/10 px-2 py-0.5 rounded">-26% Below Target</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Acme Corp Brand Architecture sits at <strong>$88/hr</strong>. 18.2-day payment lag and 14 scope revisions eroded profit margin from projected 75% down to <strong>54%</strong>.
+            </p>
+</div>
+</div>
+<!-- Copilot Action Triggers -->
+<div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-label-md text-label-md font-semibold text-center hover:opacity-95 transition-opacity">
+            Adjust Proposed SOW Rates
+          </button>
+<button class="flex-1 py-2.5 px-3 rounded-lg bg-surface-container-high border border-outline-variant/40 hover:border-secondary text-secondary font-label-md text-label-md font-medium text-center transition-colors">
+            Reallocate Billable Capacity
+          </button>
+</div>
+</div>
+</section>
+<!-- 4. COMPREHENSIVE PROJECT PERFORMANCE LEDGER (FULL DATA TABLE) -->
+<section class="rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-white/5 overflow-hidden flex flex-col">
+<!-- Table Header & Controls Bar -->
+<div class="p-space-md border-b border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">
+            Project Performance Ledger
+          </h2>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+            5 Audited Projects
+          </span>
+</div>
+<!-- Filter & Search cluster -->
+<div class="flex items-center flex-wrap gap-2.5">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">filter_alt</span>
+<input class="bg-surface-container-lowest text-label-sm pl-8 pr-3 py-1.5 rounded-lg border border-outline-variant/30 text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary" placeholder="Search projects..." type="text"/>
+</div>
+<!-- Status Filter -->
+<select class="bg-surface-container-lowest text-label-sm py-1.5 px-3 rounded-lg border border-outline-variant/30 text-on-surface focus:outline-none focus:border-primary">
+<option>All Status (Active, Done)</option>
+<option>Active</option>
+<option>Completed</option>
+<option>In Review</option>
+</select>
+<!-- Sort Selector -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-highest/60 text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">swap_vert</span>
+<span>Sort by Margin (Highest)</span>
+</button>
+</div>
+</div>
+<!-- Ledger Table (Scrollable Container) -->
+<div class="overflow-x-auto custom-scroll">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30 bg-surface-container-lowest/50 text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3.5 px-4 font-semibold">Project & Client</th>
+<th class="py-3.5 px-4 font-semibold text-right">Gross Revenue</th>
+<th class="py-3.5 px-4 font-semibold text-right">Gateway Fees</th>
+<th class="py-3.5 px-4 font-semibold text-right">Direct OPEX</th>
+<th class="py-3.5 px-4 font-semibold text-center">Logged Hours</th>
+<th class="py-3.5 px-4 font-semibold text-right">Net Profit</th>
+<th class="py-3.5 px-4 font-semibold text-center">Profit Margin</th>
+<th class="py-3.5 px-4 font-semibold text-right">Effective Rate</th>
+<th class="py-3.5 px-4 text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm text-body-sm">
+<!-- Row 1: Horizon Studio -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold">
+                    H
+                  </div>
+<div class="flex flex-col">
+<span class="font-medium text-on-surface font-label-md text-label-md">Horizon Studio</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Design System 2.0 • Fixed Retainer</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-medium text-on-surface">$45,000.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$1,305.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$5,800.00</td>
+<td class="py-4 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface font-label-sm text-label-sm hover:border-primary hover:text-primary transition-colors">
+<span>204.8 hrs</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">edit</span>
+</button>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-emerald-400">$37,895.00</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-2">
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-400 h-full rounded-full" style="width: 84.2%;"></div>
+</div>
+<span class="font-semibold text-emerald-400 text-xs">84.2%</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="font-bold text-on-surface font-label-md text-label-md">$185.00</span>
+<span class="text-[11px] text-on-surface-variant">/hr</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-base">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Vault Protocol -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary/15 border border-secondary/30 flex items-center justify-center text-secondary font-bold">
+                    V
+                  </div>
+<div class="flex flex-col">
+<span class="font-medium text-on-surface font-label-md text-label-md">Vault Protocol</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Cryptographic UI Architecture</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-medium text-on-surface">$39,000.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$1,130.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$4,200.00</td>
+<td class="py-4 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface font-label-sm text-label-sm hover:border-primary hover:text-primary transition-colors">
+<span>172.5 hrs</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">edit</span>
+</button>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-emerald-400">$33,670.00</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-2">
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-400 h-full rounded-full" style="width: 86.3%;"></div>
+</div>
+<span class="font-semibold text-emerald-400 text-xs">86.3%</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="font-bold text-secondary font-label-md text-label-md">$195.00</span>
+<span class="text-[11px] text-on-surface-variant">/hr</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-base">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Apex Media -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface font-bold">
+                    A
+                  </div>
+<div class="flex flex-col">
+<span class="font-medium text-on-surface font-label-md text-label-md">Apex Media</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Executive Retainer • Quarterly</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-medium text-on-surface">$28,500.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$820.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$3,500.00</td>
+<td class="py-4 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface font-label-sm text-label-sm hover:border-primary hover:text-primary transition-colors">
+<span>149.2 hrs</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">edit</span>
+</button>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-emerald-400">$24,180.00</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-2">
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-emerald-400 h-full rounded-full" style="width: 84.8%;"></div>
+</div>
+<span class="font-semibold text-emerald-400 text-xs">84.8%</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="font-bold text-on-surface font-label-md text-label-md">$162.00</span>
+<span class="text-[11px] text-on-surface-variant">/hr</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-base">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Lumina Labs -->
+<tr class="hover:bg-surface-container-high/40 transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-on-surface font-bold">
+                    L
+                  </div>
+<div class="flex flex-col">
+<span class="font-medium text-on-surface font-label-md text-label-md">Lumina Labs</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">AI Telemetry Dashboard</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-medium text-on-surface">$16,750.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$485.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$2,100.00</td>
+<td class="py-4 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container border border-outline-variant/30 text-on-surface font-label-sm text-label-sm hover:border-primary hover:text-primary transition-colors">
+<span>126.5 hrs</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">edit</span>
+</button>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-primary">$14,165.00</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-2">
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84.5%;"></div>
+</div>
+<span class="font-semibold text-primary text-xs">84.5%</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="font-medium text-on-surface font-label-md text-label-md">$112.00</span>
+<span class="text-[11px] text-on-surface-variant">/hr</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-base">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Acme Corp (Margin Leakage Row) -->
+<tr class="hover:bg-error/5 bg-error/[0.02] transition-colors group">
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-error/15 border border-error/30 flex items-center justify-center text-error font-bold">
+                    !
+                  </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-medium text-on-surface font-label-md text-label-md">Acme Corp</span>
+<span class="text-[10px] bg-error/20 text-error px-1.5 py-0.2 rounded font-semibold">Scope Creep</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Brand Architecture Transformation</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-4 text-right font-medium text-on-surface">$13,400.00</td>
+<td class="py-4 px-4 text-right text-on-surface-variant">$440.00</td>
+<td class="py-4 px-4 text-right text-error font-medium">$5,780.00</td>
+<td class="py-4 px-4 text-center">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-surface-container border border-error/40 text-error font-label-sm text-label-sm hover:border-error transition-colors">
+<span>81.5 hrs</span>
+<span class="material-symbols-outlined text-xs text-error">edit</span>
+</button>
+</td>
+<td class="py-4 px-4 text-right font-semibold text-error">$7,180.00</td>
+<td class="py-4 px-4 text-center">
+<div class="inline-flex items-center gap-2">
+<div class="w-16 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-error h-full rounded-full" style="width: 53.6%;"></div>
+</div>
+<span class="font-semibold text-error text-xs">53.6%</span>
+</div>
+</td>
+<td class="py-4 px-4 text-right">
+<span class="font-bold text-error font-label-md text-label-md">$88.00</span>
+<span class="text-[11px] text-error/80">/hr</span>
+</td>
+<td class="py-4 px-4 text-center">
+<button class="w-7 h-7 rounded flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-base">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Quick Inline Update Bar & Pagination Footer -->
+<div class="p-space-sm bg-surface-container-lowest/80 border-t border-outline-variant/30 flex flex-col md:flex-row items-center justify-between gap-3 text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">sync</span>
+<span>Automatic reconciliation synced with Stripe, Wise, and Escrow Vault 4 mins ago.</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs">Showing 5 of 5 active client entities</span>
+<div class="flex items-center gap-1">
+<button class="px-2 py-1 rounded border border-outline-variant/30 text-on-surface-variant disabled:opacity-40" disabled="">Previous</button>
+<button class="px-2 py-1 rounded bg-surface-container-high border border-outline-variant/40 text-on-surface font-medium">1</button>
+<button class="px-2 py-1 rounded border border-outline-variant/30 text-on-surface-variant disabled:opacity-40" disabled="">Next</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

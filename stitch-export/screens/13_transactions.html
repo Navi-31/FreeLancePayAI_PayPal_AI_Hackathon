@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI - Transactions Ledger</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Inter & Geist -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-background": "#e4e1ea",
+            "tertiary-container": "#ff8dd2",
+            "secondary-container": "#561cc1",
+            "inverse-primary": "#795902",
+            "error-container": "#93000a",
+            "outline-variant": "#4e4637",
+            "on-primary-fixed-variant": "#5c4300",
+            "primary-fixed": "#ffdea0",
+            "surface-container-low": "#1b1b21",
+            "error": "#ffb4ab",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-tint": "#ebc166",
+            "tertiary-fixed-dim": "#ffaedb",
+            "outline": "#9a8f7e",
+            "surface-container-high": "#2a2930",
+            "on-error-container": "#ffdad6",
+            "on-secondary": "#3b0092",
+            "surface-variant": "#35343b",
+            "on-tertiary-fixed": "#3c002b",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary-fixed": "#22005c",
+            "on-secondary-fixed-variant": "#5417be",
+            "primary-fixed-dim": "#ebc166",
+            "surface": "#131319",
+            "primary": "#f4c86d",
+            "surface-container-highest": "#35343b",
+            "inverse-on-surface": "#303036",
+            "primary-container": "#d6ad55",
+            "on-primary": "#402d00",
+            "on-primary-fixed": "#261a00",
+            "surface-bright": "#39383f",
+            "on-surface-variant": "#d1c5b2",
+            "on-tertiary": "#610048",
+            "secondary": "#d0bcff",
+            "on-primary-container": "#594100",
+            "secondary-fixed": "#e9ddff",
+            "surface-container": "#1f1f25",
+            "tertiary-fixed": "#ffd8eb",
+            "on-tertiary-fixed-variant": "#880067",
+            "background": "#131319",
+            "on-error": "#690005",
+            "surface-dim": "#131319",
+            "on-surface": "#e4e1ea",
+            "tertiary": "#ffbadf",
+            "on-tertiary-container": "#850065"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "2.5rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-lg": "1.5rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Inter"],
+            "headline-lg": ["Geist"],
+            "display-mobile": ["Geist"],
+            "body-md": ["Inter"],
+            "headline-lg-mobile": ["Geist"],
+            "headline-md": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-sm": ["Geist"],
+            "label-md": ["Geist"],
+            "numeric-metric": ["Geist"],
+            "body-sm": ["Inter"],
+            "display": ["Geist"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "headline-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "display-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.025em", fontWeight: "600" }],
+            "body-md": ["0.9375rem", { lineHeight: "1.5rem", letterSpacing: "0", fontWeight: "400" }],
+            "headline-lg-mobile": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "600" }],
+            "headline-md": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "-0.02em", fontWeight: "500" }],
+            "headline-sm": ["1.25rem", { lineHeight: "1.75rem", letterSpacing: "-0.015em", fontWeight: "500" }],
+            "label-sm": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "label-md": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.01em", fontWeight: "500" }],
+            "numeric-metric": ["2rem", { lineHeight: "2.25rem", letterSpacing: "-0.03em", fontWeight: "600" }],
+            "body-sm": ["0.8125rem", { lineHeight: "1.25rem", letterSpacing: "0.005em", fontWeight: "400" }],
+            "display": ["3.5rem", { lineHeight: "4rem", letterSpacing: "-0.03em", fontWeight: "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(14, 14, 20, 0.4);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(244, 200, 109, 0.2);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(244, 200, 109, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen antialiased selection:bg-primary selection:text-on-primary font-body-md text-body-md overflow-x-hidden">
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: SideNavBar (collapsible_rail_sidebar)                   -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-xl border-r border-outline-variant/30">
+<div class="flex flex-col justify-between h-full p-space-sm w-64">
+<!-- Upper Section: Branding & Navigation Group -->
+<div class="flex flex-col gap-y-4">
+<!-- Logo Header -->
+<div class="flex items-center gap-3 px-3 py-3 border-b border-outline-variant/20">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-center shadow-[0_0_15px_rgba(244,200,109,0.15)] text-primary font-headline-sm text-headline-sm font-semibold">
+<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant/70">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Navigation Tabs: Shared items with Payments active -->
+<nav class="flex flex-col gap-1">
+<!-- Overview (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- Payments (Active: Matches primary intent for Transactions Ledger) -->
+<div class="flex flex-col">
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary transition-all duration-150 active:scale-[0.98]" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</div>
+<span class="material-symbols-outlined text-primary text-sm">expand_less</span>
+</a>
+<!-- Sub-navigation under PAYMENTS with Transactions highlighted -->
+<div class="pl-8 pr-2 py-1.5 flex flex-col gap-1 border-l border-outline-variant/30 ml-4 mt-1">
+<a class="px-2 py-1.5 rounded text-primary font-medium bg-surface-variant/40 flex items-center justify-between font-label-sm text-label-sm" href="#">
+<span>Transactions</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_#f4c86d]"></span>
+</a>
+<a class="px-2 py-1 rounded text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container/40 transition-colors font-label-sm text-label-sm" href="#">
+                Invoices &amp; Escrow
+              </a>
+<a class="px-2 py-1 rounded text-on-surface-variant/70 hover:text-on-surface hover:bg-surface-container/40 transition-colors font-label-sm text-label-sm" href="#">
+                Payout Channels
+              </a>
+</div>
+</div>
+<!-- Intelligence (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">auto_awesome</span>
+<span class="font-label-md text-label-md">Intelligence</span>
+<span class="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-secondary-container/30 text-secondary border border-secondary/20">AI</span>
+</a>
+<!-- Treasury (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">account_balance</span>
+<span class="font-label-md text-label-md">Treasury</span>
+</a>
+<!-- Tools (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- System (Inactive) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+</nav>
+<!-- CTA: Trigger Copilot -->
+<div class="px-2 pt-2">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-gradient-to-r from-secondary-container/80 to-surface-variant border border-secondary/30 text-on-secondary-container hover:shadow-[0_0_20px_rgba(150,101,255,0.25)] transition-all font-label-md text-label-md">
+<span class="material-symbols-outlined text-secondary text-base">bolt</span>
+<span>Trigger Copilot</span>
+</button>
+</div>
+</div>
+<!-- Footer Elements -->
+<div class="flex flex-col gap-2 pt-3 border-t border-outline-variant/30">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant/80 hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-sm">shield_lock</span>
+<span>Security Vault</span>
+<span class="ml-auto text-[10px] text-primary/80">Active</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant/80 hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span>Telemetry Logs</span>
+<span class="ml-auto w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></span>
+</a>
+<!-- System Heartbeat pill -->
+<div class="mt-2 p-2.5 rounded-lg bg-surface-container-low/60 border border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Arbitrage Engine</span>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 99.98%
+          </span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: TopNavBar (desktop_utility_header docked full-width)    -->
+<!-- ========================================================================= -->
+<header class="docked full-width top-0 sticky z-30 bg-surface/80 backdrop-blur-2xl border-b border-outline-variant/30 shadow-sm pl-64">
+<div class="flex items-center justify-between px-space-lg py-space-sm w-full">
+<!-- Search Bar on Left -->
+<div class="flex items-center gap-4 w-96">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 text-lg">search</span>
+<input class="w-full bg-surface-container-lowest/80 border border-outline-variant/40 rounded-lg pl-9 pr-3 py-1.5 font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-colors" placeholder="Search hash, client, ledger ID..." type="text"/>
+<span class="absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded bg-surface-variant text-[10px] text-on-surface-variant/70 border border-outline-variant/30">⌘K</span>
+</div>
+</div>
+<!-- Navigation Links from JSON -->
+<div class="hidden xl:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Yield Radar</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors font-label-md text-label-md" href="#">Contracts</a>
+</div>
+<!-- Trailing Action Controls -->
+<div class="flex items-center gap-3">
+<!-- Currency Selector Pill -->
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high/60 border border-outline-variant/40 hover:border-primary/40 text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span>USD / EUR</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
+</button>
+<!-- Utility Icons: notifications, bolt, help -->
+<div class="flex items-center gap-1 border-x border-outline-variant/30 px-2">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-lg">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Instant Copilot Pulse">
+<span class="material-symbols-outlined text-lg">bolt</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Documentation &amp; Assistance">
+<span class="material-symbols-outlined text-lg">help</span>
+</button>
+</div>
+<!-- Primary Action: Execute Payout -->
+<button class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-gradient-to-br from-[#F0D48B] to-[#D6AD55] text-on-primary font-label-md text-label-md font-semibold shadow-[0_0_15px_rgba(240,212,139,0.25)] hover:shadow-[0_0_20px_rgba(240,212,139,0.4)] transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-base font-bold">arrow_outward</span>
+<span>Execute Payout</span>
+</button>
+<!-- Executive Avatar with Gold Status Ring -->
+<div class="relative pl-1">
+<div class="w-8 h-8 rounded-full p-[1.5px] bg-gradient-to-tr from-primary to-amber-200 shadow-[0_0_10px_rgba(244,200,109,0.3)]">
+<div class="w-full h-full rounded-full bg-surface-container-lowest flex items-center justify-center text-primary font-label-sm text-label-sm font-semibold">
+              FP
+            </div>
+</div>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-surface"></span>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE CONTENT CANVAS                                             -->
+<!-- ========================================================================= -->
+<main class="pl-64 min-h-[calc(100vh-65px)] bg-[#08080D] pb-12">
+<div class="px-space-lg py-6 max-w-[1600px] mx-auto flex flex-col gap-6">
+<!-- ===================================================================== -->
+<!-- SECTION: Header Title & Subtitle                                      -->
+<!-- ===================================================================== -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/20 pb-5">
+<div>
+<div class="flex items-center gap-2.5 mb-1.5">
+<h1 class="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-background">Transactions Ledger</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container-high/80 border border-primary/30 text-primary font-label-sm text-label-sm flex items-center gap-1 shadow-[0_0_12px_rgba(244,200,109,0.15)]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              Live Sync (Block #198242)
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+            Granular real-time record of all client settlements, escrow authorizations, fee deductions, and currency conversions.
+          </p>
+</div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Automated Split Rule</span>
+<span class="font-label-md text-label-md text-secondary flex items-center justify-end gap-1">
+<span class="material-symbols-outlined text-sm">auto_fix_high</span> 20% Tax Vault Auto-Shield
+            </span>
+</div>
+<button class="px-3 py-2 rounded-lg bg-surface-container-high/80 border border-outline-variant/40 hover:border-outline text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm">tune</span>
+<span>Rules</span>
+</button>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- SECTION: Top KPI Summary Cards (5-Card Financial Telemetry Grid)      -->
+<!-- ===================================================================== -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
+<!-- Card 1: Total Transactions -->
+<div class="p-4 rounded-xl bg-[#171720]/80 backdrop-blur-md border border-white/5 relative overflow-hidden group hover:border-primary/30 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-sm text-label-sm">Total Transactions</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">receipt_long</span>
+</div>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-on-background tracking-tight">148</div>
+<div class="mt-1 flex items-center gap-1.5 text-xs text-on-surface-variant/80 font-body-sm text-body-sm">
+<span class="text-primary font-medium">99.4%</span> settlement success
+          </div>
+<div class="absolute -right-4 -bottom-4 w-16 h-16 bg-primary/5 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Card 2: Gross Received -->
+<div class="p-4 rounded-xl bg-[#171720]/80 backdrop-blur-md border border-white/5 relative overflow-hidden group hover:border-primary/30 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-sm text-label-sm">Gross Received</span>
+<div class="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+</div>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-primary tracking-tight">$142,650.00</div>
+<div class="mt-1 flex items-center gap-1 text-xs text-emerald-400 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-xs">arrow_upward</span>
+<span>+14.2% MoM</span>
+</div>
+<div class="absolute -right-4 -bottom-4 w-16 h-16 bg-primary/10 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Card 3: Processing Fees -->
+<div class="p-4 rounded-xl bg-[#171720]/80 backdrop-blur-md border border-white/5 relative overflow-hidden group hover:border-error/30 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-sm text-label-sm">Processing Fees</span>
+<div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-error/80">
+<span class="material-symbols-outlined text-sm">price_change</span>
+</div>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-on-background tracking-tight">-$3,842.10</div>
+<div class="mt-1 flex items-center gap-1.5 text-xs text-on-surface-variant/80 font-body-sm text-body-sm">
+<span>2.69% blended rate</span>
+</div>
+<div class="absolute -right-4 -bottom-4 w-16 h-16 bg-error/5 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Card 4: FX Conversion Drag -->
+<div class="p-4 rounded-xl bg-[#171720]/80 backdrop-blur-md border border-white/5 relative overflow-hidden group hover:border-secondary/30 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-label-sm text-label-sm">FX Conversion Drag</span>
+<div class="w-7 h-7 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-sm">currency_exchange</span>
+</div>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-on-background tracking-tight">-$420.50</div>
+<div class="mt-1 flex items-center gap-1.5 text-xs text-on-surface-variant/80 font-body-sm text-body-sm">
+<span>EUR/USD, GBP/USD</span>
+</div>
+<div class="absolute -right-4 -bottom-4 w-16 h-16 bg-secondary/10 rounded-full blur-xl pointer-events-none"></div>
+</div>
+<!-- Card 5: Net Received -->
+<div class="p-4 rounded-xl bg-gradient-to-br from-[#1E1D29] to-[#14141E] backdrop-blur-md border border-primary/30 relative overflow-hidden group shadow-[0_20px_50px_-15px_rgba(214,173,85,0.12)]">
+<div class="flex items-center justify-between text-primary mb-2">
+<span class="font-label-sm text-label-sm font-semibold">Net Received</span>
+<div class="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+</div>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-primary font-bold tracking-tight">$138,387.40</div>
+<div class="mt-1 flex items-center gap-1 text-xs text-on-surface-variant font-body-sm text-body-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+<span>Deposited to Vault</span>
+</div>
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/15 rounded-full blur-xl pointer-events-none"></div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- SECTION: Search, Filter & Export Toolbar                              -->
+<!-- ===================================================================== -->
+<section class="p-3 rounded-xl bg-[#171720]/80 backdrop-blur-xl border border-white/5 flex flex-wrap items-center justify-between gap-3 shadow-md">
+<!-- Left: Search and Filtering Selects -->
+<div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-[320px]">
+<!-- Specific Ledger Search Field -->
+<div class="relative flex-1 min-w-[240px] max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 text-lg">search</span>
+<input class="w-full bg-[#101016] border border-white/10 rounded-lg pl-9 pr-3 py-1.5 font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-colors" placeholder="Search transaction hash, invoice ID, client..." type="text"/>
+</div>
+<!-- Date Range Filter -->
+<button class="px-3 py-1.5 rounded-lg bg-[#101016] border border-white/10 hover:border-white/20 text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">calendar_today</span>
+<span>This Quarter (Q2 2025)</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">expand_more</span>
+</button>
+<!-- Type Filter -->
+<button class="px-3 py-1.5 rounded-lg bg-[#101016] border border-white/10 hover:border-white/20 text-on-surface font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">filter_list</span>
+<span>All Types</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">expand_more</span>
+</button>
+<!-- Currency Pills -->
+<div class="flex items-center rounded-lg bg-[#101016] p-0.5 border border-white/10">
+<button class="px-2.5 py-1 rounded text-primary font-semibold bg-surface-container-high font-label-sm text-label-sm transition-all shadow-sm">All</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors">USD</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors">EUR</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm transition-colors">GBP</button>
+</div>
+</div>
+<!-- Right: Export Action -->
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-high/90 hover:bg-surface-container-highest border border-outline-variant/40 hover:border-primary/40 text-on-surface font-label-md text-label-md flex items-center gap-2 transition-all shadow-sm active:scale-[0.98]">
+<span class="material-symbols-outlined text-base text-primary">cloud_download</span>
+<span>Export Reconciliation CSV / QBO</span>
+</button>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- SECTION: Main Content Split Area (70% Table + 30% Detail Drawer)      -->
+<!-- ===================================================================== -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+<!-- Left 70%: Transactions Table Container (8 cols on lg) -->
+<div class="lg:col-span-8 rounded-xl bg-[#171720]/80 backdrop-blur-xl border border-white/5 overflow-hidden shadow-2xl flex flex-col">
+<!-- Table Header Utility Bar -->
+<div class="px-5 py-3.5 border-b border-outline-variant/20 flex items-center justify-between bg-surface-container-lowest/60">
+<div class="flex items-center gap-2.5">
+<span class="font-headline-sm text-headline-sm font-semibold text-on-background">Live Ledger Feed</span>
+<span class="px-2 py-0.5 rounded bg-surface-variant text-[11px] text-on-surface-variant font-label-sm text-label-sm">5 shown of 148</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors" title="Refresh Feed">
+<span class="material-symbols-outlined text-base">refresh</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors" title="Customize Columns">
+<span class="material-symbols-outlined text-base">view_column</span>
+</button>
+</div>
+</div>
+<!-- Responsive Data Table -->
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/20 bg-surface-container-lowest/40 font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
+<th class="py-3 px-4">Transaction ID &amp; Date</th>
+<th class="py-3 px-4">Client / Entity</th>
+<th class="py-3 px-4">Type</th>
+<th class="py-3 px-4">Rail / Channel</th>
+<th class="py-3 px-4 text-right">Gross Amount</th>
+<th class="py-3 px-4 text-right">Fee &amp; Drag</th>
+<th class="py-3 px-4 text-right">Net Settlement</th>
+<th class="py-3 px-4 text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/15 font-body-sm text-body-sm">
+<!-- Row 1: #TX-9921 (Active Selection) -->
+<tr class="bg-[#1E1D29]/90 border-l-4 border-l-primary hover:bg-[#1E1D29] transition-colors cursor-pointer group">
+<td class="py-3.5 px-4">
+<div class="font-label-md text-label-md font-semibold text-primary">#TX-9921</div>
+<div class="text-[11px] text-on-surface-variant">Oct 24, 2025 • 14:32 UTC</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary/70"></span>
+<span>Apex Media</span>
+</div>
+<div class="text-[11px] text-on-surface-variant/70">Apex Media Holdings Inc</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant font-label-sm text-label-sm">
+                    Retainer Settlement
+                  </td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high/80 text-on-surface text-xs border border-white/5">
+<span class="material-symbols-outlined text-xs text-blue-400">payments</span>
+<span>PayPal Business</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-medium text-emerald-400">
+                    +$12,000.00
+                  </td>
+<td class="py-3.5 px-4 text-right text-error/80">
+                    -$348.00 <span class="text-[10px] text-on-surface-variant block">(2.9%)</span>
+</td>
+<td class="py-3.5 px-4 text-right font-semibold text-primary">
+                    +$11,652.00
+                  </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-[11px] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Captured &amp; Settled
+                    </span>
+</td>
+</tr>
+<!-- Row 2: #TX-9920 -->
+<tr class="hover:bg-surface-container/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-4">
+<div class="font-label-md text-label-md font-semibold text-on-surface">#TX-9920</div>
+<div class="text-[11px] text-on-surface-variant">Oct 22, 2025 • 09:15 UTC</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-400/70"></span>
+<span>Horizon Studio</span>
+</div>
+<div class="text-[11px] text-on-surface-variant/70">UX Architecture Sprint</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant font-label-sm text-label-sm">
+                    Milestone 1 Auth
+                  </td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high/80 text-on-surface text-xs border border-white/5">
+<span class="material-symbols-outlined text-xs text-amber-300">lock_clock</span>
+<span>Escrow Vault</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-medium text-on-surface">
+                    $4,250.00
+                  </td>
+<td class="py-3.5 px-4 text-right text-on-surface-variant">
+                    $0.00
+                  </td>
+<td class="py-3.5 px-4 text-right font-medium text-on-surface">
+                    $4,250.00
+                  </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-[11px] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                      Authorized (Holding)
+                    </span>
+</td>
+</tr>
+<!-- Row 3: #TX-9919 -->
+<tr class="hover:bg-surface-container/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-4">
+<div class="font-label-md text-label-md font-semibold text-on-surface">#TX-9919</div>
+<div class="text-[11px] text-on-surface-variant">Oct 18, 2025 • 18:44 UTC</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-indigo-400/70"></span>
+<span>Pulse Health</span>
+</div>
+<div class="text-[11px] text-on-surface-variant/70">Bio-Informatics App v2</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant font-label-sm text-label-sm">
+                    Full Payment
+                  </td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high/80 text-on-surface text-xs border border-white/5">
+<span class="material-symbols-outlined text-xs text-indigo-400">credit_card</span>
+<span>Stripe Connect</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-medium text-emerald-400">
+                    +$6,200.00
+                  </td>
+<td class="py-3.5 px-4 text-right text-error/80">
+                    -$180.10
+                  </td>
+<td class="py-3.5 px-4 text-right font-semibold text-primary">
+                    +$6,019.90
+                  </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-[11px] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Captured &amp; Settled
+                    </span>
+</td>
+</tr>
+<!-- Row 4: #TX-9918 -->
+<tr class="hover:bg-surface-container/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-4">
+<div class="font-label-md text-label-md font-semibold text-on-surface">#TX-9918</div>
+<div class="text-[11px] text-on-surface-variant">Oct 15, 2025 • 11:02 UTC</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-rose-400/70"></span>
+<span>Lumina Labs</span>
+</div>
+<div class="text-[11px] text-on-surface-variant/70">Canceled Scope Item</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant font-label-sm text-label-sm">
+                    Deposit Partial Refund
+                  </td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high/80 text-on-surface text-xs border border-white/5">
+<span class="material-symbols-outlined text-xs text-blue-400">terminal</span>
+<span>PayPal API</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-medium text-error">
+                    -$750.00
+                  </td>
+<td class="py-3.5 px-4 text-right text-on-surface-variant">
+                    $0.00
+                  </td>
+<td class="py-3.5 px-4 text-right font-medium text-error">
+                    -$750.00
+                  </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error/10 border border-error/30 text-error text-[11px] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                      Refund Issued
+                    </span>
+</td>
+</tr>
+<!-- Row 5: #TX-9917 -->
+<tr class="hover:bg-surface-container/50 transition-colors cursor-pointer group">
+<td class="py-3.5 px-4">
+<div class="font-label-md text-label-md font-semibold text-on-surface">#TX-9917</div>
+<div class="text-[11px] text-on-surface-variant">Oct 12, 2025 • 16:20 UTC</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-medium text-on-surface flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-purple-400/70"></span>
+<span>Vault Protocol</span>
+</div>
+<div class="text-[11px] text-on-surface-variant/70">Auditing Contract Q3</div>
+</td>
+<td class="py-3.5 px-4 text-on-surface-variant font-label-sm text-label-sm">
+                    Milestone 2 Release
+                  </td>
+<td class="py-3.5 px-4">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-high/80 text-on-surface text-xs border border-white/5">
+<span class="material-symbols-outlined text-xs text-secondary">account_balance</span>
+<span>SWIFT Wire</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-medium text-emerald-400">
+                    +$9,250.00
+                  </td>
+<td class="py-3.5 px-4 text-right text-error/80">
+                    -$35.00 <span class="text-[10px] text-on-surface-variant block">wire fee</span>
+</td>
+<td class="py-3.5 px-4 text-right font-semibold text-primary">
+                    +$9,215.00
+                  </td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-[11px] font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      Captured &amp; Settled
+                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Ledger Pagination & Telemetry Footer -->
+<div class="px-5 py-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-3 bg-surface-container-lowest/40 font-label-sm text-label-sm text-on-surface-variant">
+<div class="flex items-center gap-4">
+<span>Showing <strong class="text-on-surface">1 - 5</strong> of 148 Transactions</span>
+<span class="hidden sm:inline-block text-outline-variant/60">•</span>
+<span class="hidden sm:inline-block">Autonomous sync latency: <strong class="text-emerald-400 font-medium">124ms</strong></span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface disabled:opacity-40 transition-colors" disabled="">Previous</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-colors">1</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-low border border-outline-variant/20 text-on-surface-variant hover:text-on-surface transition-colors">2</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-low border border-outline-variant/20 text-on-surface-variant hover:text-on-surface transition-colors">3</button>
+<span>...</span>
+<button class="px-2.5 py-1 rounded bg-surface-container-high border border-outline-variant/30 text-on-surface hover:text-primary transition-colors">Next</button>
+</div>
+</div>
+</div>
+<!-- Right 30%: Detailed Transaction Inspector Drawer (4 cols on lg) -->
+<div class="lg:col-span-4 rounded-xl bg-[#1E1D29]/95 backdrop-blur-2xl border border-primary/20 shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col relative overflow-hidden">
+<!-- Top Auric Accent Line -->
+<div class="h-1 w-full bg-gradient-to-r from-primary via-amber-200 to-secondary"></div>
+<div class="p-5 flex flex-col gap-5">
+<!-- Drawer Header & Status -->
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Transaction Inspector</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-background mt-0.5">#TX-9921 Details</h3>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Copy Raw Payload">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Full Screen View">
+<span class="material-symbols-outlined text-sm">open_in_full</span>
+</button>
+</div>
+</div>
+<!-- Status Pill Badge -->
+<div class="px-3 py-1.5 rounded-lg bg-surface-container-high border border-primary/30 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Settlement State</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary flex items-center gap-1.5 tracking-wide">
+<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#f4c86d]"></span>
+                SETTLED VIA PAYPAL BUSINESS
+              </span>
+</div>
+<!-- Gross Settlement Main Value -->
+<div class="p-4 rounded-xl bg-[#101016] border border-white/5 flex flex-col items-center justify-center text-center relative">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Gross Captured Amount</span>
+<div class="font-display-mobile text-display-mobile font-bold text-primary tracking-tight mt-1">
+                $12,000.00 <span class="text-base text-on-surface-variant font-normal">USD</span>
+</div>
+<span class="text-[11px] text-emerald-400 mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> Authenticated &amp; Cleared Instantly
+              </span>
+</div>
+<!-- Granular Fee Breakdown Card -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-white/5 flex flex-col gap-3">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary">calculate</span>
+                  Granular Fee &amp; Split Deductions
+                </span>
+<span class="text-[10px] text-secondary font-label-sm text-label-sm bg-secondary-container/20 px-1.5 py-0.5 rounded border border-secondary/20">AI Optimized</span>
+</div>
+<!-- Breakdown Rows -->
+<div class="flex flex-col gap-2 font-body-sm text-body-sm">
+<!-- PayPal Interchange -->
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>PayPal Interchange Fee (2.9% + $0.30)</span>
+<span class="text-error font-medium">-$348.30</span>
+</div>
+<!-- Currency Conversion -->
+<div class="flex items-center justify-between text-on-surface-variant">
+<span>Currency Conversion</span>
+<span class="text-on-surface font-medium">$0.00 <span class="text-[10px] text-on-surface-variant">(Domestic USD)</span></span>
+</div>
+<!-- Autonomous Tax Shield Auto-Split -->
+<div class="p-2.5 rounded-lg bg-secondary-container/15 border border-secondary/25 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="text-secondary font-medium text-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span>
+                      Autonomous Tax Shield Auto-Split (20%)
+                    </span>
+<span class="text-secondary font-semibold text-xs">-$2,330.34</span>
+</div>
+<span class="text-[10px] text-on-surface-variant">Transferred to Tax Vault (Next estimated quarterly fill)</span>
+</div>
+<!-- Net Deposited -->
+<div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="font-label-md text-label-md font-semibold text-on-surface">Net Deposited to Operating Vault</span>
+<span class="font-label-md text-label-md font-bold text-primary">$9,321.36</span>
+</div>
+</div>
+</div>
+<!-- Payer & Network Metadata -->
+<div class="p-3.5 rounded-xl bg-[#101016] border border-white/5 flex flex-col gap-2.5 font-label-sm text-label-sm">
+<span class="font-semibold text-on-surface text-xs uppercase tracking-wider text-outline">Counterparty Telemetry</span>
+<div class="flex items-start justify-between pt-1">
+<span class="text-on-surface-variant">Payer Entity:</span>
+<span class="text-right text-on-surface font-medium">Apex Media Holdings Inc<br/><span class="text-[11px] text-on-surface-variant">Austin, TX, United States</span></span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Account ID:</span>
+<span class="text-on-surface font-mono text-[11px]">finance@apexmedia.io</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Associated Invoice:</span>
+<a class="text-primary hover:underline flex items-center gap-1 font-medium" href="#">
+                  #FP-8847 <span class="material-symbols-outlined text-xs">arrow_outward</span>
+</a>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">PayPal Ref:</span>
+<span class="text-on-surface font-mono text-[11px]">PAYID-MN29X0192849</span>
+</div>
+<div class="flex flex-col gap-1 pt-1.5 border-t border-outline-variant/20">
+<span class="text-[11px] text-on-surface-variant">Cryptographic Receipt Hash:</span>
+<div class="flex items-center justify-between bg-surface-container-lowest p-1.5 rounded border border-white/5">
+<code class="text-[10px] text-primary/90 font-mono">SHA256: 9e8a5b281f930e123...4d3b21</code>
+<button class="text-on-surface-variant hover:text-on-surface p-0.5" title="Copy Hash">
+<span class="material-symbols-outlined text-xs">file_copy</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Actions CTA Cluster -->
+<div class="flex flex-col gap-2 pt-1">
+<!-- Primary Action -->
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-on-primary font-label-md text-label-md font-semibold hover:shadow-[0_0_20px_rgba(240,212,139,0.35)] transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-base font-bold">picture_as_pdf</span>
+<span>Download Official Receipt PDF</span>
+</button>
+<!-- Secondary Action -->
+<button class="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-surface-container-high/60 border border-outline-variant/40 hover:border-error/40 text-on-surface-variant hover:text-error transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-base">report_problem</span>
+<span>Dispute or Request Adjustment</span>
+</button>
+</div>
+</div>
+<!-- Drawer Bottom Telemetry Indicator -->
+<div class="px-5 py-2.5 bg-surface-container-lowest/80 border-t border-outline-variant/20 flex items-center justify-between text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Autonomous Audit Trail Anchored
+            </span>
+<span class="text-primary font-mono">v4.12.0</span>
+</div>
+</div>
+</section>
+<!-- ===================================================================== -->
+<!-- SECTION: Real-time Autonomous Stream Micro-Ledger Feed                -->
+<!-- ===================================================================== -->
+<section class="p-4 rounded-xl bg-[#171720]/60 backdrop-blur-xl border border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary/15 border border-secondary/30 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-sm">history_toggle_off</span>
+</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-on-background flex items-center gap-2">
+<span>Autonomous Yield &amp; Liquidity Sweeper Active</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] bg-secondary-container/40 text-on-secondary-container font-mono">DAEMON: YIELD-08</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Idle capital over $25,000 automatically routed into 4.85% APY overnight Treasury repo collateral at 21:00 UTC daily.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<div class="text-right">
+<span class="block font-label-sm text-label-sm text-on-surface-variant">Estimated Daily Yield</span>
+<span class="font-label-md text-label-md font-bold text-primary">+$18.42 / day</span>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/40 hover:border-primary/40 text-on-surface font-label-sm text-label-sm transition-colors">
+            Configure Sweeper
+          </button>
+</div>
+</section>
+</div>
+</main>
+</body></html>

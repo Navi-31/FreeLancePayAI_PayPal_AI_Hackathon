@@ -1,0 +1,425 @@
+{
+  "projectTitle": "FreelancePay AI Financial Command Center",
+  "projectId": "14753828857597520880",
+  "totalScreens": 22,
+  "screens": [
+    {
+      "index": 1,
+      "title": "FreelancePay AI \u2014 Financial Command Center",
+      "screenId": "103b430a8fa340468365c5d6fc2b26e2",
+      "dimensions": {
+        "width": 2560,
+        "height": 2686
+      },
+      "localFilename": "screens/01_financial_command_center.html",
+      "fileSizeBytes": 127005,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Autonomous Wealth Engine"
+      }
+    },
+    {
+      "index": 2,
+      "title": "FreelancePay AI \u2014 AI Financial Copilot",
+      "screenId": "f26191b2c8ed49ae986948a04259c681",
+      "dimensions": {
+        "width": 2560,
+        "height": 3732
+      },
+      "localFilename": "screens/02_ai_financial_copilot.html",
+      "fileSizeBytes": 50895,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 AI Financial Copilot"
+      }
+    },
+    {
+      "index": 3,
+      "title": "FreelancePay AI \u2014 Spending Intelligence",
+      "screenId": "dcf3c45560fd40de8836e994d2d262bc",
+      "dimensions": {
+        "width": 2560,
+        "height": 4140
+      },
+      "localFilename": "screens/03_spending_intelligence.html",
+      "fileSizeBytes": 51237,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Spending Intelligence"
+      }
+    },
+    {
+      "index": 4,
+      "title": "FreelancePay AI \u2014 Subscription Manager",
+      "screenId": "8727ed1755d142fa8b84714a929cb3a3",
+      "dimensions": {
+        "width": 2560,
+        "height": 3994
+      },
+      "localFilename": "screens/04_subscription_manager.html",
+      "fileSizeBytes": 58140,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Subscription Intelligence"
+      }
+    },
+    {
+      "index": 5,
+      "title": "FreelancePay AI \u2014 Client Intelligence",
+      "screenId": "3ee30cfa695e49df85b1b0c33e33522e",
+      "dimensions": {
+        "width": 2560,
+        "height": 3954
+      },
+      "localFilename": "screens/05_client_intelligence.html",
+      "fileSizeBytes": 53227,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Client Intelligence &amp; Risk Radar"
+      }
+    },
+    {
+      "index": 6,
+      "title": "FreelancePay AI \u2014 Client Memory Dossier",
+      "screenId": "0c86f147a0c441b3b34488bd3535162a",
+      "dimensions": {
+        "width": 2560,
+        "height": 3300
+      },
+      "localFilename": "screens/06_client_memory_dossier.html",
+      "fileSizeBytes": 42824,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Client Relationship Memory Dossier"
+      }
+    },
+    {
+      "index": 7,
+      "title": "FreelancePay AI \u2014 Payment Reminders",
+      "screenId": "b402b06515cc459ebbe6148c1a4c3abd",
+      "dimensions": {
+        "width": 2560,
+        "height": 3500
+      },
+      "localFilename": "screens/07_payment_reminders.html",
+      "fileSizeBytes": 48516,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "Payment Reminders \u2014 FreelancePay AI"
+      }
+    },
+    {
+      "index": 8,
+      "title": "FreelancePay AI \u2014 Invoices",
+      "screenId": "ba5753d9d27d4b71825cd5a64d820561",
+      "dimensions": {
+        "width": 2560,
+        "height": 2758
+      },
+      "localFilename": "screens/08_invoices.html",
+      "fileSizeBytes": 49305,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "Invoices | FreelancePay AI Autonomous Wealth Engine"
+      }
+    },
+    {
+      "index": 9,
+      "title": "FreelancePay AI \u2014 AI Cashflow Rescue Mode",
+      "screenId": "fc517d00ae9c44ccb27ac1eab62c5814",
+      "dimensions": {
+        "width": 2560,
+        "height": 4314
+      },
+      "localFilename": "screens/09_ai_cashflow_rescue_mode.html",
+      "fileSizeBytes": 44249,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 AI Cashflow Rescue Mode"
+      }
+    },
+    {
+      "index": 10,
+      "title": "FreelancePay AI \u2014 Invoice Details",
+      "screenId": "1468108a7f954a13ad983f95e03ea489",
+      "dimensions": {
+        "width": 2560,
+        "height": 4204
+      },
+      "localFilename": "screens/10_invoice_details.html",
+      "fileSizeBytes": 36916,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "Invoice #FP-8848 \u2022 FreelancePay AI"
+      }
+    },
+    {
+      "index": 11,
+      "title": "FreelancePay AI \u2014 What-If Financial Simulator",
+      "screenId": "240ba133efe245a7869d949bceb3323d",
+      "dimensions": {
+        "width": 2560,
+        "height": 4484
+      },
+      "localFilename": "screens/11_what_if_financial_simulator.html",
+      "fileSizeBytes": 45549,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 What-If Financial Simulator"
+      }
+    },
+    {
+      "index": 12,
+      "title": "FreelancePay AI \u2014 Tax Set-Aside Estimator",
+      "screenId": "6ac52d99d5d148d5b6a6a93f4afd67e7",
+      "dimensions": {
+        "width": 2560,
+        "height": 3412
+      },
+      "localFilename": "screens/12_tax_set_aside_estimator.html",
+      "fileSizeBytes": 45265,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Tax Set-Aside Intelligence"
+      }
+    },
+    {
+      "index": 13,
+      "title": "FreelancePay AI \u2014 Transactions",
+      "screenId": "4ff4863f2e7e4e68916bc2a4d142480a",
+      "dimensions": {
+        "width": 2560,
+        "height": 3760
+      },
+      "localFilename": "screens/13_transactions.html",
+      "fileSizeBytes": 50342,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI - Transactions Ledger"
+      }
+    },
+    {
+      "index": 14,
+      "title": "FreelancePay AI \u2014 Settings & Integrations",
+      "screenId": "d95c7d67c63f4680be531a29b339c700",
+      "dimensions": {
+        "width": 2560,
+        "height": 3362
+      },
+      "localFilename": "screens/14_settings_and_integrations.html",
+      "fileSizeBytes": 40112,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Workspace Settings &amp; Integrations"
+      }
+    },
+    {
+      "index": 15,
+      "title": "FreelancePay AI \u2014 Reports & Analytics",
+      "screenId": "df992e32d14343fbb3f91a1102f9827e",
+      "dimensions": {
+        "width": 2560,
+        "height": 4736
+      },
+      "localFilename": "screens/15_reports_and_analytics.html",
+      "fileSizeBytes": 54855,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Financial Reports &amp; Analytics"
+      }
+    },
+    {
+      "index": 16,
+      "title": "FreelancePay AI \u2014 AI Payment Negotiator",
+      "screenId": "3109c2364bc14e7286f4b26dee13475d",
+      "dimensions": {
+        "width": 2560,
+        "height": 3390
+      },
+      "localFilename": "screens/16_ai_payment_negotiator.html",
+      "fileSizeBytes": 44705,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 AI Payment Negotiator"
+      }
+    },
+    {
+      "index": 17,
+      "title": "FreelancePay AI \u2014 AI Document Intelligence Scanner",
+      "screenId": "6c27e7b072fa48e9bd24a8a7d9b3ae09",
+      "dimensions": {
+        "width": 2560,
+        "height": 6532
+      },
+      "localFilename": "screens/17_ai_document_intelligence_scanner.html",
+      "fileSizeBytes": 39455,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 AI Document Intelligence Scanner"
+      }
+    },
+    {
+      "index": 18,
+      "title": "FreelancePay AI \u2014 Create Invoice",
+      "screenId": "ba35281e30c34f24857ce6847273a4d1",
+      "dimensions": {
+        "width": 2560,
+        "height": 3372
+      },
+      "localFilename": "screens/18_create_invoice.html",
+      "fileSizeBytes": 39827,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI - Create Invoice"
+      }
+    },
+    {
+      "index": 19,
+      "title": "FreelancePay AI \u2014 Fee & Currency Intelligence",
+      "screenId": "18f9ac3f332d401294119a85d1e24f18",
+      "dimensions": {
+        "width": 2560,
+        "height": 5216
+      },
+      "localFilename": "screens/19_fee_and_currency_intelligence.html",
+      "fileSizeBytes": 54444,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Fee &amp; Currency Intelligence"
+      }
+    },
+    {
+      "index": 20,
+      "title": "FreelancePay AI \u2014 Milestone Payments",
+      "screenId": "55e8752df6864c55837b75c7ea1a6448",
+      "dimensions": {
+        "width": 2560,
+        "height": 3464
+      },
+      "localFilename": "screens/20_milestone_payments.html",
+      "fileSizeBytes": 40747,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "Milestone Payments \u2014 FreelancePay AI"
+      }
+    },
+    {
+      "index": 21,
+      "title": "FreelancePay AI \u2014 Cashflow Forecast",
+      "screenId": "827579ad855549c4b61a22a05dddef8d",
+      "dimensions": {
+        "width": 2560,
+        "height": 5198
+      },
+      "localFilename": "screens/21_cashflow_forecast.html",
+      "fileSizeBytes": 54374,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Cashflow Forecast"
+      }
+    },
+    {
+      "index": 22,
+      "title": "FreelancePay AI \u2014 Project Profitability",
+      "screenId": "284e518dda344b6d9af9b91e41e807aa",
+      "dimensions": {
+        "width": 2560,
+        "height": 3806
+      },
+      "localFilename": "screens/22_project_profitability.html",
+      "fileSizeBytes": 50782,
+      "downloadStatus": "SUCCESS",
+      "validation": {
+        "fileExists": true,
+        "isCompleteHtml": true,
+        "hasTailwindConfig": true,
+        "hasFonts": true,
+        "htmlTitle": "FreelancePay AI \u2014 Project Profitability Intelligence"
+      }
+    }
+  ]
+}

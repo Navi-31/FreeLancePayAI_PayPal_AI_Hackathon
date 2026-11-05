@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — Tax Set-Aside Intelligence</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter and Geist Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface": "#131319",
+            "tertiary-fixed-dim": "#ffaedb",
+            "primary": "#f4c86d",
+            "surface-variant": "#35343b",
+            "inverse-surface": "#e4e1ea",
+            "on-secondary": "#3b0092",
+            "on-tertiary-fixed-variant": "#880067",
+            "on-error-container": "#ffdad6",
+            "error": "#ffb4ab",
+            "surface-bright": "#39383f",
+            "secondary-container": "#561cc1",
+            "surface-tint": "#ebc166",
+            "on-tertiary-container": "#850065",
+            "tertiary-fixed": "#ffd8eb",
+            "surface-container-highest": "#35343b",
+            "secondary-fixed": "#e9ddff",
+            "tertiary-container": "#ff8dd2",
+            "surface-container-high": "#2a2930",
+            "on-secondary-container": "#c3abff",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container-low": "#1b1b21",
+            "surface-dim": "#131319",
+            "inverse-primary": "#795902",
+            "on-primary-fixed-variant": "#5c4300",
+            "surface-container": "#1f1f25",
+            "on-primary": "#402d00",
+            "on-error": "#690005",
+            "outline-variant": "#4e4637",
+            "tertiary": "#ffbadf",
+            "error-container": "#93000a",
+            "on-tertiary": "#610048",
+            "inverse-on-surface": "#303036",
+            "on-secondary-fixed": "#22005c",
+            "on-primary-container": "#594100",
+            "background": "#131319",
+            "primary-container": "#d6ad55",
+            "primary-fixed": "#ffdea0",
+            "on-tertiary-fixed": "#3c002b",
+            "primary-fixed-dim": "#ebc166",
+            "on-surface": "#e4e1ea",
+            "on-secondary-fixed-variant": "#5417be",
+            "on-primary-fixed": "#261a00",
+            "on-surface-variant": "#d1c5b2",
+            "secondary": "#d0bcff",
+            "on-background": "#e4e1ea",
+            "surface-container-lowest": "#0e0e14",
+            "outline": "#9a8f7e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "margin": "2.5rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "display": ["Geist"],
+            "headline-lg": ["Geist"],
+            "body-sm": ["Inter"],
+            "headline-md": ["Geist"],
+            "numeric-metric": ["Geist"],
+            "headline-sm": ["Geist"],
+            "label-md": ["Geist"],
+            "label-sm": ["Geist"],
+            "body-md": ["Inter"],
+            "display-mobile": ["Geist"],
+            "body-lg": ["Inter"],
+            "headline-lg-mobile": ["Geist"]
+          },
+          "fontSize": {
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    
+    /* Glassmorphism custom gradient borders & halos */
+    .glass-panel {
+      background: rgba(23, 23, 32, 0.80);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .glass-panel-floating {
+      background: rgba(30, 29, 41, 0.85);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-top: 1px solid rgba(240, 212, 139, 0.25);
+    }
+
+    .auric-glow {
+      box-shadow: 0 20px 50px -15px rgba(214, 173, 85, 0.12);
+    }
+
+    .violet-radiance {
+      box-shadow: 0 0 40px -10px rgba(112, 64, 219, 0.28);
+    }
+
+    /* Range slider custom thumb */
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      height: 18px;
+      width: 18px;
+      border-radius: 9999px;
+      background: #f4c86d;
+      border: 2px solid #0e0e14;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(244, 200, 109, 0.5);
+    }
+    input[type=range]::-moz-range-thumb {
+      height: 18px;
+      width: 18px;
+      border-radius: 9999px;
+      background: #f4c86d;
+      border: 2px solid #0e0e14;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(244, 200, 109, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col font-body-md text-body-md overflow-x-hidden">
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: SideNavBar (Rail Sidebar)                             -->
+<!-- ========================================================================= -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-40 flex flex-col border-r border-outline-variant/30 backdrop-blur-xl bg-surface-container-lowest/90">
+<div class="flex flex-col justify-between h-full p-space-sm w-64">
+<!-- Top Brand Anchor & Menu -->
+<div class="flex flex-col gap-y-4">
+<!-- Brand Header -->
+<div class="flex items-center gap-3 px-3 py-3 border-b border-outline-variant/20">
+<div class="relative w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<div class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></div>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Autonomous Wealth Engine</span>
+</div>
+</div>
+<!-- Primary Navigation Links -->
+<nav class="flex flex-col space-y-1">
+<!-- Overview -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<!-- Payments -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">payments</span>
+<span class="font-label-md text-label-md">Payments</span>
+</a>
+<!-- Intelligence -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">auto_awesome</span>
+<span class="font-label-md text-label-md">Intelligence</span>
+</a>
+<!-- Treasury (Parent context for Tax Shield) -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-surface-container-high text-primary font-medium border-l-2 border-primary transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+<span class="font-label-md text-label-md flex-1">Treasury</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</a>
+<!-- Tools -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">handyman</span>
+<span class="font-label-md text-label-md">Tools</span>
+</a>
+<!-- System -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors transition-all duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+<span class="font-label-md text-label-md">System</span>
+</a>
+</nav>
+<!-- Copilot CTA Trigger -->
+<div class="px-2 pt-2">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-gradient-to-r from-secondary-container to-[#7040db] text-on-surface font-label-md text-label-md transition-all duration-150 active:scale-[0.98] violet-radiance hover:brightness-110">
+<span class="material-symbols-outlined text-secondary text-base">bolt</span>
+<span>Trigger Copilot</span>
+</button>
+</div>
+</div>
+<!-- Footer Telemetry & Vault Navigation -->
+<div class="flex flex-col gap-2 pt-4 border-t border-outline-variant/30">
+<!-- Live Shield Indicator -->
+<div class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+              Tax Shield Engine
+            </span>
+<span class="text-primary font-mono font-medium">96% Active</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 96%"></div>
+</div>
+</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-base">shield_lock</span>
+<span>Security Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 transition-colors font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined text-base">terminal</span>
+<span>Telemetry Logs</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- SHARED COMPONENT: TopNavBar (Desktop Utility Header)                     -->
+<!-- ========================================================================= -->
+<header class="docked full-width top-0 sticky z-30 flex items-center justify-between px-space-lg py-space-sm w-full pl-72 border-b border-outline-variant/30 backdrop-blur-2xl bg-surface/80 shadow-sm">
+<!-- Breadcrumb & Search Bar -->
+<div class="flex items-center gap-6 flex-1 max-w-xl">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="hover:text-on-surface cursor-pointer">Financial Management</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">security</span>
+          Tax Shield Estimator
+        </span>
+</div>
+<!-- Left Search Field -->
+<div class="relative flex-1 hidden xl:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-9 pr-4 py-1.5 font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-colors" placeholder="Search rules, payouts, tax IDs..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links & Trailing Actions -->
+<div class="flex items-center gap-6">
+<nav class="hidden 2xl:flex items-center gap-6 font-label-md text-label-md">
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Treasury Stream</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Yield Radar</a>
+<a class="text-primary font-medium border-b-2 border-primary pb-1" href="#">Tax Shield</a>
+<a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Contracts</a>
+</nav>
+<!-- Currency Switcher Badge -->
+<button class="px-2.5 py-1 rounded bg-surface-container-high border border-outline-variant/30 text-on-surface font-label-sm text-label-sm hover:border-primary/40 transition-colors">
+        USD / EUR
+      </button>
+<!-- Trailing Action Icons -->
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Notifications">
+<span class="material-symbols-outlined text-lg">notifications</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-secondary hover:text-on-surface hover:bg-surface-container transition-colors" title="Quick Automations">
+<span class="material-symbols-outlined text-lg">bolt</span>
+</button>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Help Desk">
+<span class="material-symbols-outlined text-lg">help</span>
+</button>
+</div>
+<!-- Execute Payout Action Trigger -->
+<button class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary-container to-primary text-on-primary font-label-md text-label-md font-semibold auric-glow hover:brightness-105 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-base">payments</span>
+<span>Execute Payout</span>
+</button>
+<!-- User Profile Avatar with Gold Status Ring -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant/30">
+<div class="w-9 h-9 rounded-full ring-2 ring-primary/80 ring-offset-2 ring-offset-surface bg-surface-container-high overflow-hidden flex items-center justify-center relative">
+<img class="w-full h-full object-cover" data-alt="Sophisticated executive portrait avatar with subtle ambient gold lighting and obsidian backdrop, tailored for elite private wealth interface representation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSaRx_TN785mZk2eQVkzmKVsNKSpUSWS2YHgsGKOzxoss5Kkayq84eyiqydriqRFdFLxD1th0IXLVV5JNbK3qrxIv2O21r_BHkGOHSBQ6o5KXPc-c8BBWs6Sd3lOcxg2UssgTS3rysJ4iq6oadTz49Z_N0DYlILg9pcxrsj8D-YrrxRe4HYIDRxVk0dFMuA3FH6I2SjikficNzUemCfbz7basFGXXEilPweRXK-I7C"/>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN CONTENT CANVAS (Responsive 12-Column Layout)                        -->
+<!-- ========================================================================= -->
+<main class="flex-1 ml-64 pl-8 pr-10 py-6 max-w-[1600px] flex flex-col gap-6">
+<!-- Screen Title & Sub-header -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<h1 class="font-headline-lg text-headline-lg font-semibold tracking-tight text-on-surface">Tax Set-Aside Intelligence</h1>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-secondary border border-secondary/30 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            Autonomous Allocator v3.4
+          </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Institutional-grade predictive tax isolation, continuous escrow routing, and quarterly statutory timeline management.</p>
+</div>
+<!-- Action Cluster -->
+<div class="flex items-center gap-3">
+<button class="px-3.5 py-2 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-primary/40 text-on-surface font-label-md text-label-md flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base text-primary">download</span>
+<span>Download CPA Dossier</span>
+</button>
+<button class="px-3.5 py-2 rounded-lg bg-surface-container-high border border-primary/40 hover:bg-surface-bright text-primary font-label-md text-label-md flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base">sync</span>
+<span>Recalculate Reserves</span>
+</button>
+</div>
+</div>
+<!-- 1. TOP METRICS / KPIS (Bento Row) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1: Gross Inflows -->
+<div class="glass-panel p-5 rounded-xl flex flex-col justify-between border-t border-t-white/10 hover:border-outline-variant/60 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Gross Inflows</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-base">trending_up</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="font-numeric-metric text-numeric-metric text-on-surface font-semibold tracking-tight">$142,650.00</div>
+<div class="flex items-center gap-1.5 mt-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="text-primary font-medium flex items-center">+18.4%</span>
+<span>vs previous fiscal YTD</span>
+</div>
+</div>
+</div>
+<!-- KPI 2: Taxable Base -->
+<div class="glass-panel p-5 rounded-xl flex flex-col justify-between border-t border-t-white/10 hover:border-outline-variant/60 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Estimated Taxable Base</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-base">calculate</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="font-numeric-metric text-numeric-metric text-on-surface font-semibold tracking-tight">$118,400.00</div>
+<div class="flex items-center gap-1.5 mt-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="text-on-surface-variant font-medium">-$24,250.00</span>
+<span>in deductible offsets</span>
+</div>
+</div>
+</div>
+<!-- KPI 3: Suggested Tax Reserve -->
+<div class="glass-panel p-5 rounded-xl flex flex-col justify-between border-t border-t-primary/30 auric-glow hover:border-primary/50 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider font-semibold">Suggested Tax Reserve</span>
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+</div>
+<div class="mt-4">
+<div class="flex items-baseline gap-2">
+<span class="font-numeric-metric text-numeric-metric text-primary font-semibold tracking-tight">$29,600.00</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium">@ 25%</span>
+</div>
+<div class="flex items-center gap-1.5 mt-1 font-label-sm text-label-sm text-on-surface-variant">
+<span class="text-primary font-medium">Optimal</span>
+<span>composite federal + CA rate</span>
+</div>
+</div>
+</div>
+<!-- KPI 4: Current Vault Set-Aside -->
+<div class="glass-panel-floating p-5 rounded-xl flex flex-col justify-between border-t border-t-primary/50 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Current Vault Set-Aside</span>
+<span class="px-2 py-0.5 rounded text-xs font-semibold bg-primary/20 text-primary border border-primary/40">96% Shielded</span>
+</div>
+<div class="mt-4">
+<div class="font-numeric-metric text-numeric-metric text-on-surface font-semibold tracking-tight">$28,500.00</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full mt-2 overflow-hidden flex">
+<div class="bg-gradient-to-r from-primary-container to-primary h-full rounded-full" style="width: 96%"></div>
+</div>
+<div class="flex items-center justify-between mt-1.5 font-label-sm text-label-sm">
+<span class="text-on-surface-variant">Target: $29,600.00</span>
+<span class="text-error font-medium">-$1,100 delta</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. TWO-COLUMN INTERACTIVE ENGINE: RULES & AUTO-SPLIT SIMULATOR -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Column Left: Configurable Tax Shield Rules (5 Cols) -->
+<div class="lg:col-span-5 glass-panel p-6 rounded-2xl flex flex-col justify-between border border-outline-variant/30">
+<div>
+<!-- Panel Header -->
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary border border-outline-variant/30">
+<span class="material-symbols-outlined text-lg">tune</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Shield Configuration</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Statutory rules &amp; autonomous rate locks</p>
+</div>
+</div>
+<span class="text-xs px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant border border-outline-variant/30">Live Sync</span>
+</div>
+<!-- Configuration Fields -->
+<div class="flex flex-col gap-4 mt-5">
+<!-- Country & Jurisdiction -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Tax Jurisdiction &amp; Domicile</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary text-base">public</span>
+<select class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-9 pr-8 py-2 font-body-sm text-body-sm text-on-surface appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 cursor-pointer">
+<option selected="">US — Federal + California State (FTB)</option>
+<option>US — Federal + New York State (NYSDTF)</option>
+<option>US — Federal + Texas (No State Income Tax)</option>
+<option>EU — Germany (Gewerbesteuer + ESt)</option>
+<option>UK — HMRC (Sole Trader / Ltd Co)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-base">arrow_drop_down</span>
+</div>
+</div>
+<!-- Filing Entity Status -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Filing Structure Entity</label>
+<div class="grid grid-cols-2 gap-2">
+<label class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-lowest border border-primary/60 cursor-pointer transition-all">
+<input checked="" class="text-primary focus:ring-0 focus:ring-offset-0 bg-surface-container" name="entity" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-primary">Single LLC / S-Corp</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Pass-through election</span>
+</div>
+</label>
+<label class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container-lowest border border-outline-variant/30 hover:border-outline-variant/60 cursor-pointer transition-all">
+<input class="text-primary focus:ring-0 focus:ring-offset-0 bg-surface-container" name="entity" type="radio"/>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface">Sole Proprietor</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Schedule C standard</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Target Percentage Slider -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface font-medium">Target Set-Aside Ratio</span>
+<span class="font-headline-sm text-headline-sm font-semibold text-primary" id="sliderValue">25%</span>
+</div>
+<input class="w-full h-1.5 bg-surface-container-highest rounded-lg appearance-none cursor-pointer" id="taxSlider" max="35" min="20" step="1" type="range" value="25"/>
+<div class="flex justify-between font-label-sm text-label-sm text-outline">
+<span>20% (Conservative)</span>
+<span>Preset: 25%</span>
+<span>35% (Aggressive)</span>
+</div>
+</div>
+<!-- Deductible Expense Offset Input -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-sm text-label-sm text-on-surface-variant">Deductible Business Expense Offset</label>
+<span class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">auto_awesome</span>
+                  AI Synced
+                </span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-base">receipt_long</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg pl-9 pr-14 py-2 font-mono font-medium text-body-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40" type="text" value="$24,250.00"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 font-label-sm text-label-sm text-outline">USD</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Status Badge -->
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-primary">lock</span>
+            Cryptographically Isolated Vault
+          </span>
+<span class="text-on-surface font-mono">APY: 4.85%</span>
+</div>
+</div>
+<!-- Column Right: Payment-by-Payment Auto-Split Simulator (7 Cols) -->
+<div class="lg:col-span-7 glass-panel-floating p-6 rounded-2xl flex flex-col justify-between border border-outline-variant/30">
+<div>
+<!-- Panel Header -->
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary border border-outline-variant/30">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">call_split</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Payment-by-Payment Auto-Split Simulator</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Real-time atomic escrow routing upon Stripe / PayPal webhook execution</p>
+</div>
+</div>
+<div class="flex items-center gap-1.5 bg-secondary-container/20 text-secondary border border-secondary-container/40 px-2.5 py-1 rounded-full text-xs font-medium">
+<span class="material-symbols-outlined text-xs">bolt</span>
+<span>Zero-Lag Routing</span>
+</div>
+</div>
+<!-- Dynamic Interactive Flow Simulator Graphic -->
+<div class="mt-6 p-5 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/30 relative overflow-hidden">
+<!-- Background ambient gradient -->
+<div class="absolute -right-20 -top-20 w-64 h-64 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+<!-- Incoming Trigger Card -->
+<div class="w-full md:w-1/3 p-4 rounded-xl bg-surface-container border border-outline-variant/40 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Incoming Inflow</span>
+<span class="material-symbols-outlined text-primary text-base">input</span>
+</div>
+<div class="font-headline-sm text-headline-sm font-semibold text-on-surface font-mono" id="simInflow">$2,000.00</div>
+<div class="flex items-center gap-1 text-xs text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+<span>Stripe ACH / Acme Corp</span>
+</div>
+</div>
+<!-- Animated Flow Separator -->
+<div class="flex md:flex-col items-center justify-center gap-1 text-primary">
+<span class="material-symbols-outlined rotate-90 md:rotate-0 text-xl text-primary animate-pulse">keyboard_double_arrow_right</span>
+<span class="text-[11px] font-mono tracking-widest text-on-surface-variant uppercase">25% Lock</span>
+</div>
+<!-- Splitted Outcomes -->
+<div class="w-full md:w-1/2 flex flex-col gap-3">
+<!-- Isolated Tax Portion -->
+<div class="p-3.5 rounded-lg bg-primary/10 border border-primary/40 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base">account_balance_wallet</span>
+</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary">Tax Vault Escrow</div>
+<div class="text-xs text-on-surface-variant">Yield-bearing treasury note</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-headline-sm text-headline-sm font-bold text-primary font-mono" id="simTax">$500.00</div>
+<div class="text-[11px] text-primary/80 font-medium">Auto-isolated (25%)</div>
+</div>
+</div>
+<!-- Net Operating Portion -->
+<div class="p-3.5 rounded-lg bg-surface-container border border-outline-variant/40 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-base">check_circle</span>
+</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-on-surface">Net Liquid Operating</div>
+<div class="text-xs text-on-surface-variant">Mercury / Brex instant deposit</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface font-mono" id="simLiquid">$1,500.00</div>
+<div class="text-[11px] text-on-surface-variant font-medium">Free cash-flow (75%)</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Stream Feed -->
+<div class="mt-5 pt-4 border-t border-outline-variant/30 flex flex-col gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Live Split Stream History</span>
+<div class="flex items-center justify-between py-1.5 px-3 rounded bg-surface-container/40 text-xs font-mono text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">verified</span>
+<span class="text-on-surface">Stripe Client #8912</span>
+<span class="text-outline">($4,500.00)</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-primary font-medium">+$1,125.00 Tax Vault</span>
+<span class="text-on-surface font-medium">+$3,375.00 Liquid</span>
+<span class="text-outline">12m ago</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-1.5 px-3 rounded bg-surface-container/40 text-xs font-mono text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">verified</span>
+<span class="text-on-surface">PayPal Wire #4421</span>
+<span class="text-outline">($6,800.00)</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-primary font-medium">+$1,700.00 Tax Vault</span>
+<span class="text-on-surface font-medium">+$5,100.00 Liquid</span>
+<span class="text-outline">2h ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Simulator Quick Controls -->
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Simulate Sample Inflow:</span>
+<button class="px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-xs font-mono text-on-surface border border-outline-variant/30 transition-all" onclick="updateSim(1500)">$1,500</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-xs font-mono text-primary border border-primary/40 transition-all font-semibold" onclick="updateSim(2000)">$2,000</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-xs font-mono text-on-surface border border-outline-variant/30 transition-all" onclick="updateSim(5000)">$5,000</button>
+<button class="px-2.5 py-1 rounded bg-surface-container-high hover:bg-surface-bright text-xs font-mono text-on-surface border border-outline-variant/30 transition-all" onclick="updateSim(10000)">$10,000</button>
+</div>
+<span class="text-xs text-on-surface-variant font-label-sm text-label-sm">Routing rules execute in &lt; 40ms</span>
+</div>
+</div>
+</div>
+<!-- 3. QUARTERLY MILESTONE TIMELINE & SHORTFALL RADAR -->
+<div class="glass-panel p-6 rounded-2xl border border-outline-variant/30 flex flex-col gap-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-primary border border-outline-variant/30">
+<span class="material-symbols-outlined text-lg">calendar_month</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface">Quarterly Statutory Deadlines &amp; Payment Calendar</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">IRS &amp; California FTB estimated tax schedules (Form 1040-ES)</p>
+</div>
+</div>
+<!-- Projected Shortfall Indicator Banner -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-error-container/20 border border-error/30 text-error">
+<span class="material-symbols-outlined text-base">warning</span>
+<span class="font-label-sm text-label-sm font-medium">Q4 Projected Reserve Deficit: <strong class="font-mono">-$1,100.00</strong></span>
+</div>
+</div>
+<!-- Timeline 4 Quarters Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+<!-- Q1 Milestone (Settled) -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 relative flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Quarter 1</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-primary/20 text-primary border border-primary/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Remitted
+              </span>
+</div>
+<div class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">event</span>
+              Statutory: Apr 15, 2024
+            </div>
+<div class="mt-4 flex flex-col gap-1">
+<div class="text-xs text-on-surface-variant font-label-sm">Obligation Paid</div>
+<div class="font-headline-sm text-headline-sm font-semibold text-on-surface font-mono">$7,200.00</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-on-surface-variant">
+<span>Status: Filed &amp; Cleared</span>
+<span class="text-primary font-medium">Receipt #IRS-882</span>
+</div>
+</div>
+<!-- Q2 Milestone (Settled) -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 relative flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Quarter 2</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-primary/20 text-primary border border-primary/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Remitted
+              </span>
+</div>
+<div class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">event</span>
+              Statutory: Jun 15, 2024
+            </div>
+<div class="mt-4 flex flex-col gap-1">
+<div class="text-xs text-on-surface-variant font-label-sm">Obligation Paid</div>
+<div class="font-headline-sm text-headline-sm font-semibold text-on-surface font-mono">$7,200.00</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-on-surface-variant">
+<span>Status: Filed &amp; Cleared</span>
+<span class="text-primary font-medium">Receipt #IRS-910</span>
+</div>
+</div>
+<!-- Q3 Milestone (Settled) -->
+<div class="p-4 rounded-xl bg-surface-container border border-outline-variant/30 relative flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-on-surface">Quarter 3</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-primary/20 text-primary border border-primary/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                Remitted
+              </span>
+</div>
+<div class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">event</span>
+              Statutory: Sep 15, 2024
+            </div>
+<div class="mt-4 flex flex-col gap-1">
+<div class="text-xs text-on-surface-variant font-label-sm">Obligation Paid</div>
+<div class="font-headline-sm text-headline-sm font-semibold text-on-surface font-mono">$7,200.00</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs text-on-surface-variant">
+<span>Status: Filed &amp; Cleared</span>
+<span class="text-primary font-medium">Receipt #IRS-954</span>
+</div>
+</div>
+<!-- Q4 Milestone (Upcoming / Warning State) -->
+<div class="p-4 rounded-xl bg-surface-container-high border-2 border-primary/60 relative flex flex-col justify-between auric-glow">
+<div class="absolute -top-2.5 right-4 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+            Approaching Target
+          </div>
+<div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-primary">Quarter 4</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-error/20 text-error border border-error/30 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">schedule</span>
+                Pending Due
+              </span>
+</div>
+<div class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">event</span>
+              Statutory: Jan 15, 2025 (48 days)
+            </div>
+<div class="mt-4 flex flex-col gap-1">
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Required Reserve:</span>
+<span class="font-mono text-on-surface font-medium">$8,000.00</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Allocated in Vault:</span>
+<span class="font-mono text-primary font-medium">$6,900.00</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mt-1">
+<div class="bg-primary h-full rounded-full" style="width: 86%"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-xs text-error font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">error</span>
+              Shortfall: -$1,100.00
+            </span>
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-label-sm text-xs font-semibold hover:brightness-110 active:scale-95 transition-all">
+              Top Up
+            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. LEGAL / FINANCIAL DISCLAIMER BANNER -->
+<div class="p-4 rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-outline flex-shrink-0">
+<span class="material-symbols-outlined text-lg">policy</span>
+</div>
+<div class="flex-1 text-xs text-on-surface-variant leading-relaxed">
+<strong class="text-on-surface">Legal &amp; Regulatory Notice:</strong> Estimates only. Not tax, legal, or accounting advice. Actual tax obligations depend on your jurisdiction and individual filing circumstances. FreelancePay AI computes algorithmic withholdings for cash-flow isolation only. Consult a credentialed CPA or Enrolled Agent prior to official submission.
+      </div>
+<button class="px-3 py-1.5 rounded bg-surface-container text-xs text-on-surface hover:text-primary transition-colors flex-shrink-0">
+        View Protocol Docs
+      </button>
+</div>
+</main>
+<!-- Interactive Simulator Script -->
+<script>
+    const slider = document.getElementById('taxSlider');
+    const sliderVal = document.getElementById('sliderValue');
+    let currentInflow = 2000;
+
+    function recalculateSimulator() {
+      const rate = parseInt(slider.value, 10);
+      sliderVal.textContent = rate + '%';
+      
+      const taxAmount = (currentInflow * (rate / 100)).toFixed(2);
+      const liquidAmount = (currentInflow - taxAmount).toFixed(2);
+      
+      document.getElementById('simInflow').textContent = '$' + Number(currentInflow).toLocaleString('en-US', { minimumFractionDigits: 2 });
+      document.getElementById('simTax').textContent = '$' + Number(taxAmount).toLocaleString('en-US', { minimumFractionDigits: 2 });
+      document.getElementById('simLiquid').textContent = '$' + Number(liquidAmount).toLocaleString('en-US', { minimumFractionDigits: 2 });
+    }
+
+    slider.addEventListener('input', recalculateSimulator);
+
+    function updateSim(amount) {
+      currentInflow = amount;
+      recalculateSimulator();
+    }
+  </script>
+</body></html>
