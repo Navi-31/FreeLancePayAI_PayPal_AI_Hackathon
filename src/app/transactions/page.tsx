@@ -1,15 +1,15 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { TransactionsClient } from "@/features/payments/transactions/TransactionsClient";
 
-export default function TransactionsLedgerPage() {
+export default function TransactionsPage() {
   return (
-    <AppLayout pageTitle="Transactions Ledger" pageSubtitle="CORE PROTOCOL • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="Transactions Ledger"
-        pillar="CORE PROTOCOL"
-        screenId="4ff4863f2e7e4e68916bc2a4d142480a"
-      />
+    <AppLayout
+      pageTitle="Transactions Ledger"
+      pageSubtitle="CORE PROTOCOL • Autonomous Real-time Settlement Registry"
+      userBadge="Private Vault Tier"
+    >
+      <TransactionsClient />
     </AppLayout>
   );
 }
