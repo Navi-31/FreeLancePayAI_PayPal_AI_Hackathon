@@ -1,15 +1,15 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { SimulatorClient } from "@/features/ai/SimulatorClient";
 
-export default function WhatIfFinancialSimulatorPage() {
+export default function SimulatorPage() {
   return (
-    <AppLayout pageTitle="What-If Financial Simulator" pageSubtitle="AUTONOMOUS AI • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="What-If Financial Simulator"
-        pillar="AUTONOMOUS AI"
-        screenId="240ba133efe245a7869d949bceb3323d"
-      />
+    <AppLayout
+      pageTitle="What-If Financial Simulator"
+      pageSubtitle="AUTONOMOUS AI • Interactive Financial Sandbox"
+      userBadge="Private Vault Tier"
+    >
+      <SimulatorClient />
     </AppLayout>
   );
 }

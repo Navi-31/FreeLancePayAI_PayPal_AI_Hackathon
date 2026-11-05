@@ -1,15 +1,14 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { SettingsClient } from "@/features/settings/SettingsClient";
 
-export default function SettingsAndAIPolicyPage() {
+export default function SettingsAndIntegrationsPage() {
   return (
-    <AppLayout pageTitle="Settings & AI Policy" pageSubtitle="UTILITY ENGINE • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="Settings & AI Policy"
-        pillar="UTILITY ENGINE"
-        screenId="d95c7d67c63f4680be531a29b339c700"
-      />
+    <AppLayout
+      pageTitle="Workspace Settings & Integrations"
+      pageSubtitle="UTILITY ENGINE • Configure autonomous AI guardrails, payment gateway rails, tax shielding, and security policies"
+    >
+      <SettingsClient />
     </AppLayout>
   );
 }

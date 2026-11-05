@@ -1,15 +1,14 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { ScannerClient } from "@/features/scanner/ScannerClient";
 
-export default function AIDocumentScannerPage() {
+export default function DocumentScannerPage() {
   return (
-    <AppLayout pageTitle="AI Document Scanner" pageSubtitle="UTILITY ENGINE • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="AI Document Scanner"
-        pillar="UTILITY ENGINE"
-        screenId="6c27e7b072fa48e9bd24a8a7d9b3ae09"
-      />
+    <AppLayout
+      pageTitle="AI Document Intelligence Scanner"
+      pageSubtitle="UTILITY ENGINE • Transform project contracts, SOWs, and agreements into verified PayPal invoice drafts"
+    >
+      <ScannerClient />
     </AppLayout>
   );
 }

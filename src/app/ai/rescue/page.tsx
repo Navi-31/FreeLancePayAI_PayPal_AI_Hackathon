@@ -1,15 +1,15 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { RescueClient } from "@/features/ai/RescueClient";
 
-export default function AICashflowRescueModePage() {
+export default function AiCashflowRescuePage() {
   return (
-    <AppLayout pageTitle="AI Cashflow Rescue Mode" pageSubtitle="AUTONOMOUS AI • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="AI Cashflow Rescue Mode"
-        pillar="AUTONOMOUS AI"
-        screenId="fc517d00ae9c44ccb27ac1eab62c5814"
-      />
+    <AppLayout
+      pageTitle="AI Cashflow Rescue"
+      pageSubtitle="AUTONOMOUS AI • Proactive Liquidity Sentinel"
+      userBadge="Private Vault Tier"
+    >
+      <RescueClient />
     </AppLayout>
   );
 }

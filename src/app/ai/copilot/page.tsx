@@ -1,15 +1,15 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { CopilotClient } from "@/features/ai/CopilotClient";
 
-export default function AIFinancialCopilotPage() {
+export default function AiCopilotPage() {
   return (
-    <AppLayout pageTitle="AI Financial Copilot" pageSubtitle="AUTONOMOUS AI • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="AI Financial Copilot"
-        pillar="AUTONOMOUS AI"
-        screenId="f26191b2c8ed49ae986948a04259c681"
-      />
+    <AppLayout
+      pageTitle="AI Financial Copilot"
+      pageSubtitle="AUTONOMOUS AI • Real-time Business Intelligence Engine"
+      userBadge="Private Vault Tier"
+    >
+      <CopilotClient />
     </AppLayout>
   );
 }

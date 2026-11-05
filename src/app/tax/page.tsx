@@ -1,15 +1,14 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { TaxEstimatorClient } from "@/features/tax/TaxEstimatorClient";
 
-export default function TaxSetAsideEstimatorPage() {
+export default function TaxSetAsidePage() {
   return (
-    <AppLayout pageTitle="Tax Set-Aside Estimator" pageSubtitle="TREASURY & FISCAL • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="Tax Set-Aside Estimator"
-        pillar="TREASURY & FISCAL"
-        screenId="6ac52d99d5d148d5b6a6a93f4afd67e7"
-      />
+    <AppLayout
+      pageTitle="Tax Set-Aside Intelligence"
+      pageSubtitle="TREASURY & FISCAL • Institutional-grade predictive tax isolation, continuous escrow routing, and quarterly statutory timeline management"
+    >
+      <TaxEstimatorClient />
     </AppLayout>
   );
 }

@@ -1,15 +1,14 @@
 import React from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { RoutePlaceholder } from "@/components/layout/RoutePlaceholder";
+import { ReportsClient } from "@/features/reports/ReportsClient";
 
 export default function ReportsAndAnalyticsPage() {
   return (
-    <AppLayout pageTitle="Reports & Analytics" pageSubtitle="UTILITY ENGINE • Autonomous Wealth Engine">
-      <RoutePlaceholder
-        title="Reports & Analytics"
-        pillar="UTILITY ENGINE"
-        screenId="df992e32d14343fbb3f91a1102f9827e"
-      />
+    <AppLayout
+      pageTitle="Financial Reports & CPA Analytics"
+      pageSubtitle="UTILITY ENGINE • Generate verified CPA-ready statements, tax reserve dossiers, client profitability audits, and liquidity ledgers"
+    >
+      <ReportsClient />
     </AppLayout>
   );
 }
