@@ -7,6 +7,7 @@ import { runAIIntegrationTests } from "./aiIntegration.test";
 import { runEmailNotificationJobsTests } from "./emailNotificationJobs.test";
 import { runSecurityAndE2ETests } from "./securityAndE2E.test";
 import { runPhase5BIntegrationTests } from "./phase5BIntegration.test";
+import { runBrowserE2ETests } from "./browserE2E.test";
 
 async function main() {
   console.log("==================================================");
@@ -60,6 +61,11 @@ async function main() {
   const phase5B = await runPhase5BIntegrationTests();
   totalPassed += phase5B.passed;
   totalFailed += phase5B.failed;
+
+  // 10. Browser End-to-End Workflow & Interactive Journey Tests (Phase 5C)
+  const browserE2E = await runBrowserE2ETests();
+  totalPassed += browserE2E.passed;
+  totalFailed += browserE2E.failed;
 
   console.log("\n==================================================");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
