@@ -1,20 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/auth";
-import { seedDemoDataForUser } from "@/services/demoSeedService";
+import { seedDemoDataForUser, DEMO_SYNTHETIC_MARKER } from "@/services/demoSeedService";
 import { recordAuditLog } from "@/services/auditService";
+import { z } from "zod";
+
+const seedRequestSchema = z
+  .object({
+    reset: z.boolean().optional(),
+    confirm: z.boolean().optional(),
+  })
+  .strict();
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession();
-    let body: { reset?: boolean } = {};
+    let body: { reset?: boolean; confirm?: boolean } = {};
+
     try {
-      body = await request.json();
+      const raw = await request.json();
+      const parsed = seedRequestSchema.safeParse(raw);
+      if (parsed.success) {
+        body = parsed.data;
+      }
     } catch {
-      // Body is optional
+      // Body is optional; default to standard seed
     }
 
     if (!session) {
-      // Return signal for client to seed local demo storage
+      // Return signal for client to seed local demo storage in offline/unauthenticated mode
       return NextResponse.json({
         success: true,
         mode: "local_demo",
@@ -22,13 +35,19 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const result = await seedDemoDataForUser(session.userId, Boolean(body.reset));
+    const isReset = Boolean(body.reset);
+    const result = await seedDemoDataForUser(session.userId, isReset);
 
     await recordAuditLog({
       userId: session.userId,
-      action: body.reset ? "demo_data_reset" : "demo_data_seeded",
+      action: isReset ? "demo_data_reset" : "demo_data_seeded",
       entityType: "System",
-      details: result.counts,
+      details: {
+        ...result.counts,
+        resetTargetedOnly: true,
+        persistentMarker: DEMO_SYNTHETIC_MARKER,
+        preservedGenuineUserData: true,
+      },
     });
 
     return NextResponse.json({

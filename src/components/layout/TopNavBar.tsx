@@ -115,11 +115,17 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
 
   const handleSeedDemoPortfolio = async (reset = false) => {
     try {
+      if (reset) {
+        const confirmed = window.confirm(
+          "Reset Demo Data: This will refresh only synthetic demo records to their initial state. Any real custom records you created will be preserved. Proceed?"
+        );
+        if (!confirmed) return;
+      }
       setSyncStatus(reset ? "Resetting demo state..." : "Seeding demo data...");
       const res = await fetch("/api/demo/seed", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reset }),
+        body: JSON.stringify({ reset, confirm: true }),
       });
       if (res.ok) {
         setSyncStatus(reset ? "Demo portfolio reset cleanly!" : "Demo data seeded successfully!");

@@ -1,6 +1,33 @@
 import { prisma } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 
+export const DEMO_SYNTHETIC_MARKER = "[DEMO_SYNTHETIC]";
+
+export const DEMO_CLIENT_CODES = [
+  "CLI-8021",
+  "CLI-8022",
+  "CLI-8023",
+  "CLI-8024",
+  "CLI-8025",
+  "CLI-8848",
+] as const;
+
+export const DEMO_PROJECT_CODES = ["PRJ-901"] as const;
+
+export const DEMO_INVOICE_CODES = [
+  "FP-8849",
+  "FP-8848",
+  "FP-8847",
+  "FP-8846",
+  "FP-8845",
+] as const;
+
+export const DEMO_REMINDER_CODES = ["REM-8848"] as const;
+
+export const DEMO_TRANSACTION_PREFIX = "tx-demo-";
+
+export const DEMO_TAX_QUARTER = "Q4-2025-DEMO";
+
 export interface DemoSeedResult {
   success: boolean;
   message: string;
@@ -17,31 +44,121 @@ export interface DemoSeedResult {
 }
 
 export async function seedDemoDataForUser(userId: string, isReset = false): Promise<DemoSeedResult> {
-  return await prisma.$transaction(async (tx) => {
+  return await prisma.$transaction(
+    async (tx) => {
     if (isReset) {
-      // Safely delete only demo records belonging to this user
+      // Safely delete ONLY demo-seeded records belonging to this user.
+      // Genuine user-created records (custom codes, custom descriptions) are strictly preserved.
+
+      // 1. Payment Reminders & History
       await tx.reminderHistory.deleteMany({
-        where: { reminder: { userId } },
+        where: {
+          reminder: {
+            userId,
+            code: { in: [...DEMO_REMINDER_CODES] },
+          },
+        },
       });
-      await tx.paymentReminder.deleteMany({ where: { userId } });
+      await tx.paymentReminder.deleteMany({
+        where: {
+          userId,
+          code: { in: [...DEMO_REMINDER_CODES] },
+        },
+      });
+
+      // 2. Milestones & History
       await tx.milestoneHistory.deleteMany({
-        where: { milestone: { project: { userId } } },
+        where: {
+          milestone: {
+            project: {
+              userId,
+              code: { in: [...DEMO_PROJECT_CODES] },
+            },
+          },
+        },
       });
-      await tx.transaction.deleteMany({ where: { userId } });
       await tx.milestone.deleteMany({
-        where: { project: { userId } },
+        where: {
+          project: {
+            userId,
+            code: { in: [...DEMO_PROJECT_CODES] },
+          },
+        },
       });
-      await tx.project.deleteMany({ where: { userId } });
+      await tx.project.deleteMany({
+        where: {
+          userId,
+          code: { in: [...DEMO_PROJECT_CODES] },
+        },
+      });
+
+      // 3. Transactions (Strictly targeted by demo idempotency prefix or synthetic hash)
+      await tx.transaction.deleteMany({
+        where: {
+          userId,
+          OR: [
+            { idempotencyKey: { startsWith: DEMO_TRANSACTION_PREFIX } },
+            { hash: { startsWith: "0xDEMO-" } },
+            { notes: { contains: DEMO_SYNTHETIC_MARKER } },
+          ],
+        },
+      });
+
+      // 4. Invoices & Line Items
       await tx.invoiceLineItem.deleteMany({
-        where: { invoice: { userId } },
+        where: {
+          invoice: {
+            userId,
+            code: { in: [...DEMO_INVOICE_CODES] },
+          },
+        },
       });
-      await tx.invoice.deleteMany({ where: { userId } });
+      await tx.invoice.deleteMany({
+        where: {
+          userId,
+          code: { in: [...DEMO_INVOICE_CODES] },
+        },
+      });
+
+      // 5. Client Payment History & Clients
       await tx.clientPaymentHistory.deleteMany({
-        where: { client: { userId } },
+        where: {
+          client: {
+            userId,
+            code: { in: [...DEMO_CLIENT_CODES] },
+          },
+        },
       });
-      await tx.client.deleteMany({ where: { userId } });
-      await tx.expense.deleteMany({ where: { userId } });
-      await tx.subscription.deleteMany({ where: { userId } });
+      await tx.client.deleteMany({
+        where: {
+          userId,
+          code: { in: [...DEMO_CLIENT_CODES] },
+        },
+      });
+
+      // 6. Expenses (Strictly targeted by persistent demo marker in description)
+      await tx.expense.deleteMany({
+        where: {
+          userId,
+          description: { contains: DEMO_SYNTHETIC_MARKER },
+        },
+      });
+
+      // 7. Subscriptions (Strictly targeted by persistent demo marker in subTitle)
+      await tx.subscription.deleteMany({
+        where: {
+          userId,
+          subTitle: { contains: DEMO_SYNTHETIC_MARKER },
+        },
+      });
+
+      // 8. Tax Estimates (Strictly targeted by synthetic demo quarter tag)
+      await tx.taxEstimate.deleteMany({
+        where: {
+          userId,
+          quarter: DEMO_TAX_QUARTER,
+        },
+      });
     }
 
     // 1. Seed 6 Coherent Clients
@@ -60,8 +177,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         outstandingBalance: new Prisma.Decimal(0.0),
         avgSettlementLag: "-2.1 Days (Early Settler)",
         disputeHistory: "0 Formal Disputes",
-        preferredRails: "PayPal Direct Verified Business",
-        notes: "Key anchor client. High volume, zero settlement friction.",
+        preferredRails: "PayPal Direct (Simulated Sandbox Business)",
+        notes: `${DEMO_SYNTHETIC_MARKER} Key anchor client. High volume, zero settlement friction.`,
         playbookWhatWorks: "Consolidated monthly invoices with instant net-14 settlement.",
         playbookWhatFails: "Manual paper processing or fragmented milestones.",
       },
@@ -79,8 +196,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         outstandingBalance: new Prisma.Decimal(8500.0),
         avgSettlementLag: "+1.2 Days",
         disputeHistory: "0 Formal Disputes",
-        preferredRails: "Stripe Connect Direct Rail",
-        notes: "Sprint retainer model. Consistent 14-day turnaround.",
+        preferredRails: "Stripe Connect Direct Rail (Simulated Sandbox)",
+        notes: `${DEMO_SYNTHETIC_MARKER} Sprint retainer model. Consistent 14-day turnaround.`,
         playbookWhatWorks: "Deliverable preview links included in invoice remit instructions.",
         playbookWhatFails: "Ambiguous scope changes without change-order addendum.",
       },
@@ -98,8 +215,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         outstandingBalance: new Prisma.Decimal(0.0),
         avgSettlementLag: "+0.5 Days",
         disputeHistory: "0 Formal Disputes",
-        preferredRails: "PayPal Direct (USD)",
-        notes: "Research engineering engagements on quarterly retainers.",
+        preferredRails: "PayPal Direct (USD Simulated Sandbox)",
+        notes: `${DEMO_SYNTHETIC_MARKER} Research engineering engagements on quarterly retainers.`,
         playbookWhatWorks: "Clear milestone verification against benchmark evals.",
         playbookWhatFails: "Delayed milestone review submissions.",
       },
@@ -117,8 +234,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         outstandingBalance: new Prisma.Decimal(0.0),
         avgSettlementLag: "+8.4 Days",
         disputeHistory: "1 Past Clarification",
-        preferredRails: "SWIFT International Wire",
-        notes: "Requires polite follow-up before bi-weekly partner check runs.",
+        preferredRails: "SWIFT International Wire (Simulated Clearance)",
+        notes: `${DEMO_SYNTHETIC_MARKER} Requires polite follow-up before bi-weekly partner check runs.`,
         playbookWhatWorks: "Direct Slack notice to managing partner 48h before due date.",
         playbookWhatFails: "Generic automated billing emails without partner CC.",
       },
@@ -136,8 +253,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         outstandingBalance: new Prisma.Decimal(3200.0),
         avgSettlementLag: "+2.0 Days",
         disputeHistory: "0 Formal Disputes",
-        preferredRails: "PayPal Direct (Verified)",
-        notes: "Bioinformatics visual analytics platform engagement.",
+        preferredRails: "PayPal Direct (Simulated Sandbox Business)",
+        notes: `${DEMO_SYNTHETIC_MARKER} Bioinformatics visual analytics platform engagement.`,
         playbookWhatWorks: "Itemized sprint timesheets attached to invoice.",
         playbookWhatFails: "Unscheduled billing cycles.",
       },
@@ -155,8 +272,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         outstandingBalance: new Prisma.Decimal(1500.0),
         avgSettlementLag: "+14.0 Days (High Lag)",
         disputeHistory: "2 Disputed Terms",
-        preferredRails: "PayPal Business Direct",
-        notes: "Accounts payable system defers disbursements until firm reminder notice.",
+        preferredRails: "PayPal Direct (Simulated Sandbox Business)",
+        notes: `${DEMO_SYNTHETIC_MARKER} Accounts payable system defers disbursements until firm reminder notice.`,
         playbookWhatWorks: "Firm escalation tone citing contractual late fee clauses.",
         playbookWhatFails: "Polite reminders without due date ultimatum.",
       },
@@ -183,7 +300,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       where: { userId_code: { userId, code: "PRJ-901" } },
       update: {
         title: "Enterprise Brand System & Architecture 2025",
-        description: "Institutional design tokens, multi-platform UI components, and sandbox payment orchestration.",
+        description: `${DEMO_SYNTHETIC_MARKER} Institutional design tokens, multi-platform UI components, and sandbox payment orchestration.`,
         totalAmount: new Prisma.Decimal(9500.0),
         status: "active",
       },
@@ -191,9 +308,9 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         userId,
         clientId: acmeClient.id,
         code: "PRJ-901",
-        escrowId: "ESCROW-ACME-901",
+        escrowId: "ESCROW-DEMO-ACME-901",
         title: "Enterprise Brand System & Architecture 2025",
-        description: "Institutional design tokens, multi-platform UI components, and sandbox payment orchestration.",
+        description: `${DEMO_SYNTHETIC_MARKER} Institutional design tokens, multi-platform UI components, and sandbox payment orchestration.`,
         totalAmount: new Prisma.Decimal(9500.0),
         currency: "USD",
         currencySymbol: "$",
@@ -206,19 +323,20 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       update: {
         status: "authorized",
         amount: new Prisma.Decimal(3500.0),
-        paypalAuthorizationId: "AUTH-SANDBOX-901A",
+        paypalAuthorizationId: "AUTH-DEMO-SANDBOX-901A",
+        description: `${DEMO_SYNTHETIC_MARKER} Delivery and validation of production JSON design tokens for cross-platform apps.`,
       },
       create: {
         id: `m1-${project.id}`,
         code: "M-101",
         projectId: project.id,
         title: "Token Architecture & Foundational Design Tokens",
-        description: "Delivery and validation of production JSON design tokens for cross-platform apps.",
+        description: `${DEMO_SYNTHETIC_MARKER} Delivery and validation of production JSON design tokens for cross-platform apps.`,
         amount: new Prisma.Decimal(3500.0),
         dueDate: new Date(Date.now() - 2 * 86400000),
         status: "authorized",
         authorizedAt: new Date(Date.now() - 3 * 86400000),
-        paypalAuthorizationId: "AUTH-SANDBOX-901A",
+        paypalAuthorizationId: "AUTH-DEMO-SANDBOX-901A",
       },
     });
 
@@ -227,13 +345,14 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       update: {
         status: "in_review",
         amount: new Prisma.Decimal(3000.0),
+        description: `${DEMO_SYNTHETIC_MARKER} Automated sync pipeline from Figma to React TypeScript library with unit tests.`,
       },
       create: {
         id: `m2-${project.id}`,
         code: "M-102",
         projectId: project.id,
         title: "Component Library & Figma-to-Code Pipeline",
-        description: "Automated sync pipeline from Figma to React TypeScript library with unit tests.",
+        description: `${DEMO_SYNTHETIC_MARKER} Automated sync pipeline from Figma to React TypeScript library with unit tests.`,
         amount: new Prisma.Decimal(3000.0),
         dueDate: new Date(Date.now() + 5 * 86400000),
         status: "in_review",
@@ -245,13 +364,14 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       update: {
         status: "pending",
         amount: new Prisma.Decimal(3000.0),
+        description: `${DEMO_SYNTHETIC_MARKER} CPA-compliant documentation, zero-defect audit, and repository sign-off.`,
       },
       create: {
         id: `m3-${project.id}`,
         code: "M-103",
         projectId: project.id,
         title: "Production Release & Institutional Handoff",
-        description: "CPA-compliant documentation, zero-defect audit, and repository sign-off.",
+        description: `${DEMO_SYNTHETIC_MARKER} CPA-compliant documentation, zero-defect audit, and repository sign-off.`,
         amount: new Prisma.Decimal(3000.0),
         dueDate: new Date(Date.now() + 18 * 86400000),
         status: "pending",
@@ -267,13 +387,14 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         status: "viewed",
         issueDate: new Date(Date.now() - 4 * 86400000),
         dueDate: new Date(Date.now() + 10 * 86400000),
-        poReference: "PO-HRZ-2025-02",
-        paymentChannel: "Stripe Connect",
+        poReference: "PO-DEMO-HRZ-2025-02",
+        paymentChannel: "Stripe Connect (Sandbox)",
         subtotal: new Prisma.Decimal(8500.0),
         total: new Prisma.Decimal(8500.0),
         viewCount: 4,
         aiRiskScore: "Low",
-        aiTelemetryNote: "Client accessed link from San Francisco, CA. High settlement probability within 48h.",
+        aiTelemetryNote: "[SIMULATED TELEMETRY] Client accessed link from San Francisco, CA. High settlement probability within 48h.",
+        notes: `${DEMO_SYNTHETIC_MARKER} Synthetic demonstration invoice with sandbox payment rails.`,
         lineItems: [
           { description: "Sprint II Architecture & Component Tokens", quantity: 1, rate: 5500.0, amount: 5500.0 },
           { description: "Verification & Production Integration", quantity: 30, rate: 100.0, amount: 3000.0 },
@@ -286,13 +407,14 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         status: "overdue",
         issueDate: new Date(Date.now() - 28 * 86400000),
         dueDate: new Date(Date.now() - 14 * 86400000),
-        poReference: "ACM-2025-102",
-        paymentChannel: "PayPal Direct",
+        poReference: "PO-DEMO-ACM-2025-102",
+        paymentChannel: "PayPal Direct (Sandbox)",
         subtotal: new Prisma.Decimal(1500.0),
         total: new Prisma.Decimal(1500.0),
         viewCount: 6,
         aiRiskScore: "High",
-        aiTelemetryNote: "AP viewing detected 4x with zero settlement action. Algorithmic Firm Escalation advised.",
+        aiTelemetryNote: "[SIMULATED TELEMETRY] AP viewing detected 4x with zero settlement action. Algorithmic Firm Escalation advised.",
+        notes: `${DEMO_SYNTHETIC_MARKER} Synthetic demonstration invoice with sandbox payment rails.`,
         lineItems: [
           { description: "Identity System Review & Brand Guidelines", quantity: 10, rate: 150.0, amount: 1500.0 },
         ],
@@ -305,14 +427,15 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         issueDate: new Date(Date.now() - 16 * 86400000),
         dueDate: new Date(Date.now() - 2 * 86400000),
         paidAt: new Date(Date.now() - 1 * 86400000),
-        poReference: "VD-AI-991",
-        paymentChannel: "SWIFT Wire",
+        poReference: "PO-DEMO-VD-991",
+        paymentChannel: "SWIFT Wire (Simulated)",
         subtotal: new Prisma.Decimal(4200.0),
         total: new Prisma.Decimal(4200.0),
         viewCount: 3,
         aiRiskScore: "Low",
-        aiTelemetryNote: "Settled via international clearing. Auto-routed $840 to Q4 tax shield vault.",
-        paypalCaptureId: "CAP-SANDBOX-8847",
+        aiTelemetryNote: "[SIMULATED TELEMETRY] Settled via simulated clearing rail. Auto-routed $840 to Q4 tax shield vault.",
+        notes: `${DEMO_SYNTHETIC_MARKER} Synthetic demonstration invoice with sandbox payment rails.`,
+        paypalCaptureId: "CAP-DEMO-SANDBOX-8847",
         lineItems: [
           { description: "Predictive Analytics Backend Integration", quantity: 28, rate: 150.0, amount: 4200.0 },
         ],
@@ -325,14 +448,15 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         issueDate: new Date(Date.now() - 22 * 86400000),
         dueDate: new Date(Date.now() - 8 * 86400000),
         paidAt: new Date(Date.now() - 7 * 86400000),
-        poReference: "SYN-INFRA-44",
-        paymentChannel: "PayPal Direct",
+        poReference: "PO-DEMO-SYN-44",
+        paymentChannel: "PayPal Direct (Sandbox)",
         subtotal: new Prisma.Decimal(5500.0),
         total: new Prisma.Decimal(5500.0),
         viewCount: 2,
         aiRiskScore: "Low",
-        aiTelemetryNote: "Settled via PayPal Sandbox Direct. Net proceeds verified with zero currency slippage.",
-        paypalCaptureId: "CAP-SANDBOX-8846",
+        aiTelemetryNote: "[SIMULATED TELEMETRY] Settled via PayPal Sandbox Direct. Net proceeds verified with zero currency slippage.",
+        notes: `${DEMO_SYNTHETIC_MARKER} Synthetic demonstration invoice with sandbox payment rails.`,
+        paypalCaptureId: "CAP-DEMO-SANDBOX-8846",
         lineItems: [
           { description: "Realtime WebSocket Relay Engine", quantity: 1, rate: 5500.0, amount: 5500.0 },
         ],
@@ -344,13 +468,14 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         status: "sent",
         issueDate: new Date(Date.now() - 2 * 86400000),
         dueDate: new Date(Date.now() + 12 * 86400000),
-        poReference: "LUM-VIS-108",
-        paymentChannel: "PayPal Direct",
+        poReference: "PO-DEMO-LUM-108",
+        paymentChannel: "PayPal Direct (Sandbox)",
         subtotal: new Prisma.Decimal(3200.0),
         total: new Prisma.Decimal(3200.0),
         viewCount: 1,
         aiRiskScore: "Low",
-        aiTelemetryNote: "Dispatched via verified business protocol rail. Optimal AP window opens in 3 days.",
+        aiTelemetryNote: "[SIMULATED TELEMETRY] Dispatched via verified sandbox rail. Optimal AP window opens in 3 days.",
+        notes: `${DEMO_SYNTHETIC_MARKER} Synthetic demonstration invoice with sandbox payment rails.`,
         lineItems: [
           { description: "Genomic Heatmap WebGL Visualizer", quantity: 1, rate: 3200.0, amount: 3200.0 },
         ],
@@ -377,6 +502,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
           viewCount: spec.viewCount,
           aiRiskScore: spec.aiRiskScore,
           aiTelemetryNote: spec.aiTelemetryNote,
+          notes: spec.notes,
           paypalCaptureId: spec.paypalCaptureId,
         },
         create: {
@@ -399,6 +525,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
           viewCount: spec.viewCount,
           aiRiskScore: spec.aiRiskScore,
           aiTelemetryNote: spec.aiTelemetryNote,
+          notes: spec.notes,
           paypalCaptureId: spec.paypalCaptureId,
         },
       });
@@ -424,6 +551,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
     const invPaid2 = seededInvoices.find((i) => i.code === "FP-8846")!;
 
     // 4. Seed Payment Reminder for Overdue Invoice
+    // Never sends real emails or external API requests; initialized safely in pending_approval state
     await tx.paymentReminder.upsert({
       where: { userId_code: { userId, code: "REM-8848" } },
       update: {
@@ -436,9 +564,11 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         recommendedTone: "firm",
         activeTone: "firm",
         status: "pending_approval",
-        subject: `Payment Reminder: Invoice #${invOverdue.code} - 14 Days Overdue ($1,500.00)`,
-        messageBody: `Dear Sarah Jenkins,\n\nOur institutional accounts ledger indicates Invoice #${invOverdue.code} for $1,500.00 is currently 14 days overdue. Please remit settlement via the verified PayPal link below to avoid formal service interruption.\n\nThank you,\nAlex Vance`,
+        subject: `[DEMO] Payment Reminder: Invoice #${invOverdue.code} - 14 Days Overdue ($1,500.00)`,
+        messageBody: `${DEMO_SYNTHETIC_MARKER} Dear Sarah Jenkins,\n\nOur institutional accounts ledger indicates Invoice #${invOverdue.code} for $1,500.00 is currently 14 days overdue. Please remit settlement via the verified PayPal sandbox link below to avoid formal service interruption.\n\nThank you,\nAlex Vance`,
         paymentLink: `https://freelancepay.ai/pay/${invOverdue.code}`,
+        simulatedSentAt: null,
+        realSentAt: null,
       },
       create: {
         userId,
@@ -453,18 +583,20 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         recommendedTone: "firm",
         activeTone: "firm",
         status: "pending_approval",
-        subject: `Payment Reminder: Invoice #${invOverdue.code} - 14 Days Overdue ($1,500.00)`,
-        messageBody: `Dear Sarah Jenkins,\n\nOur institutional accounts ledger indicates Invoice #${invOverdue.code} for $1,500.00 is currently 14 days overdue. Please remit settlement via the verified PayPal link below to avoid formal service interruption.\n\nThank you,\nAlex Vance`,
+        subject: `[DEMO] Payment Reminder: Invoice #${invOverdue.code} - 14 Days Overdue ($1,500.00)`,
+        messageBody: `${DEMO_SYNTHETIC_MARKER} Dear Sarah Jenkins,\n\nOur institutional accounts ledger indicates Invoice #${invOverdue.code} for $1,500.00 is currently 14 days overdue. Please remit settlement via the verified PayPal sandbox link below to avoid formal service interruption.\n\nThank you,\nAlex Vance`,
         paymentLink: `https://freelancepay.ai/pay/${invOverdue.code}`,
+        simulatedSentAt: null,
+        realSentAt: null,
       },
     });
 
-    // 5. Seed Settled Ledger Transactions
+    // 5. Seed Settled Ledger Transactions (Explicitly identified as synthetic demo sandbox entries)
     const txSpecs = [
       {
         code: "TX-9901",
-        hash: "0x7a29e41b88e1",
-        description: "Settlement for Invoice #FP-8847 (AI Telemetry Dashboard)",
+        hash: "0xDEMO-7a29e41b88e1",
+        description: "[SIMULATED] Settlement for Invoice #FP-8847 (AI Telemetry Dashboard)",
         clientName: "Venture Dynamics",
         type: "client_settlement",
         status: "settled",
@@ -473,14 +605,17 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         fxCost: new Prisma.Decimal(0.0),
         netAmount: new Prisma.Decimal(4073.0),
         taxReserveSplitAmount: new Prisma.Decimal(840.0),
-        paymentChannel: "SWIFT Wire",
+        paymentChannel: "SWIFT Wire (Simulated)",
         linkedInvoiceId: invPaid1.id,
-        idempotencyKey: `tx-demo-9901-${userId}`,
+        notes: `${DEMO_SYNTHETIC_MARKER} Simulated sandbox settlement ledger entry. No actual monetary clearing.`,
+        idempotencyKey: `${DEMO_TRANSACTION_PREFIX}9901-${userId}`,
+        paypalOrderId: "ORD-DEMO-SANDBOX-9901",
+        paypalCaptureId: "CAP-DEMO-SANDBOX-8847",
       },
       {
         code: "TX-9902",
-        hash: "0x4b81c903ff12",
-        description: "Settlement for Invoice #FP-8846 (Realtime Sync Infrastructure)",
+        hash: "0xDEMO-4b81c903ff12",
+        description: "[SIMULATED] Settlement for Invoice #FP-8846 (Realtime Sync Infrastructure)",
         clientName: "Synthetix Labs LLC",
         type: "client_settlement",
         status: "settled",
@@ -489,14 +624,17 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         fxCost: new Prisma.Decimal(0.0),
         netAmount: new Prisma.Decimal(5335.0),
         taxReserveSplitAmount: new Prisma.Decimal(1100.0),
-        paymentChannel: "PayPal Direct",
+        paymentChannel: "PayPal Direct (Sandbox)",
         linkedInvoiceId: invPaid2.id,
-        idempotencyKey: `tx-demo-9902-${userId}`,
+        notes: `${DEMO_SYNTHETIC_MARKER} Simulated sandbox settlement ledger entry. No actual monetary clearing.`,
+        idempotencyKey: `${DEMO_TRANSACTION_PREFIX}9902-${userId}`,
+        paypalOrderId: "ORD-DEMO-SANDBOX-9902",
+        paypalCaptureId: "CAP-DEMO-SANDBOX-8846",
       },
       {
         code: "TX-9903",
-        hash: "0x3f19a08e92bc",
-        description: "Milestone Deliverable Authorized: Token Architecture",
+        hash: "0xDEMO-3f19a08e92bc",
+        description: "[SIMULATED] Milestone Deliverable Authorized: Token Architecture",
         clientName: "Acme Corp",
         type: "milestone_authorization",
         status: "settled",
@@ -505,9 +643,11 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         fxCost: new Prisma.Decimal(0.0),
         netAmount: new Prisma.Decimal(3395.0),
         taxReserveSplitAmount: new Prisma.Decimal(700.0),
-        paymentChannel: "PayPal Direct",
+        paymentChannel: "PayPal Direct (Sandbox)",
         linkedMilestoneId: m1.id,
-        idempotencyKey: `tx-demo-9903-${userId}`,
+        notes: `${DEMO_SYNTHETIC_MARKER} Simulated sandbox authorization ledger entry. No actual monetary clearing.`,
+        idempotencyKey: `${DEMO_TRANSACTION_PREFIX}9903-${userId}`,
+        paypalOrderId: "ORD-DEMO-SANDBOX-9903",
       },
     ];
 
@@ -519,11 +659,11 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       });
     }
 
-    // 6. Seed Operational Outflows (Expenses)
+    // 6. Seed Operational Outflows (Expenses with persistent DEMO_SYNTHETIC_MARKER)
     const expenseSpecs = [
       {
         merchant: "AWS Elastic Compute",
-        description: "us-east-1 Cluster Compute & Edge CDN",
+        description: `us-east-1 Cluster Compute & Edge CDN ${DEMO_SYNTHETIC_MARKER}`,
         category: "Operations",
         date: new Date(Date.now() - 5 * 86400000),
         method: "Stripe Card (*8821)",
@@ -532,7 +672,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         merchant: "Figma Enterprise",
-        description: "Annual Design System Token Seat",
+        description: `Annual Design System Token Seat ${DEMO_SYNTHETIC_MARKER}`,
         category: "Software",
         date: new Date(Date.now() - 10 * 86400000),
         method: "PayPal Business (*1902)",
@@ -541,7 +681,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         merchant: "Google Gemini API",
-        description: "Model Inference & Financial Insights Parsing",
+        description: `Model Inference & Financial Insights Parsing ${DEMO_SYNTHETIC_MARKER}`,
         category: "Software",
         date: new Date(Date.now() - 12 * 86400000),
         method: "Stripe Card (*8821)",
@@ -550,7 +690,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         merchant: "GitHub Enterprise",
-        description: "CI/CD Runners & Private Packages",
+        description: `CI/CD Runners & Private Packages ${DEMO_SYNTHETIC_MARKER}`,
         category: "Operations",
         date: new Date(Date.now() - 18 * 86400000),
         method: "Stripe Card (*8821)",
@@ -559,7 +699,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         merchant: "Apple Store SOHO",
-        description: "M3 Max Developer Rig (Section 179 Depreciation)",
+        description: `M3 Max Developer Rig (Section 179 Depreciation) ${DEMO_SYNTHETIC_MARKER}`,
         category: "Hardware",
         date: new Date(Date.now() - 25 * 86400000),
         method: "Direct ACH Wire",
@@ -584,11 +724,11 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       });
     }
 
-    // 7. Seed SaaS Subscriptions
+    // 7. Seed SaaS Subscriptions (Tagged with DEMO_SYNTHETIC_MARKER in subTitle)
     const subSpecs = [
       {
         name: "Figma Organization",
-        subTitle: "Full Design Suite + FigJam Tokens",
+        subTitle: `Full Design Suite + FigJam Tokens ${DEMO_SYNTHETIC_MARKER}`,
         category: "Design",
         costMonthly: new Prisma.Decimal(75.0),
         lastActive: "Today",
@@ -599,7 +739,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         name: "Google Workspace Enterprise",
-        subTitle: "Business Plus Domain & Security Vault",
+        subTitle: `Business Plus Domain & Security Vault ${DEMO_SYNTHETIC_MARKER}`,
         category: "Productivity",
         costMonthly: new Prisma.Decimal(36.0),
         lastActive: "Today",
@@ -610,7 +750,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         name: "ChatGPT Plus & Team",
-        subTitle: "Model Reasoning Cluster",
+        subTitle: `Model Reasoning Cluster ${DEMO_SYNTHETIC_MARKER}`,
         category: "AI",
         costMonthly: new Prisma.Decimal(20.0),
         lastActive: "Yesterday",
@@ -621,7 +761,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         name: "Linear Team",
-        subTitle: "Engineering Cycles & Roadmaps",
+        subTitle: `Engineering Cycles & Roadmaps ${DEMO_SYNTHETIC_MARKER}`,
         category: "Productivity",
         costMonthly: new Prisma.Decimal(40.0),
         lastActive: "2 days ago",
@@ -632,7 +772,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       },
       {
         name: "Webflow Agency Workspace",
-        subTitle: "Legacy Site Hosting (2 Seats Dormant)",
+        subTitle: `Legacy Site Hosting (2 Seats Dormant) ${DEMO_SYNTHETIC_MARKER}`,
         category: "Productivity",
         costMonthly: new Prisma.Decimal(60.0),
         lastActive: "45 days ago",
@@ -673,7 +813,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         taxableBase: new Prisma.Decimal(113950.0),
         suggestedReserve: new Prisma.Decimal(28487.5),
         vaultSetAside: new Prisma.Decimal(28500.0),
-        quarter: "Q4-2025",
+        quarter: DEMO_TAX_QUARTER,
       },
     });
 
@@ -705,7 +845,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
     return {
       success: true,
       message: isReset
-        ? "Demo portfolio reset and re-seeded cleanly in Neon DB."
+        ? "Demo portfolio reset and re-seeded cleanly in Neon DB (genuine user records preserved)."
         : "Realistic demo portfolio successfully seeded into Neon DB.",
       counts: {
         clients: seededClients.length,
@@ -718,5 +858,7 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
         reminders: 1,
       },
     };
-  });
+  },
+  { timeout: 30000, maxWait: 15000 }
+  );
 }
