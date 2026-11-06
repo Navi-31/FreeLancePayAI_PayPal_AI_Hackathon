@@ -61,6 +61,9 @@ export const InvoiceDetailsClient: React.FC<InvoiceDetailsClientProps> = ({ invo
             aiTelemetryNote: inv.aiTelemetryNote || "",
             viewCount: Number(inv.viewCount || 0),
             notes: inv.notes || "",
+            paypalOrderId: inv.paypalOrderId || undefined,
+            paypalCaptureId: inv.paypalCaptureId || undefined,
+            paypalInvoiceId: inv.paypalInvoiceId || undefined,
           });
         }
       })

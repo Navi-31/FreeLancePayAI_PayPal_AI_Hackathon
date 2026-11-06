@@ -21,8 +21,37 @@ export const TransactionsClient: React.FC = () => {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const data = loadTransactionsFromStorage();
-    setTransactions(data);
+    const localData = loadTransactionsFromStorage();
+    setTransactions(localData);
+
+    fetch("/api/transactions")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.transactions && Array.isArray(data.transactions) && data.transactions.length > 0) {
+          const mapped: Transaction[] = data.transactions.map((t: Record<string, unknown>) => ({
+            id: String(t.code || t.id),
+            hash: String(t.hash || "0x98a1..bc7e"),
+            timestamp: typeof t.timestamp === "string" ? t.timestamp : new Date().toISOString(),
+            description: String(t.description || ""),
+            clientName: String(t.clientName || "Client"),
+            type: t.type as Transaction["type"],
+            status: t.status as Transaction["status"],
+            currency: String(t.currency || "USD"),
+            currencySymbol: String(t.currencySymbol || "$"),
+            grossAmount: Number(t.grossAmount),
+            feeAmount: Number(t.feeAmount || 0),
+            fxCost: Number(t.fxCost || 0),
+            netAmount: Number(t.netAmount),
+            taxReserveSplitAmount: Number(t.taxReserveSplitAmount || 0),
+            paymentChannel: String(t.paymentChannel || "PayPal Direct"),
+            linkedInvoiceId: t.linkedInvoiceId ? String(t.linkedInvoiceId) : undefined,
+            linkedMilestoneId: t.linkedMilestoneId ? String(t.linkedMilestoneId) : undefined,
+            notes: t.notes ? String(t.notes) : undefined,
+          }));
+          setTransactions(mapped);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const kpis = useMemo(() => {

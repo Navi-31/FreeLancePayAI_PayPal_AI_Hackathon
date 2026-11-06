@@ -30,4 +30,7 @@ export interface Invoice {
   aiTelemetryNote?: string;
   viewCount?: number;
   notes?: string;
+  paypalOrderId?: string;
+  paypalCaptureId?: string;
+  paypalInvoiceId?: string;
 }

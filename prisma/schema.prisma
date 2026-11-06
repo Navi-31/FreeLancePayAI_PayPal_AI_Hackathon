@@ -133,10 +133,13 @@ model Milestone {
   dueDate          DateTime
   status           String             @default("pending")
   deliverableNotes String?            @db.Text
-  authorizedAt     DateTime?
-  capturedAt       DateTime?
-  refundedAt       DateTime?
-  createdAt        DateTime           @default(now())
+  authorizedAt          DateTime?
+  capturedAt            DateTime?
+  refundedAt            DateTime?
+  paypalOrderId         String?
+  paypalAuthorizationId String?
+  paypalCaptureId       String?
+  createdAt             DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
 
   history          MilestoneHistory[]
@@ -189,6 +192,9 @@ model Invoice {
   viewCount       Int               @default(0)
   notes           String?           @db.Text
   paidAt          DateTime?
+  paypalInvoiceId String?
+  paypalOrderId   String?
+  paypalCaptureId String?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
@@ -241,6 +247,9 @@ model Transaction {
   linkedMilestone       Milestone? @relation(fields: [linkedMilestoneId], references: [id], onDelete: SetNull)
   notes                 String?    @db.Text
   idempotencyKey        String?    @unique
+  paypalOrderId         String?
+  paypalCaptureId       String?
+  paypalRefundId        String?
   createdAt             DateTime   @default(now())
   updatedAt             DateTime   @updatedAt
 
@@ -398,4 +407,20 @@ model AuditLog {
   @@index([entityType])
   @@index([timestamp])
   @@map("audit_logs")
+}
+
+model PayPalWebhookEvent {
+  id           String    @id @default(cuid())
+  eventId      String    @unique
+  eventType    String
+  resourceType String
+  resourceId   String?
+  status       String    @default("processed")
+  payload      String?   @db.Text
+  createdAt    DateTime  @default(now())
+  processedAt  DateTime?
+
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("paypal_webhook_events")
 }

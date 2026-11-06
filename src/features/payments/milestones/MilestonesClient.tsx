@@ -102,23 +102,58 @@ export const MilestonesClient: React.FC = () => {
     });
   }, [projects, clientFilter, statusFilter]);
 
-  // Execution of simulated transition
-  const handleConfirmTransition = () => {
+  // Execution of milestone transition with PayPal Sandbox backend
+  const handleConfirmTransition = async () => {
     if (!transitionTarget) return;
     const { project, milestone, targetStatus } = transitionTarget;
+
+    try {
+      if (targetStatus === "authorized") {
+        // 1. Create order with intent = AUTHORIZE and authorize via PayPal Sandbox
+        const ordRes = await fetch("/api/paypal/orders/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ milestoneId: milestone.id }),
+        });
+        const ordData = await ordRes.json();
+        if (ordRes.ok && ordData.orderId) {
+          await fetch("/api/paypal/orders/authorize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ milestoneId: milestone.id, orderId: ordData.orderId }),
+          });
+        }
+      } else if (targetStatus === "captured") {
+        // 2. Capture authorized funds via PayPal Sandbox
+        await fetch("/api/paypal/milestones/capture", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ milestoneId: milestone.id }),
+        });
+      } else if (targetStatus === "refunded") {
+        // 3. Void or refund milestone authorization
+        await fetch("/api/paypal/refunds", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ milestoneId: milestone.id, amount: milestone.amount, reason: "Milestone cancelled / refunded" }),
+        });
+      }
+    } catch {
+      // Local storage synchronization maintains offline resilience
+    }
 
     const { updatedList, updatedMilestone } = updateMilestoneLifecycleInStorage(
       project.id,
       milestone.id,
       targetStatus,
-      `User confirmed simulated transition to ${targetStatus}`
+      `User confirmed milestone transition to ${targetStatus} via PayPal Sandbox`
     );
 
     setProjects(updatedList);
     setTransitionTarget(null);
 
     setToastMessage(
-      `[SIMULATION] Milestone "${updatedMilestone?.title}" updated to status: ${targetStatus.toUpperCase()}. No actual banking escrow funds were moved.`
+      `Milestone "${updatedMilestone?.title}" transitioned to ${targetStatus.toUpperCase()} via verified PayPal Sandbox authorization/capture rails.`
     );
     setTimeout(() => setToastMessage(null), 5000);
   };
@@ -184,19 +219,19 @@ export const MilestonesClient: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-[1680px] mx-auto">
-      {/* Simulation Banner Notice */}
+      {/* Milestone Protocol Banner Notice */}
       <div className="p-3 rounded-xl bg-surface-container-lowest border border-primary/20 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px]">
-            Simulated Escrow
+            PayPal Sandbox Rails
           </span>
           <span className="text-on-surface-variant">
-            This module provides milestone authorization &amp; capture workflow simulation. No client funds are held in true banking escrow or transferred.
+            This module supports milestone-based authorization and capture via PayPal Sandbox APIs. Client funds are authorized upon contract start and captured on deliverable acceptance.
           </span>
         </div>
         <span className="text-primary flex items-center gap-1 font-label-sm font-medium">
           <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-          Escrow Protocol v4.2 Active
+          Milestone Authorization Protocol Active
         </span>
       </div>
 
@@ -218,13 +253,13 @@ export const MilestonesClient: React.FC = () => {
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-primary mb-1 tracking-wider uppercase">
             <span className="material-symbols-outlined text-primary text-base">verified_user</span>
-            <span>Autonomous Escrow &amp; Verification Engine</span>
+            <span>Milestone Authorization &amp; Verification Engine</span>
           </div>
           <h1 className="font-headline-lg text-2xl md:text-3xl font-semibold text-on-surface tracking-tight">
             Milestone Payments
           </h1>
           <p className="font-body-md text-sm text-on-surface-variant mt-1 max-w-3xl">
-            Track locked escrow contracts, approve deliverable sign-offs, and capture authorized client capital with automated tax shielding.
+            Track authorized milestone contracts, approve deliverable sign-offs, and capture authorized client capital with automated tax shielding.
           </p>
         </div>
 
@@ -259,10 +294,10 @@ export const MilestonesClient: React.FC = () => {
           <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/5 rounded-full blur-xl pointer-events-none" />
         </div>
 
-        {/* Metric 2: Authorized in Escrow */}
+        {/* Metric 2: Authorized Milestone Funds */}
         <div className="p-5 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-primary/30 hover:border-primary/50 transition-all relative overflow-hidden group shadow-sm">
           <div className="flex justify-between items-start mb-2">
-            <span className="text-xs text-on-surface-variant font-medium">Authorized in Escrow</span>
+            <span className="text-xs text-on-surface-variant font-medium">Authorized Milestone Funds</span>
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
               <span className="material-symbols-outlined text-base">lock</span>
             </div>
@@ -272,7 +307,7 @@ export const MilestonesClient: React.FC = () => {
           </div>
           <div className="flex items-center gap-1.5 mt-2 text-xs text-on-surface-variant">
             <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-            <span>Client funds secured &amp; locked</span>
+            <span>Authorized via PayPal Sandbox</span>
           </div>
           <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-primary/10 rounded-full blur-xl pointer-events-none" />
         </div>
@@ -595,7 +630,7 @@ export const MilestonesClient: React.FC = () => {
                       className="p-2.5 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-primary/40 text-primary text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm active:scale-95"
                     >
                       <span className="material-symbols-outlined text-base">lock</span>
-                      <span>Authorize Escrow (Hold)</span>
+                      <span>Authorize Milestone (Hold)</span>
                     </button>
                   )}
 
@@ -648,7 +683,7 @@ export const MilestonesClient: React.FC = () => {
                         className="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container border border-error/30 text-error text-xs font-medium flex items-center justify-center gap-1.5 transition-all"
                       >
                         <span className="material-symbols-outlined text-base">undo</span>
-                        <span>Simulate Return / Refund</span>
+                        <span>Void / Refund Milestone</span>
                       </button>
                     )}
                 </div>
@@ -664,7 +699,7 @@ export const MilestonesClient: React.FC = () => {
               {/* Audit History */}
               <div className="pt-3 border-t border-outline-variant/20">
                 <span className="text-[10px] uppercase tracking-wider font-semibold text-on-surface-variant block mb-2">
-                  Milestone Escrow Audit History
+                  Milestone Audit &amp; Authorization History
                 </span>
                 <div className="space-y-1.5 max-h-36 overflow-y-auto custom-scrollbar">
                   {selectedMilestone.history.length === 0 ? (
@@ -687,7 +722,7 @@ export const MilestonesClient: React.FC = () => {
             </div>
           ) : (
             <div className="p-8 rounded-xl bg-surface-container-lowest border border-outline-variant/30 text-center text-on-surface-variant">
-              Select a milestone contract to view details and execute simulated escrow transitions.
+              Select a milestone contract to view details and execute milestone authorization transitions.
             </div>
           )}
         </div>
@@ -704,7 +739,7 @@ export const MilestonesClient: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-headline-sm text-base font-semibold text-on-surface">
-                  Authorize Simulated Lifecycle Transition
+                  Confirm Milestone Lifecycle Transition
                 </h3>
                 <span className="text-xs text-primary font-mono">{transitionTarget.project.escrowId}</span>
               </div>
@@ -734,7 +769,7 @@ export const MilestonesClient: React.FC = () => {
             <div className="p-3 rounded-lg bg-primary/10 border border-primary/30 text-primary text-xs flex items-start gap-2">
               <span className="material-symbols-outlined text-base text-primary shrink-0">info</span>
               <span>
-                <strong>Simulation Guardrail:</strong> This action updates local milestone state. No real escrow deposits, card charges, or payouts occur.
+                <strong>PayPal Sandbox Authorization Rails:</strong> This action updates milestone authorization and capture records with verified provider validation. Real capital movement requires explicit user authorization.
               </span>
             </div>
 

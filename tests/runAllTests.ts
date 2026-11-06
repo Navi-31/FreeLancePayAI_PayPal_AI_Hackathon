@@ -2,6 +2,7 @@ import { runFinancialCalculationsTests } from "./financialCalculations.test";
 import { runAuthTests } from "./auth.test";
 import { runDataIsolationTests } from "./dataIsolation.test";
 import { runLiveNeonIntegrationTests } from "./testNeonLiveApi";
+import { runPayPalIntegrationTests } from "./paypalIntegration.test";
 
 async function main() {
   console.log("==================================================");
@@ -30,6 +31,11 @@ async function main() {
   const live = await runLiveNeonIntegrationTests();
   totalPassed += live.passed;
   totalFailed += live.failed;
+
+  // 5. PayPal Sandbox Integration, Verification, and Idempotency Tests
+  const paypal = await runPayPalIntegrationTests();
+  totalPassed += paypal.passed;
+  totalFailed += paypal.failed;
 
   console.log("\n==================================================");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
