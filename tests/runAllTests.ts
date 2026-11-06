@@ -68,6 +68,18 @@ async function main() {
   totalFailed += browserE2E.failed;
 
   console.log("\n==================================================");
+  console.log(" SUITE BREAKDOWN:");
+  console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
+  console.log(`  2. Authentication & Token Verification: ${auth.passed} passed, ${auth.failed} failed`);
+  console.log(`  3. Data Isolation & Architecture:       ${iso.passed} passed, ${iso.failed} failed`);
+  console.log(`  4. Live Neon Integration:               ${live.passed} passed, ${live.failed} failed`);
+  console.log(`  5. PayPal Sandbox Integration & Rails:  ${paypal.passed} passed, ${paypal.failed} failed`);
+  console.log(`  6. AI Integration & Safety Guardrails:  ${ai.passed} passed, ${ai.failed} failed`);
+  console.log(`  7. Email Delivery, Notifications & Jobs:${emailJobs.passed} passed, ${emailJobs.failed} failed`);
+  console.log(`  8. Security Audit & Safeguards (4E):    ${secE2E.passed} passed, ${secE2E.failed} failed`);
+  console.log(`  9. Workflows Integration (5B):          ${phase5B.passed} passed, ${phase5B.failed} failed`);
+  console.log(` 10. Browser E2E Journeys (5C):           ${browserE2E.passed} passed, ${browserE2E.failed} failed`);
+  console.log("--------------------------------------------------");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
   console.log("==================================================");
 
