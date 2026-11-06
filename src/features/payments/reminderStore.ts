@@ -305,3 +305,22 @@ export function simulateApproveAndSend(
   saveRemindersToStorage(list);
   return { updatedList: list, sentReminder: updatedReminder };
 }
+
+/**
+ * Server-backed reminder approve and send
+ */
+export async function simulateApproveAndSendWithServer(
+  id: string,
+  notes?: string
+): Promise<{ updatedList: PaymentReminder[]; sentReminder: PaymentReminder | null }> {
+  try {
+    await fetch("/api/reminders", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, action: "simulate_send", notes, userApproved: true }),
+    });
+  } catch {
+    // Offline mode
+  }
+  return simulateApproveAndSend(id, notes);
+}

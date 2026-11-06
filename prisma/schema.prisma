@@ -1,0 +1,401 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                String             @id @default(cuid())
+  email             String             @unique
+  passwordHash      String
+  name              String
+  role              String             @default("freelancer")
+  badge             String             @default("PRO VIP")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  profile           Profile?
+  clients           Client[]
+  projects          Project[]
+  invoices          Invoice[]
+  transactions      Transaction[]
+  reminders         PaymentReminder[]
+  expenses          Expense[]
+  subscriptions     Subscription[]
+  taxEstimates      TaxEstimate[]
+  financialSettings FinancialSettings?
+  auditLogs         AuditLog[]
+
+  @@map("users")
+}
+
+model Profile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title          String   @default("Design Technologist & Consultant")
+  businessName   String?
+  country        String   @default("US")
+  currency       String   @default("USD")
+  taxId          String?
+  billingAddress String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("profiles")
+}
+
+model Client {
+  id                 String                 @id @default(cuid())
+  userId             String
+  user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code               String
+  name               String
+  location           String
+  industry           String
+  contactName        String
+  contactRole        String
+  contactEmail       String
+  riskTier           String                 @default("High Reliability")
+  reliabilityScore   Int                    @default(90)
+  lifetimeRevenue    Decimal                @default(0.00) @db.Decimal(14, 2)
+  outstandingBalance Decimal                @default(0.00) @db.Decimal(14, 2)
+  avgSettlementLag   String                 @default("+0.0 Days")
+  disputeHistory     String                 @default("0 Formal Disputes")
+  preferredRails     String                 @default("PayPal Business Direct (Net-14)")
+  notes              String?                @db.Text
+  playbookWhatWorks  String?                @db.Text
+  playbookWhatFails  String?                @db.Text
+  createdAt          DateTime               @default(now())
+  updatedAt          DateTime               @updatedAt
+
+  invoices           Invoice[]
+  projects           Project[]
+  paymentHistories   ClientPaymentHistory[]
+
+  @@unique([userId, code])
+  @@index([userId])
+  @@map("clients")
+}
+
+model ClientPaymentHistory {
+  id             String    @id @default(cuid())
+  clientId       String
+  client         Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  invoiceId      String?
+  amount         Decimal   @db.Decimal(14, 2)
+  currency       String    @default("USD")
+  paymentChannel String
+  status         String
+  settledAt      DateTime?
+  lagDays        Int       @default(0)
+  createdAt      DateTime  @default(now())
+
+  @@index([clientId])
+  @@map("client_payment_histories")
+}
+
+model Project {
+  id             String      @id @default(cuid())
+  userId         String
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId       String
+  client         Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  code           String
+  escrowId       String
+  title          String
+  description    String?     @db.Text
+  totalAmount    Decimal     @default(0.00) @db.Decimal(14, 2)
+  currency       String      @default("USD")
+  currencySymbol String      @default("$")
+  status         String      @default("active")
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  milestones     Milestone[]
+
+  @@unique([userId, code])
+  @@index([userId])
+  @@index([clientId])
+  @@map("projects")
+}
+
+model Milestone {
+  id               String             @id @default(cuid())
+  code             String
+  projectId        String
+  project          Project            @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title            String
+  description      String             @db.Text
+  amount           Decimal            @db.Decimal(14, 2)
+  dueDate          DateTime
+  status           String             @default("pending")
+  deliverableNotes String?            @db.Text
+  authorizedAt     DateTime?
+  capturedAt       DateTime?
+  refundedAt       DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  history          MilestoneHistory[]
+  transactions     Transaction[]
+
+  @@index([projectId])
+  @@index([status])
+  @@map("milestones")
+}
+
+model MilestoneHistory {
+  id            String    @id @default(cuid())
+  milestoneId   String
+  milestone     Milestone @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+  action        String
+  fromStatus    String
+  toStatus      String
+  userConfirmed Boolean   @default(true)
+  notes         String?   @db.Text
+  timestamp     DateTime  @default(now())
+
+  @@index([milestoneId])
+  @@map("milestone_histories")
+}
+
+model Invoice {
+  id              String            @id @default(cuid())
+  code            String
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId        String?
+  client          Client?           @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  clientName      String
+  clientEmail     String
+  clientAddress   String?
+  projectTitle    String
+  issueDate       DateTime
+  dueDate         DateTime
+  poReference     String?
+  status          String            @default("draft")
+  paymentChannel  String            @default("PayPal Direct")
+  currency        String            @default("USD")
+  currencySymbol  String            @default("$")
+  subtotal        Decimal           @default(0.00) @db.Decimal(14, 2)
+  taxRatePercent  Decimal           @default(0.00) @db.Decimal(5, 2)
+  taxAmount       Decimal           @default(0.00) @db.Decimal(14, 2)
+  total           Decimal           @default(0.00) @db.Decimal(14, 2)
+  aiRiskScore     String            @default("Low")
+  aiTelemetryNote String?           @db.Text
+  viewCount       Int               @default(0)
+  notes           String?           @db.Text
+  paidAt          DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  lineItems       InvoiceLineItem[]
+  transactions    Transaction[]
+  reminders       PaymentReminder[]
+
+  @@unique([userId, code])
+  @@index([userId])
+  @@index([status])
+  @@map("invoices")
+}
+
+model InvoiceLineItem {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Decimal  @db.Decimal(10, 2)
+  rate        Decimal  @db.Decimal(14, 2)
+  amount      Decimal  @db.Decimal(14, 2)
+  createdAt   DateTime @default(now())
+
+  @@index([invoiceId])
+  @@map("invoice_line_items")
+}
+
+model Transaction {
+  id                    String     @id @default(cuid())
+  code                  String
+  userId                String
+  user                  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hash                  String
+  timestamp             DateTime   @default(now())
+  description           String
+  clientName            String
+  type                  String
+  status                String     @default("settled")
+  currency              String     @default("USD")
+  currencySymbol        String     @default("$")
+  grossAmount           Decimal    @db.Decimal(14, 2)
+  feeAmount             Decimal    @default(0.00) @db.Decimal(14, 2)
+  fxCost                Decimal    @default(0.00) @db.Decimal(14, 2)
+  netAmount             Decimal    @db.Decimal(14, 2)
+  taxReserveSplitAmount Decimal    @default(0.00) @db.Decimal(14, 2)
+  paymentChannel        String
+  linkedInvoiceId       String?
+  linkedInvoice         Invoice?   @relation(fields: [linkedInvoiceId], references: [id], onDelete: SetNull)
+  linkedMilestoneId     String?
+  linkedMilestone       Milestone? @relation(fields: [linkedMilestoneId], references: [id], onDelete: SetNull)
+  notes                 String?    @db.Text
+  idempotencyKey        String?    @unique
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([timestamp])
+  @@map("transactions")
+}
+
+model PaymentReminder {
+  id              String            @id @default(cuid())
+  code            String
+  userId          String
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoiceId       String
+  invoice         Invoice           @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  clientName      String
+  clientEmail     String
+  amount          Decimal           @db.Decimal(14, 2)
+  currency        String            @default("USD")
+  dueDate         DateTime
+  overdueDays     Int               @default(0)
+  lastOutreachDate DateTime?
+  lastOutreachType String?
+  recommendedTone String            @default("polite")
+  activeTone      String            @default("polite")
+  status          String            @default("pending_approval")
+  subject         String
+  messageBody     String            @db.Text
+  paymentLink     String
+  simulatedSentAt DateTime?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  history         ReminderHistory[]
+
+  @@unique([userId, code])
+  @@index([userId])
+  @@index([invoiceId])
+  @@map("payment_reminders")
+}
+
+model ReminderHistory {
+  id           String          @id @default(cuid())
+  reminderId   String
+  reminder     PaymentReminder @relation(fields: [reminderId], references: [id], onDelete: Cascade)
+  action       String
+  tone         String
+  notes        String?         @db.Text
+  userApproved Boolean         @default(true)
+  timestamp    DateTime        @default(now())
+
+  @@index([reminderId])
+  @@map("reminder_histories")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  merchant    String
+  description String
+  category    String
+  date        DateTime
+  method      String
+  isRecurring Boolean  @default(false)
+  amount      Decimal  @db.Decimal(14, 2)
+  currency    String   @default("USD")
+  receiptUrl  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@index([category])
+  @@index([date])
+  @@map("expenses")
+}
+
+model Subscription {
+  id             String    @id @default(cuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name           String
+  subTitle       String
+  category       String
+  costMonthly    Decimal   @db.Decimal(14, 2)
+  currency       String    @default("USD")
+  lastActive     String
+  usageScore     Int       @default(50)
+  usageStatus    String    @default("High")
+  recommendation String    @default("Keep Active")
+  nextRenewal    DateTime?
+  dueCategory    String    @default("30d")
+  initials       String    @default("Sub")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([category])
+  @@map("subscriptions")
+}
+
+model TaxEstimate {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jurisdiction     String   @default("US-CA")
+  entityType       String   @default("LLC")
+  taxRatio         Decimal  @default(25.00) @db.Decimal(5, 2)
+  grossInflows     Decimal  @default(0.00) @db.Decimal(14, 2)
+  deductibleOffset Decimal  @default(0.00) @db.Decimal(14, 2)
+  taxableBase      Decimal  @default(0.00) @db.Decimal(14, 2)
+  suggestedReserve Decimal  @default(0.00) @db.Decimal(14, 2)
+  vaultSetAside    Decimal  @default(0.00) @db.Decimal(14, 2)
+  quarter          String   @default("Q4-2025")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([userId])
+  @@map("tax_estimates")
+}
+
+model FinancialSettings {
+  id                      String   @id @default(cuid())
+  userId                  String   @unique
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  baseCurrency            String   @default("USD")
+  defaultTerms            String   @default("Net-14")
+  taxRoutingEnabled       Boolean  @default(true)
+  lateFeeEnabled          Boolean  @default(true)
+  recoveryThreshold       Decimal  @default(6.00) @db.Decimal(5, 2)
+  paypalMerchantConnected Boolean  @default(true)
+  stripeConnected         Boolean  @default(true)
+  autonomousShieldActive  Boolean  @default(true)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@map("financial_settings")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action     String
+  entityType String
+  entityId   String?
+  actor      String   @default("user")
+  ipAddress  String?
+  details    String?  @db.Text
+  timestamp  DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType])
+  @@index([timestamp])
+  @@map("audit_logs")
+}

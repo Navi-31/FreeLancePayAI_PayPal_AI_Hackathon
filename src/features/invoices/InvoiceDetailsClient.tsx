@@ -18,11 +18,56 @@ export const InvoiceDetailsClient: React.FC<InvoiceDetailsClientProps> = ({ invo
 
   useEffect(() => {
     const list = loadInvoicesFromStorage();
-    // Match either exact ID or without '#' or with '#'
     const cleanId = invoiceId.replace(/^#/, "");
     const match = list.find((i) => i.id === cleanId || i.id === invoiceId);
-    setInvoice(match || null);
-    setLoading(false);
+    if (match) {
+      setInvoice(match);
+      setLoading(false);
+    }
+
+    // Attempt server sync
+    fetch(`/api/invoices/${encodeURIComponent(cleanId)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.invoice) {
+          const inv = data.invoice;
+          setInvoice({
+            id: inv.code || inv.id,
+            clientName: inv.clientName,
+            clientEmail: inv.clientEmail,
+            clientAddress: inv.clientAddress || "",
+            projectTitle: inv.projectTitle,
+            issueDate: typeof inv.issueDate === "string" ? inv.issueDate.split("T")[0] : "2025-10-10",
+            dueDate: typeof inv.dueDate === "string" ? inv.dueDate.split("T")[0] : "2025-10-24",
+            poReference: inv.poReference || "",
+            status: inv.status,
+            paymentChannel: inv.paymentChannel || "PayPal Direct",
+            currency: inv.currency || "USD",
+            currencySymbol: inv.currencySymbol || "$",
+            lineItems: Array.isArray(inv.lineItems)
+              ? inv.lineItems.map((li: Record<string, unknown>) => ({
+                  id: String(li.id),
+                  description: String(li.description),
+                  quantity: Number(li.quantity),
+                  rate: Number(li.rate),
+                  amount: Number(li.amount),
+                }))
+              : [],
+            subtotal: Number(inv.subtotal),
+            taxRatePercent: Number(inv.taxRatePercent || 0),
+            taxAmount: Number(inv.taxAmount || 0),
+            total: Number(inv.total),
+            aiRiskScore: inv.aiRiskScore || "Low",
+            aiTelemetryNote: inv.aiTelemetryNote || "",
+            viewCount: Number(inv.viewCount || 0),
+            notes: inv.notes || "",
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback remains active
+      })
+      .finally(() => setLoading(false));
   }, [invoiceId]);
 
   if (loading) {

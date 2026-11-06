@@ -446,3 +446,24 @@ export function updateMilestoneLifecycleInStorage(
   saveMilestoneProjectsToStorage(updatedList);
   return { updatedList, updatedMilestone };
 }
+
+/**
+ * Server-backed milestone status updater
+ */
+export async function updateMilestoneLifecycleWithServer(
+  projectId: string,
+  milestoneId: string,
+  newStatus: MilestoneStatus,
+  notes?: string
+): Promise<{ updatedList: MilestoneProject[]; updatedMilestone: Milestone | null }> {
+  try {
+    await fetch(`/api/milestones/${encodeURIComponent(milestoneId)}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus, userConfirmed: true, notes }),
+    });
+  } catch {
+    // Offline mode
+  }
+  return updateMilestoneLifecycleInStorage(projectId, milestoneId, newStatus, notes);
+}

@@ -184,3 +184,43 @@ export function updateClientNotesInStorage(clientId: string, newNotes: string): 
   }
   return current;
 }
+
+/**
+ * Fetch clients from server with fallback to localStorage
+ */
+export async function fetchClientsWithFallback(): Promise<ClientRecord[]> {
+  try {
+    const res = await fetch("/api/clients");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.clients) && data.clients.length > 0) {
+        const mapped: ClientRecord[] = data.clients.map((c: Record<string, unknown>) => ({
+          id: String(c.code || c.id),
+          name: String(c.name),
+          location: String(c.location),
+          industry: String(c.industry),
+          contactName: String(c.contactName),
+          contactRole: String(c.contactRole),
+          contactEmail: String(c.contactEmail),
+          riskTier: (c.riskTier as ClientRecord["riskTier"]) || "High Reliability",
+          reliabilityScore: Number(c.reliabilityScore || 90),
+          lifetimeRevenue: Number(c.lifetimeRevenue || 0),
+          outstandingBalance: Number(c.outstandingBalance || 0),
+          avgSettlementLag: String(c.avgSettlementLag || "+0.0 Days"),
+          disputeHistory: String(c.disputeHistory || "0 Formal Disputes"),
+          preferredRails: String(c.preferredRails || "PayPal Business Direct (Net-14)"),
+          notes: String(c.notes || ""),
+          playbook: {
+            whatWorks: String(c.playbookWhatWorks || "Formal notices with itemized deliverables."),
+            whatFails: String(c.playbookWhatFails || "Informal messaging without documentation."),
+          },
+        }));
+        saveClientsToStorage(mapped);
+        return mapped;
+      }
+    }
+  } catch {
+    // Offline mode
+  }
+  return loadClientsFromStorage();
+}

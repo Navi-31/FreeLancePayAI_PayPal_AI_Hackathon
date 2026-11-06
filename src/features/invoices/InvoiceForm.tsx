@@ -3,7 +3,11 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Invoice, InvoiceLineItem } from "@/types/invoice";
-import { calculateLineItemAmount, calculateInvoiceTotals, upsertInvoiceInStorage } from "./invoiceStore";
+import {
+  calculateLineItemAmount,
+  calculateInvoiceTotals,
+  createInvoiceWithServer,
+} from "./invoiceStore";
 import { InvoicePaperPreview } from "./InvoicePaperPreview";
 import { AuricButton } from "@/components/ui/AuricButton";
 import { GlassPanel } from "@/components/glass/GlassPanel";
@@ -187,8 +191,8 @@ export const InvoiceForm: React.FC = () => {
       notes: notes.trim(),
     };
 
-    // Save to storage
-    upsertInvoiceInStorage(newInvoice);
+    // Save to server database and storage
+    createInvoiceWithServer(newInvoice);
 
     // Navigate to Invoices list
     setTimeout(() => {

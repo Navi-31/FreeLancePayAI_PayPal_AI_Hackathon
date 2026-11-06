@@ -240,3 +240,112 @@ export function updateInvoiceStatusInStorage(id: string, newStatus: InvoiceStatu
   saveInvoicesToStorage(current);
   return target;
 }
+
+/**
+ * Fetch invoices from server with fallback to localStorage
+ */
+export async function fetchInvoicesWithFallback(): Promise<Invoice[]> {
+  try {
+    const res = await fetch("/api/invoices");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.invoices) && data.invoices.length > 0) {
+        // Map server DB records to client Invoice type
+        const mapped: Invoice[] = data.invoices.map((inv: Record<string, unknown>) => ({
+          id: String(inv.code || inv.id),
+          clientName: String(inv.clientName || ""),
+          clientEmail: String(inv.clientEmail || ""),
+          clientAddress: String(inv.clientAddress || ""),
+          projectTitle: String(inv.projectTitle || ""),
+          issueDate: typeof inv.issueDate === "string" ? inv.issueDate.split("T")[0] : "2025-10-10",
+          dueDate: typeof inv.dueDate === "string" ? inv.dueDate.split("T")[0] : "2025-10-24",
+          poReference: String(inv.poReference || ""),
+          status: inv.status as InvoiceStatus,
+          paymentChannel: String(inv.paymentChannel || "PayPal Direct"),
+          currency: String(inv.currency || "USD"),
+          currencySymbol: String(inv.currencySymbol || "$"),
+          lineItems: Array.isArray(inv.lineItems)
+            ? inv.lineItems.map((li: Record<string, unknown>) => ({
+                id: String(li.id),
+                description: String(li.description),
+                quantity: Number(li.quantity),
+                rate: Number(li.rate),
+                amount: Number(li.amount),
+              }))
+            : [],
+          subtotal: Number(inv.subtotal),
+          taxRatePercent: Number(inv.taxRatePercent || 0),
+          taxAmount: Number(inv.taxAmount || 0),
+          total: Number(inv.total),
+          aiRiskScore: (inv.aiRiskScore as "Low" | "Moderate" | "High") || "Low",
+          aiTelemetryNote: String(inv.aiTelemetryNote || ""),
+          viewCount: Number(inv.viewCount || 0),
+          notes: String(inv.notes || ""),
+        }));
+        saveInvoicesToStorage(mapped);
+        return mapped;
+      }
+    }
+  } catch {
+    // Graceful offline fallback
+  }
+  return loadInvoicesFromStorage();
+}
+
+/**
+ * Server-backed invoice creation with local fallback
+ */
+export async function createInvoiceWithServer(invoice: Invoice): Promise<Invoice> {
+  try {
+    const res = await fetch("/api/invoices", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        code: invoice.id,
+        clientName: invoice.clientName,
+        clientEmail: invoice.clientEmail,
+        clientAddress: invoice.clientAddress,
+        projectTitle: invoice.projectTitle,
+        issueDate: invoice.issueDate,
+        dueDate: invoice.dueDate,
+        poReference: invoice.poReference,
+        paymentChannel: invoice.paymentChannel,
+        currency: invoice.currency,
+        taxRatePercent: invoice.taxRatePercent,
+        notes: invoice.notes,
+        lineItems: invoice.lineItems.map((item) => ({
+          description: item.description,
+          quantity: item.quantity,
+          rate: item.rate,
+        })),
+      }),
+    });
+    if (res.ok) {
+      upsertInvoiceInStorage(invoice);
+      return invoice;
+    }
+  } catch {
+    // Offline mode
+  }
+  upsertInvoiceInStorage(invoice);
+  return invoice;
+}
+
+/**
+ * Server-backed status update with local fallback
+ */
+export async function updateInvoiceStatusWithServer(
+  id: string,
+  newStatus: InvoiceStatus
+): Promise<Invoice | null> {
+  try {
+    await fetch(`/api/invoices/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus }),
+    });
+  } catch {
+    // Offline mode
+  }
+  return updateInvoiceStatusInStorage(id, newStatus);
+}

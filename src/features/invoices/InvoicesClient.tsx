@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Invoice, InvoiceStatus } from "@/types/invoice";
-import { loadInvoicesFromStorage } from "./invoiceStore";
+import { loadInvoicesFromStorage, fetchInvoicesWithFallback } from "./invoiceStore";
 import { InvoiceKpiCards } from "./InvoiceKpiCards";
 import { InvoiceFilterBar } from "./InvoiceFilterBar";
 import { InvoiceTable } from "./InvoiceTable";
@@ -18,6 +18,9 @@ export const InvoicesClient: React.FC = () => {
 
   useEffect(() => {
     setInvoices(loadInvoicesFromStorage());
+    fetchInvoicesWithFallback().then((live) => {
+      if (live && live.length > 0) setInvoices(live);
+    });
   }, []);
 
   // Compute status counts

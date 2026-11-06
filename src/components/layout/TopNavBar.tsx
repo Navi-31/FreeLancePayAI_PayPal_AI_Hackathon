@@ -6,6 +6,8 @@ import { SearchInput } from "@/components/ui/SearchInput";
 import { AuricButton } from "@/components/ui/AuricButton";
 import { SupportedCurrency } from "@/types/navigation";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/features/auth/AuthContext";
+import { AuthModal } from "@/components/auth/AuthModal";
 
 export interface TopNavBarProps {
   onToggleMobileMenu?: () => void;
@@ -24,15 +26,35 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   subtitle = "Autonomous fiscal guardian is operational",
   userBadge = "PRO VIP",
 }) => {
+  const { user, isDemoMode, logout, syncLocalDataToCloud } = useAuth();
   const [selectedCurrency, setSelectedCurrency] = useState<SupportedCurrency>(currency);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<string | null>(null);
 
   const handleCurrencySelect = (curr: SupportedCurrency) => {
     setSelectedCurrency(curr);
     onCurrencyChange?.(curr);
   };
+
+  const handleSyncData = async () => {
+    setSyncStatus("Syncing...");
+    const res = await syncLocalDataToCloud();
+    setSyncStatus(res.message);
+    setTimeout(() => setSyncStatus(null), 4000);
+  };
+
+  const displayName = user?.name || "Alex Vance";
+  const displayEmail = user?.email || "alex.vance@studio.ai";
+  const displayRole = user?.profile?.title || "Design Technologist";
+  const initials = displayName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .substring(0, 2)
+    .toUpperCase();
 
   return (
     <header className="docked full-width top-0 sticky z-30 flex items-center justify-between px-4 lg:px-space-lg py-2.5 border-b border-outline-variant/30 backdrop-blur-2xl bg-surface/80 shadow-sm transition-all">
@@ -177,28 +199,83 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
           >
             <div className="relative">
               <div className="w-8 h-8 rounded-full ring-2 ring-primary p-0.5 bg-surface-container-high flex items-center justify-center font-semibold text-xs text-primary shadow-[0_0_12px_rgba(244,200,109,0.25)]">
-                AV
+                {initials}
               </div>
-              <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-surface" />
+              <span
+                className={cn(
+                  "absolute bottom-0 right-0 w-2 h-2 rounded-full ring-2 ring-surface",
+                  isDemoMode ? "bg-amber-400" : "bg-emerald-400"
+                )}
+                title={isDemoMode ? "Demo Mode (Local)" : "Production Session Active"}
+              />
             </div>
 
             <div className="hidden 2xl:flex flex-col text-left">
               <span className="font-label-md text-xs font-medium text-on-surface group-hover:text-primary transition-colors">
-                Alex Vance
+                {displayName}
               </span>
-              <span className="font-label-sm text-[10px] text-on-surface-variant">
-                Design Technologist
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="font-label-sm text-[10px] text-on-surface-variant truncate max-w-[110px]">
+                  {displayRole}
+                </span>
+                <span
+                  className={cn(
+                    "text-[9px] px-1 rounded font-mono font-bold uppercase",
+                    isDemoMode
+                      ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
+                      : "bg-emerald-400/10 text-emerald-400 border border-emerald-400/30"
+                  )}
+                >
+                  {isDemoMode ? "Demo" : "Live DB"}
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Profile Dropdown Menu */}
           {showProfileMenu && (
-            <div className="absolute right-0 top-full mt-2 w-56 glass-panel-elevated p-2 rounded-xl border border-outline-variant/30 shadow-2xl z-50 text-xs">
+            <div className="absolute right-0 top-full mt-2 w-64 glass-panel-elevated p-2 rounded-xl border border-outline-variant/30 shadow-2xl z-50 text-xs">
               <div className="px-3 py-2 border-b border-outline-variant/20 mb-1">
-                <p className="font-medium text-white">Alex Vance</p>
-                <p className="text-[11px] text-on-surface-variant truncate">alex.vance@studio.ai</p>
+                <p className="font-medium text-white">{displayName}</p>
+                <p className="text-[11px] text-on-surface-variant truncate">{displayEmail}</p>
+                <div className="mt-1 flex items-center gap-1.5">
+                  <span
+                    className={cn(
+                      "w-1.5 h-1.5 rounded-full",
+                      isDemoMode ? "bg-amber-400" : "bg-emerald-400"
+                    )}
+                  />
+                  <span className="text-[10px] text-outline font-mono">
+                    {isDemoMode ? "Storage: Local Sandbox" : "Storage: PostgreSQL Backend"}
+                  </span>
+                </div>
               </div>
+
+              {syncStatus && (
+                <div className="px-3 py-2 mb-1 rounded-lg bg-primary/10 border border-primary/20 text-primary text-[10px]">
+                  {syncStatus}
+                </div>
+              )}
+
+              <button
+                onClick={handleSyncData}
+                className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container/60 text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <span className="material-symbols-outlined text-base text-primary">cloud_sync</span>
+                <span>Sync Local Data to Database</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowProfileMenu(false);
+                  setIsAuthModalOpen(true);
+                }}
+                className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container/60 text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <span className="material-symbols-outlined text-base text-secondary">shield_person</span>
+                <span>{isDemoMode ? "Sign In / Register Account" : "Switch Account"}</span>
+              </button>
+
               <Link
                 href="/settings"
                 onClick={() => setShowProfileMenu(false)}
@@ -207,6 +284,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
                 <span className="material-symbols-outlined text-base">settings</span>
                 <span>Workspace Settings</span>
               </Link>
+
               <Link
                 href="/treasury/currency"
                 onClick={() => setShowProfileMenu(false)}
@@ -215,6 +293,20 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
                 <span className="material-symbols-outlined text-base">account_balance_wallet</span>
                 <span>Treasury Vaults</span>
               </Link>
+
+              {!isDemoMode && (
+                <button
+                  onClick={async () => {
+                    await logout();
+                    setShowProfileMenu(false);
+                  }}
+                  className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-error-container/20 text-error hover:text-error transition-colors"
+                >
+                  <span className="material-symbols-outlined text-base">logout</span>
+                  <span>Sign Out</span>
+                </button>
+              )}
+
               <div className="pt-1 mt-1 border-t border-outline-variant/20">
                 <span className="px-3 py-1.5 block text-[10px] text-outline font-mono">
                   Autonomous Engine Active
@@ -224,6 +316,8 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
           )}
         </div>
       </div>
+
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </header>
   );
 };

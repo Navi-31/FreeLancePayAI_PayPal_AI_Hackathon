@@ -243,6 +243,43 @@ export function saveTransactionsToStorage(transactions: Transaction[]): void {
   }
 }
 
+/**
+ * Fetch transactions from server with fallback to localStorage
+ */
+export async function fetchTransactionsWithFallback(): Promise<Transaction[]> {
+  try {
+    const res = await fetch("/api/transactions");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.transactions) && data.transactions.length > 0) {
+        const mapped: Transaction[] = data.transactions.map((t: Record<string, unknown>) => ({
+          id: String(t.code || t.id),
+          hash: String(t.hash || "0x0000"),
+          timestamp: typeof t.timestamp === "string" ? t.timestamp.replace("T", " ").substring(0, 19) : "2025-10-24 14:32:00",
+          description: String(t.description),
+          clientName: String(t.clientName),
+          type: t.type as Transaction["type"],
+          status: t.status as Transaction["status"],
+          currency: String(t.currency || "USD"),
+          currencySymbol: String(t.currencySymbol || "$"),
+          grossAmount: Number(t.grossAmount),
+          feeAmount: Number(t.feeAmount || 0),
+          fxCost: Number(t.fxCost || 0),
+          netAmount: Number(t.netAmount),
+          taxReserveSplitAmount: Number(t.taxReserveSplitAmount || 0),
+          paymentChannel: t.paymentChannel as Transaction["paymentChannel"],
+          notes: String(t.notes || ""),
+        }));
+        saveTransactionsToStorage(mapped);
+        return mapped;
+      }
+    }
+  } catch {
+    // Offline mode
+  }
+  return loadTransactionsFromStorage();
+}
+
 export function calculateTransactionKpis(transactions: Transaction[]): {
   totalCount: number;
   grossReceived: number;
