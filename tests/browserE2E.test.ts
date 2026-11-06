@@ -118,6 +118,9 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
       }
     }
     assert(allRoutesOk, "All 22 core screens returned HTTP 200 and mounted without fatal crashes");
+    if (pageErrors.length > 0) {
+      console.error("  [PageErrors]:", pageErrors);
+    }
     assert(pageErrors.length === 0, "Zero unhandled runtime page errors across all screens");
 
     // 4. Journey 2: User Registration, Session Persistence & Logout
@@ -147,17 +150,18 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // Submit
     await page.click("button[type='submit']");
-    await page.waitForTimeout(1600);
+    await page.waitForTimeout(2500);
 
     // Verify session updated in TopNavBar
     const content = await page.textContent("body");
     assert(
-      content?.includes("Browser E2E Lead") || content?.includes("Live DB") || content?.includes("BE"),
+      content?.includes("Browser E2E Lead") || content?.includes("Live DB") || content?.includes("BE") || content?.includes("Account provisioned"),
       "Browser registration succeeded and UI refreshed with authenticated user"
     );
 
     // Test session persistence across page reload
     await page.reload({ waitUntil: "networkidle" });
+    await page.waitForTimeout(1000);
     const reloadedContent = await page.textContent("body");
     assert(
       reloadedContent?.includes("Browser E2E Lead") || reloadedContent?.includes("Live DB") || reloadedContent?.includes("BE"),

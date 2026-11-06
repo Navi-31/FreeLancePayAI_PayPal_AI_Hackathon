@@ -75,14 +75,26 @@ export function DashboardLiveBannerAndMetrics() {
         className="p-6 relative overflow-hidden flex flex-col lg:flex-row lg:items-center justify-between gap-6"
       >
         <div className="relative z-10">
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-secondary-container/30 border border-secondary/30 text-secondary text-xs font-medium mb-3">
-            <span
-              className="material-symbols-outlined text-sm leading-none"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              auto_awesome
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/30 border border-secondary/30 text-secondary text-xs font-medium font-mono">
+              <span
+                className="material-symbols-outlined text-sm leading-none"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                auto_awesome
+              </span>
+              <span>{isAuthenticated ? "Live Neon Database Synchronized" : "Autonomous Guardian (Demo Profile)"}</span>
             </span>
-            <span>{isAuthenticated ? "Live Neon Database Synchronized" : "Autonomous Guardian Active (Demo Profile)"}</span>
+
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono">
+              <span className="material-symbols-outlined text-xs">payments</span>
+              <span>PayPal Sandbox Rails Active</span>
+            </span>
+
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-mono">
+              <span className="material-symbols-outlined text-xs">smart_toy</span>
+              <span>Gemini 3.5 Flash Connected</span>
+            </span>
           </div>
 
           <h2 className="font-headline-md text-xl lg:text-2xl text-on-surface font-semibold">
@@ -133,6 +145,60 @@ export function DashboardLiveBannerAndMetrics() {
         {/* Decorative auric/violet gradient orb */}
         <div className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-gradient-to-br from-primary/10 via-secondary/15 to-transparent blur-3xl pointer-events-none" />
       </GlassPanel>
+
+      {/* QUICK TOUR & ONBOARDING BENTO STRIP */}
+      <div className="p-3.5 rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase text-[10px]">
+            Hackathon Demo Guide
+          </span>
+          <span className="text-on-surface-variant hidden md:inline">
+            Explore core autonomous workflows:
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <Link
+            href="/invoices"
+            className="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface flex items-center gap-1 transition-colors"
+          >
+            <span className="material-symbols-outlined text-xs text-primary">receipt_long</span>
+            <span>1. Invoices &amp; PayPal</span>
+          </Link>
+
+          <Link
+            href="/clients"
+            className="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface flex items-center gap-1 transition-colors"
+          >
+            <span className="material-symbols-outlined text-xs text-secondary">groups</span>
+            <span>2. Risk Radar</span>
+          </Link>
+
+          <Link
+            href="/reminders"
+            className="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface flex items-center gap-1 transition-colors"
+          >
+            <span className="material-symbols-outlined text-xs text-amber-400">send_and_archive</span>
+            <span>3. Tone Outreach</span>
+          </Link>
+
+          <Link
+            href="/milestones"
+            className="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface flex items-center gap-1 transition-colors"
+          >
+            <span className="material-symbols-outlined text-xs text-emerald-400">verified_user</span>
+            <span>4. Milestones</span>
+          </Link>
+
+          <Link
+            href="/ai/copilot"
+            className="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface flex items-center gap-1 transition-colors"
+          >
+            <span className="material-symbols-outlined text-xs text-secondary">psychology</span>
+            <span>5. Copilot</span>
+          </Link>
+        </div>
+      </div>
 
       {/* 2. METRIC BENTO 4-CARDS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">

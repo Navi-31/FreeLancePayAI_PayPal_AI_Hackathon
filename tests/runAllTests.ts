@@ -8,6 +8,7 @@ import { runEmailNotificationJobsTests } from "./emailNotificationJobs.test";
 import { runSecurityAndE2ETests } from "./securityAndE2E.test";
 import { runPhase5BIntegrationTests } from "./phase5BIntegration.test";
 import { runBrowserE2ETests } from "./browserE2E.test";
+import { runPhase5DDemoReadinessTests } from "./phase5DDemoReadiness.test";
 
 async function main() {
   console.log("==================================================");
@@ -67,6 +68,11 @@ async function main() {
   totalPassed += browserE2E.passed;
   totalFailed += browserE2E.failed;
 
+  // 11. Demo Readiness & Product Polish Tests (Phase 5D)
+  const phase5D = await runPhase5DDemoReadinessTests();
+  totalPassed += phase5D.passed;
+  totalFailed += phase5D.failed;
+
   console.log("\n==================================================");
   console.log(" SUITE BREAKDOWN:");
   console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
@@ -79,6 +85,7 @@ async function main() {
   console.log(`  8. Security Audit & Safeguards (4E):    ${secE2E.passed} passed, ${secE2E.failed} failed`);
   console.log(`  9. Workflows Integration (5B):          ${phase5B.passed} passed, ${phase5B.failed} failed`);
   console.log(` 10. Browser E2E Journeys (5C):           ${browserE2E.passed} passed, ${browserE2E.failed} failed`);
+  console.log(` 11. Demo Readiness & Polish (5D):        ${phase5D.passed} passed, ${phase5D.failed} failed`);
   console.log("--------------------------------------------------");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
   console.log("==================================================");

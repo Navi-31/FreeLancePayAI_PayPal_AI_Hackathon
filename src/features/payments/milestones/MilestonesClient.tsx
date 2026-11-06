@@ -413,8 +413,19 @@ export const MilestonesClient: React.FC = () => {
         {/* Left Column (Project Cards & Milestone Progression - ~58%) */}
         <div className="lg:col-span-7 space-y-5">
           {filteredProjects.length === 0 ? (
-            <div className="p-8 rounded-xl bg-surface-container-lowest border border-outline-variant/30 text-center text-on-surface-variant">
-              No milestone contracts match the selected filters.
+            <div className="p-12 rounded-xl bg-surface-container-lowest border border-outline-variant/30 text-center text-on-surface-variant space-y-3">
+              <span className="material-symbols-outlined text-4xl text-outline">assignment_add</span>
+              <div className="font-semibold text-sm text-on-surface">No milestone projects found</div>
+              <p className="text-xs text-on-surface-variant max-w-sm mx-auto">
+                Create a milestone engagement with staged deliverables and PayPal Sandbox authorization rails.
+              </p>
+              <button
+                onClick={() => setIsCreateModalOpen(true)}
+                className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110"
+              >
+                <span className="material-symbols-outlined text-sm">add_circle</span>
+                Create Milestone Contract
+              </button>
             </div>
           ) : (
             filteredProjects.map((proj) => {

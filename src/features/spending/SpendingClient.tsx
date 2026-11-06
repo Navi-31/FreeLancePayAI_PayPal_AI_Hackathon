@@ -780,47 +780,68 @@ export function SpendingClient() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredOutflows.map((item) => (
-                <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-primary font-bold text-xs">
-                        {item.merchant.slice(0, 2).toUpperCase()}
-                      </div>
-                      <div>
-                        <div className="font-semibold text-white text-sm">{item.merchant}</div>
-                        <div className="text-outline text-[11px]">{item.desc}</div>
-                      </div>
+              {filteredOutflows.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-12 text-center text-on-surface-variant">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <span className="material-symbols-outlined text-4xl text-outline">account_balance_wallet</span>
+                      <div className="font-semibold text-sm text-on-surface">No outflows recorded</div>
+                      <p className="text-xs text-on-surface-variant max-w-sm mx-auto">
+                        Record cloud expenses, tooling seats, or capital purchases to forecast runway and safe harbors.
+                      </p>
+                      <button
+                        onClick={() => setIsAddModalOpen(true)}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110"
+                      >
+                        <span className="material-symbols-outlined text-sm">add_circle</span>
+                        + Record First Outflow
+                      </button>
                     </div>
-                  </td>
-                  <td className="py-3.5 px-4">
-                    <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-surface-container text-on-surface border border-white/5">
-                      {item.category}
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-on-surface-variant font-mono">{item.date}</td>
-                  <td className="py-3.5 px-4">
-                    <div className="flex items-center gap-1.5 text-on-surface">
-                      <span className="material-symbols-outlined text-xs text-primary">credit_card</span>
-                      <span>{item.method}</span>
-                    </div>
-                  </td>
-                  <td className="py-3.5 px-4 text-center">
-                    <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
-                        item.isRecurring
-                          ? "bg-secondary/20 text-secondary border border-secondary/30"
-                          : "bg-surface-container text-outline"
-                      }`}
-                    >
-                      {item.isRecurring ? "Recurring" : "One-Time"}
-                    </span>
-                  </td>
-                  <td className="py-3.5 px-4 text-right font-mono font-bold text-sm text-white">
-                    ${item.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredOutflows.map((item) => (
+                  <tr key={item.id} className="hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3.5 px-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/30 flex items-center justify-center text-primary font-bold text-xs">
+                          {item.merchant.slice(0, 2).toUpperCase()}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-white text-sm">{item.merchant}</div>
+                          <div className="text-outline text-[11px]">{item.desc}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] bg-surface-container text-on-surface border border-white/5">
+                        {item.category}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-on-surface-variant font-mono">{item.date}</td>
+                    <td className="py-3.5 px-4">
+                      <div className="flex items-center gap-1.5 text-on-surface">
+                        <span className="material-symbols-outlined text-xs text-primary">credit_card</span>
+                        <span>{item.method}</span>
+                      </div>
+                    </td>
+                    <td className="py-3.5 px-4 text-center">
+                      <span
+                        className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
+                          item.isRecurring
+                            ? "bg-secondary/20 text-secondary border border-secondary/30"
+                            : "bg-surface-container text-outline"
+                        }`}
+                      >
+                        {item.isRecurring ? "Recurring" : "One-Time"}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-4 text-right font-mono font-bold text-sm text-white">
+                      ${item.amount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

@@ -289,7 +289,27 @@ export function ClientsClient() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-outline-variant/15 text-xs">
-                  {filteredClients.map((client) => {
+                  {filteredClients.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-12 text-center text-on-surface-variant space-y-3">
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                          <span className="material-symbols-outlined text-4xl text-outline">group_off</span>
+                          <div className="font-semibold text-sm text-on-surface">No clients found</div>
+                          <p className="text-xs text-on-surface-variant max-w-sm mx-auto">
+                            No counterparties match your current filter, or your account portfolio is empty.
+                          </p>
+                          <button
+                            onClick={() => setShowAddModal(true)}
+                            className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110"
+                          >
+                            <span className="material-symbols-outlined text-sm">person_add</span>
+                            Add First Client Profile
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredClients.map((client) => {
                     const isSelected = client.id === selectedClientId;
                     return (
                       <tr
@@ -359,7 +379,8 @@ export function ClientsClient() {
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                )}
                 </tbody>
               </table>
             </div>

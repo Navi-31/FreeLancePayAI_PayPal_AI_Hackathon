@@ -45,7 +45,7 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
 
   if (invoices.length === 0) {
     return (
-      <div className="rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20 p-12 text-center space-y-3">
+      <div className="rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20 p-12 text-center space-y-4">
         <span className="material-symbols-outlined text-4xl text-outline" data-icon="search_off">
           search_off
         </span>
@@ -53,8 +53,17 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
           No matching invoices found
         </h4>
         <p className="font-body-sm text-xs text-on-surface-variant max-w-sm mx-auto">
-          Try adjusting your search criteria or create a new invoice to populate this ledger.
+          No active invoices matched your filter, or your account ledger is currently empty.
         </p>
+        <div className="pt-2">
+          <Link
+            href="/invoices/new"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110 transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">add</span>
+            <span>Create Your First Invoice</span>
+          </Link>
+        </div>
       </div>
     );
   }

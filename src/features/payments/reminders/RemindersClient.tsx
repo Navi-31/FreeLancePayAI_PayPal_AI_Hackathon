@@ -464,8 +464,21 @@ export const RemindersClient: React.FC = () => {
                 <tbody className="divide-y divide-outline-variant/15 text-xs">
                   {filteredReminders.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="py-8 text-center text-on-surface-variant">
-                        No reminders found matching this queue or query.
+                      <td colSpan={6} className="py-12 text-center text-on-surface-variant">
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                          <span className="material-symbols-outlined text-4xl text-outline">mark_email_read</span>
+                          <div className="font-semibold text-sm text-on-surface">No payment notices in queue</div>
+                          <p className="text-xs text-on-surface-variant max-w-sm mx-auto">
+                            All counterparty invoices are settled or within terms. Overdue invoices will automatically queue reminder drafts here.
+                          </p>
+                          <Link
+                            href="/invoices"
+                            className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110"
+                          >
+                            <span className="material-symbols-outlined text-sm">receipt_long</span>
+                            Check Invoices
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ) : (

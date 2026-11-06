@@ -665,7 +665,27 @@ export function SubscriptionsClient() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/15">
-                {filteredSubs.map((sub) => {
+                {filteredSubs.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center text-on-surface-variant">
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <span className="material-symbols-outlined text-4xl text-outline">subscriptions</span>
+                        <div className="font-semibold text-sm text-on-surface">No subscriptions monitored</div>
+                        <p className="text-xs text-on-surface-variant max-w-sm mx-auto">
+                          Add your design, cloud, and AI tools to monitor monthly burn, seat usage, and single-user savings.
+                        </p>
+                        <button
+                          onClick={() => setIsAddModalOpen(true)}
+                          className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110"
+                        >
+                          <span className="material-symbols-outlined text-sm">add_circle</span>
+                          + Add First Subscription
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredSubs.map((sub) => {
                   const isSelected = sub.id === selectedSubId;
                   return (
                     <tr
@@ -743,7 +763,8 @@ export function SubscriptionsClient() {
                       </td>
                     </tr>
                   );
-                })}
+                })
+              )}
               </tbody>
             </table>
           </div>

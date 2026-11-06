@@ -13,6 +13,7 @@ interface ChatMessage {
   text: string;
   hasReceivablesCard?: boolean;
   hasActionProposal?: boolean;
+  provider?: "gemini" | "fallback";
   actionDetails?: {
     client: string;
     action: string;
@@ -120,6 +121,7 @@ export const CopilotClient: React.FC = () => {
         text: copilotData.analysis || "Analysis completed against verified financial metrics.",
         hasActionProposal: Boolean(copilotData.actionProposal),
         actionDetails: copilotData.actionProposal,
+        provider: data.provider || (copilotData.isFallback ? "fallback" : "gemini"),
       };
 
       setMessages((prev) => [...prev, copilotMsg]);
@@ -151,6 +153,7 @@ export const CopilotClient: React.FC = () => {
           text: reply,
           hasActionProposal: !!proposal,
           actionDetails: proposal,
+          provider: "fallback",
         };
 
         setMessages((prev) => [...prev, copilotMsg]);
@@ -310,9 +313,16 @@ export const CopilotClient: React.FC = () => {
                     <div className="space-y-3 flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-white">FreelancePay Neural Copilot</span>
-                        <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-secondary/15 text-secondary border border-secondary/30">
-                          Audit Verified
-                        </span>
+                        {m.provider === "gemini" ? (
+                          <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                            Gemini 3.5 Flash Live
+                          </span>
+                        ) : (
+                          <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-secondary/15 text-secondary border border-secondary/30">
+                            Deterministic Fallback Active
+                          </span>
+                        )}
                         <span className="text-[10px] text-outline ml-auto">{m.timestamp}</span>
                       </div>
 

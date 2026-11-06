@@ -113,6 +113,30 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
     setTimeout(() => setSyncStatus(null), 4000);
   };
 
+  const handleSeedDemoPortfolio = async (reset = false) => {
+    try {
+      setSyncStatus(reset ? "Resetting demo state..." : "Seeding demo data...");
+      const res = await fetch("/api/demo/seed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reset }),
+      });
+      if (res.ok) {
+        setSyncStatus(reset ? "Demo portfolio reset cleanly!" : "Demo data seeded successfully!");
+        setTimeout(() => {
+          setSyncStatus(null);
+          window.location.reload();
+        }, 1200);
+      } else {
+        setSyncStatus("Failed to seed demo data");
+        setTimeout(() => setSyncStatus(null), 3000);
+      }
+    } catch {
+      setSyncStatus("Error seeding demo data");
+      setTimeout(() => setSyncStatus(null), 3000);
+    }
+  };
+
   const displayName = user?.name || "Alex Vance";
   const displayEmail = user?.email || "alex.vance@studio.ai";
   const displayRole = user?.profile?.title || "Design Technologist";
@@ -389,6 +413,22 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
               >
                 <span className="material-symbols-outlined text-base text-primary">cloud_sync</span>
                 <span>Sync Local Data to Database</span>
+              </button>
+
+              <button
+                onClick={() => handleSeedDemoPortfolio(false)}
+                className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container/60 text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <span className="material-symbols-outlined text-base text-secondary">database</span>
+                <span>Seed Coherent Demo Data</span>
+              </button>
+
+              <button
+                onClick={() => handleSeedDemoPortfolio(true)}
+                className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-surface-container/60 text-on-surface-variant hover:text-on-surface transition-colors"
+              >
+                <span className="material-symbols-outlined text-base text-amber-400">restart_alt</span>
+                <span>Reset Demo Portfolio</span>
               </button>
 
               <button
