@@ -16,7 +16,9 @@ const pool =
   globalForPrisma.pool ??
   new Pool({
     connectionString,
-    connectionTimeoutMillis: 3000,
+    connectionTimeoutMillis: 15000,
+    idleTimeoutMillis: 30000,
+    max: 10,
   });
 
 const adapter = new PrismaPg(pool);
