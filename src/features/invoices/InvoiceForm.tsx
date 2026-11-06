@@ -119,30 +119,64 @@ export const InvoiceForm: React.FC = () => {
     setLineItems(lineItems.filter((_, i) => i !== index));
   };
 
-  // AI Prompt Parser simulation (deterministic rule-based extractor)
-  const handleAiGenerate = () => {
+  // AI Prompt Parser (Connects to server-side AI Parser with resilient local fallback)
+  const handleAiGenerate = async () => {
+    if (!aiPrompt.trim()) return;
+
+    try {
+      const res = await fetch("/api/ai/invoices/parse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: aiPrompt.trim() }),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        const data = json.data || json;
+
+        if (data.projectTitle) setProjectTitle(data.projectTitle);
+        if (data.taxRatePercent !== undefined) setTaxRatePercent(data.taxRatePercent);
+        if (data.paymentChannel) setPaymentChannel(data.paymentChannel);
+
+        if (Array.isArray(data.lineItems) && data.lineItems.length > 0) {
+          setLineItems(
+            data.lineItems.map((li: { description: string; quantity: number; rate: number }, idx: number) => ({
+              id: `item-${Date.now()}-${idx}`,
+              description: li.description,
+              quantity: Number(li.quantity) || 1,
+              rate: Number(li.rate) || 0,
+            }))
+          );
+        }
+
+        const clientIdx = SAMPLE_CLIENTS.findIndex(
+          (c) => data.clientName && c.name.toLowerCase().includes(data.clientName.toLowerCase())
+        );
+        if (clientIdx >= 0) setSelectedClientIndex(clientIdx);
+
+        setValidationError(null);
+        return;
+      }
+    } catch {
+      // Fallback below
+    }
+
+    // Local heuristic fallback
     const lower = aiPrompt.toLowerCase();
-    
-    // Auto-detect client
-    const clientIdx = SAMPLE_CLIENTS.findIndex(c => lower.includes(c.name.toLowerCase()));
+    const clientIdx = SAMPLE_CLIENTS.findIndex((c) => lower.includes(c.name.toLowerCase()));
     if (clientIdx >= 0) {
       setSelectedClientIndex(clientIdx);
     }
-
-    // Auto-detect tax
     if (lower.includes("20% tax") || lower.includes("20%")) {
       setTaxRatePercent(20);
     } else if (lower.includes("15%")) {
       setTaxRatePercent(15);
     }
-
-    // Auto-detect channel
     if (lower.includes("paypal")) {
       setPaymentChannel("PayPal Direct");
     } else if (lower.includes("stripe")) {
       setPaymentChannel("Stripe Connect");
     }
-
     setValidationError(null);
   };
 

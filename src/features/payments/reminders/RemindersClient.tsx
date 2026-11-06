@@ -78,10 +78,39 @@ export const RemindersClient: React.FC = () => {
     };
   }, [reminders, tabCounts]);
 
-  const handleToneSelect = (tone: ReminderTone) => {
+  const handleToneSelect = async (tone: ReminderTone) => {
     if (!selectedReminder) return;
+
+    // 1. Immediately update tone in local state
     const updated = updateReminderTone(selectedReminder.id, tone);
     setReminders(updated);
+
+    // 2. Fetch server-side AI crafted draft matching the requested tone
+    try {
+      const res = await fetch("/api/ai/reminders/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          invoiceId: selectedReminder.invoiceId,
+          tone,
+        }),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        const d = json.data || json;
+        if (d.subject && d.messageBody) {
+          const freshDraft = updateReminderDraft(
+            selectedReminder.id,
+            d.subject,
+            d.messageBody
+          );
+          setReminders(freshDraft);
+        }
+      }
+    } catch {
+      // Local preset retains resilience
+    }
   };
 
   const handleSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {

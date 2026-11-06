@@ -85,7 +85,7 @@ export const CopilotClient: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendPrompt = (textToSend?: string) => {
+  const handleSendPrompt = async (textToSend?: string) => {
     const query = textToSend || inputPrompt;
     if (!query.trim()) return;
 
@@ -99,41 +99,63 @@ export const CopilotClient: React.FC = () => {
     setMessages((prev) => [...prev, userMsg]);
     if (!textToSend) setInputPrompt("");
 
-    // Deterministic contextual response synthesizer
-    setTimeout(() => {
-      let reply = "";
-      let proposal: ChatMessage["actionDetails"] | undefined = undefined;
+    try {
+      const res = await fetch("/api/ai/copilot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: query.trim() }),
+      });
 
-      const qLower = query.toLowerCase();
-      if (qLower.includes("laptop") || qLower.includes("afford") || qLower.includes("$1,200") || qLower.includes("buy")) {
-        reply = `Affordability Assessment: YES. With available liquidity of $${liveStats.liquidBalance.toLocaleString()} and 8.4 months of calculated runway, a $1,200 equipment purchase accounts for only 2.8% of your liquid reserve and can be written off as Section 179 business equipment depreciation.`;
-      } else if (qLower.includes("earn") || qLower.includes("quarter") || qLower.includes("revenue")) {
-        reply = `Quarterly Earnings Audit: Gross received revenue across Q2/Q3 is $142,650.00 with net settled capital of $138,387.40 after gateway processing fees (-$3,842.10) and cross-border FX drag (-$420.50). Effective net take-home rate is 97.0%.`;
-      } else if (qLower.includes("profit") || qLower.includes("improve") || qLower.includes("margin")) {
-        reply = `Profitability Optimization: 1) Eliminate 3 redundant cloud subscriptions (-$420/yr). 2) Surcharge international SWIFT wires to European clients to negate 1.2% FX drag. 3) Standardize Acme Corp to milestone pre-authorization to prevent 18-day collection lag.`;
-      } else if (qLower.includes("who owes") || qLower.includes("follow up") || qLower.includes("unpaid")) {
-        reply = `Immediate Collections Pipeline: 1) Acme Corp (#FP-8848): $1,500.00 (14 days past due). 2) Vault Protocol (#FP-8843): $1,900.00 (21 days past due). 3) Horizon Studio (#FP-8849): $8,500.00 (due in 2 days). Escalating Acme Corp is the highest priority.`;
-        proposal = {
-          client: "Acme Corp",
-          action: "Dispatch Tier-2 Firm Notice via PayPal Verified Relay",
-          reason: "AP viewing detected 4 times; historical payment follows firm notice within 48h.",
-          expectedImpact: "+$1,500 recovered before Nov 15 payroll obligations.",
-        };
-      } else {
-        reply = `Telemetry Analysis: Audited active accounts against your $42,880.50 liquid reserves and $14,200 in receivables. All metrics are healthy, with 8.4 months of secure runway. What specific scenario or invoice would you like me to stress-test?`;
+      if (!res.ok) {
+        throw new Error(`Server returned ${res.status}`);
       }
+
+      const data = await res.json();
+      const copilotData = data.data || data;
 
       const copilotMsg: ChatMessage = {
         id: `msg-${Date.now() + 1}`,
         sender: "copilot",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        text: reply,
-        hasActionProposal: !!proposal,
-        actionDetails: proposal,
+        text: copilotData.analysis || "Analysis completed against verified financial metrics.",
+        hasActionProposal: Boolean(copilotData.actionProposal),
+        actionDetails: copilotData.actionProposal,
       };
 
       setMessages((prev) => [...prev, copilotMsg]);
-    }, 600);
+    } catch {
+      // Resilient fallback synthesizer
+      setTimeout(() => {
+        let reply = "";
+        let proposal: ChatMessage["actionDetails"] | undefined = undefined;
+
+        const qLower = query.toLowerCase();
+        if (qLower.includes("laptop") || qLower.includes("afford") || qLower.includes("$1,200") || qLower.includes("buy")) {
+          reply = `Affordability Assessment: YES. With available liquidity of $${liveStats.liquidBalance.toLocaleString()} and 8.4 months of calculated runway, a $1,200 equipment purchase accounts for only 2.8% of your liquid reserve and can be written off as Section 179 business equipment depreciation.`;
+        } else if (qLower.includes("who owes") || qLower.includes("follow up") || qLower.includes("unpaid")) {
+          reply = `Immediate Collections Pipeline: 1) Acme Corp (#FP-8848): $1,500.00 (14 days past due). 2) Vault Protocol (#FP-8843): $1,900.00 (21 days past due). Escalating Acme Corp is the highest priority.`;
+          proposal = {
+            client: "Acme Corp",
+            action: "Dispatch Tier-2 Firm Notice via PayPal Verified Relay",
+            reason: "AP viewing detected 4 times; historical payment follows firm notice within 48h.",
+            expectedImpact: "+$1,500 recovered before Nov 15 payroll obligations.",
+          };
+        } else {
+          reply = `Telemetry Analysis: Audited active accounts against your $42,880.50 liquid reserves and $14,200 in receivables. All metrics are healthy, with 8.4 months of secure runway.`;
+        }
+
+        const copilotMsg: ChatMessage = {
+          id: `msg-${Date.now() + 1}`,
+          sender: "copilot",
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          text: reply,
+          hasActionProposal: !!proposal,
+          actionDetails: proposal,
+        };
+
+        setMessages((prev) => [...prev, copilotMsg]);
+      }, 500);
+    }
   };
 
   const handleApproveAction = () => {

@@ -6,34 +6,61 @@ import { cn } from "@/lib/utils";
 
 type StrategyType = "split_installments" | "prompt_discount" | "waive_surcharge";
 
+const DEFAULT_PROPOSAL_DRAFTS: Record<StrategyType, { title: string; subject: string; body: string; recoveryAmount: number }> = {
+  split_installments: {
+    title: "Split into 2 Bi-Weekly Milestones",
+    subject: "Proposal: Structured 2-Part Settlement for Invoice #FP-8848 (Acme Corp)",
+    body: "Hi Sarah,\n\nIn light of your team's ongoing review of Invoice #FP-8848 ($1,500.00), we understand corporate Q4 cash-allocation timelines can fluctuate. To assist your AP cycle and prevent standard late surcharges, we propose restructuring this balance into two equal installments:\n\n• Tranche 1: $750.00 due this Friday, Oct 24\n• Tranche 2: $750.00 due Friday, Nov 07\n\nPlease let us know if this works so we can formalize this agreement in your settlement portal.\n\nBest regards,",
+    recoveryAmount: 1500,
+  },
+  prompt_discount: {
+    title: "5% Prompt Remittance Discount",
+    subject: "Expedited Settlement Option: Invoice #FP-8848 (Acme Corp)",
+    body: "Hi Sarah,\n\nTo expedite signoff on Invoice #FP-8848 ($1,500.00), we are offering an immediate 5% early settlement discount ($75.00 deduction). Remitting $1,425.00 via verified wire or PayPal within the next 24 hours will settle this account in full with zero late fees.\n\nPlease confirm if AP can execute this today.\n\nBest regards,",
+    recoveryAmount: 1425,
+  },
+  waive_surcharge: {
+    title: "Waive Accrued Late Surcharges",
+    subject: "Conditional Surcharge Waiver: Invoice #FP-8848 (Acme Corp)",
+    body: "Hi Sarah,\n\nFollowing up on overdue Invoice #FP-8848 ($1,500.00), which has currently accrued $75.00 in late fees. We value our creative partnership and are prepared to waive all accrued surcharges provided the principal balance of $1,500.00 is settled by end-of-week.\n\nThank you for your prompt response,\nBest regards,",
+    recoveryAmount: 1500,
+  },
+};
+
 export const NegotiatorClient: React.FC = () => {
   const [selectedStrategy, setSelectedStrategy] = useState<StrategyType>("split_installments");
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isProposalSent, setIsProposalSent] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [dynamicDraft, setDynamicDraft] = useState<{
+    title: string;
+    subject: string;
+    body: string;
+    recoveryAmount: number;
+  } | null>(null);
 
-  const proposalDrafts: Record<StrategyType, { title: string; subject: string; body: string; recoveryAmount: number }> = {
-    split_installments: {
-      title: "Split into 2 Bi-Weekly Milestones",
-      subject: "Proposal: Structured 2-Part Settlement for Invoice #FP-8848 (Acme Corp)",
-      body: "Hi Sarah,\n\nIn light of your team's ongoing review of Invoice #FP-8848 ($1,500.00), we understand corporate Q4 cash-allocation timelines can fluctuate. To assist your AP cycle and prevent standard late surcharges, we propose restructuring this balance into two equal installments:\n\n• Tranche 1: $750.00 due this Friday, Oct 24\n• Tranche 2: $750.00 due Friday, Nov 07\n\nPlease let us know if this works so we can formalize this agreement in your settlement portal.\n\nBest regards,",
-      recoveryAmount: 1500,
-    },
-    prompt_discount: {
-      title: "5% Prompt Remittance Discount",
-      subject: "Expedited Settlement Option: Invoice #FP-8848 (Acme Corp)",
-      body: "Hi Sarah,\n\nTo expedite signoff on Invoice #FP-8848 ($1,500.00), we are offering an immediate 5% early settlement discount ($75.00 deduction). Remitting $1,425.00 via verified wire or PayPal within the next 24 hours will settle this account in full with zero late fees.\n\nPlease confirm if AP can execute this today.\n\nBest regards,",
-      recoveryAmount: 1425,
-    },
-    waive_surcharge: {
-      title: "Waive Accrued Late Surcharges",
-      subject: "Conditional Surcharge Waiver: Invoice #FP-8848 (Acme Corp)",
-      body: "Hi Sarah,\n\nFollowing up on overdue Invoice #FP-8848 ($1,500.00), which has currently accrued $75.00 in late fees. We value our creative partnership and are prepared to waive all accrued surcharges provided the principal balance of $1,500.00 is settled by end-of-week.\n\nThank you for your prompt response,\nBest regards,",
-      recoveryAmount: 1500,
-    },
-  };
+  React.useEffect(() => {
+    fetch("/api/ai/negotiator/propose", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ invoiceId: "FP-8848", strategy: selectedStrategy }),
+    })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        const d = json?.data || json;
+        if (d && d.subject && d.body) {
+          setDynamicDraft({
+            title: d.title || DEFAULT_PROPOSAL_DRAFTS[selectedStrategy].title,
+            subject: d.subject,
+            body: d.body,
+            recoveryAmount: Number(d.settlementAmount) || DEFAULT_PROPOSAL_DRAFTS[selectedStrategy].recoveryAmount,
+          });
+        }
+      })
+      .catch(() => {});
+  }, [selectedStrategy]);
 
-  const currentDraft = proposalDrafts[selectedStrategy];
+  const currentDraft = dynamicDraft || DEFAULT_PROPOSAL_DRAFTS[selectedStrategy];
 
   const handleApproveProposal = () => {
     setIsProposalSent(true);

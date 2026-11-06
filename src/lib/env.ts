@@ -12,6 +12,14 @@ const envSchema = z.object({
   PAYPAL_BASE_URL: z.string().default("https://api-m.sandbox.paypal.com"),
   PAYPAL_WEBHOOK_ID: z.string().optional(),
   PAYPAL_ENVIRONMENT: z.string().default("sandbox"),
+  AI_PROVIDER: z.enum(["auto", "gemini", "openai", "neon", "fallback"]).default("auto"),
+  GEMINI_API_KEY: z.string().optional(),
+  GEMINI_MODEL: z.string().default("gemini-2.5-flash"),
+  OPENAI_API_KEY: z.string().optional(),
+  OPENAI_MODEL: z.string().default("gpt-4o-mini"),
+  OPENAI_BASE_URL: z.string().default("https://api.openai.com/v1"),
+  NEON_AI_GATEWAY_URL: z.string().optional(),
+  NEON_AI_KEY: z.string().optional(),
 });
 
 export const env = envSchema.parse({
@@ -25,6 +33,14 @@ export const env = envSchema.parse({
   PAYPAL_BASE_URL: process.env.PAYPAL_BASE_URL || "https://api-m.sandbox.paypal.com",
   PAYPAL_WEBHOOK_ID: process.env.PAYPAL_WEBHOOK_ID,
   PAYPAL_ENVIRONMENT: process.env.PAYPAL_ENVIRONMENT || "sandbox",
+  AI_PROVIDER: (process.env.AI_PROVIDER as "auto" | "gemini" | "openai" | "neon" | "fallback") || "auto",
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  GEMINI_MODEL: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  OPENAI_MODEL: process.env.OPENAI_MODEL || "gpt-4o-mini",
+  OPENAI_BASE_URL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
+  NEON_AI_GATEWAY_URL: process.env.NEON_AI_GATEWAY_URL,
+  NEON_AI_KEY: process.env.NEON_AI_KEY,
 });
 
 export function isLiveDatabaseConfigured(): boolean {

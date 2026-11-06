@@ -34,6 +34,8 @@ export function DashboardLiveBannerAndMetrics() {
     activeMilestonesCount: 2,
   });
 
+  const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+
   useEffect(() => {
     fetch("/api/dashboard/metrics")
       .then((res) => (res.ok ? res.json() : null))
@@ -42,9 +44,17 @@ export function DashboardLiveBannerAndMetrics() {
           setMetrics(data.metrics);
         }
       })
-      .catch(() => {
-        // Fallback gracefully to default metrics
-      });
+      .catch(() => {});
+
+    fetch("/api/ai/insights")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        const d = data?.data || data;
+        if (d?.cashflowHealthSummary) {
+          setAiExplanation(d.cashflowHealthSummary);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const formatCurrency = (val: number) => {
@@ -81,11 +91,17 @@ export function DashboardLiveBannerAndMetrics() {
           </h2>
 
           <p className="font-body-md text-xs lg:text-sm text-on-surface-variant max-w-2xl mt-1 leading-relaxed">
-            Your liquidity runway is secure through Q4. Runway is calculated at{" "}
-            <strong className="text-on-surface font-medium">{metrics.runwayMonths} months</strong>.{" "}
-            {metrics.overdueInvoicesCount > 0
-              ? `${metrics.overdueInvoicesCount} prompt action recommended for Acme Corp to mitigate an 18-day projected pinch.`
-              : "All active receivables are on-schedule."}
+            {aiExplanation ? (
+              <span>{aiExplanation}</span>
+            ) : (
+              <>
+                Your liquidity runway is secure through Q4. Runway is calculated at{" "}
+                <strong className="text-on-surface font-medium">{metrics.runwayMonths} months</strong>.{" "}
+                {metrics.overdueInvoicesCount > 0
+                  ? `${metrics.overdueInvoicesCount} prompt action recommended for Acme Corp to mitigate an 18-day projected pinch.`
+                  : "All active receivables are on-schedule."}
+              </>
+            )}
           </p>
         </div>
 

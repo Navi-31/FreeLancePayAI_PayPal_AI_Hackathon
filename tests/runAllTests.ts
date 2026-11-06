@@ -3,6 +3,7 @@ import { runAuthTests } from "./auth.test";
 import { runDataIsolationTests } from "./dataIsolation.test";
 import { runLiveNeonIntegrationTests } from "./testNeonLiveApi";
 import { runPayPalIntegrationTests } from "./paypalIntegration.test";
+import { runAIIntegrationTests } from "./aiIntegration.test";
 
 async function main() {
   console.log("==================================================");
@@ -36,6 +37,11 @@ async function main() {
   const paypal = await runPayPalIntegrationTests();
   totalPassed += paypal.passed;
   totalFailed += paypal.failed;
+
+  // 6. AI Production Integration, Prompt Injection & Guardrail Tests
+  const ai = await runAIIntegrationTests();
+  totalPassed += ai.passed;
+  totalFailed += ai.failed;
 
   console.log("\n==================================================");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
