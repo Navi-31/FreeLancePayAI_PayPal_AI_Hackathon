@@ -115,7 +115,7 @@ export function SettingsClient() {
               { id: "business", label: "1. Business & Profile", sub: "Entity & Tax Domicile", icon: "business" },
               { id: "payment-rails", label: "2. Payment Rails & PayPal", sub: "Active Live Integration", icon: "account_balance_wallet" },
               { id: "guardrails", label: "3. AI Autonomy & Guardrails", sub: "Approval-First Governance", icon: "smart_toy" },
-              { id: "tax-shield", label: "4. Tax Shield Escrow", sub: "Quarterly IRS Allocations", icon: "shield" },
+              { id: "tax-shield", label: "4. Tax Shield Vault", sub: "Quarterly IRS Allocations", icon: "shield" },
               { id: "currency", label: "5. Currency & FX Rules", sub: "Zero-Slippage Routing", icon: "currency_exchange" },
               { id: "security", label: "6. Security & Webhooks", sub: "Passkeys & Ledger Audit", icon: "key" },
             ].map((tab) => {

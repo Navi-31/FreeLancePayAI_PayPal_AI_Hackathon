@@ -405,7 +405,7 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
           </GlassPanel>
         </div>
 
-        {/* Right Column (4 cols): Settlement Telemetry & Escrow */}
+        {/* Right Column (4 cols): Settlement Telemetry & Milestone Verification */}
         <div className="lg:col-span-4 space-y-6">
           {/* Rail Details Card */}
           <GlassPanel elevation={1} className="p-5 space-y-4">

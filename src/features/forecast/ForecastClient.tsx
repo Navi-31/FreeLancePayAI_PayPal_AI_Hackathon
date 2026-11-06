@@ -10,7 +10,7 @@ interface ForecastEvent {
   type: "INFLOW" | "OUTFLOW";
   amount: number;
   confidence: number;
-  status: "Confirmed Escrow" | "Projected Invoice" | "Fixed Debit" | "At Risk";
+  status: "Authorized Milestone" | "Projected Invoice" | "Fixed Debit" | "At Risk";
   actionText?: string;
 }
 
@@ -19,11 +19,11 @@ const INITIAL_EVENTS: ForecastEvent[] = [
     id: "fe-1",
     date: "Nov 04, 2025",
     counterparty: "Horizon Studio",
-    desc: "Design System Architecture — Phase 2 Escrow Release",
+    desc: "Design System Architecture — Phase 2 Milestone Capture",
     type: "INFLOW",
     amount: 8500.0,
     confidence: 98,
-    status: "Confirmed Escrow",
+    status: "Authorized Milestone",
     actionText: "Request Early Release",
   },
   {
@@ -56,7 +56,7 @@ const INITIAL_EVENTS: ForecastEvent[] = [
     type: "INFLOW",
     amount: 12000.0,
     confidence: 95,
-    status: "Confirmed Escrow",
+    status: "Authorized Milestone",
     actionText: "Pre-allocate Yield",
   },
   {
@@ -281,7 +281,7 @@ export function ForecastClient() {
             <div>
               <h2 className="text-base font-semibold text-on-surface">60-Day Runway Trajectory Simulation</h2>
               <p className="text-xs text-outline">
-                Real-time model merging verified bank feeds, locked escrows, and historical client payment latency.
+                Real-time model merging verified bank feeds, authorized milestones, and historical client payment latency.
               </p>
             </div>
           </div>
@@ -397,7 +397,7 @@ export function ForecastClient() {
             <div>
               <div className="flex justify-between items-center mb-1">
                 <span className="flex items-center gap-1.5 text-on-surface">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" /> Confirmed Escrow Inflows
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" /> Authorized Milestone Inflows
                 </span>
                 <span className="font-mono font-bold text-emerald-400">$22,400 (98%)</span>
               </div>
@@ -542,7 +542,7 @@ export function ForecastClient() {
                   <td className="py-3 px-3">
                     <span
                       className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
-                        item.status === "Confirmed Escrow"
+                        item.status === "Authorized Milestone"
                           ? "bg-emerald-950/40 text-emerald-400 border-emerald-500/30"
                           : item.status === "At Risk"
                           ? "bg-rose-950/40 text-rose-400 border-rose-500/30"

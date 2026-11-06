@@ -65,7 +65,7 @@ export function TaxEstimatorClient() {
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">
-            Institutional-grade predictive tax isolation, continuous escrow routing, and quarterly statutory timeline management.
+            Institutional-grade predictive tax isolation, continuous tax reserve routing, and quarterly statutory timeline management.
           </p>
         </div>
 
@@ -349,7 +349,7 @@ export function TaxEstimatorClient() {
                 </div>
                 <div>
                   <h2 className="text-base font-semibold text-on-surface">Payment-by-Payment Auto-Split Simulator</h2>
-                  <p className="text-xs text-on-surface-variant">Real-time atomic escrow routing upon webhook execution</p>
+                  <p className="text-xs text-on-surface-variant">Real-time automated tax reserve routing upon webhook execution</p>
                 </div>
               </div>
               <div className="flex items-center gap-1.5 bg-secondary-container/20 text-secondary border border-secondary-container/40 px-2.5 py-1 rounded-full text-xs font-medium">
@@ -390,7 +390,7 @@ export function TaxEstimatorClient() {
                 <div className="w-full md:w-1/2 flex flex-col gap-2.5 text-xs">
                   <div className="p-3 rounded-lg bg-primary/10 border border-primary/40 flex items-center justify-between">
                     <div>
-                      <div className="font-semibold text-primary">Tax Vault Escrow</div>
+                      <div className="font-semibold text-primary">Tax Reserve Vault</div>
                       <div className="text-[10px] text-on-surface-variant">Yield-bearing treasury note</div>
                     </div>
                     <div className="text-right">

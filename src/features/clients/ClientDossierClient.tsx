@@ -5,8 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   ClientRecord,
-  loadClientsFromStorage,
   updateClientNotesInStorage,
+  fetchClientsWithFallback,
 } from "./clientStore";
 
 function ClientDossierInner() {
@@ -19,13 +19,14 @@ function ClientDossierInner() {
   const [isSavedToast, setIsSavedToast] = useState<boolean>(false);
 
   useEffect(() => {
-    const list = loadClientsFromStorage();
-    setClients(list);
-    if (initialIdFromUrl && list.some((c) => c.id === initialIdFromUrl)) {
-      setSelectedId(initialIdFromUrl);
-    } else if (list.length > 0) {
-      setSelectedId(list[0].id);
-    }
+    fetchClientsWithFallback().then((list) => {
+      setClients(list);
+      if (initialIdFromUrl && list.some((c) => c.id === initialIdFromUrl)) {
+        setSelectedId(initialIdFromUrl);
+      } else if (list.length > 0) {
+        setSelectedId(list[0].id);
+      }
+    });
   }, [initialIdFromUrl]);
 
   const activeClient = useMemo(() => {
@@ -297,7 +298,7 @@ function ClientDossierInner() {
                     <span className="w-2 h-2 rounded-full bg-primary" />
                     <span className="text-on-surface">Phase 2: Execution Sprint</span>
                   </div>
-                  <span className="text-primary font-semibold">Escrow Funded</span>
+                  <span className="text-primary font-semibold">Milestone Authorized</span>
                 </div>
                 <div className="flex items-center justify-between p-2 rounded bg-surface-container-lowest border border-outline-variant/20">
                   <div className="flex items-center gap-2">

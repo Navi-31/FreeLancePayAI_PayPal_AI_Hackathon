@@ -330,6 +330,7 @@ export function saveMilestoneProjectsToStorage(projects: MilestoneProject[]): vo
 export function calculateGlobalMilestoneMetrics(projects: MilestoneProject[]): {
   activeProjectsCount: number;
   authorizedEscrowTotal: number;
+  authorizedMilestonesTotal: number;
   capturedReleasedTotal: number;
   pendingApprovalsTotal: number;
 } {
@@ -351,9 +352,12 @@ export function calculateGlobalMilestoneMetrics(projects: MilestoneProject[]): {
     }
   }
 
+  const roundedAuthorized = Math.round(authorizedEscrowTotal * 100) / 100;
+
   return {
     activeProjectsCount: projects.length,
-    authorizedEscrowTotal: Math.round(authorizedEscrowTotal * 100) / 100,
+    authorizedEscrowTotal: roundedAuthorized,
+    authorizedMilestonesTotal: roundedAuthorized,
     capturedReleasedTotal: Math.round(capturedReleasedTotal * 100) / 100,
     pendingApprovalsTotal: Math.round(pendingApprovalsTotal * 100) / 100,
   };
@@ -466,4 +470,49 @@ export async function updateMilestoneLifecycleWithServer(
     // Offline mode
   }
   return updateMilestoneLifecycleInStorage(projectId, milestoneId, newStatus, notes);
+}
+
+/**
+ * Fetch milestone projects from server with fallback to localStorage
+ */
+export async function fetchMilestoneProjectsWithFallback(): Promise<MilestoneProject[]> {
+  try {
+    const res = await fetch("/api/milestones");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.projects) && data.projects.length > 0) {
+        const mapped: MilestoneProject[] = data.projects.map((p: Record<string, unknown>) => ({
+          id: String(p.code || p.id),
+          escrowId: String(p.escrowId || `#REF-${String(p.id).slice(-4)}`),
+          title: String(p.title),
+          clientName: p.client && typeof p.client === "object" ? String((p.client as Record<string, unknown>).name) : "Client",
+          clientEmail: p.client && typeof p.client === "object" ? String((p.client as Record<string, unknown>).contactEmail) : "client@example.com",
+          currency: String(p.currency || "USD"),
+          currencySymbol: String(p.currencySymbol || "$"),
+          createdAt: typeof p.createdAt === "string" ? p.createdAt.split("T")[0] : "2025-10-10",
+          milestones: Array.isArray(p.milestones)
+            ? p.milestones.map((m: Record<string, unknown>) => ({
+                id: String(m.code || m.id),
+                projectId: String(p.code || p.id),
+                title: String(m.title),
+                description: String(m.description || ""),
+                amount: Number(m.amount),
+                dueDate: typeof m.dueDate === "string" ? m.dueDate.split("T")[0] : "2025-11-01",
+                status: m.status as MilestoneStatus,
+                deliverableNotes: String(m.deliverableNotes || ""),
+                authorizedAt: m.authorizedAt ? String(m.authorizedAt) : undefined,
+                capturedAt: m.capturedAt ? String(m.capturedAt) : undefined,
+                refundedAt: m.refundedAt ? String(m.refundedAt) : undefined,
+                history: [],
+              }))
+            : [],
+        }));
+        saveMilestoneProjectsToStorage(mapped);
+        return mapped;
+      }
+    }
+  } catch {
+    // Offline fallback
+  }
+  return loadMilestoneProjectsFromStorage();
 }

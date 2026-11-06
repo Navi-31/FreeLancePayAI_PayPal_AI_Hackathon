@@ -71,7 +71,9 @@ export const TransactionsClient: React.FC = () => {
 
       const matchesType =
         typeFilter === "All" ||
-        t.type === typeFilter;
+        t.type === typeFilter ||
+        (typeFilter === "milestone_capture" && t.type === "escrow_capture") ||
+        (typeFilter === "milestone_authorization" && t.type === "escrow_authorization");
 
       const matchesCurrency =
         currencyFilter === "All" || t.currency === currencyFilter;
@@ -133,7 +135,7 @@ export const TransactionsClient: React.FC = () => {
             </span>
           </div>
           <p className="font-body-md text-sm text-on-surface-variant max-w-3xl">
-            Granular real-time record of all client settlements, escrow authorizations, fee deductions, and currency conversions.
+            Granular real-time record of all client settlements, milestone authorizations/captures, fee deductions, and currency conversions.
           </p>
         </div>
 
@@ -275,8 +277,8 @@ export const TransactionsClient: React.FC = () => {
           >
             <option value="All">All Types</option>
             <option value="client_settlement">Client Settlement</option>
-            <option value="escrow_capture">Escrow Capture</option>
-            <option value="escrow_authorization">Escrow Authorization (Hold)</option>
+            <option value="milestone_capture">Milestone Capture</option>
+            <option value="milestone_authorization">Milestone Authorization (Hold)</option>
             <option value="refund">Refund</option>
             <option value="payout">Payout</option>
           </select>

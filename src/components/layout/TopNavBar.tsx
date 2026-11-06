@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { AuricButton } from "@/components/ui/AuricButton";
 import { SupportedCurrency } from "@/types/navigation";
@@ -43,6 +44,29 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
     createdAt: string;
   }>>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
+
+  const router = useRouter();
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      if (q.startsWith("inv") || q.startsWith("fp-")) {
+        router.push(`/invoices?search=${encodeURIComponent(searchQuery.trim())}`);
+      } else if (q.startsWith("cli") || q.includes("client")) {
+        router.push("/clients");
+      } else if (q.includes("copilot") || q.includes("ai")) {
+        router.push("/ai/copilot");
+      } else if (q.includes("rescue")) {
+        router.push("/ai/rescue");
+      } else if (q.includes("milestone")) {
+        router.push("/milestones");
+      } else if (q.includes("tax")) {
+        router.push("/tax");
+      } else {
+        router.push(`/invoices?search=${encodeURIComponent(searchQuery.trim())}`);
+      }
+    }
+  };
 
   const fetchLiveNotifications = async () => {
     try {
@@ -134,6 +158,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
           <SearchInput
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
           />
         </div>
       </div>

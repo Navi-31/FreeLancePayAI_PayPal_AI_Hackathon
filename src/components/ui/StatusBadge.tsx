@@ -7,6 +7,8 @@ export type StatusVariant =
   | "viewed"
   | "invoiced"
   | "pending"
+  | "authorized"
+  | "captured"
   | "escrow"
   | "overdue"
   | "alert"
@@ -46,6 +48,14 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
     pending: {
       badge: "bg-amber-400/10 text-amber-400 border-amber-400/20",
       dot: "bg-amber-400",
+    },
+    authorized: {
+      badge: "bg-primary/10 text-primary border-primary/20",
+      dot: "bg-primary",
+    },
+    captured: {
+      badge: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+      dot: "bg-emerald-400",
     },
     escrow: {
       badge: "bg-amber-400/10 text-amber-400 border-amber-400/20",

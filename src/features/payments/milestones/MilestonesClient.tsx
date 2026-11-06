@@ -8,6 +8,7 @@ import {
 } from "../types";
 import {
   loadMilestoneProjectsFromStorage,
+  fetchMilestoneProjectsWithFallback,
   calculateProjectTotals,
   calculateGlobalMilestoneMetrics,
   createMilestoneProjectInStorage,
@@ -42,14 +43,14 @@ export const MilestonesClient: React.FC = () => {
     { title: "Milestone 2 — Production Implementation", description: "React components and integration", amount: 5000, dueDate: "2025-12-15" },
   ]);
 
-  // Load from localStorage on mount
+  // Load from localStorage & sync from server on mount
   useEffect(() => {
-    const data = loadMilestoneProjectsFromStorage();
-    setProjects(data);
-    if (data.length > 0) {
+    const initialData = loadMilestoneProjectsFromStorage();
+    if (initialData.length > 0) {
+      setProjects(initialData);
       setSelectedProjectId((prev) => {
-        const target = data.some((p) => p.id === prev) ? prev : data[0].id;
-        const proj = data.find((p) => p.id === target) || data[0];
+        const target = initialData.some((p) => p.id === prev) ? prev : initialData[0].id;
+        const proj = initialData.find((p) => p.id === target) || initialData[0];
         if (proj && proj.milestones.length > 0) {
           setSelectedMilestoneId((mPrev) =>
             proj.milestones.some((m) => m.id === mPrev) ? mPrev : proj.milestones[0].id
@@ -58,6 +59,13 @@ export const MilestonesClient: React.FC = () => {
         return target;
       });
     }
+
+    // Attempt live fetch from server
+    fetchMilestoneProjectsWithFallback().then((liveData) => {
+      if (liveData && liveData.length > 0) {
+        setProjects(liveData);
+      }
+    });
   }, []);
 
   // Selected project & milestone
@@ -429,7 +437,7 @@ export const MilestonesClient: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-primary/10 text-primary border border-primary/20">
-                          ESCROW ID: {proj.escrowId}
+                          AUTH REF: {proj.escrowId}
                         </span>
                         <span className="text-outline text-xs">•</span>
                         <span className="text-xs text-on-surface-variant font-medium">
@@ -452,7 +460,7 @@ export const MilestonesClient: React.FC = () => {
                   <div className="mb-4">
                     <div className="flex justify-between items-center text-xs mb-1.5">
                       <span className="text-on-surface-variant">
-                        Escrow Completion:{" "}
+                        Milestone Completion:{" "}
                         <strong className="text-on-surface">
                           {summary.clearedCount} of {summary.totalCount} Milestones Cleared
                         </strong>
@@ -569,7 +577,7 @@ export const MilestonesClient: React.FC = () => {
                     lock
                   </span>
                   <h3 className="font-headline-sm text-base font-semibold text-on-surface">
-                    Escrow Contract Deep-Dive
+                    Milestone Authorization Contract Deep-Dive
                   </h3>
                 </div>
                 <span className="px-2 py-0.5 rounded text-[11px] font-mono bg-surface-container text-primary border border-primary/20">

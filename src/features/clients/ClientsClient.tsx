@@ -4,8 +4,8 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import {
   ClientRecord,
-  loadClientsFromStorage,
   saveClientsToStorage,
+  fetchClientsWithFallback,
 } from "./clientStore";
 
 export function ClientsClient() {
@@ -24,11 +24,12 @@ export function ClientsClient() {
   const [newClientRisk, setNewClientRisk] = useState<ClientRecord["riskTier"]>("High Reliability");
 
   useEffect(() => {
-    const loaded = loadClientsFromStorage();
-    setClients(loaded);
-    if (loaded.length > 0) {
-      setSelectedClientId(loaded[0].id);
-    }
+    fetchClientsWithFallback().then((loaded) => {
+      setClients(loaded);
+      if (loaded.length > 0) {
+        setSelectedClientId(loaded[0].id);
+      }
+    });
   }, []);
 
   const filteredClients = useMemo(() => {
@@ -79,6 +80,26 @@ export function ClientsClient() {
     const updated = [newEntry, ...clients];
     setClients(updated);
     saveClientsToStorage(updated);
+
+    // Sync to server API in background
+    fetch("/api/clients", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        code: newId,
+        name: newEntry.name,
+        location: newEntry.location,
+        industry: newEntry.industry,
+        contactName: newEntry.contactName,
+        contactRole: newEntry.contactRole,
+        contactEmail: newEntry.contactEmail,
+        riskTier: newEntry.riskTier,
+        reliabilityScore: newEntry.reliabilityScore,
+        outstandingBalance: newEntry.outstandingBalance,
+        notes: newEntry.notes,
+      }),
+    }).catch(() => {});
+
     setSelectedClientId(newId);
     setShowAddModal(false);
     setNewClientName("");

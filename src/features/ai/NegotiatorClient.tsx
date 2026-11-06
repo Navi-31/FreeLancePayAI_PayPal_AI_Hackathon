@@ -107,7 +107,7 @@ export const NegotiatorClient: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container/60 border border-secondary/30 text-secondary text-xs">
             <span className="material-symbols-outlined text-sm text-secondary animate-pulse">lock_open</span>
-            <span>Escrow Guard Active</span>
+            <span>Milestone Protection Active</span>
           </div>
           <Link
             href="/reminders"

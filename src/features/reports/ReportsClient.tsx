@@ -315,9 +315,9 @@ export function ReportsClient() {
             <span className="text-[10px] text-outline font-mono">Pre-Tax Operating</span>
           </div>
 
-          {/* 5: Tax Escrow */}
+          {/* 5: Tax Reserve Vault */}
           <div className="p-3 rounded-xl bg-surface-container-low border border-secondary/30 flex flex-col justify-between">
-            <span className="text-secondary font-medium">Tax Escrow (25%)</span>
+            <span className="text-secondary font-medium">Tax Reserve Vault (25%)</span>
             <div className="my-1.5">
               <div className="text-lg font-bold font-mono text-secondary">-$29,117.50</div>
               <div className="text-[10px] text-secondary mt-0.5">Vault Allocated</div>
