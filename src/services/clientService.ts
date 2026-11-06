@@ -5,10 +5,10 @@ import { recordAuditLog } from "./auditService";
 export interface CreateClientInput {
   code?: string;
   name: string;
-  location: string;
-  industry: string;
+  location?: string;
+  industry?: string;
   contactName: string;
-  contactRole: string;
+  contactRole?: string;
   contactEmail: string;
   riskTier?: string;
   reliabilityScore?: number;
@@ -96,10 +96,10 @@ export async function createClient(userId: string, input: CreateClientInput) {
       userId,
       code,
       name: input.name,
-      location: input.location,
-      industry: input.industry,
+      location: input.location || "Remote",
+      industry: input.industry || "General",
       contactName: input.contactName,
-      contactRole: input.contactRole,
+      contactRole: input.contactRole || "Billing Contact",
       contactEmail: input.contactEmail,
       riskTier: input.riskTier || "High Reliability",
       reliabilityScore: input.reliabilityScore ?? 90,

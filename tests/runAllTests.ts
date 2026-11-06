@@ -10,6 +10,7 @@ import { runPhase5BIntegrationTests } from "./phase5BIntegration.test";
 import { runBrowserE2ETests } from "./browserE2E.test";
 import { runPhase5DDemoReadinessTests } from "./phase5DDemoReadiness.test";
 import { runPhase5EFinancialIntelligenceTests } from "./phase5EFinancialIntelligence.test";
+import { runPhase5FFinalValidationTests } from "./phase5FFinalValidation.test";
 
 async function main() {
   console.log("==================================================");
@@ -79,6 +80,11 @@ async function main() {
   totalPassed += phase5E.passed;
   totalFailed += phase5E.failed;
 
+  // 13. Final Comprehensive QA & Hackathon Demo Validation (Phase 5F)
+  const phase5F = await runPhase5FFinalValidationTests();
+  totalPassed += phase5F.passed;
+  totalFailed += phase5F.failed;
+
   console.log("\n==================================================");
   console.log(" SUITE BREAKDOWN:");
   console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
@@ -93,6 +99,7 @@ async function main() {
   console.log(` 10. Browser E2E Journeys (5C):           ${browserE2E.passed} passed, ${browserE2E.failed} failed`);
   console.log(` 11. Demo Readiness & Polish (5D):        ${phase5D.passed} passed, ${phase5D.failed} failed`);
   console.log(` 12. Advanced AI & Intelligence (5E):     ${phase5E.passed} passed, ${phase5E.failed} failed`);
+  console.log(` 13. Final Validation & QA (5F):          ${phase5F.passed} passed, ${phase5F.failed} failed`);
   console.log("--------------------------------------------------");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
   console.log("==================================================");
