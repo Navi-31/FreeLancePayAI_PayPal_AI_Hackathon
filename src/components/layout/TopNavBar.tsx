@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { SearchInput } from "@/components/ui/SearchInput";
 import { AuricButton } from "@/components/ui/AuricButton";
@@ -33,6 +33,49 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [syncStatus, setSyncStatus] = useState<string | null>(null);
+  const [liveNotifications, setLiveNotifications] = useState<Array<{
+    id: string;
+    title: string;
+    message: string;
+    type: string;
+    link?: string;
+    read: boolean;
+    createdAt: string;
+  }>>([]);
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+
+  const fetchLiveNotifications = async () => {
+    try {
+      const res = await fetch("/api/notifications?limit=10");
+      if (res.ok) {
+        const data = await res.json();
+        setLiveNotifications(data.notifications || []);
+        setUnreadCount(typeof data.unreadCount === "number" ? data.unreadCount : 0);
+      }
+    } catch {
+      // Offline / unauthenticated demo fallback
+    }
+  };
+
+  useEffect(() => {
+    fetchLiveNotifications();
+  }, [user]);
+
+  const handleMarkAllRead = async () => {
+    try {
+      const res = await fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ all: true }),
+      });
+      if (res.ok) {
+        setUnreadCount(0);
+        setLiveNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      }
+    } catch {
+      setUnreadCount(0);
+    }
+  };
 
   const handleCurrencySelect = (curr: SupportedCurrency) => {
     setSelectedCurrency(curr);
@@ -141,6 +184,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
               onClick={() => {
                 setShowNotifications(!showNotifications);
                 setShowProfileMenu(false);
+                if (!showNotifications) fetchLiveNotifications();
               }}
               className="relative p-2 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors"
               aria-label="View notifications"
@@ -148,29 +192,86 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
               <span className="material-symbols-outlined text-lg leading-none" data-icon="notifications">
                 notifications
               </span>
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary ring-2 ring-surface animate-pulse" />
+              {unreadCount > 0 ? (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-secondary text-on-secondary text-[10px] font-bold flex items-center justify-center ring-2 ring-surface shadow-sm">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              ) : (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary/40 ring-1 ring-surface" />
+              )}
             </button>
 
             {/* Notifications Popover */}
             {showNotifications && (
-              <div className="absolute right-0 top-full mt-2 w-80 glass-panel-elevated p-3 rounded-xl border border-outline-variant/30 shadow-2xl z-50">
+              <div className="absolute right-0 top-full mt-2 w-84 sm:w-96 glass-panel-elevated p-3.5 rounded-xl border border-outline-variant/30 shadow-2xl z-50">
                 <div className="flex items-center justify-between pb-2 border-b border-outline-variant/20 mb-2">
-                  <span className="font-label-md text-xs font-semibold text-white">AI Notifications</span>
-                  <span className="text-[10px] text-secondary font-mono">Live Sync</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-label-md text-xs font-semibold text-white">Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="px-1.5 py-0.5 rounded bg-secondary/20 text-secondary text-[10px] font-mono font-semibold">
+                        {unreadCount} unread
+                      </span>
+                    )}
+                  </div>
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={handleMarkAllRead}
+                      className="text-[10px] text-primary hover:underline font-mono"
+                    >
+                      Mark all read
+                    </button>
+                  )}
                 </div>
-                <div className="space-y-2 text-xs">
-                  <div className="p-2 rounded-lg bg-surface-container-high/60 border border-secondary/20">
-                    <p className="text-on-surface font-medium text-[11px]">
-                      Horizon Studio viewed Invoice <span className="text-primary font-mono">#FP-8849</span>
-                    </p>
-                    <span className="text-[10px] text-on-surface-variant opacity-75">4 minutes ago &bull; Stripe Connect</span>
-                  </div>
-                  <div className="p-2 rounded-lg bg-surface-container-high/60 border border-outline-variant/20">
-                    <p className="text-on-surface font-medium text-[11px]">
-                      Tax Shield reserved <span className="text-emerald-400 font-mono">$1,240.00</span> for Q4
-                    </p>
-                    <span className="text-[10px] text-on-surface-variant opacity-75">2 hours ago &bull; Autonomous Shield</span>
-                  </div>
+                <div className="space-y-2 text-xs max-h-80 overflow-y-auto">
+                  {liveNotifications.length > 0 ? (
+                    liveNotifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        className={cn(
+                          "p-2.5 rounded-lg border transition-colors",
+                          notif.read
+                            ? "bg-surface-container-high/30 border-outline-variant/20 opacity-80"
+                            : "bg-surface-container-high/70 border-secondary/30"
+                        )}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-on-surface font-semibold text-[11px] leading-snug">
+                            {notif.title}
+                          </p>
+                          {!notif.read && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0 mt-1" />
+                          )}
+                        </div>
+                        <p className="text-[11px] text-on-surface-variant mt-1 leading-relaxed">
+                          {notif.message}
+                        </p>
+                        {notif.link && (
+                          <Link
+                            href={notif.link}
+                            onClick={() => setShowNotifications(false)}
+                            className="inline-block mt-1 text-[10px] text-primary hover:underline font-mono font-semibold"
+                          >
+                            View details &rarr;
+                          </Link>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <>
+                      <div className="p-2 rounded-lg bg-surface-container-high/60 border border-secondary/20">
+                        <p className="text-on-surface font-medium text-[11px]">
+                          Horizon Studio viewed Invoice <span className="text-primary font-mono">#FP-8849</span>
+                        </p>
+                        <span className="text-[10px] text-on-surface-variant opacity-75">4 minutes ago &bull; Stripe Connect</span>
+                      </div>
+                      <div className="p-2 rounded-lg bg-surface-container-high/60 border border-outline-variant/20">
+                        <p className="text-on-surface font-medium text-[11px]">
+                          Tax Shield reserved <span className="text-emerald-400 font-mono">$1,240.00</span> for Q4
+                        </p>
+                        <span className="text-[10px] text-on-surface-variant opacity-75">2 hours ago &bull; Autonomous Shield</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             )}

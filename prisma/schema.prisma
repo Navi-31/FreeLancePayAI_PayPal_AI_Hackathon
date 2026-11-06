@@ -27,6 +27,9 @@ model User {
   taxEstimates      TaxEstimate[]
   financialSettings FinancialSettings?
   auditLogs         AuditLog[]
+  notifications     Notification[]
+  backgroundJobs    BackgroundJob[]
+  emailDeliveries   EmailDelivery[]
 
   @@map("users")
 }
@@ -195,6 +198,8 @@ model Invoice {
   paypalInvoiceId String?
   paypalOrderId   String?
   paypalCaptureId String?
+  lastEmailSentAt     DateTime?
+  emailDeliveryStatus String?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
@@ -282,6 +287,8 @@ model PaymentReminder {
   messageBody     String            @db.Text
   paymentLink     String
   simulatedSentAt DateTime?
+  realSentAt      DateTime?
+  emailDeliveryId String?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
@@ -423,4 +430,80 @@ model PayPalWebhookEvent {
   @@index([eventType])
   @@index([createdAt])
   @@map("paypal_webhook_events")
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String    @db.Text
+  type      String    @default("info") // info, warning, success, alert, approval_needed
+  link      String?
+  read      Boolean   @default(false)
+  readAt    DateTime?
+  metadata  String?   @db.Text
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([read])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+model BackgroundJob {
+  id             String    @id @default(cuid())
+  userId         String?
+  user           User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobType        String    // SEND_EMAIL, PROCESS_DUE_REMINDERS, INVOICE_OVERDUE_CHECK, DISPATCH_NOTIFICATION
+  payload        String    @db.Text // JSON string
+  status         String    @default("pending") // pending, processing, completed, failed, cancelled, awaiting_approval
+  priority       Int       @default(0)
+  attempts       Int       @default(0)
+  maxAttempts    Int       @default(3)
+  runAt          DateTime  @default(now())
+  lockedAt       DateTime?
+  lockedBy       String?
+  completedAt    DateTime?
+  lastError      String?   @db.Text
+  idempotencyKey String?   @unique
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status])
+  @@index([runAt])
+  @@index([userId])
+  @@index([jobType])
+  @@map("background_jobs")
+}
+
+model EmailDelivery {
+  id                String    @id @default(cuid())
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  to                String
+  from              String
+  subject           String
+  bodyText          String    @db.Text
+  bodyHtml          String?   @db.Text
+  workflow          String    // invoice_delivery, payment_reminder, payment_receipt, account_alert
+  entityType        String?   // Invoice, PaymentReminder, Transaction
+  entityId          String?
+  status            String    @default("pending") // awaiting_approval, queued, sent, delivered, failed, simulated
+  provider          String    @default("mock") // resend, smtp, mock
+  providerMessageId String?
+  userApproved      Boolean   @default(true)
+  sentAt            DateTime?
+  deliveredAt       DateTime?
+  failureReason     String?   @db.Text
+  idempotencyKey    String?   @unique
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([workflow])
+  @@index([status])
+  @@index([to])
+  @@map("email_deliveries")
 }

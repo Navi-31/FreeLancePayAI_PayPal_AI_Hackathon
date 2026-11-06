@@ -133,7 +133,7 @@ export const RemindersClient: React.FC = () => {
     setReminders(updated);
   };
 
-  const handleConfirmSimulatedSend = () => {
+  const handleConfirmSimulatedSend = async () => {
     if (!selectedReminder) return;
     const { updatedList, sentReminder } = simulateApproveAndSend(
       selectedReminder.id,
@@ -142,9 +142,31 @@ export const RemindersClient: React.FC = () => {
     setReminders(updatedList);
     setIsConfirmModalOpen(false);
 
-    setSimulationToast(
-      `[SIMULATION SUCCESS] Notice for #${sentReminder?.invoiceId} marked as sent. No external communication was dispatched.`
-    );
+    try {
+      const res = await fetch("/api/reminders", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: selectedReminder.id,
+          action: "send_email",
+          userApproved: true,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.delivery?.status) {
+        setSimulationToast(
+          `[DISPATCH LOGGED] Notice for #${sentReminder?.invoiceId} processed (${data.delivery.status.toUpperCase()}). Ledger & audit log recorded.`
+        );
+      } else {
+        setSimulationToast(
+          `[SIMULATION SUCCESS] Notice for #${sentReminder?.invoiceId} marked as sent. No external communication was dispatched.`
+        );
+      }
+    } catch {
+      setSimulationToast(
+        `[SIMULATION SUCCESS] Notice for #${sentReminder?.invoiceId} marked as sent. No external communication was dispatched.`
+      );
+    }
     setTimeout(() => setSimulationToast(null), 5000);
   };
 

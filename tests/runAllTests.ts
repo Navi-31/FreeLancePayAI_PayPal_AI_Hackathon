@@ -4,6 +4,7 @@ import { runDataIsolationTests } from "./dataIsolation.test";
 import { runLiveNeonIntegrationTests } from "./testNeonLiveApi";
 import { runPayPalIntegrationTests } from "./paypalIntegration.test";
 import { runAIIntegrationTests } from "./aiIntegration.test";
+import { runEmailNotificationJobsTests } from "./emailNotificationJobs.test";
 
 async function main() {
   console.log("==================================================");
@@ -42,6 +43,11 @@ async function main() {
   const ai = await runAIIntegrationTests();
   totalPassed += ai.passed;
   totalFailed += ai.failed;
+
+  // 7. Email Delivery, Notifications & Background Jobs Tests (Phase 4D)
+  const emailJobs = await runEmailNotificationJobsTests();
+  totalPassed += emailJobs.passed;
+  totalFailed += emailJobs.failed;
 
   console.log("\n==================================================");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);

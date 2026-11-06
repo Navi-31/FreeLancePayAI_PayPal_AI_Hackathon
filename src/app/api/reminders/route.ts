@@ -5,11 +5,12 @@ import {
   updateReminderTone,
   simulateSendReminder,
 } from "@/services/reminderService";
+import { sendReminderEmailWorkflow } from "@/services/emailService";
 import { z } from "zod";
 
 const updateToneSchema = z.object({
   id: z.string().min(1),
-  action: z.enum(["update_tone", "simulate_send"]),
+  action: z.enum(["update_tone", "simulate_send", "send_email"]),
   tone: z.enum(["polite", "firm", "final"]).optional(),
   notes: z.string().optional(),
   userApproved: z.boolean().default(true),
@@ -59,6 +60,13 @@ export async function PATCH(request: NextRequest) {
         result.data.notes
       );
       return NextResponse.json({ success: true, reminder: updated });
+    } else if (result.data.action === "send_email") {
+      const delivery = await sendReminderEmailWorkflow(
+        session.userId,
+        result.data.id,
+        result.data.userApproved
+      );
+      return NextResponse.json({ success: delivery.success, delivery });
     } else {
       const dispatched = await simulateSendReminder(
         session.userId,

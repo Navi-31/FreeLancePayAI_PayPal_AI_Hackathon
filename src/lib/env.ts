@@ -20,6 +20,10 @@ const envSchema = z.object({
   OPENAI_BASE_URL: z.string().default("https://api.openai.com/v1"),
   NEON_AI_GATEWAY_URL: z.string().optional(),
   NEON_AI_KEY: z.string().optional(),
+  EMAIL_PROVIDER: z.enum(["auto", "resend", "smtp", "mock"]).default("auto"),
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().default("FreelancePay AI <notifications@freelancepay.ai>"),
+  CRON_SECRET: z.string().default("dev_cron_secret_freelancepay_secure_key_10293"),
 });
 
 export const env = envSchema.parse({
@@ -41,6 +45,10 @@ export const env = envSchema.parse({
   OPENAI_BASE_URL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
   NEON_AI_GATEWAY_URL: process.env.NEON_AI_GATEWAY_URL,
   NEON_AI_KEY: process.env.NEON_AI_KEY,
+  EMAIL_PROVIDER: (process.env.EMAIL_PROVIDER as "auto" | "resend" | "smtp" | "mock") || "auto",
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  EMAIL_FROM: process.env.EMAIL_FROM || "FreelancePay AI <notifications@freelancepay.ai>",
+  CRON_SECRET: process.env.CRON_SECRET || "dev_cron_secret_freelancepay_secure_key_10293",
 });
 
 export function isLiveDatabaseConfigured(): boolean {
