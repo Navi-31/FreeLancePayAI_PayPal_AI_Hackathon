@@ -14,6 +14,12 @@ interface ChatMessage {
   hasReceivablesCard?: boolean;
   hasActionProposal?: boolean;
   provider?: "gemini" | "fallback";
+  sourceFigures?: string[];
+  dataClassification?: {
+    historicalFacts?: string[];
+    estimates?: string[];
+    forecasts?: string[];
+  };
   actionDetails?: {
     client: string;
     action: string;
@@ -122,6 +128,8 @@ export const CopilotClient: React.FC = () => {
         hasActionProposal: Boolean(copilotData.actionProposal),
         actionDetails: copilotData.actionProposal,
         provider: data.provider || (copilotData.isFallback ? "fallback" : "gemini"),
+        sourceFigures: copilotData.sourceFigures,
+        dataClassification: copilotData.dataClassification,
       };
 
       setMessages((prev) => [...prev, copilotMsg]);
@@ -329,6 +337,34 @@ export const CopilotClient: React.FC = () => {
                       <div className="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface leading-relaxed">
                         {m.text}
                       </div>
+
+                      {/* Explainable Intelligence Trace: Facts vs Estimates vs Forecasts */}
+                      {m.dataClassification && (
+                        <div className="p-3 rounded-lg bg-surface-container-lowest/90 border border-outline-variant/20 text-[11px] space-y-2">
+                          <div className="flex items-center gap-1.5 font-mono text-[10px] text-outline uppercase tracking-wider">
+                            <span className="material-symbols-outlined text-xs text-secondary">database</span>
+                            <span>Explainable Intelligence Trace</span>
+                          </div>
+                          {m.dataClassification.historicalFacts && m.dataClassification.historicalFacts.length > 0 && (
+                            <div className="flex items-start gap-1.5">
+                              <span className="px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 font-mono text-[9px] uppercase shrink-0">Historical Facts</span>
+                              <span className="text-on-surface-variant">{m.dataClassification.historicalFacts.join("; ")}</span>
+                            </div>
+                          )}
+                          {m.dataClassification.estimates && m.dataClassification.estimates.length > 0 && (
+                            <div className="flex items-start gap-1.5">
+                              <span className="px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-400 font-mono text-[9px] uppercase shrink-0">Estimates</span>
+                              <span className="text-on-surface-variant">{m.dataClassification.estimates.join("; ")}</span>
+                            </div>
+                          )}
+                          {m.dataClassification.forecasts && m.dataClassification.forecasts.length > 0 && (
+                            <div className="flex items-start gap-1.5">
+                              <span className="px-1.5 py-0.2 rounded bg-primary/10 text-primary font-mono text-[9px] uppercase shrink-0">Forecasts</span>
+                              <span className="text-on-surface-variant">{m.dataClassification.forecasts.join("; ")}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       {/* Receivables Card Component */}
                       {m.hasReceivablesCard && (

@@ -79,6 +79,13 @@ export function ForecastClient() {
   const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
   const [events, setEvents] = useState<ForecastEvent[]>(INITIAL_EVENTS);
   const [liveBalance, setLiveBalance] = useState<number>(42880.5);
+  const [forecastData, setForecastData] = useState<{
+    scenarios?: {
+      conservative: { assumptions: string[]; projectedBalance30d: number; projectedBalance60d: number };
+      expected: { assumptions: string[]; projectedBalance30d: number; projectedBalance60d: number };
+      optimistic: { assumptions: string[]; projectedBalance30d: number; projectedBalance60d: number };
+    };
+  } | null>(null);
 
   useEffect(() => {
     fetch("/api/dashboard/metrics")
@@ -87,6 +94,15 @@ export function ForecastClient() {
         if (data?.metrics && data.authenticated) {
           setLiveBalance(data.metrics.availableLiquidity);
           setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/forecast/scenarios")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.data) {
+          setForecastData(data.data);
         }
       })
       .catch(() => {});
@@ -202,6 +218,28 @@ export function ForecastClient() {
           </div>
         </div>
       </div>
+
+      {/* Scenario Assumptions & Model Parameters */}
+      {forecastData?.scenarios && (
+        <div className="p-3.5 rounded-xl bg-surface-container-low/80 border border-outline-variant/30 text-xs flex flex-col md:flex-row md:items-center justify-between gap-2 shadow-sm">
+          <div className="flex items-start md:items-center gap-2 min-w-0">
+            <span className="material-symbols-outlined text-sm text-secondary shrink-0">psychology</span>
+            <span className="font-semibold text-on-surface shrink-0">
+              {scenario === "conservative" ? "Conservative Assumptions:" : scenario === "aggressive" ? "Optimistic Assumptions:" : "Expected Baseline Assumptions:"}
+            </span>
+            <span className="text-on-surface-variant truncate">
+              {scenario === "conservative"
+                ? forecastData.scenarios.conservative.assumptions.join(" • ")
+                : scenario === "aggressive"
+                ? forecastData.scenarios.optimistic.assumptions.join(" • ")
+                : forecastData.scenarios.expected.assumptions.join(" • ")}
+            </span>
+          </div>
+          <span className="text-[10px] text-outline font-mono uppercase shrink-0">
+            Segregated Vault vs Forecast
+          </span>
+        </div>
+      )}
 
       {/* Top Metric Bento Grid (5 Cards) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">

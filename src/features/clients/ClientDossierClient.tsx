@@ -17,6 +17,15 @@ function ClientDossierInner() {
   const [selectedId, setSelectedId] = useState<string>("ACM-8021");
   const [notesEdit, setNotesEdit] = useState<string>("");
   const [isSavedToast, setIsSavedToast] = useState<boolean>(false);
+  const [reliabilityData, setReliabilityData] = useState<{
+    hasSufficientData?: boolean;
+    status?: "scored" | "insufficient_data";
+    score?: number | null;
+    riskTier?: string;
+    confidence?: string;
+    explanation?: string;
+    factors?: Array<{ factor: string; impact: string; description: string }>;
+  } | null>(null);
 
   useEffect(() => {
     fetchClientsWithFallback().then((list) => {
@@ -28,6 +37,20 @@ function ClientDossierInner() {
       }
     });
   }, [initialIdFromUrl]);
+
+  useEffect(() => {
+    if (!selectedId) return;
+    fetch(`/api/clients/${selectedId}/reliability`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.reliability) {
+          setReliabilityData(data.reliability);
+        } else {
+          setReliabilityData(null);
+        }
+      })
+      .catch(() => setReliabilityData(null));
+  }, [selectedId]);
 
   const activeClient = useMemo(() => {
     return clients.find((c) => c.id === selectedId) || clients[0];
@@ -193,38 +216,86 @@ function ClientDossierInner() {
               </div>
 
               <div className="p-3 rounded-xl bg-surface-container border border-outline-variant/30 space-y-2 text-xs">
-                <div className="flex justify-between items-center">
-                  <span className="text-on-surface-variant">Risk Tier Assessment:</span>
-                  <span
-                    className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${
-                      activeClient.riskTier === "Platinum"
-                        ? "bg-secondary/20 border-secondary/40 text-secondary"
-                        : activeClient.riskTier === "High Friction"
-                        ? "bg-rose-950/40 border-rose-500/30 text-rose-400"
-                        : "bg-primary/20 border-primary/30 text-primary"
-                    }`}
-                  >
-                    {activeClient.riskTier}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-on-surface-variant">Reliability Score:</span>
-                  <span className="font-mono font-bold text-on-surface text-sm">
-                    {activeClient.reliabilityScore} / 100
-                  </span>
-                </div>
-                <div className="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${
-                      activeClient.reliabilityScore >= 90
-                        ? "bg-emerald-400"
-                        : activeClient.reliabilityScore >= 70
-                        ? "bg-yellow-400"
-                        : "bg-rose-400"
-                    }`}
-                    style={{ width: `${activeClient.reliabilityScore}%` }}
-                  />
-                </div>
+                {reliabilityData?.status === "insufficient_data" ? (
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-on-surface-variant">Reliability Status:</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 border border-amber-500/30 text-amber-400">
+                        Insufficient Data (&lt; 2 Cycles)
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-on-surface-variant leading-relaxed">
+                      {reliabilityData.explanation}
+                    </p>
+                    <div className="text-[10px] text-outline font-mono">
+                      Confidence: LOW • Empirical scoring activates upon 2 settled invoices.
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-center">
+                      <span className="text-on-surface-variant">Risk Tier Assessment:</span>
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`px-2 py-0.5 rounded text-[11px] font-semibold border ${
+                            (reliabilityData?.riskTier || activeClient.riskTier) === "Platinum"
+                              ? "bg-secondary/20 border-secondary/40 text-secondary"
+                              : (reliabilityData?.riskTier || activeClient.riskTier) === "High Friction"
+                              ? "bg-rose-950/40 border-rose-500/30 text-rose-400"
+                              : "bg-primary/20 border-primary/30 text-primary"
+                          }`}
+                        >
+                          {reliabilityData?.riskTier || activeClient.riskTier}
+                        </span>
+                        {reliabilityData?.confidence && (
+                          <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-container text-outline">
+                            {reliabilityData.confidence.toUpperCase()} CONFIDENCE
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-on-surface-variant">Reliability Score:</span>
+                      <span className="font-mono font-bold text-on-surface text-sm">
+                        {reliabilityData?.score ?? activeClient.reliabilityScore} / 100
+                      </span>
+                    </div>
+                    <div className="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full ${
+                          (reliabilityData?.score ?? activeClient.reliabilityScore) >= 90
+                            ? "bg-emerald-400"
+                            : (reliabilityData?.score ?? activeClient.reliabilityScore) >= 70
+                            ? "bg-yellow-400"
+                            : "bg-rose-400"
+                        }`}
+                        style={{ width: `${reliabilityData?.score ?? activeClient.reliabilityScore}%` }}
+                      />
+                    </div>
+                    {reliabilityData?.factors && reliabilityData.factors.length > 0 && (
+                      <div className="pt-2 border-t border-outline-variant/15 space-y-1">
+                        <span className="text-[10px] uppercase font-mono text-outline block">Evaluated Signals</span>
+                        <div className="flex flex-wrap gap-1">
+                          {reliabilityData.factors.map((f, idx) => (
+                            <span
+                              key={idx}
+                              className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                                f.impact === "positive"
+                                  ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-400"
+                                  : f.impact === "negative"
+                                  ? "bg-rose-500/10 border-rose-500/25 text-rose-400"
+                                  : "bg-surface-container-highest border-outline-variant/30 text-on-surface-variant"
+                              }`}
+                              title={f.description}
+                            >
+                              {f.factor}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
 

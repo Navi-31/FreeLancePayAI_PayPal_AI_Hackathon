@@ -47,6 +47,27 @@ export function CurrencyIntelligenceClient() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
   const [liveGross, setLiveGross] = useState<number>(142650.0);
+  const [feeData, setFeeData] = useState<{
+    scenarios?: Array<{
+      channel: string;
+      rateFormula: string;
+      estimatedFee: number;
+      netProceeds: number;
+      effectiveRatePercent: number;
+      settlementSpeed: string;
+      notes: string;
+    }>;
+    recommendedChannel?: string;
+    potentialSavings?: number;
+    savingsExplanation?: string;
+    benchmarkFxRate?: {
+      pair: string;
+      midMarketBenchmark: number;
+      gatewayEstimateRate: number;
+      estimatedSpreadPercent: number;
+      disclaimer: string;
+    };
+  } | null>(null);
 
   useEffect(() => {
     fetch("/api/dashboard/metrics")
@@ -55,6 +76,15 @@ export function CurrencyIntelligenceClient() {
         if (data?.metrics && data.authenticated) {
           setLiveGross(data.metrics.totalGrossRevenue);
           setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/treasury/fees?amount=3500")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.data) {
+          setFeeData(data.data);
         }
       })
       .catch(() => {});
@@ -291,6 +321,57 @@ export function CurrencyIntelligenceClient() {
           </div>
         </div>
       </section>
+
+      {/* Transparent Gateway Fee Scenarios & Benchmark FX Intelligence */}
+      {feeData?.scenarios && (
+        <section className="rounded-2xl bg-surface-container-low/80 backdrop-blur-xl border border-outline-variant/30 p-5 space-y-3 shadow-md">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-outline-variant/20 pb-3">
+            <div>
+              <h3 className="text-sm font-semibold text-on-surface flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-primary text-base">compare_arrows</span>
+                Transparent Gateway Fee & Rails Comparison (Sample $3,500 Deliverable)
+              </h3>
+              <p className="text-[11px] text-on-surface-variant">
+                {feeData.savingsExplanation}
+              </p>
+            </div>
+            <span className="text-[10px] text-outline font-mono uppercase bg-surface-container px-2 py-0.5 rounded">
+              Deterministic Calculations
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs">
+            {feeData.scenarios.map((sc, idx) => (
+              <div
+                key={idx}
+                className="p-3 rounded-xl bg-surface-container-lowest/90 border border-outline-variant/20 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between text-[11px] font-semibold text-on-surface">
+                    <span className="truncate">{sc.channel}</span>
+                  </div>
+                  <div className="font-mono text-primary text-sm font-bold mt-1">
+                    ${sc.estimatedFee.toFixed(2)}
+                    <span className="text-[10px] text-outline font-normal ml-1">({sc.effectiveRatePercent}%)</span>
+                  </div>
+                  <div className="text-[10px] text-on-surface-variant mt-1">
+                    Net: <span className="font-mono text-emerald-400 font-semibold">${sc.netProceeds.toFixed(2)}</span>
+                  </div>
+                </div>
+                <div className="mt-2 pt-2 border-t border-outline-variant/15 text-[10px] text-outline font-mono">
+                  {sc.rateFormula}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {feeData.benchmarkFxRate && (
+            <div className="pt-2 text-[10px] text-outline font-mono">
+              {feeData.benchmarkFxRate.disclaimer}
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Visual Analytics: Yield Retention (7 cols) + Fee Breakdown Donut (5 cols) */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">

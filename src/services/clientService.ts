@@ -199,3 +199,41 @@ export async function deleteClient(userId: string, clientId: string) {
 
   return { success: true };
 }
+
+/**
+ * Calculates empirical payment reliability intelligence for a client.
+ * Uses computeClientReliability from financialIntelligence module.
+ */
+export async function getClientReliability(userId: string, clientId: string) {
+  const client = await prisma.client.findFirst({
+    where: {
+      userId,
+      OR: [{ id: clientId }, { code: clientId }],
+    },
+    include: {
+      invoices: {
+        select: {
+          status: true,
+          dueDate: true,
+          paidAt: true,
+          total: true,
+        },
+      },
+      paymentHistories: {
+        select: {
+          status: true,
+          lagDays: true,
+          settledAt: true,
+          amount: true,
+        },
+      },
+    },
+  });
+
+  if (!client) {
+    throw new Error("Client not found or unauthorized");
+  }
+
+  const { computeClientReliability } = await import("@/lib/financialIntelligence");
+  return computeClientReliability(client);
+}
