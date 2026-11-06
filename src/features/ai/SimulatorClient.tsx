@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 interface ScenarioPreset {
@@ -88,6 +88,24 @@ export const SimulatorClient: React.FC = () => {
   const [ratePercent, setRatePercent] = useState(0);
   const [monthlyExpenseDelta, setMonthlyExpenseDelta] = useState(0);
   const [taxRatePercent, setTaxRatePercent] = useState(20);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [simBaseline, setSimBaseline] = useState(SIM_BASELINE);
+
+  useEffect(() => {
+    fetch("/api/dashboard/metrics")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.metrics && data.authenticated) {
+          setSimBaseline((prev) => ({
+            ...prev,
+            currentCash: data.metrics.availableLiquidity,
+            baselineRunwayMonths: data.metrics.runwayMonths,
+          }));
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
   const [savedScenarios, setSavedScenarios] = useState<
     Array<{ id: string; name: string; runway: string; valley: string; timestamp: string }>
   >([]);
@@ -112,8 +130,8 @@ export const SimulatorClient: React.FC = () => {
 
   // Deterministic simulation math
   const sim = useMemo(() => {
-    const adjustedRevenue = SIM_BASELINE.monthlyRevenue * (1 + ratePercent / 100);
-    const adjustedExpenses = SIM_BASELINE.monthlyExpenses + monthlyExpenseDelta;
+    const adjustedRevenue = simBaseline.monthlyRevenue * (1 + ratePercent / 100);
+    const adjustedExpenses = simBaseline.monthlyExpenses + monthlyExpenseDelta;
     const taxDeduction = (adjustedRevenue * taxRatePercent) / 100;
     const netMonthlyProfit = adjustedRevenue - adjustedExpenses - taxDeduction;
 
@@ -121,7 +139,7 @@ export const SimulatorClient: React.FC = () => {
     const delayCashDrag = (delayDays / 30) * (adjustedRevenue * 0.7);
     const simulatedValley = Math.max(
       0,
-      Math.round((SIM_BASELINE.currentCash - delayCashDrag + (netMonthlyProfit > 0 ? 0 : netMonthlyProfit)) * 100) / 100
+      Math.round((simBaseline.currentCash - delayCashDrag + (netMonthlyProfit > 0 ? 0 : netMonthlyProfit)) * 100) / 100
     );
 
     // Simulated runway
@@ -133,7 +151,7 @@ export const SimulatorClient: React.FC = () => {
 
     const simulatedAnnualNet = Math.round(netMonthlyProfit * 12 * 100) / 100;
     const riskLevel =
-      simulatedValley < SIM_BASELINE.safetyBuffer ? "Elevated Risk" : simulatedValley < 30000 ? "Moderate" : "Low Risk";
+      simulatedValley < simBaseline.safetyBuffer ? "Elevated Risk" : simulatedValley < 30000 ? "Moderate" : "Low Risk";
 
     return {
       adjustedRevenue: Math.round(adjustedRevenue),
@@ -142,11 +160,11 @@ export const SimulatorClient: React.FC = () => {
       simulatedRunwayMonths,
       simulatedAnnualNet,
       riskLevel,
-      runwayDelta: Math.round((simulatedRunwayMonths - SIM_BASELINE.baselineRunwayMonths) * 10) / 10,
-      valleyDelta: Math.round(simulatedValley - SIM_BASELINE.currentCash),
-      annualDelta: Math.round(simulatedAnnualNet - SIM_BASELINE.baselineNetAnnual),
+      runwayDelta: Math.round((simulatedRunwayMonths - simBaseline.baselineRunwayMonths) * 10) / 10,
+      valleyDelta: Math.round(simulatedValley - simBaseline.currentCash),
+      annualDelta: Math.round(simulatedAnnualNet - simBaseline.baselineNetAnnual),
     };
-  }, [delayDays, ratePercent, monthlyExpenseDelta, taxRatePercent]);
+  }, [delayDays, ratePercent, monthlyExpenseDelta, taxRatePercent, simBaseline]);
 
   const handleSaveScenario = () => {
     const newEntry = {
@@ -185,7 +203,7 @@ export const SimulatorClient: React.FC = () => {
             </h1>
             <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-secondary-container/20 text-secondary border border-secondary/30 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              Deterministic Sandbox — Zero Real-World Execution
+              {isLiveDb ? "Live Neon Simulation Base" : "Deterministic Sandbox — Zero Real-World Execution"}
             </span>
           </div>
           <p className="text-on-surface-variant text-sm font-body-md mt-1">
@@ -402,7 +420,7 @@ export const SimulatorClient: React.FC = () => {
             <div className="flex items-baseline justify-between pt-1">
               <div>
                 <span className="text-[10px] text-outline block">Baseline:</span>
-                <span className="text-on-surface font-semibold text-sm">{SIM_BASELINE.baselineRunwayMonths} mos</span>
+                <span className="text-on-surface font-semibold text-sm">{simBaseline.baselineRunwayMonths} mos</span>
               </div>
               <div className="text-right">
                 <span className="text-[10px] text-outline block">Simulated:</span>
@@ -423,7 +441,7 @@ export const SimulatorClient: React.FC = () => {
               <div>
                 <span className="text-[10px] text-outline block">Current Reserve:</span>
                 <span className="text-on-surface font-semibold text-sm">
-                  ${SIM_BASELINE.currentCash.toLocaleString()}
+                  ${simBaseline.currentCash.toLocaleString()}
                 </span>
               </div>
               <div className="text-right">
@@ -445,7 +463,7 @@ export const SimulatorClient: React.FC = () => {
               <div>
                 <span className="text-[10px] text-outline block">Current Annual:</span>
                 <span className="text-on-surface font-semibold text-sm">
-                  ${SIM_BASELINE.baselineNetAnnual.toLocaleString()}
+                  ${simBaseline.baselineNetAnnual.toLocaleString()}
                 </span>
               </div>
               <div className="text-right">

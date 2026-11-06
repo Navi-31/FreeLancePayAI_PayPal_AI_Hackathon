@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +22,8 @@ const RESCUE_BASELINE = {
 };
 
 export const RescueClient: React.FC = () => {
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [baseline, setBaseline] = useState(RESCUE_BASELINE);
   const [actions, setActions] = useState<RescueAction[]>([
     {
       id: "act-1",
@@ -61,6 +63,22 @@ export const RescueClient: React.FC = () => {
     },
   ]);
 
+  useEffect(() => {
+    fetch("/api/dashboard/metrics")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.metrics && data.authenticated) {
+          setBaseline((prev) => ({
+            ...prev,
+            liquidBalance: data.metrics.availableLiquidity,
+            baselineScore: data.metrics.institutionalHealthScore,
+          }));
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [, setIsPlanExecuted] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -71,9 +89,9 @@ export const RescueClient: React.FC = () => {
     const totalRelief = activeActions.reduce((sum, a) => sum + a.impactAmount, 0);
     const scoreBonus = activeActions.reduce((sum, a) => sum + a.impactScoreBonus, 0);
 
-    const projectedValley = Math.round((RESCUE_BASELINE.rawValleyPoint + totalRelief) * 100) / 100;
-    const projectedScore = Math.min(99, RESCUE_BASELINE.baselineScore + scoreBonus);
-    const isBufferBreached = projectedValley < RESCUE_BASELINE.safetyBuffer;
+    const projectedValley = Math.round((baseline.rawValleyPoint + totalRelief) * 100) / 100;
+    const projectedScore = Math.min(99, baseline.baselineScore + scoreBonus);
+    const isBufferBreached = projectedValley < baseline.safetyBuffer;
 
     return {
       activeCount: activeActions.length,
@@ -81,10 +99,10 @@ export const RescueClient: React.FC = () => {
       projectedValley,
       projectedScore,
       isBufferBreached,
-      bufferDeficit: Math.max(0, RESCUE_BASELINE.safetyBuffer - projectedValley),
-      bufferSurplus: Math.max(0, projectedValley - RESCUE_BASELINE.safetyBuffer),
+      bufferDeficit: Math.max(0, baseline.safetyBuffer - projectedValley),
+      bufferSurplus: Math.max(0, projectedValley - baseline.safetyBuffer),
     };
-  }, [actions]);
+  }, [actions, baseline]);
 
   const toggleAction = (id: string) => {
     setActions((prev) =>
@@ -125,7 +143,7 @@ export const RescueClient: React.FC = () => {
             </h1>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-error-container/40 border border-error/40 text-error text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-error animate-ping" />
-              <span>Active Risk Sentinel: 1 Liquidity Squeeze Detected</span>
+              <span>{isLiveDb ? "Live Neon Risk Sentinel Active" : "Active Risk Sentinel: 1 Liquidity Squeeze Detected"}</span>
             </div>
           </div>
           <p className="mt-1 font-body-md text-sm text-on-surface-variant max-w-2xl">

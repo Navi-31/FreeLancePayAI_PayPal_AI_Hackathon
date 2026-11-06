@@ -9,6 +9,7 @@ import {
 } from "../types";
 import {
   loadRemindersFromStorage,
+  fetchRemindersWithFallback,
   updateReminderTone,
   updateReminderDraft,
   simulateApproveAndSend,
@@ -23,14 +24,23 @@ export const RemindersClient: React.FC = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
   const [simulationToast, setSimulationToast] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
 
-  // Load from storage on mount
+  // Load from storage on mount & sync from server
   useEffect(() => {
     const data = loadRemindersFromStorage();
     setReminders(data);
     if (data.length > 0) {
       setSelectedId((prev) => (data.some((r) => r.id === prev) ? prev : data[0].id));
     }
+
+    fetchRemindersWithFallback().then((live) => {
+      if (live && live.length > 0) {
+        setReminders(live);
+        setIsLiveDb(true);
+        setSelectedId((prev) => (live.some((r) => r.id === prev) ? prev : live[0].id));
+      }
+    });
   }, []);
 
   // Filtered queue items
@@ -84,6 +94,18 @@ export const RemindersClient: React.FC = () => {
     // 1. Immediately update tone in local state
     const updated = updateReminderTone(selectedReminder.id, tone);
     setReminders(updated);
+
+    // Persist tone update to server if available
+    fetch("/api/reminders", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: selectedReminder.id,
+        action: "update_tone",
+        tone,
+        userApproved: true,
+      }),
+    }).catch(() => {});
 
     // 2. Fetch server-side AI crafted draft matching the requested tone
     try {
@@ -172,14 +194,17 @@ export const RemindersClient: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto">
-      {/* Simulation Banner Notice */}
+      {/* Simulation / Live Banner Notice */}
       <div className="p-3 rounded-xl bg-surface-container-lowest border border-primary/20 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px]">
-            Simulation Engine
+          <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px] flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            {isLiveDb ? "Live Neon Database Queue" : "Simulation Engine"}
           </span>
           <span className="text-on-surface-variant">
-            Payment reminders are interactive sandbox drafts. Client communications are simulated locally; no external emails, SMS, or webhooks are triggered.
+            {isLiveDb
+              ? "Payment reminders synchronized with your Neon database receivables. Approval required before dispatch."
+              : "Payment reminders are interactive sandbox drafts. Client communications are simulated locally; no external emails, SMS, or webhooks are triggered."}
           </span>
         </div>
         <span className="text-secondary flex items-center gap-1 font-label-sm font-medium">

@@ -86,3 +86,27 @@ export async function updateSubscription(
 
   return updated;
 }
+
+export async function deleteSubscription(userId: string, id: string) {
+  const existing = await prisma.subscription.findFirst({
+    where: { id, userId },
+  });
+
+  if (!existing) {
+    throw new Error("Subscription not found or unauthorized");
+  }
+
+  await prisma.subscription.delete({
+    where: { id: existing.id },
+  });
+
+  await recordAuditLog({
+    userId,
+    action: "subscription_deleted",
+    entityType: "Subscription",
+    entityId: existing.id,
+    details: { name: existing.name },
+  });
+
+  return { success: true };
+}

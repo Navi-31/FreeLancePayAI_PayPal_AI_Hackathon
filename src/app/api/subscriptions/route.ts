@@ -4,6 +4,7 @@ import {
   listSubscriptions,
   createSubscription,
   updateSubscription,
+  deleteSubscription,
 } from "@/services/subscriptionService";
 import { z } from "zod";
 
@@ -81,6 +82,29 @@ export async function PATCH(request: NextRequest) {
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Failed to update subscription" },
+      { status: 400 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  const session = await getServerSession();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Subscription id is required" }, { status: 400 });
+    }
+
+    await deleteSubscription(session.userId, id);
+    return NextResponse.json({ success: true, message: "Subscription deleted successfully" });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to delete subscription" },
       { status: 400 }
     );
   }

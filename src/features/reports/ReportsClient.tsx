@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface TemplateCard {
   id: string;
@@ -67,6 +67,32 @@ export function ReportsClient() {
   const [period, setPeriod] = useState<string>("Q3");
   const [currency, setCurrency] = useState<string>("USD");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [liveMetrics, setLiveMetrics] = useState<{
+    totalGrossRevenue: number;
+    taxVaultAmount: number;
+    availableLiquidity: number;
+    activeClientsCount: number;
+  } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/dashboard/metrics")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.metrics && data.authenticated) {
+          setLiveMetrics(data.metrics);
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const grossBillings = liveMetrics ? liveMetrics.totalGrossRevenue : 142650.0;
+  const processingFees = Math.round(grossBillings * 0.0269 * 100) / 100;
+  const operatingOpex = Math.round(grossBillings * 0.1565 * 100) / 100;
+  const netBusinessIncome = Math.round((grossBillings - processingFees - operatingOpex) * 100) / 100;
+  const taxVault = liveMetrics ? liveMetrics.taxVaultAmount : Math.round(netBusinessIncome * 0.25 * 100) / 100;
+  const freeRetained = liveMetrics ? liveMetrics.availableLiquidity : Math.round((netBusinessIncome - taxVault) * 100) / 100;
 
   const handleDownloadPdf = () => {
     setToastMessage("Generated CPA-compliant Audit PDF with SHA-256 seal. Ready for download.");
@@ -74,7 +100,25 @@ export function ReportsClient() {
   };
 
   const handleExportCsv = () => {
-    setToastMessage("Exported QuickBooks Online (QBO) formatted journal ledger CSV.");
+    const csvContent = [
+      "Metric,Amount,Period,Currency",
+      `Gross Billings,${grossBillings},${period},${currency}`,
+      `Processing Fees,-${processingFees},${period},${currency}`,
+      `Operating OPEX,-${operatingOpex},${period},${currency}`,
+      `Net Business Income,${netBusinessIncome},${period},${currency}`,
+      `Tax Reserve Vault,-${taxVault},${period},${currency}`,
+      `Free Retained Cash,${freeRetained},${period},${currency}`,
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `freelancepay_pnl_report_${period}_${currency}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+
+    setToastMessage("[EXPORT SUCCESS] Downloaded CPA reconciliation journal CSV.");
     setTimeout(() => setToastMessage(null), 4000);
   };
 
@@ -111,8 +155,8 @@ export function ReportsClient() {
               Financial Reports & CPA Analytics
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-semibold flex items-center gap-1 font-mono">
-              <span className="material-symbols-outlined text-xs">verified</span>
-              Audit-Grade Ledger Reporting
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              {isLiveDb ? "Live Neon Database Ledger" : "Demo Profile Statement"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1 max-w-3xl">
@@ -279,17 +323,17 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
             <span className="text-outline font-medium">Gross Billings (ARR)</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-primary">$142,650.00</div>
+              <div className="text-lg font-bold font-mono text-primary">${grossBillings.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
               <div className="text-[10px] text-emerald-400 mt-0.5">+18.4% vs Q2</div>
             </div>
-            <span className="text-[10px] text-outline font-mono">14 Client Retainers</span>
+            <span className="text-[10px] text-outline font-mono">{liveMetrics?.activeClientsCount ?? 14} Client Retainers</span>
           </div>
 
           {/* 2: Processing Fees */}
           <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
             <span className="text-outline font-medium">Processing Fees</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-rose-400">-$3,842.10</div>
+              <div className="text-lg font-bold font-mono text-rose-400">-${processingFees.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
               <div className="text-[10px] text-outline mt-0.5">2.69% effective drag</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Auto-Deducted</span>
@@ -299,7 +343,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
             <span className="text-outline font-medium">Operating OPEX</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-on-surface">-$22,337.90</div>
+              <div className="text-lg font-bold font-mono text-on-surface">-${operatingOpex.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
               <div className="text-[10px] text-outline mt-0.5">Cloud, seats & ops</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Verified Receipts</span>
@@ -309,7 +353,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container border border-primary/40 flex flex-col justify-between">
             <span className="text-primary font-semibold">Net Business Income</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-on-surface">$116,470.00</div>
+              <div className="text-lg font-bold font-mono text-on-surface">${netBusinessIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
               <div className="text-[10px] text-primary mt-0.5">81.6% Net Margin</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Pre-Tax Operating</span>
@@ -319,7 +363,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-secondary/30 flex flex-col justify-between">
             <span className="text-secondary font-medium">Tax Reserve Vault (25%)</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-secondary">-$29,117.50</div>
+              <div className="text-lg font-bold font-mono text-secondary">-${taxVault.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
               <div className="text-[10px] text-secondary mt-0.5">Vault Allocated</div>
             </div>
             <span className="text-[10px] text-outline font-mono">IRS Safe Harbor</span>
@@ -329,7 +373,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-high border border-primary ring-1 ring-primary/30 flex flex-col justify-between">
             <span className="text-primary font-bold">Free Retained Cash</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-primary">$87,352.50</div>
+              <div className="text-lg font-bold font-mono text-primary">${freeRetained.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
               <div className="text-[10px] text-emerald-400 mt-0.5 font-medium">Cleared Owner Draw</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Liquid Treasury</span>

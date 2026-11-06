@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface ForecastEvent {
   id: string;
@@ -76,8 +76,44 @@ export function ForecastClient() {
   const [timelineMode, setTimelineMode] = useState<"30" | "60" | "90">("60");
   const [scenario, setScenario] = useState<"conservative" | "baseline" | "aggressive">("baseline");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [events, setEvents] = useState<ForecastEvent[]>(INITIAL_EVENTS);
+  const [liveBalance, setLiveBalance] = useState<number>(42880.5);
 
-  const availableBalance = 42880.5;
+  useEffect(() => {
+    fetch("/api/dashboard/metrics")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.metrics && data.authenticated) {
+          setLiveBalance(data.metrics.availableLiquidity);
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+
+    fetch("/api/invoices")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.invoices && Array.isArray(data.invoices) && data.invoices.length > 0) {
+          const liveEvents: ForecastEvent[] = data.invoices.map((inv: Record<string, unknown>, idx: number) => ({
+            id: `inv-ev-${idx}`,
+            date: typeof inv.dueDate === "string" ? inv.dueDate.split("T")[0] : "Approaching",
+            counterparty: String(inv.clientName || "Client"),
+            desc: `Invoice #${inv.code || inv.id}: ${inv.projectTitle || "Project Deliverable"}`,
+            type: "INFLOW" as const,
+            amount: Number(inv.total || 0),
+            confidence: inv.status === "paid" ? 100 : inv.status === "sent" ? 85 : 50,
+            status: (inv.status === "overdue" ? "At Risk" : "Projected Invoice") as ForecastEvent["status"],
+            actionText: inv.status === "overdue" ? "Deploy Reminder" : "Schedule Wire",
+          }));
+          setEvents([...liveEvents, ...INITIAL_EVENTS]);
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const availableBalance = liveBalance;
   const expectedIncoming = scenario === "conservative" ? 31200 : scenario === "aggressive" ? 44000 : 38450.0;
   const upcomingOutflows = 14820.0;
   const projectedClosing = availableBalance + expectedIncoming - upcomingOutflows;
@@ -122,7 +158,7 @@ export function ForecastClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-xs font-semibold flex items-center gap-1.5 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              Algorithmic Projection v4.2
+              {isLiveDb ? "Live Neon Inflow Radar" : "Algorithmic Projection v4.2"}
             </span>
           </div>
           <p className="text-sm text-outline mt-1">
@@ -526,7 +562,7 @@ export function ForecastClient() {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/15">
-              {INITIAL_EVENTS.map((item) => (
+              {events.map((item) => (
                 <tr key={item.id} className="hover:bg-surface-container/40 transition-colors">
                   <td className="py-3 px-3 font-mono text-outline">{item.date}</td>
                   <td className="py-3 px-3">

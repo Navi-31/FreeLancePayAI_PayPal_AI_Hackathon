@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface SubscriptionItem {
   id: string;
@@ -123,6 +123,39 @@ export function SubscriptionsClient() {
   const [selectedSubId, setSelectedSubId] = useState<string>("sub-1");
   const [filterMode, setFilterMode] = useState<"ALL" | "DORMANT" | "SAVINGS">("ALL");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [newSubName, setNewSubName] = useState("");
+  const [newSubTitle, setNewSubTitle] = useState("");
+  const [newSubCategory, setNewSubCategory] = useState<"Design" | "Productivity" | "AI" | "Cloud">("Cloud");
+  const [newSubCost, setNewSubCost] = useState("45.00");
+
+  useEffect(() => {
+    fetch("/api/subscriptions")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.subscriptions && Array.isArray(data.subscriptions) && data.subscriptions.length > 0) {
+          const mapped: SubscriptionItem[] = data.subscriptions.map((s: Record<string, unknown>) => ({
+            id: String(s.id),
+            name: String(s.name),
+            subTitle: String(s.subTitle || "Service License"),
+            category: (s.category as SubscriptionItem["category"]) || "Cloud",
+            costMonthly: Number(s.costMonthly || 0),
+            lastActive: String(s.lastActive || "Recently"),
+            usageScore: Number(s.usageScore ?? 75),
+            usageStatus: (s.usageStatus as SubscriptionItem["usageStatus"]) || "High",
+            recommendation: (s.recommendation as SubscriptionItem["recommendation"]) || "Keep Active",
+            nextRenewal: s.nextRenewal ? new Date(String(s.nextRenewal)).toLocaleDateString() : "Next month",
+            dueCategory: (s.dueCategory as SubscriptionItem["dueCategory"]) || "30d",
+            initials: String(s.initials || String(s.name).slice(0, 2)),
+          }));
+          setSubs(mapped);
+          setIsLiveDb(true);
+          if (mapped.length > 0) setSelectedSubId(mapped[0].id);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const selectedSub = subs.find((s) => s.id === selectedSubId) || subs[0];
 
@@ -148,10 +181,88 @@ export function SubscriptionsClient() {
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const handlePruneSub = (id: string) => {
+  const handlePruneSub = async (id: string) => {
+    const previous = [...subs];
     setSubs((prev) => prev.filter((s) => s.id !== id));
-    setToastMessage("Subscription archived from active monitoring run-rate.");
+
+    try {
+      const res = await fetch(`/api/subscriptions?id=${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setToastMessage("[NEON DB] Subscription removed and audit log recorded.");
+      } else {
+        setToastMessage("Subscription archived locally from active monitoring run-rate.");
+      }
+    } catch {
+      // Revert if error
+      setSubs(previous);
+      setToastMessage("[ERROR] Failed to delete subscription from server.");
+    }
     setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleAddSubscription = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newSubName.trim()) return;
+
+    const cost = parseFloat(newSubCost) || 10;
+    const optimisticId = `sub-${Date.now()}`;
+    const newEntry: SubscriptionItem = {
+      id: optimisticId,
+      name: newSubName.trim(),
+      subTitle: newSubTitle.trim() || `${newSubCategory} Workspace`,
+      category: newSubCategory,
+      costMonthly: cost,
+      lastActive: "Today",
+      usageScore: 85,
+      usageStatus: "High",
+      recommendation: "Keep Active",
+      nextRenewal: "In 30d",
+      dueCategory: "30d",
+      initials: newSubName.trim().slice(0, 2).toUpperCase(),
+    };
+
+    setSubs((prev) => [newEntry, ...prev]);
+    setIsAddModalOpen(false);
+
+    try {
+      const res = await fetch("/api/subscriptions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newEntry.name,
+          subTitle: newEntry.subTitle,
+          category: newEntry.category,
+          costMonthly: newEntry.costMonthly,
+          lastActive: "Today",
+          usageScore: 85,
+          usageStatus: "High",
+          recommendation: "Keep Active",
+          dueCategory: "30d",
+          initials: newEntry.initials,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.subscription?.id) {
+          setSubs((prev) =>
+            prev.map((s) => (s.id === optimisticId ? { ...s, id: data.subscription.id } : s))
+          );
+        }
+        setIsLiveDb(true);
+        setToastMessage(`[NEON DB] Subscription '${newEntry.name}' persisted to database.`);
+      } else {
+        setToastMessage(`Subscription '${newEntry.name}' added to local monitoring workspace.`);
+      }
+    } catch {
+      setToastMessage(`Subscription '${newEntry.name}' added to local monitoring workspace.`);
+    }
+
+    setNewSubName("");
+    setNewSubTitle("");
+    setTimeout(() => setToastMessage(null), 4000);
   };
 
   return (
@@ -181,7 +292,7 @@ export function SubscriptionsClient() {
             Subscription Intelligence & SaaS Audit
             <span className="px-2.5 py-0.5 rounded-full text-xs bg-secondary-container/20 text-secondary border border-secondary/30 flex items-center gap-1 font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              AI Telemetry Active
+              {isLiveDb ? "Live Neon Database" : "Demo Baseline"}
             </span>
           </h1>
           <p className="text-sm text-outline mt-1">
@@ -190,6 +301,13 @@ export function SubscriptionsClient() {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high border border-primary/30 text-primary text-xs font-semibold hover:bg-primary/10 transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">add_circle</span>
+            + Add Subscription
+          </button>
           <button
             onClick={handleExecuteAllTriages}
             className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-on-primary-fixed text-xs font-semibold shadow hover:brightness-110 active:scale-[0.98] transition-all"
@@ -720,6 +838,93 @@ export function SubscriptionsClient() {
           </div>
         )}
       </div>
+
+      {/* Add Subscription Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-md bg-surface-container-low border border-primary/30 rounded-2xl shadow-2xl overflow-hidden p-6">
+            <div className="flex items-center justify-between pb-3 border-b border-outline-variant/30 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-xl">add_card</span>
+                <h3 className="font-headline-sm text-base font-semibold text-on-surface">Track New Subscription</h3>
+              </div>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-on-surface-variant hover:text-white">
+                <span className="material-symbols-outlined text-base">close</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleAddSubscription} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-on-surface-variant font-medium mb-1">Service / Tool Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Linear, Cursor, Supabase"
+                  value={newSubName}
+                  onChange={(e) => setNewSubName(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-on-surface-variant font-medium mb-1">Plan / Subtitle</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Pro Team Tier • 1 Seat"
+                  value={newSubTitle}
+                  onChange={(e) => setNewSubTitle(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-on-surface-variant font-medium mb-1">Category</label>
+                  <select
+                    value={newSubCategory}
+                    onChange={(e) => setNewSubCategory(e.target.value as typeof newSubCategory)}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                  >
+                    <option value="Cloud">Cloud</option>
+                    <option value="AI">AI</option>
+                    <option value="Design">Design</option>
+                    <option value="Productivity">Productivity</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-on-surface-variant font-medium mb-1">Monthly Cost ($)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    value={newSubCost}
+                    onChange={(e) => setNewSubCost(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-outline-variant/30">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 rounded-lg bg-primary text-on-primary-fixed font-semibold hover:brightness-110 shadow"
+                >
+                  Save to Neon DB
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

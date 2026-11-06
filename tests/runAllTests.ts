@@ -6,6 +6,7 @@ import { runPayPalIntegrationTests } from "./paypalIntegration.test";
 import { runAIIntegrationTests } from "./aiIntegration.test";
 import { runEmailNotificationJobsTests } from "./emailNotificationJobs.test";
 import { runSecurityAndE2ETests } from "./securityAndE2E.test";
+import { runPhase5BIntegrationTests } from "./phase5BIntegration.test";
 
 async function main() {
   console.log("==================================================");
@@ -54,6 +55,11 @@ async function main() {
   const secE2E = await runSecurityAndE2ETests();
   totalPassed += secE2E.passed;
   totalFailed += secE2E.failed;
+
+  // 9. Complete Frontend, API & Database Workflows Integration Tests (Phase 5B)
+  const phase5B = await runPhase5BIntegrationTests();
+  totalPassed += phase5B.passed;
+  totalFailed += phase5B.failed;
 
   console.log("\n==================================================");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export function TaxEstimatorClient() {
   const [jurisdiction, setJurisdiction] = useState<string>("US-CA");
@@ -9,27 +9,85 @@ export function TaxEstimatorClient() {
   const [deductibleOffset, setDeductibleOffset] = useState<number>(24250);
   const [simInflow, setSimInflow] = useState<number>(2000);
   const [vaultSetAside, setVaultSetAside] = useState<number>(28500);
+  const [grossInflows, setGrossInflows] = useState<number>(142650);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
 
-  const grossInflows = 142650;
+  useEffect(() => {
+    fetch("/api/tax")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.estimate) {
+          const e = data.estimate;
+          if (e.jurisdiction) setJurisdiction(e.jurisdiction);
+          if (e.entityType) setEntityType(e.entityType as "LLC" | "SOLE");
+          if (e.taxRatio !== undefined) setTaxRatio(Number(e.taxRatio));
+          if (e.deductibleOffset !== undefined) setDeductibleOffset(Number(e.deductibleOffset));
+          if (e.grossInflows !== undefined) setGrossInflows(Number(e.grossInflows));
+          if (e.vaultSetAside !== undefined) setVaultSetAside(Number(e.vaultSetAside));
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const taxableBase = Math.max(0, grossInflows - deductibleOffset);
   const suggestedReserve = Math.round((taxableBase * (taxRatio / 100)) * 100) / 100;
-  const shieldPercent = Math.min(100, Math.round((vaultSetAside / suggestedReserve) * 100));
+  const shieldPercent = Math.min(100, Math.round((vaultSetAside / (suggestedReserve || 1)) * 100));
   const reserveDelta = suggestedReserve - vaultSetAside;
 
   // Split calculation
   const simTaxPortion = Math.round((simInflow * (taxRatio / 100)) * 100) / 100;
   const simLiquidPortion = Math.round((simInflow - simTaxPortion) * 100) / 100;
 
-  const handleTopUpReserve = () => {
+  const handleTopUpReserve = async () => {
     setVaultSetAside(suggestedReserve);
-    setToastMessage("Tax vault funded to 100% target ($29,600.00). Reserve deficit resolved.");
+    try {
+      const res = await fetch("/api/tax", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vaultSetAside: suggestedReserve }),
+      });
+      if (res.ok) {
+        setIsLiveDb(true);
+        setToastMessage(`[NEON DB] Tax vault funded to 100% target ($${suggestedReserve.toLocaleString()}). Reserve deficit resolved.`);
+      } else {
+        setToastMessage("Tax vault funded to 100% target in local workspace.");
+      }
+    } catch {
+      setToastMessage("Tax vault funded to 100% target in local workspace.");
+    }
     setTimeout(() => setToastMessage(null), 4000);
   };
 
-  const handleRecalculate = () => {
-    setToastMessage("Deterministic tax calculations refreshed across all GL journal ledgers.");
-    setTimeout(() => setToastMessage(null), 3000);
+  const handleRecalculate = async () => {
+    try {
+      const res = await fetch("/api/tax", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          jurisdiction,
+          entityType,
+          taxRatio,
+          deductibleOffset,
+          vaultSetAside,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.estimate) {
+          setGrossInflows(Number(data.estimate.grossInflows));
+          setVaultSetAside(Number(data.estimate.vaultSetAside));
+        }
+        setIsLiveDb(true);
+        setToastMessage("[NEON DB] Deterministic tax parameters updated and persisted to database.");
+      } else {
+        setToastMessage("Deterministic tax calculations refreshed across local ledger.");
+      }
+    } catch {
+      setToastMessage("Deterministic tax calculations refreshed across local ledger.");
+    }
+    setTimeout(() => setToastMessage(null), 3500);
   };
 
   return (
@@ -61,7 +119,7 @@ export function TaxEstimatorClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-secondary border border-secondary/30 flex items-center gap-1 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              Autonomous Allocator v3.4
+              {isLiveDb ? "Live Neon Tax Guard" : "Demo Profile Active"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">

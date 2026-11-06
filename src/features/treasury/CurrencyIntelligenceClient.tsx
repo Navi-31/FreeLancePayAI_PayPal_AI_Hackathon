@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface FxPair {
   currency: string;
@@ -45,11 +45,25 @@ const FX_PAIRS: FxPair[] = [
 export function CurrencyIntelligenceClient() {
   const [timeRange, setTimeRange] = useState<"7D" | "30D" | "Q3" | "YTD">("Q3");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [liveGross, setLiveGross] = useState<number>(142650.0);
 
-  const grossReceived = 142650.0;
-  const totalGatewayFees = -3842.1;
-  const fxSlippage = -420.5;
-  const netRetained = grossReceived + totalGatewayFees + fxSlippage;
+  useEffect(() => {
+    fetch("/api/dashboard/metrics")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.metrics && data.authenticated) {
+          setLiveGross(data.metrics.totalGrossRevenue);
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const grossReceived = liveGross;
+  const totalGatewayFees = -Math.round(grossReceived * 0.0269 * 100) / 100;
+  const fxSlippage = -Math.round(grossReceived * 0.00295 * 100) / 100;
+  const netRetained = Math.round((grossReceived + totalGatewayFees + fxSlippage) * 100) / 100;
 
   const handleApplyFeeOffset = () => {
     setToastMessage("Interchange Fee Offset (2.9% + $0.30) injected into Acme Corp upcoming contract addendum.");
@@ -90,7 +104,7 @@ export function CurrencyIntelligenceClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-xs font-semibold flex items-center gap-1.5 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              Algorithmic Audit Active
+              {isLiveDb ? "Live Neon Currency Telemetry" : "Algorithmic Audit Active"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">

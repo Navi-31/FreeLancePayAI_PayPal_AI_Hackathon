@@ -324,3 +324,53 @@ export async function simulateApproveAndSendWithServer(
   }
   return simulateApproveAndSend(id, notes);
 }
+
+/**
+ * Fetch reminders from server with fallback to localStorage
+ */
+export async function fetchRemindersWithFallback(): Promise<PaymentReminder[]> {
+  try {
+    const res = await fetch("/api/reminders");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.reminders) && data.reminders.length > 0) {
+        const mapped: PaymentReminder[] = data.reminders.map((r: Record<string, unknown>) => {
+          const inv = r.invoice && typeof r.invoice === "object" ? (r.invoice as Record<string, unknown>) : null;
+          return {
+            id: String(r.code || r.id),
+            invoiceId: inv ? String(inv.code || inv.id) : String(r.invoiceId || "FP-8848"),
+            clientName: inv ? String(inv.clientName || "Client") : "Client",
+            clientEmail: inv ? String(inv.clientEmail || "billing@client.com") : "billing@client.com",
+            amount: inv ? Number(inv.total || 0) : 1500,
+            currency: inv ? String(inv.currency || "USD") : "USD",
+            currencySymbol: inv ? String(inv.currencySymbol || "$") : "$",
+            dueDate: inv && typeof inv.dueDate === "string" ? inv.dueDate.split("T")[0] : "2025-10-10",
+            overdueDays: Number(r.overdueDays || 0),
+            status: r.status as PaymentReminder["status"],
+            activeTone: (r.tone as ReminderTone) || "polite",
+            stage: String(r.stage || "Follow-up 1"),
+            subject: String(r.subject || ""),
+            messageBody: String(r.messageBody || ""),
+            scheduledFor: r.suggestedDate ? String(r.suggestedDate) : undefined,
+            simulatedSentAt: r.sentAt || r.realSentAt ? String(r.sentAt || r.realSentAt) : undefined,
+            history: Array.isArray(r.history)
+              ? r.history.map((h: Record<string, unknown>) => ({
+                  id: String(h.id),
+                  timestamp: String(h.timestamp),
+                  action: String(h.action),
+                  tone: (h.tone as ReminderTone) || "polite",
+                  notes: String(h.notes || ""),
+                  userApproved: Boolean(h.userApproved),
+                }))
+              : [],
+          };
+        });
+        saveRemindersToStorage(mapped);
+        return mapped;
+      }
+    }
+  } catch {
+    // Offline mode
+  }
+  return loadRemindersFromStorage();
+}

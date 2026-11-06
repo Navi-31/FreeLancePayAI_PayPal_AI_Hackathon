@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface OutflowItem {
@@ -78,11 +78,43 @@ const INITIAL_OUTFLOWS: OutflowItem[] = [
 ];
 
 export function SpendingClient() {
-  const [outflows] = useState<OutflowItem[]>(INITIAL_OUTFLOWS);
+  const [outflows, setOutflows] = useState<OutflowItem[]>(INITIAL_OUTFLOWS);
   const [filterType, setFilterType] = useState<"ALL" | "RECURRING" | "CAPITAL">("ALL");
   const [purchaseAmount, setPurchaseAmount] = useState<number>(1200);
   const [timeRange, setTimeRange] = useState<"YTD" | "12M">("YTD");
   const [actionNotice, setActionNotice] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+
+  // New Outflow Form
+  const [newMerchant, setNewMerchant] = useState("");
+  const [newDesc, setNewDesc] = useState("");
+  const [newCategory, setNewCategory] = useState<OutflowItem["category"]>("Operations");
+  const [newAmount, setNewAmount] = useState("250.00");
+  const [newMethod, setNewMethod] = useState("PayPal Business");
+  const [newIsRecurring, setNewIsRecurring] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/spending")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.expenses && Array.isArray(data.expenses) && data.expenses.length > 0) {
+          const mapped: OutflowItem[] = data.expenses.map((e: Record<string, unknown>) => ({
+            id: String(e.id),
+            merchant: String(e.merchant),
+            desc: String(e.description || ""),
+            category: (e.category as OutflowItem["category"]) || "Operations",
+            date: typeof e.date === "string" ? e.date.split("T")[0] : "Recently",
+            method: String(e.method || "PayPal Business"),
+            isRecurring: Boolean(e.isRecurring),
+            amount: Number(e.amount),
+          }));
+          setOutflows(mapped);
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Financial buffer baseline
   const liquidBuffer = 42880.5;
@@ -101,6 +133,63 @@ export function SpendingClient() {
 
   const triggerConsolidation = () => {
     setActionNotice("Optimized 3 idle developer seats: Saved $420/yr. Local audit committed.");
+    setTimeout(() => setActionNotice(null), 4000);
+  };
+
+  const handleAddExpense = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newMerchant.trim()) return;
+
+    const amt = parseFloat(newAmount) || 50;
+    const optimisticId = `out-${Date.now()}`;
+    const todayDate = new Date().toISOString().split("T")[0];
+    const newEntry: OutflowItem = {
+      id: optimisticId,
+      merchant: newMerchant.trim(),
+      desc: newDesc.trim() || `${newCategory} expense`,
+      category: newCategory,
+      date: todayDate,
+      method: newMethod,
+      isRecurring: newIsRecurring,
+      amount: amt,
+    };
+
+    setOutflows((prev) => [newEntry, ...prev]);
+    setIsAddModalOpen(false);
+
+    try {
+      const res = await fetch("/api/spending", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          merchant: newEntry.merchant,
+          description: newEntry.desc,
+          category: newEntry.category,
+          date: todayDate,
+          method: newEntry.method,
+          isRecurring: newEntry.isRecurring,
+          amount: newEntry.amount,
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.expense?.id) {
+          setOutflows((prev) =>
+            prev.map((item) => (item.id === optimisticId ? { ...item, id: data.expense.id } : item))
+          );
+        }
+        setIsLiveDb(true);
+        setActionNotice(`[NEON DB] Outflow of $${amt.toFixed(2)} for ${newEntry.merchant} recorded.`);
+      } else {
+        setActionNotice(`Outflow of $${amt.toFixed(2)} recorded to local workspace.`);
+      }
+    } catch {
+      setActionNotice(`Outflow of $${amt.toFixed(2)} recorded to local workspace.`);
+    }
+
+    setNewMerchant("");
+    setNewDesc("");
     setTimeout(() => setActionNotice(null), 4000);
   };
 
@@ -129,8 +218,9 @@ export function SpendingClient() {
           </div>
           <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-on-surface flex items-center gap-3">
             Spending Intelligence & Outflows
-            <span className="px-2 py-0.5 rounded text-xs font-semibold bg-primary/10 border border-primary/30 text-primary">
-              AI Monitored
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 border border-primary/30 text-primary flex items-center gap-1 font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+              {isLiveDb ? "Live Neon Database" : "Demo Baseline"}
             </span>
           </h1>
           <p className="text-sm text-on-surface-variant mt-1">
@@ -138,8 +228,15 @@ export function SpendingClient() {
           </p>
         </div>
 
-        {/* Time Horizon Pills */}
-        <div className="flex items-center gap-2">
+        {/* Time Horizon & Add Outflow */}
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container-high border border-primary/30 text-primary text-xs font-semibold hover:bg-primary/10 transition-all shadow-sm"
+          >
+            <span className="material-symbols-outlined text-sm">add_circle</span>
+            + Record Outflow
+          </button>
           <div className="flex bg-surface-container-lowest p-1 rounded-lg border border-outline-variant/30 text-xs font-medium">
             <button
               onClick={() => setTimeRange("YTD")}
@@ -728,6 +825,120 @@ export function SpendingClient() {
           </table>
         </div>
       </section>
+
+      {/* Record Outflow Modal */}
+      {isAddModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-md bg-surface-container-low border border-primary/30 rounded-2xl shadow-2xl overflow-hidden p-6">
+            <div className="flex items-center justify-between pb-3 border-b border-outline-variant/30 mb-4">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary text-xl">payments</span>
+                <h3 className="font-headline-sm text-base font-semibold text-on-surface">Record Business Outflow</h3>
+              </div>
+              <button onClick={() => setIsAddModalOpen(false)} className="text-on-surface-variant hover:text-white">
+                <span className="material-symbols-outlined text-base">close</span>
+              </button>
+            </div>
+
+            <form onSubmit={handleAddExpense} className="space-y-4 text-xs">
+              <div>
+                <label className="block text-on-surface-variant font-medium mb-1">Merchant / Vendor</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. AWS, Figma, Google Cloud"
+                  value={newMerchant}
+                  onChange={(e) => setNewMerchant(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-on-surface-variant font-medium mb-1">Description</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Production Cluster Compute"
+                  value={newDesc}
+                  onChange={(e) => setNewDesc(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-on-surface-variant font-medium mb-1">Category</label>
+                  <select
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value as OutflowItem["category"])}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                  >
+                    <option value="Operations">Operations</option>
+                    <option value="Software">Software</option>
+                    <option value="Growth">Growth</option>
+                    <option value="Hardware">Hardware</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-on-surface-variant font-medium mb-1">Amount ($)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    required
+                    value={newAmount}
+                    onChange={(e) => setNewAmount(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-on-surface-variant font-medium mb-1">Payment Method</label>
+                  <select
+                    value={newMethod}
+                    onChange={(e) => setNewMethod(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface focus:outline-none focus:border-primary"
+                  >
+                    <option value="PayPal Business">PayPal Business</option>
+                    <option value="Stripe Card (*8821)">Stripe Card (*8821)</option>
+                    <option value="Direct ACH Transfer">Direct ACH Transfer</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center pt-5">
+                  <label className="flex items-center gap-2 cursor-pointer text-on-surface-variant">
+                    <input
+                      type="checkbox"
+                      checked={newIsRecurring}
+                      onChange={(e) => setNewIsRecurring(e.target.checked)}
+                      className="rounded border-outline-variant text-primary focus:ring-primary"
+                    />
+                    <span>Recurring monthly?</span>
+                  </label>
+                </div>
+              </div>
+
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-outline-variant/30">
+                <button
+                  type="button"
+                  onClick={() => setIsAddModalOpen(false)}
+                  className="px-3 py-1.5 rounded-lg bg-surface-container-high text-on-surface-variant hover:text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 rounded-lg bg-primary text-on-primary-fixed font-semibold hover:brightness-110 shadow"
+                >
+                  Save to Neon DB
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

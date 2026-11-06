@@ -35,6 +35,7 @@ export function DashboardLiveBannerAndMetrics() {
   });
 
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("/api/dashboard/metrics")
@@ -42,6 +43,7 @@ export function DashboardLiveBannerAndMetrics() {
       .then((data) => {
         if (data?.metrics) {
           setMetrics(data.metrics);
+          if (data.authenticated) setIsAuthenticated(true);
         }
       })
       .catch(() => {});
@@ -80,7 +82,7 @@ export function DashboardLiveBannerAndMetrics() {
             >
               auto_awesome
             </span>
-            <span>AI Autonomous Recommendation Active</span>
+            <span>{isAuthenticated ? "Live Neon Database Synchronized" : "Autonomous Guardian Active (Demo Profile)"}</span>
           </div>
 
           <h2 className="font-headline-md text-xl lg:text-2xl text-on-surface font-semibold">

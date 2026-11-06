@@ -19,6 +19,7 @@ export const TransactionsClient: React.FC = () => {
   const [currencyFilter, setCurrencyFilter] = useState("All");
   const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
 
   useEffect(() => {
     const localData = loadTransactionsFromStorage();
@@ -49,6 +50,7 @@ export const TransactionsClient: React.FC = () => {
             notes: t.notes ? String(t.notes) : undefined,
           }));
           setTransactions(mapped);
+          setIsLiveDb(true);
         }
       })
       .catch(() => {});
@@ -93,14 +95,17 @@ export const TransactionsClient: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-[1600px] mx-auto">
-      {/* Simulation Banner Notice */}
+      {/* Simulation / Live Banner Notice */}
       <div className="p-3 rounded-xl bg-surface-container-lowest border border-primary/20 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px]">
-            Demo Ledger
+          <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px] flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            {isLiveDb ? "Live Neon Database Ledger" : "Demo Ledger"}
           </span>
           <span className="text-on-surface-variant">
-            Simulated institutional transactions ledger with deterministic fee breakdowns and RFC-4180 CSV export. Not an actual payment processor statement.
+            {isLiveDb
+              ? "Reconciled ledger from your Neon PostgreSQL database with deterministic fee splits and RFC-4180 CSV export."
+              : "Simulated institutional transactions ledger with deterministic fee breakdowns and RFC-4180 CSV export. Not an actual payment processor statement."}
           </span>
         </div>
         <span className="text-secondary flex items-center gap-1 font-label-sm font-medium">

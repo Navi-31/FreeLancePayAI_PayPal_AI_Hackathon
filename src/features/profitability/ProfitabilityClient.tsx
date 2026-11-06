@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface ProjectProfitRecord {
@@ -66,6 +66,31 @@ export function ProfitabilityClient() {
   const [selectedClientFilter, setSelectedClientFilter] = useState<string>("ALL");
   const [showLogModal, setShowLogModal] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+
+  useEffect(() => {
+    fetch("/api/invoices")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.invoices && Array.isArray(data.invoices) && data.invoices.length > 0) {
+          const liveProjects: ProjectProfitRecord[] = data.invoices.map((inv: Record<string, unknown>, idx: number) => {
+            const rev = Number(inv.total || 0);
+            return {
+              id: `live-proj-${idx}`,
+              project: String(inv.projectTitle || "Deliverable"),
+              client: String(inv.clientName || "Client"),
+              revenue: rev,
+              costs: Math.round(rev * 0.12 * 100) / 100,
+              hours: Math.max(8, Math.round(rev / 125)),
+              type: "Fixed-Price" as const,
+            };
+          });
+          setProjects([...liveProjects, ...INITIAL_PROJECTS]);
+          setIsLiveDb(true);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Form for logging hours
   const [logProjectId, setLogProjectId] = useState<string>("proj-1");
@@ -131,7 +156,7 @@ export function ProfitabilityClient() {
             </h1>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/30 border border-secondary/40 text-secondary text-xs font-semibold font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              Real-Time Margin Telemetry
+              {isLiveDb ? "Live Neon Project Yields" : "Real-Time Margin Telemetry"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">
