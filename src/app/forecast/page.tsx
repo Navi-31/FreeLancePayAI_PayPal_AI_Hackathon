@@ -6,7 +6,7 @@ export default function CashflowForecastPage() {
   return (
     <AppLayout
       pageTitle="Cashflow Forecast & Runway Trajectory"
-      pageSubtitle="TREASURY & FISCAL • Predictive Bayesian runway modeling, upcoming event ledgers, and escrow trajectory simulation"
+      pageSubtitle="TREASURY & FISCAL • Predictive Bayesian runway modeling, upcoming event ledgers, and milestone trajectory simulation"
     >
       <ForecastClient />
     </AppLayout>

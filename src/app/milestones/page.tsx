@@ -6,7 +6,7 @@ export default function MilestonePaymentsPage() {
   return (
     <AppLayout
       pageTitle="Milestone Payments"
-      pageSubtitle="CORE PROTOCOL • Autonomous Escrow Engine"
+      pageSubtitle="CORE PROTOCOL • Milestone Authorization & Capture Engine"
       userBadge="Private Vault Tier"
     >
       <MilestonesClient />

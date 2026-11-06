@@ -549,7 +549,7 @@ export async function captureMilestonePayment(userId: string, milestoneId: strin
         hash,
         description: `Milestone Settlement: ${milestone.project.title} (${milestone.code})`,
         clientName: milestone.project.client.name,
-        type: "escrow_capture",
+        type: "milestone_capture",
         status: "settled",
         currency: milestone.project.currency,
         currencySymbol: milestone.project.currencySymbol,

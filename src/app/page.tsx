@@ -130,7 +130,7 @@ export default function DashboardPage() {
 
                 <div>
                   <div className="flex justify-between text-xs mb-1 font-medium">
-                    <span className="text-on-surface">Escrow Retainers</span>
+                    <span className="text-on-surface">Authorized Retainers</span>
                     <span className="text-emerald-400 font-mono">$11,400 (15%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
