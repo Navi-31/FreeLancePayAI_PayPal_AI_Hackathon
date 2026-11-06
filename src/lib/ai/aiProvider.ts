@@ -79,49 +79,73 @@ async function callGeminiApi<T>(
   model: string,
   apiKey: string
 ): Promise<T> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 6000);
+  const maxRetries = 2;
+  let delayMs = 500;
 
-  try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-    const response = await fetch(url, {
-      method: "POST",
-      signal: controller.signal,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: options.systemPrompt + "\nRespond with valid JSON matching the requested structure." }],
-        },
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: options.userPrompt }],
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: "POST",
+        signal: controller.signal,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: options.systemPrompt + "\nRespond with valid JSON matching the requested structure." }],
           },
-        ],
-        generationConfig: {
-          temperature: options.temperature ?? 0.2,
-          maxOutputTokens: options.maxTokens ?? 2048,
-          responseMimeType: "application/json",
-        },
-      }),
-    });
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: options.userPrompt }],
+            },
+          ],
+          generationConfig: {
+            temperature: options.temperature ?? 0.2,
+            maxOutputTokens: options.maxTokens ?? 2048,
+            responseMimeType: "application/json",
+          },
+        }),
+      });
 
-    if (!response.ok) {
-      const err = await response.text();
-      throw new Error(`Gemini API error (${response.status}): ${err}`);
+      if (!response.ok) {
+        // Bounded retries with backoff for transient 503 (high demand) and 429 (rate limits)
+        if ((response.status === 503 || response.status === 429) && attempt < maxRetries) {
+          console.warn(`[Gemini API] Transient ${response.status} on attempt ${attempt + 1}/${maxRetries + 1}. Retrying in ${delayMs}ms...`);
+          await new Promise((res) => setTimeout(res, delayMs));
+          delayMs *= 2;
+          continue;
+        }
+
+        const err = await response.text();
+        throw new Error(`Gemini API error (${response.status}): ${err}`);
+      }
+
+      const json = await response.json();
+      const candidateText = json.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!candidateText) {
+        throw new Error("Gemini returned empty candidate response");
+      }
+
+      const parsed = JSON.parse(candidateText);
+      return options.schema ? options.schema.parse(parsed) : (parsed as T);
+    } catch (err: unknown) {
+      const isAbort = (err as Error)?.name === "AbortError";
+      if (isAbort && attempt < maxRetries) {
+        console.warn(`[Gemini API] Request timed out on attempt ${attempt + 1}/${maxRetries + 1}. Retrying in ${delayMs}ms...`);
+        await new Promise((res) => setTimeout(res, delayMs));
+        delayMs *= 2;
+        continue;
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeoutId);
     }
-
-    const json = await response.json();
-    const candidateText = json.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!candidateText) {
-      throw new Error("Gemini returned empty candidate response");
-    }
-
-    const parsed = JSON.parse(candidateText);
-    return options.schema ? options.schema.parse(parsed) : (parsed as T);
-  } finally {
-    clearTimeout(timeoutId);
   }
+
+  throw new Error("Gemini API call exhausted all retry attempts");
 }
 
 /**
