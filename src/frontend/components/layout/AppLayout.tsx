@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/frontend/features/auth/AuthContext";
 import { SideNavBar } from "./SideNavBar";
 import { TopNavBar } from "./TopNavBar";
 import { SupportedCurrency } from "@/shared/types/navigation";
@@ -18,8 +20,28 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   pageSubtitle,
   userBadge,
 }) => {
+  const router = useRouter();
+  const { user, loading } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currency, setCurrency] = useState<SupportedCurrency>("USD");
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace("/login");
+    }
+  }, [loading, user, router]);
+
+  // While checking authentication or if unauthenticated, prevent showing private layout
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-surface-container-lowest flex items-center justify-center p-6 text-on-surface">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+          <span className="text-xs text-outline font-mono">Verifying authentication session...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-surface-container-lowest text-on-surface flex selection:bg-primary selection:text-on-primary">

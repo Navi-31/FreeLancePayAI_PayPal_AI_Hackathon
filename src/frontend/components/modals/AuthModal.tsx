@@ -114,7 +114,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Alex Vance"
+                  placeholder="Enter your full name"
                   className="w-full px-3 py-2 rounded-xl bg-surface-container-high border border-outline-variant/30 text-on-surface text-xs focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
@@ -129,7 +129,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                   type="text"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  placeholder="e.g. Vance Design Engineering LLC"
+                  placeholder="e.g. Design Studio LLC"
                   className="w-full px-3 py-2 rounded-xl bg-surface-container-high border border-outline-variant/30 text-on-surface text-xs focus:outline-none focus:border-primary transition-colors"
                 />
               </div>
@@ -144,7 +144,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="alex.vance@studio.ai"
+                placeholder="Enter your email address"
                 className="w-full px-3 py-2 rounded-xl bg-surface-container-high border border-outline-variant/30 text-on-surface text-xs focus:outline-none focus:border-primary transition-colors"
               />
             </div>
@@ -179,12 +179,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
               )}
             </AuricButton>
           </form>
-
-          {/* Quick Demo Credentials Tip */}
-          <div className="mt-4 p-2.5 rounded-lg bg-surface-container-high/60 border border-outline-variant/20 text-[11px] text-on-surface-variant">
-            <span className="text-primary font-medium">Default Dev Credentials:</span>{" "}
-            <code className="text-white">alex.vance@studio.ai</code> / <code className="text-white">DevPassword123!</code>
-          </div>
 
           {/* Switch Tab */}
           <div className="mt-4 text-center">

@@ -23,7 +23,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   onToggleMobileMenu,
   currency = "USD",
   onCurrencyChange,
-  title = "Good evening, Alex",
+  title = "Autonomous Workspace",
   subtitle = "Autonomous fiscal guardian is operational",
   userBadge = "PRO VIP",
 }) => {
@@ -143,9 +143,9 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
     }
   };
 
-  const displayName = user?.name || "Alex Vance";
-  const displayEmail = user?.email || "alex.vance@studio.ai";
-  const displayRole = user?.profile?.title || "Design Technologist";
+  const displayName = user?.name || "Operator";
+  const displayEmail = user?.email || "";
+  const displayRole = user?.profile?.title || "Independent Operator";
   const initials = displayName
     .split(" ")
     .map((n) => n[0])
@@ -466,14 +466,13 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
                 <span>Treasury Vaults</span>
               </Link>
 
-              {!isDemoMode && (
+              {user && (
                 <button
                   onClick={async () => {
-                    await logout();
                     setShowProfileMenu(false);
-                    router.push("/login");
+                    await logout();
                   }}
-                  className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-error-container/20 text-error hover:text-error transition-colors"
+                  className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-error-container/20 text-error hover:text-error transition-colors cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-base">logout</span>
                   <span>Sign Out</span>

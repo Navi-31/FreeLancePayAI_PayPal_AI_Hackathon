@@ -68,7 +68,10 @@ export async function POST(request: Request) {
         process.env.AUTO_MIRROR_SAMPLE_DATA === "true";
 
       if (shouldMirror) {
-        datasetMigration = await mirrorUserDataset("alex.vance@studio.ai", user.id);
+        const sourceEmail = (process.env.PRIMARY_ACCOUNT_EMAIL || "").toLowerCase().trim();
+        if (sourceEmail && sourceEmail !== normalizedEmail) {
+          datasetMigration = await mirrorUserDataset(sourceEmail, user.id);
+        }
       }
     }
 

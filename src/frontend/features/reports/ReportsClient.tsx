@@ -280,7 +280,7 @@ export function ReportsClient() {
                 </span>
               </div>
               <div className="flex flex-wrap items-center gap-x-3 text-xs text-outline font-mono mt-1">
-                <span>Client Studio: <strong className="text-primary">Alex Vance Design</strong></span>
+                <span>Client Studio: <strong className="text-primary">Executive Workspace</strong></span>
                 <span>•</span>
                 <span>EIN: XX-XXXX901</span>
                 <span>•</span>

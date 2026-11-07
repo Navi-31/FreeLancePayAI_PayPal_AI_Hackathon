@@ -51,35 +51,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
 
-    // On public routes (/, /login, /signup, etc.), keep user unauthenticated
-    const isPublicRoute =
-      typeof window !== "undefined" &&
-      (window.location.pathname === "/" ||
-        window.location.pathname.startsWith("/login") ||
-        window.location.pathname.startsWith("/signup") ||
-        window.location.pathname.startsWith("/verify-email") ||
-        window.location.pathname.startsWith("/forgot-password") ||
-        window.location.pathname.startsWith("/reset-password"));
-
-    if (!isPublicRoute) {
-      // Default to fallback offline/demo session for seamless showcase on internal pages
-      setUser({
-        id: "demo-usr-9021",
-        email: "alex.vance@studio.ai",
-        name: "Alex Vance",
-        role: "freelancer",
-        badge: "PRO VIP",
-        profile: {
-          title: "Design Technologist",
-          businessName: "Vance Design Engineering LLC",
-          currency: "USD",
-        },
-      });
-      setIsDemoMode(true);
-    } else {
-      setUser(null);
-      setIsDemoMode(false);
-    }
+    // If not authenticated, ensure user state is completely null
+    setUser(null);
+    setIsDemoMode(false);
   }, []);
 
   useEffect(() => {
@@ -137,7 +111,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Ignored
     }
     setUser(null);
-    setIsDemoMode(true);
+    setIsDemoMode(false);
+
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("freelancepay_invoices_v1");
+        localStorage.removeItem("freelancepay_clients_v1");
+        localStorage.removeItem("freelancepay_transactions_v1");
+        sessionStorage.clear();
+      } catch {
+        // Ignored
+      }
+      window.location.href = "/";
+    }
   };
 
   const toggleDemoMode = () => {

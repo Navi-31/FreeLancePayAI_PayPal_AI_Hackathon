@@ -24,10 +24,10 @@ export const InvoicePaperPreview: React.FC<InvoicePaperPreviewProps> = ({ invoic
             Issuer / Remit To
           </span>
           <h3 className="font-headline-sm text-base lg:text-lg font-semibold text-on-surface">
-            Alex Vance Studio
+            FreelancePay Executive Studio
           </h3>
           <p className="font-body-sm text-xs text-on-surface-variant">
-            Austin, TX • alex@vance.design
+            Remit via Connected Settlement Protocol
           </p>
           <div className="flex items-center gap-2 font-mono text-[10px] text-outline pt-1">
             <span>Tax ID: XX-XXXX901</span>

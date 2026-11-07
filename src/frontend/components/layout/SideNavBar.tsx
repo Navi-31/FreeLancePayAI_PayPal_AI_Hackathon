@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/frontend/features/auth/AuthContext";
 import { NAVIGATION_SECTIONS } from "@/frontend/config/navigation";
 import { cn } from "@/shared/utils";
 
@@ -13,6 +14,7 @@ export interface SideNavBarProps {
 
 export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className }) => {
   const pathname = usePathname();
+  const { user, logout } = useAuth();
   const [navigatingTo, setNavigatingTo] = React.useState<string | null>(null);
 
   React.useEffect(() => {
@@ -194,6 +196,22 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className
             </div>
             <span className="font-mono text-[10px] text-primary/80">v4.8.2-auric</span>
           </div>
+
+          {user && (
+            <button
+              onClick={() => {
+                if (onCloseMobile) onCloseMobile();
+                logout();
+              }}
+              className="w-full mt-2 flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs text-error/80 hover:text-error hover:bg-error-container/20 transition-all cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-sm leading-none">logout</span>
+                <span>Sign Out</span>
+              </div>
+              <span className="text-[10px] text-outline font-mono">End Session</span>
+            </button>
+          )}
         </div>
       </div>
     </aside>

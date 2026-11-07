@@ -21,25 +21,28 @@ const prisma = new PrismaClient({ adapter });
 async function main() {
   console.log("🌱 Starting safe development database seed...");
 
-  // 1. Seed Alex Vance User
+  // 1. Seed Primary Operator User
   const devPasswordHash = await bcrypt.hash("DevPassword123!", 12);
+  const operatorEmail = process.env.PRIMARY_ACCOUNT_EMAIL || "operator@freelancepay.ai";
+  const operatorName = process.env.PRIMARY_ACCOUNT_NAME || "Autonomous Operator";
+
   const user = await prisma.user.upsert({
-    where: { email: "alex.vance@studio.ai" },
+    where: { email: operatorEmail },
     update: {
-      name: "Alex Vance",
+      name: operatorName,
       badge: "PRO VIP",
       role: "freelancer",
     },
     create: {
-      email: "alex.vance@studio.ai",
+      email: operatorEmail,
       passwordHash: devPasswordHash,
-      name: "Alex Vance",
+      name: operatorName,
       badge: "PRO VIP",
       role: "freelancer",
       profile: {
         create: {
-          title: "Design Technologist & Consultant",
-          businessName: "Vance Design Engineering LLC",
+          title: "Autonomous Technologist & Consultant",
+          businessName: "Executive Studio LLC",
           country: "US",
           currency: "USD",
           taxId: "XX-XXX8921",

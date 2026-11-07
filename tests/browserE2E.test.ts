@@ -155,10 +155,10 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
     testUserEmail = `browser_e2e_${testId}@freelancepay.ai`;
 
     // Fill form
-    await page.fill("input[placeholder*='Alex Vance']", "Browser E2E Lead");
-    await page.fill("input[placeholder*='studio.ai']", testUserEmail);
+    await page.fill("input[placeholder*='full name'], input[placeholder*='Alex Vance']", "Browser E2E Lead");
+    await page.fill("input[placeholder*='email'], input[placeholder*='studio.ai']", testUserEmail);
     await page.fill("input[type='password']", "SecureE2EPass!99");
-    await page.fill("input[placeholder*='Vance Design']", "E2E Studio LLC");
+    await page.fill("input[placeholder*='Studio'], input[placeholder*='Vance Design']", "E2E Studio LLC");
 
     // Submit
     await page.click("button[type='submit']");
