@@ -11,6 +11,14 @@ const loginSchema = z.object({
   directSessionForTests: z.boolean().optional(),
 });
 
+function maskEmail(email: string): string {
+  const parts = email.split("@");
+  if (parts.length !== 2) return email;
+  const [name, domain] = parts;
+  if (name.length <= 2) return `${name}•••@${domain}`;
+  return `${name[0]}••••${name.slice(-1)}@${domain}`;
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -84,16 +92,34 @@ export async function POST(request: Request) {
       return response;
     }
 
-    // Standard 2-Factor Email OTP step for Login (non-blocking email dispatch)
+    // Standard 2-Factor Email OTP step for Login (await live SMTP delivery)
     const otpResult = await createAndSendOtp({
       email: normalizedEmail,
       purpose: "LOGIN_OTP",
       recipientName: user.name,
       userId: user.id,
-      awaitDelivery: false,
+      awaitDelivery: true,
     });
 
-    // Record audit log asynchronously without blocking login latency
+    if (!otpResult.success) {
+      if (otpResult.cooldownSecondsRemaining) {
+        // Cooldown active, but user already has an active pending code
+        return NextResponse.json({
+          success: true,
+          requireOtp: true,
+          email: normalizedEmail,
+          maskedEmail: maskEmail(normalizedEmail),
+          message: `A security code was recently dispatched. Please check your inbox or wait ${otpResult.cooldownSecondsRemaining}s to resend.`,
+          cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining,
+        });
+      }
+      return NextResponse.json(
+        { error: otpResult.error || "Failed to deliver 2FA verification email. Please check your SMTP settings." },
+        { status: 500 }
+      );
+    }
+
+    // Record audit log asynchronously
     recordAuditLog({
       userId: user.id,
       action: "user_login_otp_dispatched",
@@ -105,8 +131,9 @@ export async function POST(request: Request) {
       success: true,
       requireOtp: true,
       email: normalizedEmail,
+      maskedEmail: maskEmail(normalizedEmail),
       message: "A 6-digit security verification code has been sent to your email.",
-      cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining,
+      cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining || 60,
     });
   } catch (error) {
     console.error("Login error:", error);

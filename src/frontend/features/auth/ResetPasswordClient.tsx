@@ -130,8 +130,16 @@ export function ResetPasswordClient() {
                 </div>
 
                 {(!token || !email) && (
-                  <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs">
-                    This password reset link is invalid or incomplete. Please request a new link from the forgot password page.
+                  <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs space-y-2">
+                    <p>No active reset session found. Please request a 6-digit verification code to reset your password.</p>
+                    <div>
+                      <Link
+                        href="/forgot-password"
+                        className="inline-flex items-center gap-1.5 text-[#f4c86d] font-semibold hover:underline"
+                      >
+                        <span>Go to Forgot Password Verification &rarr;</span>
+                      </Link>
+                    </div>
                   </div>
                 )}
 

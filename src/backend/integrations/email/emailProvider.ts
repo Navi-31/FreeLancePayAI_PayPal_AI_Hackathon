@@ -78,32 +78,49 @@ export function getActiveEmailProvider(): {
 }
 
 /**
- * Creates a cached nodemailer transporter instance when SMTP is active.
+ * Creates a nodemailer transporter instance when SMTP is active.
+ * Uses direct connection without persistent idle pooling to avoid stale socket resets with Gmail.
  */
 let smtpTransporter: Transporter | null = null;
 
 function getSmtpTransporter(): Transporter {
   if (!smtpTransporter) {
-    smtpTransporter = nodemailer.createTransport({
-      pool: true,
-      maxConnections: 5,
-      maxMessages: 100,
-      host: env.SMTP_HOST,
-      port: env.SMTP_PORT,
-      secure: env.SMTP_SECURE, // true for port 465 (SSL)
-      auth: {
-        user: env.SMTP_USER,
-        pass: env.SMTP_PASS,
-      },
-      socketTimeout: 30000,
-    });
+    const isGmail = (env.SMTP_HOST || "").toLowerCase().includes("gmail.com");
+    const cleanUser = env.SMTP_USER?.trim();
+    const cleanPass = env.SMTP_PASS?.replace(/\s+/g, "");
+
+    smtpTransporter = nodemailer.createTransport(
+      isGmail
+        ? {
+            service: "gmail",
+            auth: {
+              user: cleanUser,
+              pass: cleanPass,
+            },
+            connectionTimeout: 15000,
+            greetingTimeout: 15000,
+            socketTimeout: 30000,
+          }
+        : {
+            host: env.SMTP_HOST,
+            port: env.SMTP_PORT,
+            secure: env.SMTP_SECURE,
+            auth: {
+              user: cleanUser,
+              pass: cleanPass,
+            },
+            connectionTimeout: 15000,
+            greetingTimeout: 15000,
+            socketTimeout: 30000,
+          }
+    );
   }
   return smtpTransporter;
 }
 
 /**
- * Dispatches an email via SMTP (Nodemailer), Resend API, or safe mock provider.
- * Never throws unhandled network errors; returns structured result.
+ * Dispatches an email via SMTP (Nodemailer), Resend API, or fails if not configured.
+ * Never silently reports simulated delivery as success when live delivery fails.
  */
 export async function dispatchEmailThroughProvider(
   payload: EmailPayload
@@ -113,7 +130,7 @@ export async function dispatchEmailThroughProvider(
     return {
       success: false,
       status: "failed",
-      provider: "mock",
+      provider: "smtp",
       error: `Invalid recipient email address: "${recipient}"`,
       isConfigured: false,
       timestamp: new Date().toISOString(),
@@ -146,22 +163,15 @@ export async function dispatchEmailThroughProvider(
       };
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "Unknown SMTP transmission error";
-      // Transient failures (quota exceeded, timeout, connection reset) fall through to mock
-      // so the delivery record is still created and the email can be retried.
-      // Authentication failures (wrong credentials) return a hard failure.
-      const isTransient = /limit exceeded|too many|rate limit|timeout|ECONNRE|ETIMEDOUT|ENOTFOUND|socket hang up/i.test(errMsg);
-      if (isTransient) {
-        console.warn(`[EmailProvider] SMTP transient failure, falling through to mock: ${errMsg}`);
-      } else {
-        return {
-          success: false,
-          status: "failed",
-          provider: "smtp",
-          error: errMsg,
-          isConfigured: true,
-          timestamp: new Date().toISOString(),
-        };
-      }
+      console.error(`[EmailProvider] SMTP delivery failure to ${recipient}:`, errMsg);
+      return {
+        success: false,
+        status: "failed",
+        provider: "smtp",
+        error: errMsg,
+        isConfigured: true,
+        timestamp: new Date().toISOString(),
+      };
     }
   }
 
@@ -186,11 +196,13 @@ export async function dispatchEmailThroughProvider(
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
+        const resendErr = data?.message || `Resend HTTP error ${response.status}`;
+        console.error(`[EmailProvider] Resend delivery failure:`, resendErr);
         return {
           success: false,
           status: "failed",
           provider: "resend",
-          error: data?.message || `Resend HTTP error ${response.status}`,
+          error: resendErr,
           isConfigured: true,
           timestamp: new Date().toISOString(),
         };
@@ -205,24 +217,27 @@ export async function dispatchEmailThroughProvider(
         timestamp: new Date().toISOString(),
       };
     } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Unknown network error contacting Resend API";
+      console.error(`[EmailProvider] Resend network error:`, errMsg);
       return {
         success: false,
         status: "failed",
         provider: "resend",
-        error: err instanceof Error ? err.message : "Unknown network error contacting Resend API",
+        error: errMsg,
         isConfigured: true,
         timestamp: new Date().toISOString(),
       };
     }
   }
 
-  // 3. Safe Mock / Simulated Provider Fallback
-  // Clearly states "simulated" so UI and audit logs never pretend a live email was dispatched.
+  // 3. Fallback when no live email provider is configured
+  console.warn(`[EmailProvider] No active email provider configured for ${recipient}`);
   return {
-    success: true,
-    status: "simulated",
+    success: false,
+    status: "failed",
     provider: "mock",
-    providerMessageId: `sim_msg_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`,
+    error: "No live email provider configured. Please configure SMTP_USER and SMTP_PASS.",
+    providerMessageId: `sim_msg_${Date.now()}`,
     isConfigured: false,
     timestamp: new Date().toISOString(),
   };

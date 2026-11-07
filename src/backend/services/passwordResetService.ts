@@ -88,6 +88,51 @@ export async function requestPasswordReset(email: string): Promise<RequestPasswo
   return genericResponse;
 }
 
+/**
+ * Creates a single-use password reset authorization token after email OTP verification.
+ * Valid for 15 minutes to allow the user to set a new password.
+ */
+export async function createPasswordResetTokenAfterOtp(
+  email: string
+): Promise<{ success: boolean; token?: string; error?: string }> {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await prisma.user.findUnique({
+    where: { email: normalizedEmail },
+  });
+
+  if (!user) {
+    return { success: false, error: "Account not found for this email address." };
+  }
+
+  // Invalidate any older unused reset tokens
+  await prisma.passwordResetToken.updateMany({
+    where: {
+      email: normalizedEmail,
+      used: false,
+    },
+    data: {
+      used: true,
+    },
+  });
+
+  const rawToken = crypto.randomBytes(32).toString("hex");
+  const tokenHash = hashToken(rawToken);
+  const expiresAt = new Date(Date.now() + RESET_TOKEN_EXPIRY_MINUTES * 60 * 1000);
+
+  await prisma.passwordResetToken.create({
+    data: {
+      userId: user.id,
+      email: normalizedEmail,
+      tokenHash,
+      expiresAt,
+      used: false,
+    },
+  });
+
+  return { success: true, token: rawToken };
+}
+
 export interface ResetPasswordResult {
   success: boolean;
   error?: string;

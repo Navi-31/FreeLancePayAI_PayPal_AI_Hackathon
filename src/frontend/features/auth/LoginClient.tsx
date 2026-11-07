@@ -26,6 +26,55 @@ export function LoginClient() {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otpLoading, setOtpLoading] = useState(false);
   const [otpError, setOtpError] = useState<string | null>(null);
+  const [maskedEmail, setMaskedEmail] = useState<string>("");
+  const [resendCooldown, setResendCooldown] = useState<number>(60);
+  const [resending, setResending] = useState<boolean>(false);
+  const [resendSuccess, setResendSuccess] = useState<string | null>(null);
+
+  // Resend countdown timer
+  useEffect(() => {
+    if (!requireOtp || resendCooldown <= 0) return;
+    const interval = setInterval(() => {
+      setResendCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [requireOtp, resendCooldown]);
+
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || resending) return;
+    setResending(true);
+    setOtpError(null);
+    setResendSuccess(null);
+
+    try {
+      const res = await fetch("/api/auth/resend-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim().toLowerCase(),
+          purpose: "LOGIN_OTP",
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setOtpError(data.error || "Failed to resend verification code.");
+        if (data.cooldownSecondsRemaining) {
+          setResendCooldown(data.cooldownSecondsRemaining);
+        }
+        setResending(false);
+        return;
+      }
+
+      setResendSuccess("A fresh verification code has been dispatched to your email.");
+      setResendCooldown(data.cooldownSecondsRemaining || 60);
+      setOtp(["", "", "", "", "", ""]);
+      setResending(false);
+    } catch {
+      setOtpError("Network error attempting to resend code.");
+      setResending(false);
+    }
+  };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +104,12 @@ export function LoginClient() {
 
       if (data.requireOtp) {
         // 2-Factor OTP required
+        setMaskedEmail(data.maskedEmail || email.trim());
+        if (data.cooldownSecondsRemaining) {
+          setResendCooldown(data.cooldownSecondsRemaining);
+        } else {
+          setResendCooldown(60);
+        }
         setRequireOtp(true);
         setLoading(false);
         return;
@@ -394,9 +449,24 @@ export function LoginClient() {
                 /* STEP 2: 6-Digit OTP Form */
                 <form className="space-y-6" onSubmit={handleOtpSubmit}>
                   <div>
-                    <label className="block text-xs font-mono uppercase tracking-wider text-[#9a8f7e] mb-3">
-                      Authentication Security Code
-                    </label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-mono uppercase tracking-wider text-[#9a8f7e]">
+                        Security Verification Code
+                      </label>
+                      <span className="text-[11px] text-[#f4c86d] font-mono">2FA Active</span>
+                    </div>
+                    <p className="text-xs text-[#d1c5b2] mb-4">
+                      Enter the 6-digit code sent to{" "}
+                      <span className="text-white font-mono font-medium">{maskedEmail || email}</span>
+                    </p>
+
+                    {resendSuccess && (
+                      <div className="mb-4 p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm text-emerald-400">check_circle</span>
+                        <span>{resendSuccess}</span>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-6 gap-2 sm:gap-3">
                       {otp.map((digit, idx) => (
                         <input
@@ -434,13 +504,36 @@ export function LoginClient() {
                     )}
                   </button>
 
-                  <div className="text-center">
+                  {/* Resend OTP Section */}
+                  <div className="flex items-center justify-between pt-2 border-t border-[#4e4637]/30 text-xs">
                     <button
                       type="button"
-                      onClick={() => setRequireOtp(false)}
-                      className="text-xs text-[#9a8f7e] hover:text-white transition-colors"
+                      onClick={() => {
+                        setRequireOtp(false);
+                        setOtpError(null);
+                        setResendSuccess(null);
+                      }}
+                      className="text-[#9a8f7e] hover:text-white transition-colors"
                     >
                       &larr; Re-enter credentials
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleResendOtp}
+                      disabled={resendCooldown > 0 || resending}
+                      className="font-medium text-[#f4c86d] hover:text-[#ffdea0] disabled:text-[#9a8f7e] disabled:cursor-not-allowed transition-colors flex items-center gap-1.5"
+                    >
+                      {resending ? (
+                        <span className="flex items-center gap-1.5">
+                          <span className="inline-block w-3 h-3 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                          <span>Sending code...</span>
+                        </span>
+                      ) : resendCooldown > 0 ? (
+                        <span>Resend code in {resendCooldown}s</span>
+                      ) : (
+                        <span>Resend OTP</span>
+                      )}
                     </button>
                   </div>
                 </form>

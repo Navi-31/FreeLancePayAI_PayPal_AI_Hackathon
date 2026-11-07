@@ -3,13 +3,14 @@ import { z } from "zod";
 import { prisma } from "@/backend/db/db";
 import { createSessionToken, getSessionCookieConfig } from "@/backend/auth/auth";
 import { verifyOtpCode } from "@/backend/services/otpService";
+import { createPasswordResetTokenAfterOtp } from "@/backend/services/passwordResetService";
 import { mirrorUserDataset } from "@/backend/services/userMigrationService";
 import { recordAuditLog } from "@/backend/services/auditService";
 
 const verifyOtpSchema = z.object({
   email: z.string().email(),
   otp: z.string().min(6).max(6),
-  purpose: z.enum(["SIGNUP_VERIFICATION", "LOGIN_OTP"]),
+  purpose: z.enum(["SIGNUP_VERIFICATION", "LOGIN_OTP", "PASSWORD_RESET"]),
 });
 
 export async function POST(request: Request) {
@@ -50,6 +51,22 @@ export async function POST(request: Request) {
         { error: "User account not found for this email address" },
         { status: 404 }
       );
+    }
+
+    // If verifying password reset OTP, return a single-use reset authorization token
+    if (purpose === "PASSWORD_RESET") {
+      const tokenResult = await createPasswordResetTokenAfterOtp(normalizedEmail);
+      if (!tokenResult.success || !tokenResult.token) {
+        return NextResponse.json(
+          { error: tokenResult.error || "Unable to authorize password reset" },
+          { status: 400 }
+        );
+      }
+      return NextResponse.json({
+        success: true,
+        resetToken: tokenResult.token,
+        message: "Security code verified. Please set your new password.",
+      });
     }
 
     let datasetMigration = null;

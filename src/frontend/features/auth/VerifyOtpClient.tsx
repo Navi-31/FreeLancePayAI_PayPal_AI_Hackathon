@@ -25,9 +25,9 @@ export function VerifyOtpClient() {
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  // Timers: 5-minute expiry (300s), 100-second resend cooldown
+  // Timers: 5-minute expiry (300s), 60-second resend cooldown
   const [expirySeconds, setExpirySeconds] = useState(300);
-  const [cooldownSeconds, setCooldownSeconds] = useState(100);
+  const [cooldownSeconds, setCooldownSeconds] = useState(60);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -162,7 +162,7 @@ export function VerifyOtpClient() {
       setSuccessMsg("A fresh 6-digit code has been dispatched to your email.");
       setOtp(["", "", "", "", "", ""]);
       setExpirySeconds(300);
-      setCooldownSeconds(100);
+      setCooldownSeconds(data.cooldownSecondsRemaining || 60);
       setResending(false);
     } catch {
       setError("Network error during code dispatch.");

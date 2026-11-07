@@ -4,8 +4,10 @@ import { dispatchEmailThroughProvider } from "@/backend/integrations/email/email
 import { renderOtpEmail } from "@/backend/integrations/email/emailTemplates";
 
 const OTP_EXPIRY_MINUTES = 5;
-const RESEND_COOLDOWN_SECONDS = 100;
+const RESEND_COOLDOWN_SECONDS = 60;
 const MAX_ATTEMPTS = 5;
+
+export type OtpPurpose = "SIGNUP_VERIFICATION" | "LOGIN_OTP" | "PASSWORD_RESET";
 
 /**
  * Computes a secure SHA-256 hash of an OTP code to avoid plain-text storage.
@@ -24,7 +26,7 @@ export function generateNumericOtp(): string {
 
 export interface CreateAndSendOtpParams {
   email: string;
-  purpose: "SIGNUP_VERIFICATION" | "LOGIN_OTP";
+  purpose: OtpPurpose;
   recipientName?: string;
   userId?: string;
   awaitDelivery?: boolean;
@@ -41,7 +43,7 @@ export interface OtpGenerationResult {
 
 /**
  * Creates, persists, and dispatches a 6-digit email OTP.
- * Enforces cooldown between resends and invalidates previous active OTPs for the same purpose.
+ * Enforces 60-second cooldown between resends and invalidates previous active OTPs for the same purpose.
  */
 export async function createAndSendOtp(
   params: CreateAndSendOtpParams
@@ -61,7 +63,7 @@ export async function createAndSendOtp(
 
   if (latestOtp && latestOtp.resendAfter > now) {
     const diffMs = latestOtp.resendAfter.getTime() - now.getTime();
-    const remainingSeconds = Math.ceil(diffMs / 1000);
+    const remainingSeconds = Math.max(1, Math.ceil(diffMs / 1000));
     return {
       success: false,
       cooldownSecondsRemaining: remainingSeconds,
@@ -110,37 +112,59 @@ export async function createAndSendOtp(
     expiryMinutes: OTP_EXPIRY_MINUTES,
   });
 
-  // Dispatch email through SMTP or fallback
+  let subject = "Your FreelancePay AI Security Code";
+  let workflow: "signup_verification" | "login_otp" | "password_reset" = "login_otp";
+
+  if (params.purpose === "SIGNUP_VERIFICATION") {
+    subject = "Verify Your FreelancePay AI Account";
+    workflow = "signup_verification";
+  } else if (params.purpose === "PASSWORD_RESET") {
+    subject = "FreelancePay AI — Password Reset Verification Code";
+    workflow = "password_reset";
+  }
+
+  // Dispatch email through SMTP or live provider (always awaited by default to ensure real delivery)
+  const shouldAwait = params.awaitDelivery !== false;
   const dispatchPromise = dispatchEmailThroughProvider({
     to: normalizedEmail,
-    subject:
-      params.purpose === "SIGNUP_VERIFICATION"
-        ? "Verify Your FreelancePay AI Account"
-        : "Your FreelancePay AI Security Code",
+    subject,
     text,
     html,
-    workflow: params.purpose === "SIGNUP_VERIFICATION" ? "signup_verification" : "login_otp",
+    workflow,
     entityType: "EmailOtp",
     entityId: otpRecord.id,
   });
 
-  let deliveryStatus = "dispatched";
-  if (params.awaitDelivery) {
+  if (shouldAwait) {
     const sendResult = await dispatchPromise;
-    deliveryStatus = sendResult.status;
+    if (!sendResult.success) {
+      console.error(`[OtpService] Dispatch failed to ${normalizedEmail}:`, sendResult.error);
+      return {
+        success: false,
+        error: sendResult.error || "Email delivery failed. Please check SMTP settings.",
+        deliveryStatus: sendResult.status,
+        cooldownSecondsRemaining: 0,
+      };
+    }
+    return {
+      success: true,
+      expiresAt,
+      resendAfter,
+      deliveryStatus: sendResult.status,
+      cooldownSecondsRemaining: RESEND_COOLDOWN_SECONDS,
+    };
   } else {
-    // Fire-and-forget in background with safety handler so login is never blocked
     dispatchPromise.catch((err) => {
-      console.error("Background OTP dispatch error:", err);
+      console.error("[OtpService] Background dispatch error:", err);
     });
+    return {
+      success: true,
+      expiresAt,
+      resendAfter,
+      deliveryStatus: "dispatched",
+      cooldownSecondsRemaining: RESEND_COOLDOWN_SECONDS,
+    };
   }
-
-  return {
-    success: true,
-    expiresAt,
-    resendAfter,
-    deliveryStatus,
-  };
 }
 
 export interface VerifyOtpResult {
@@ -155,7 +179,7 @@ export interface VerifyOtpResult {
  */
 export async function verifyOtpCode(
   email: string,
-  purpose: "SIGNUP_VERIFICATION" | "LOGIN_OTP",
+  purpose: OtpPurpose,
   inputOtp: string
 ): Promise<VerifyOtpResult> {
   const normalizedEmail = email.trim().toLowerCase();

@@ -320,17 +320,28 @@ ${opts.actionUrl ? `Review here: ${opts.actionUrl}` : ""}
 export interface OtpEmailOptions {
   recipientName?: string;
   otp: string;
-  purpose: "SIGNUP_VERIFICATION" | "LOGIN_OTP";
+  purpose: "SIGNUP_VERIFICATION" | "LOGIN_OTP" | "PASSWORD_RESET";
   expiryMinutes?: number;
 }
 
 export function renderOtpEmail(opts: OtpEmailOptions): { text: string; html: string } {
   const expiry = opts.expiryMinutes || 5;
   const isSignup = opts.purpose === "SIGNUP_VERIFICATION";
-  const title = isSignup ? "Verify Your Account" : "Your Security Verification Code";
-  const headline = isSignup
-    ? "Welcome to FreelancePay AI. Complete your verification below."
-    : "Use this one-time code to authenticate your sign-in request.";
+  const isPasswordReset = opts.purpose === "PASSWORD_RESET";
+
+  let title = "Your Security Verification Code";
+  let headline = "Use this single-use code to authenticate your sign-in request.";
+  let badgeText = "FreelancePay AI • Security Engine";
+
+  if (isSignup) {
+    title = "Verify Your Account";
+    headline = "Welcome to FreelancePay AI. Complete your email verification below.";
+    badgeText = "FreelancePay AI • Account Setup";
+  } else if (isPasswordReset) {
+    title = "Password Reset Security Code";
+    headline = "Use this single-use code to verify your identity and set a new password.";
+    badgeText = "FreelancePay AI • Password Recovery";
+  }
 
   const html = `
 <!DOCTYPE html>
@@ -342,7 +353,7 @@ export function renderOtpEmail(opts: OtpEmailOptions): { text: string; html: str
 <body style="margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f4f4f5;">
   <div style="max-width: 560px; margin: 40px auto; background-color: #18181b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
     <div style="padding: 32px 32px 24px; border-bottom: 1px solid #27272a; background: linear-gradient(135deg, #18181b 0%, #27272a 100%);">
-      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #fbbf24; font-weight: 700; margin-bottom: 8px;">FreelancePay AI &bull; Autonomous Settlement</div>
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #fbbf24; font-weight: 700; margin-bottom: 8px;">${badgeText}</div>
       <h1 style="margin: 0; font-size: 24px; color: #ffffff; font-weight: 700;">${title}</h1>
       <p style="margin: 6px 0 0; color: #a1a1aa; font-size: 14px;">${headline}</p>
     </div>

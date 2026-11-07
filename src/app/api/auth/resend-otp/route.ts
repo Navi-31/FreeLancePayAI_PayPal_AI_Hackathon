@@ -5,7 +5,7 @@ import { createAndSendOtp } from "@/backend/services/otpService";
 
 const resendOtpSchema = z.object({
   email: z.string().email(),
-  purpose: z.enum(["SIGNUP_VERIFICATION", "LOGIN_OTP"]),
+  purpose: z.enum(["SIGNUP_VERIFICATION", "LOGIN_OTP", "PASSWORD_RESET"]),
 });
 
 export async function POST(request: Request) {
@@ -28,7 +28,15 @@ export async function POST(request: Request) {
     });
 
     if (!user) {
-      // Don't leak user presence unconditionally, but for OTP resend return a gentle status
+      // For password reset, never leak whether the email is registered
+      if (purpose === "PASSWORD_RESET") {
+        return NextResponse.json({
+          success: true,
+          message: "If an account exists with this email address, a fresh verification code has been dispatched.",
+          cooldownSecondsRemaining: 60,
+        });
+      }
+
       return NextResponse.json(
         { error: "No pending verification found for this email address" },
         { status: 404 }
@@ -40,22 +48,29 @@ export async function POST(request: Request) {
       purpose,
       recipientName: user.name,
       userId: user.id,
+      awaitDelivery: true,
     });
 
-    if (!otpResult.success && otpResult.cooldownSecondsRemaining) {
+    if (!otpResult.success) {
+      if (otpResult.cooldownSecondsRemaining) {
+        return NextResponse.json(
+          {
+            error: otpResult.error,
+            cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining,
+          },
+          { status: 429 }
+        );
+      }
       return NextResponse.json(
-        {
-          error: otpResult.error,
-          cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining,
-        },
-        { status: 429 }
+        { error: otpResult.error || "Failed to dispatch verification email. Please check SMTP settings." },
+        { status: 500 }
       );
     }
 
     return NextResponse.json({
       success: true,
       message: "A fresh verification code has been dispatched to your email.",
-      cooldownSecondsRemaining: 100,
+      cooldownSecondsRemaining: 60,
     });
   } catch (error) {
     console.error("Resend OTP error:", error);
