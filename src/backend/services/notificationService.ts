@@ -1,5 +1,22 @@
 import { prisma } from "@/backend/db/db";
 
+// In-memory user-scoped cache to prevent repeated notification queries on navigation
+interface CachedNotifications {
+  notifications: unknown;
+  unreadCount: number;
+  expiresAt: number;
+}
+const notificationCache = new Map<string, CachedNotifications>();
+const NOTIF_CACHE_TTL_MS = 20_000;
+
+export function invalidateNotificationCache(userId?: string) {
+  if (userId) {
+    notificationCache.delete(userId);
+  } else {
+    notificationCache.clear();
+  }
+}
+
 export interface CreateNotificationParams {
   userId: string;
   title: string;
@@ -10,6 +27,7 @@ export interface CreateNotificationParams {
 }
 
 export async function createNotification(params: CreateNotificationParams) {
+  invalidateNotificationCache(params.userId);
   return prisma.notification.create({
     data: {
       userId: params.userId,
@@ -21,6 +39,30 @@ export async function createNotification(params: CreateNotificationParams) {
       read: false,
     },
   });
+}
+
+export async function getCachedNotificationsData(userId: string, limit = 10) {
+  const now = Date.now();
+  const cached = notificationCache.get(userId);
+  if (cached && cached.expiresAt > now) {
+    return {
+      notifications: cached.notifications,
+      unreadCount: cached.unreadCount,
+    };
+  }
+
+  const [notifications, unreadCount] = await Promise.all([
+    listNotifications(userId, { limit }),
+    getUnreadNotificationCount(userId),
+  ]);
+
+  notificationCache.set(userId, {
+    notifications,
+    unreadCount,
+    expiresAt: now + NOTIF_CACHE_TTL_MS,
+  });
+
+  return { notifications, unreadCount };
 }
 
 export async function listNotifications(
@@ -48,6 +90,7 @@ export async function getUnreadNotificationCount(userId: string): Promise<number
 }
 
 export async function markNotificationAsRead(userId: string, notificationId: string) {
+  invalidateNotificationCache(userId);
   const notification = await prisma.notification.findFirst({
     where: { id: notificationId, userId },
   });
@@ -66,6 +109,7 @@ export async function markNotificationAsRead(userId: string, notificationId: str
 }
 
 export async function markAllNotificationsAsRead(userId: string) {
+  invalidateNotificationCache(userId);
   return prisma.notification.updateMany({
     where: {
       userId,

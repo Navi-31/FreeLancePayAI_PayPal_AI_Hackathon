@@ -7,7 +7,9 @@ import { NavigationProgressBar } from "./NavigationProgressBar";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <NavigationProgressBar />
+      <React.Suspense fallback={null}>
+        <NavigationProgressBar />
+      </React.Suspense>
       {children}
     </AuthProvider>
   );

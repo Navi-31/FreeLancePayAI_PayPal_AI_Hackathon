@@ -142,20 +142,21 @@ export async function POST(request: Request) {
       return response;
     }
 
-    // Generate & send verification OTP
+    // Generate & send verification OTP (non-blocking email dispatch)
     const otpResult = await createAndSendOtp({
       email: normalizedEmail,
       purpose: "SIGNUP_VERIFICATION",
       recipientName: name,
       userId: user.id,
+      awaitDelivery: false,
     });
 
-    await recordAuditLog({
+    recordAuditLog({
       userId: user.id,
       action: "user_registered_pending_verification",
       entityType: "User",
       entityId: user.id,
-    });
+    }).catch(() => {});
 
     return NextResponse.json({
       success: true,

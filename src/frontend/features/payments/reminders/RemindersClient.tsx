@@ -9,10 +9,12 @@ import {
 } from "../types";
 import {
   loadRemindersFromStorage,
+  saveRemindersToStorage,
   fetchRemindersWithFallback,
   updateReminderTone,
   updateReminderDraft,
   simulateApproveAndSend,
+  sendLiveReminderEmail,
 } from "../reminderStore";
 import { cn } from "@/shared/utils";
 
@@ -25,6 +27,11 @@ export const RemindersClient: React.FC = () => {
   const [isRulesModalOpen, setIsRulesModalOpen] = useState(false);
   const [simulationToast, setSimulationToast] = useState<string | null>(null);
   const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
+  const [isSendingLiveEmail, setIsSendingLiveEmail] = useState(false);
+  const [liveEmailStatus, setLiveEmailStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
   // Load from storage on mount & sync from server
   useEffect(() => {
@@ -135,12 +142,24 @@ export const RemindersClient: React.FC = () => {
     }
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!selectedReminder) return;
+    const updated = updateReminderDraft(
+      selectedReminder.id,
+      selectedReminder.subject,
+      selectedReminder.messageBody,
+      e.target.value
+    );
+    setReminders(updated);
+  };
+
   const handleSubjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!selectedReminder) return;
     const updated = updateReminderDraft(
       selectedReminder.id,
       e.target.value,
-      selectedReminder.messageBody
+      selectedReminder.messageBody,
+      selectedReminder.clientEmail
     );
     setReminders(updated);
   };
@@ -150,9 +169,73 @@ export const RemindersClient: React.FC = () => {
     const updated = updateReminderDraft(
       selectedReminder.id,
       selectedReminder.subject,
-      e.target.value
+      e.target.value,
+      selectedReminder.clientEmail
     );
     setReminders(updated);
+  };
+
+  const handleSendLiveEmail = async () => {
+    if (!selectedReminder || isSendingLiveEmail) return;
+    setLiveEmailStatus(null);
+    setIsSendingLiveEmail(true);
+
+    try {
+      const result = await sendLiveReminderEmail(selectedReminder, {
+        clientEmail: selectedReminder.clientEmail,
+        subject: selectedReminder.subject,
+        messageBody: selectedReminder.messageBody,
+      });
+
+      if (!result.success) {
+        setLiveEmailStatus({
+          type: "error",
+          message: result.error || "Failed to deliver reminder email via configured mail server.",
+        });
+        setIsSendingLiveEmail(false);
+        return;
+      }
+
+      // Mark reminder as sent in local state & storage
+      const nowStr = new Date().toISOString().replace("T", " ").substring(0, 16);
+      const updatedList = reminders.map((r) => {
+        if (r.id === selectedReminder.id) {
+          return {
+            ...r,
+            status: "sent" as ReminderStatus,
+            lastOutreachDate: "Just now",
+            lastOutreachType: `Live ${r.activeTone.toUpperCase()} Email`,
+            history: [
+              {
+                id: `HIST-${Date.now()}`,
+                timestamp: nowStr,
+                action: "simulated_send" as const,
+                tone: r.activeTone,
+                notes: `Dispatched directly via ${result.status || "SMTP"} (${result.providerMessageId || "Confirmed"}) to ${selectedReminder.clientEmail}`,
+                userApproved: true,
+              },
+              ...r.history,
+            ],
+          };
+        }
+        return r;
+      });
+
+      setReminders(updatedList);
+      saveRemindersToStorage(updatedList);
+
+      setLiveEmailStatus({
+        type: "success",
+        message: `Email dispatched successfully to ${selectedReminder.clientEmail}! Delivery confirmed.`,
+      });
+      setIsSendingLiveEmail(false);
+    } catch (err) {
+      setLiveEmailStatus({
+        type: "error",
+        message: err instanceof Error ? err.message : "Network error contacting mail dispatch service.",
+      });
+      setIsSendingLiveEmail(false);
+    }
   };
 
   const handleConfirmSimulatedSend = async () => {
@@ -773,11 +856,36 @@ export const RemindersClient: React.FC = () => {
 
               {/* Dynamic Draft Card */}
               <div className="mt-4 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/30 relative space-y-3">
-                {/* Subject Field */}
+                {/* 1. Recipient Email Field (Fully Editable) */}
                 <div>
-                  <label className="text-[10px] uppercase tracking-wider font-label-sm text-on-surface-variant/80 block mb-1">
-                    Subject Header
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] uppercase tracking-wider font-label-sm text-on-surface-variant/80 block">
+                      Contacting Email / Recipient
+                    </label>
+                    <span className="text-[10px] text-primary font-mono">Editable Recipient</span>
+                  </div>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant/70 text-sm">
+                      alternate_email
+                    </span>
+                    <input
+                      type="email"
+                      value={selectedReminder.clientEmail}
+                      onChange={handleEmailChange}
+                      placeholder="client.ap@company.com"
+                      className="w-full bg-surface-container-high/60 border border-outline-variant/30 rounded-lg pl-9 pr-3 py-2 text-xs font-medium text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-mono"
+                    />
+                  </div>
+                </div>
+
+                {/* 2. Subject Field (Fully Editable) */}
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-[10px] uppercase tracking-wider font-label-sm text-on-surface-variant/80 block">
+                      Subject Header
+                    </label>
+                    <span className="text-[10px] text-on-surface-variant">Editable Subject</span>
+                  </div>
                   <input
                     type="text"
                     value={selectedReminder.subject}
@@ -786,7 +894,7 @@ export const RemindersClient: React.FC = () => {
                   />
                 </div>
 
-                {/* Body Field */}
+                {/* 3. Body Field (Fully Editable) */}
                 <div>
                   <div className="flex items-center justify-between mb-1">
                     <label className="text-[10px] uppercase tracking-wider font-label-sm text-on-surface-variant/80">
@@ -821,8 +929,33 @@ export const RemindersClient: React.FC = () => {
                 </div>
               </div>
 
+              {/* Live Email Status Banner */}
+              {liveEmailStatus && (
+                <div
+                  className={cn(
+                    "mt-3 p-3 rounded-lg text-xs flex items-start justify-between gap-2 border",
+                    liveEmailStatus.type === "success"
+                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                      : "bg-error/10 border-error/30 text-error"
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-base shrink-0">
+                      {liveEmailStatus.type === "success" ? "check_circle" : "error"}
+                    </span>
+                    <span>{liveEmailStatus.message}</span>
+                  </div>
+                  <button
+                    onClick={() => setLiveEmailStatus(null)}
+                    className="text-on-surface-variant hover:text-on-surface text-sm"
+                  >
+                    <span className="material-symbols-outlined text-xs">close</span>
+                  </button>
+                </div>
+              )}
+
               {/* Action Trigger Buttons */}
-              <div className="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between gap-3">
+              <div className="mt-4 pt-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-2.5">
                 <button
                   onClick={() => {
                     setSimulationToast("Draft reset to default heuristic template.");
@@ -833,13 +966,40 @@ export const RemindersClient: React.FC = () => {
                   Reset Template
                 </button>
 
-                <button
-                  onClick={() => setIsConfirmModalOpen(true)}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-semibold text-xs shadow-md hover:brightness-105 active:scale-95 transition-all"
-                >
-                  <span className="material-symbols-outlined text-base">verified_user</span>
-                  <span>Authorize Simulated Outreach</span>
-                </button>
+                <div className="flex items-center gap-2 flex-1 justify-end">
+                  {/* Secondary Simulate Button */}
+                  <button
+                    onClick={() => setIsConfirmModalOpen(true)}
+                    className="px-3 py-2 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 text-on-surface-variant hover:text-on-surface text-xs font-label-md transition-colors flex items-center gap-1.5"
+                  >
+                    <span className="material-symbols-outlined text-sm">science</span>
+                    <span>Simulate</span>
+                  </button>
+
+                  {/* Primary Direct Send Email Button */}
+                  <button
+                    onClick={handleSendLiveEmail}
+                    disabled={isSendingLiveEmail}
+                    className={cn(
+                      "flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-primary-container text-on-primary font-semibold text-xs shadow-md transition-all",
+                      isSendingLiveEmail
+                        ? "opacity-60 cursor-not-allowed"
+                        : "hover:brightness-105 active:scale-95"
+                    )}
+                  >
+                    {isSendingLiveEmail ? (
+                      <>
+                        <span className="w-3.5 h-3.5 border-2 border-on-primary border-t-transparent rounded-full animate-spin" />
+                        <span>Sending via Mail Server...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="material-symbols-outlined text-base">send</span>
+                        <span>Send Email</span>
+                      </>
+                    )}
+                  </button>
+                </div>
               </div>
 
               {/* Dispatch Audit History */}

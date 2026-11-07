@@ -249,7 +249,12 @@ export async function sendInvoiceEmailWorkflow(
 export async function sendReminderEmailWorkflow(
   userId: string,
   reminderId: string,
-  userApproved: boolean = true
+  userApproved: boolean = true,
+  customOverrides?: {
+    to?: string;
+    subject?: string;
+    text?: string;
+  }
 ) {
   const reminder = await prisma.paymentReminder.findFirst({
     where: {
@@ -261,71 +266,92 @@ export async function sendReminderEmailWorkflow(
     },
   });
 
-  if (!reminder) {
-    throw new Error("Reminder not found or unauthorized");
+  // If reminder exists in DB, dispatch with optional composer overrides and record state
+  if (reminder) {
+    const targetTo = customOverrides?.to?.trim() || reminder.clientEmail;
+    const targetSubject = customOverrides?.subject?.trim() || reminder.subject;
+    const targetBody = customOverrides?.text?.trim() || reminder.messageBody;
+
+    const amountFormatted = `${reminder.currency === "EUR" ? "€" : "$"}${Number(reminder.amount).toLocaleString(
+      undefined,
+      { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+    )}`;
+
+    const dueDateFormatted = new Date(reminder.dueDate).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+    const { text, html } = renderReminderEmail({
+      clientName: reminder.clientName,
+      invoiceCode: reminder.invoice.code,
+      amountFormatted,
+      dueDateFormatted,
+      paymentUrl: reminder.paymentLink || `https://freelancepay.ai/pay/${reminder.invoice.code}`,
+      tone: (reminder.activeTone as "polite" | "firm" | "final") || "polite",
+      bodyText: targetBody,
+    });
+
+    const idempotencyKey = `email_rem_${reminder.id}_${Date.now()}`;
+
+    const result = await sendEmail(userId, {
+      to: targetTo,
+      subject: targetSubject,
+      text,
+      html,
+      workflow: "payment_reminder",
+      entityType: "PaymentReminder",
+      entityId: reminder.id,
+      userApproved,
+      idempotencyKey,
+    });
+
+    if (result.success) {
+      const now = new Date();
+      await prisma.$transaction([
+        prisma.paymentReminder.update({
+          where: { id: reminder.id },
+          data: {
+            clientEmail: targetTo,
+            subject: targetSubject,
+            messageBody: targetBody,
+            status: "sent",
+            realSentAt: now,
+            emailDeliveryId: result.deliveryId,
+            lastOutreachDate: now,
+            lastOutreachType: `${reminder.activeTone.toUpperCase()} Email`,
+          },
+        }),
+        prisma.reminderHistory.create({
+          data: {
+            reminderId: reminder.id,
+            action: "email_sent",
+            tone: reminder.activeTone,
+            notes: `Reminder delivered to ${targetTo} via ${result.provider} provider (${result.status}).`,
+            userApproved,
+          },
+        }),
+      ]);
+    }
+
+    return result;
   }
 
-  const amountFormatted = `${reminder.currency === "EUR" ? "€" : "$"}${Number(reminder.amount).toLocaleString(
-    undefined,
-    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-  )}`;
-
-  const dueDateFormatted = new Date(reminder.dueDate).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-  const { text, html } = renderReminderEmail({
-    clientName: reminder.clientName,
-    invoiceCode: reminder.invoice.code,
-    amountFormatted,
-    dueDateFormatted,
-    paymentUrl: reminder.paymentLink || `https://freelancepay.ai/pay/${reminder.invoice.code}`,
-    tone: (reminder.activeTone as "polite" | "firm" | "final") || "polite",
-    bodyText: reminder.messageBody,
-  });
-
-  const idempotencyKey = `email_rem_${reminder.id}_${Date.now()}`;
-
-  const result = await sendEmail(userId, {
-    to: reminder.clientEmail,
-    subject: reminder.subject,
-    text,
-    html,
-    workflow: "payment_reminder",
-    entityType: "PaymentReminder",
-    entityId: reminder.id,
-    userApproved,
-    idempotencyKey,
-  });
-
-  if (result.success) {
-    const now = new Date();
-    await prisma.$transaction([
-      prisma.paymentReminder.update({
-        where: { id: reminder.id },
-        data: {
-          status: "sent",
-          realSentAt: now,
-          emailDeliveryId: result.deliveryId,
-          lastOutreachDate: now,
-          lastOutreachType: `${reminder.activeTone.toUpperCase()} Email`,
-        },
-      }),
-      prisma.reminderHistory.create({
-        data: {
-          reminderId: reminder.id,
-          action: "email_sent",
-          tone: reminder.activeTone,
-          notes: `Reminder delivered via ${result.provider} provider (${result.status}).`,
-          userApproved,
-        },
-      }),
-    ]);
+  // Fallback for custom / local reminder drafts not yet persisted to Neon DB
+  if (customOverrides?.to && customOverrides?.subject && customOverrides?.text) {
+    const idempotencyKey = `email_rem_custom_${Date.now()}`;
+    return await sendEmail(userId, {
+      to: customOverrides.to.trim(),
+      subject: customOverrides.subject.trim(),
+      text: customOverrides.text.trim(),
+      workflow: "payment_reminder",
+      userApproved,
+      idempotencyKey,
+    });
   }
 
-  return result;
+  throw new Error("Reminder not found or unauthorized");
 }
 
 /**

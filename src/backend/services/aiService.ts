@@ -1,6 +1,6 @@
 import { prisma } from "@/backend/db/db";
 import { z } from "zod";
-import { runAICompletion } from "@/backend/integrations/gemini/aiProvider";
+import { runAICompletion, type AICompletionResult } from "@/backend/integrations/gemini/aiProvider";
 import { sanitizePromptInput, wrapUntrustedData } from "@/backend/security/promptSanitizer";
 import { checkAiRateLimit } from "@/backend/security/rateLimiter";
 import { calculateInvoiceTotals, roundToTwoDecimals } from "@/shared/financialCalculations";
@@ -315,7 +315,7 @@ CRITICAL MANDATES:
 
 // User-scoped in-memory cache (60s TTL) to prevent repeated remote LLM network requests on navigation
 interface CachedInsightsEntry {
-  data: unknown;
+  data: AICompletionResult<z.infer<typeof financialInsightsOutputSchema>>;
   expiresAt: number;
 }
 

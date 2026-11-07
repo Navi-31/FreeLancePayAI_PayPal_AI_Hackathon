@@ -286,15 +286,16 @@ export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: 
     assert(insightsA.data.insights.length > 0, "Proactive insights generated for User A");
 
     // Deduplication check
-    const insightIds = insightsA.data.insights.map((i) => i.id);
+    const items = insightsA.data.insights as Array<{ id: string; type: string; requiresUserApproval?: boolean }>;
+    const insightIds = items.map((i) => i.id);
     const uniqueIds = new Set(insightIds);
     assert(insightIds.length === uniqueIds.size, "Proactive insights contain ZERO duplicate IDs");
 
-    const overdueInsight = insightsA.data.insights.find((i) => i.type === "overdue_invoice");
+    const overdueInsight = items.find((i) => i.type === "overdue_invoice");
     assert(Boolean(overdueInsight), "Overdue invoice insight generated with financial impact");
     assert(overdueInsight?.requiresUserApproval === true, "Overdue insight strictly requires explicit user approval");
 
-    const dormantInsight = insightsA.data.insights.find((i) => i.type === "dormant_subscription");
+    const dormantInsight = items.find((i) => i.type === "dormant_subscription");
     assert(Boolean(dormantInsight), "Dormant subscription insight identified for legacy hosting");
 
     // =========================================================================

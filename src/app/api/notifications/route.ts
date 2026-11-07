@@ -3,6 +3,7 @@ import { getServerSession } from "@/backend/auth/auth";
 import {
   listNotifications,
   getUnreadNotificationCount,
+  getCachedNotificationsData,
   markNotificationAsRead,
   markAllNotificationsAsRead,
 } from "@/backend/services/notificationService";
@@ -24,6 +25,12 @@ export async function GET(request: NextRequest) {
     const readParam = searchParams.get("read");
     const read = readParam !== null ? readParam === "true" : undefined;
     const limit = parseInt(searchParams.get("limit") || "50", 10);
+
+    // Fast path: standard top nav bar polling uses cached aggregated data
+    if (read === undefined && limit <= 10) {
+      const cached = await getCachedNotificationsData(session.userId, limit);
+      return NextResponse.json(cached);
+    }
 
     const [notifications, unreadCount] = await Promise.all([
       listNotifications(session.userId, { read, limit }),

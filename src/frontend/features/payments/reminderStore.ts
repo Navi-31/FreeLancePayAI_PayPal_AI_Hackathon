@@ -258,7 +258,8 @@ export function updateReminderTone(
 export function updateReminderDraft(
   id: string,
   subject: string,
-  messageBody: string
+  messageBody: string,
+  clientEmail?: string
 ): PaymentReminder[] {
   const list = loadRemindersFromStorage();
   const index = list.findIndex((r) => r.id === id);
@@ -267,10 +268,55 @@ export function updateReminderDraft(
       ...list[index],
       subject,
       messageBody,
+      ...(clientEmail !== undefined ? { clientEmail } : {}),
     };
     saveRemindersToStorage(list);
   }
   return list;
+}
+
+export async function sendLiveReminderEmail(
+  reminder: PaymentReminder,
+  edited: { clientEmail: string; subject: string; messageBody: string }
+): Promise<{ success: boolean; error?: string; providerMessageId?: string; status?: string }> {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const recipient = edited.clientEmail.trim();
+  if (!emailRegex.test(recipient)) {
+    return { success: false, error: "Please enter a valid recipient email address." };
+  }
+  if (!edited.subject.trim()) {
+    return { success: false, error: "Subject header cannot be empty." };
+  }
+  if (!edited.messageBody.trim()) {
+    return { success: false, error: "Email message body cannot be empty." };
+  }
+
+  const res = await fetch("/api/email/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      workflow: "payment_reminder",
+      reminderId: reminder.id,
+      to: recipient,
+      subject: edited.subject.trim(),
+      text: edited.messageBody.trim(),
+      userApproved: true,
+    }),
+  });
+
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.success) {
+    return {
+      success: false,
+      error: data?.error || `Email delivery failed with HTTP ${res.status}`,
+    };
+  }
+
+  return {
+    success: true,
+    status: data.delivery?.status || "sent",
+    providerMessageId: data.delivery?.providerMessageId,
+  };
 }
 
 export function simulateApproveAndSend(

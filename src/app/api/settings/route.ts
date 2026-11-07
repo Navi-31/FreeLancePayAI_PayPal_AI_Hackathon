@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/backend/auth/auth";
 import { getFinancialSettings, updateFinancialSettings } from "@/backend/services/settingsService";
+import { invalidateSessionUserCache } from "@/backend/auth/sessionUserCache";
 
 export async function GET() {
   const session = await getServerSession();
@@ -26,6 +27,7 @@ export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
     const updated = await updateFinancialSettings(session.userId, body);
+    invalidateSessionUserCache(session.userId);
     return NextResponse.json({ success: true, settings: updated });
   } catch (error) {
     return NextResponse.json(

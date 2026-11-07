@@ -218,7 +218,7 @@ export async function runAuth2FASessionTests() {
     const sessionAfterLogout = clearedToken ? await verifySessionToken(clearedToken) : null;
     assert.strictEqual(sessionAfterLogout, null, "Session is completely null after logout");
 
-    const allowsDashboard = Boolean(sessionAfterLogout && sessionAfterLogout.userId);
+    const allowsDashboard = Boolean(sessionAfterLogout && (sessionAfterLogout as { userId?: string }).userId);
     assert.strictEqual(allowsDashboard, false, "Dashboard access strictly rejected after logout");
   });
 

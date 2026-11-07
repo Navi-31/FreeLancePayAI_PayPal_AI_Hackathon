@@ -15,6 +15,7 @@ import { runPhase5EFinancialIntelligenceTests } from "./phase5EFinancialIntellig
 import { runPhase5FFinalValidationTests } from "./phase5FFinalValidation.test";
 import { runAuthOtpFlowTests } from "./authOtpFlow.test";
 import { runAuth2FASessionTests } from "./auth2FASession.test";
+import { runPerformanceAndRemindersTests } from "./performanceAndReminders.test";
 
 async function main() {
   console.log("==================================================");
@@ -99,6 +100,11 @@ async function main() {
   totalPassed += auth2FA.passed;
   totalFailed += auth2FA.failed;
 
+  // 16. Performance Optimization & Payments Reminder Tests
+  const perfRem = await runPerformanceAndRemindersTests();
+  totalPassed += perfRem.passed;
+  totalFailed += perfRem.failed;
+
   console.log("\n==================================================");
   console.log(" SUITE BREAKDOWN:");
   console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
@@ -116,6 +122,7 @@ async function main() {
   console.log(` 13. Comprehensive Final QA (5F):         ${phase5F.passed} passed, ${phase5F.failed} failed`);
   console.log(` 14. Email OTP, Reset & Mirror (Auth):    ${authOtp.passed} passed, ${authOtp.failed} failed`);
   console.log(` 15. Focused Auth & 2FA Session Flow:     ${auth2FA.passed} passed, ${auth2FA.failed} failed`);
+  console.log(` 16. Performance & Direct Email Reminders:${perfRem.passed} passed, ${perfRem.failed} failed`);
   console.log("--------------------------------------------------");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
   console.log("==================================================");

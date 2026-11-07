@@ -84,20 +84,22 @@ export async function POST(request: Request) {
       return response;
     }
 
-    // Standard 2-Factor Email OTP step for Login
+    // Standard 2-Factor Email OTP step for Login (non-blocking email dispatch)
     const otpResult = await createAndSendOtp({
       email: normalizedEmail,
       purpose: "LOGIN_OTP",
       recipientName: user.name,
       userId: user.id,
+      awaitDelivery: false,
     });
 
-    await recordAuditLog({
+    // Record audit log asynchronously without blocking login latency
+    recordAuditLog({
       userId: user.id,
       action: "user_login_otp_dispatched",
       entityType: "User",
       entityId: user.id,
-    });
+    }).catch(() => {});
 
     return NextResponse.json({
       success: true,

@@ -85,6 +85,9 @@ let smtpTransporter: Transporter | null = null;
 function getSmtpTransporter(): Transporter {
   if (!smtpTransporter) {
     smtpTransporter = nodemailer.createTransport({
+      pool: true,
+      maxConnections: 5,
+      maxMessages: 100,
       host: env.SMTP_HOST,
       port: env.SMTP_PORT,
       secure: env.SMTP_SECURE, // true for port 465 (SSL)
@@ -92,6 +95,7 @@ function getSmtpTransporter(): Transporter {
         user: env.SMTP_USER,
         pass: env.SMTP_PASS,
       },
+      socketTimeout: 30000,
     });
   }
   return smtpTransporter;

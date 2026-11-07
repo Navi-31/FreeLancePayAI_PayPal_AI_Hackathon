@@ -27,6 +27,7 @@ export interface CreateAndSendOtpParams {
   purpose: "SIGNUP_VERIFICATION" | "LOGIN_OTP";
   recipientName?: string;
   userId?: string;
+  awaitDelivery?: boolean;
 }
 
 export interface OtpGenerationResult {
@@ -110,7 +111,7 @@ export async function createAndSendOtp(
   });
 
   // Dispatch email through SMTP or fallback
-  const sendResult = await dispatchEmailThroughProvider({
+  const dispatchPromise = dispatchEmailThroughProvider({
     to: normalizedEmail,
     subject:
       params.purpose === "SIGNUP_VERIFICATION"
@@ -123,11 +124,22 @@ export async function createAndSendOtp(
     entityId: otpRecord.id,
   });
 
+  let deliveryStatus = "dispatched";
+  if (params.awaitDelivery) {
+    const sendResult = await dispatchPromise;
+    deliveryStatus = sendResult.status;
+  } else {
+    // Fire-and-forget in background with safety handler so login is never blocked
+    dispatchPromise.catch((err) => {
+      console.error("Background OTP dispatch error:", err);
+    });
+  }
+
   return {
     success: true,
     expiresAt,
     resendAfter,
-    deliveryStatus: sendResult.status,
+    deliveryStatus,
   };
 }
 

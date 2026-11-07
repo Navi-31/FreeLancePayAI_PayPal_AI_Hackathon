@@ -59,10 +59,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (workflow === "payment_reminder") {
-      if (!reminderId) {
-        return NextResponse.json({ error: "reminderId is required for payment_reminder" }, { status: 400 });
-      }
-      const result = await sendReminderEmailWorkflow(session.userId, reminderId, userApproved);
+      const result = await sendReminderEmailWorkflow(
+        session.userId,
+        reminderId || "custom_draft",
+        userApproved,
+        { to, subject, text }
+      );
       return NextResponse.json({ success: result.success, delivery: result });
     }
 
