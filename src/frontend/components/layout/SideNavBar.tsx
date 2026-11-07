@@ -163,7 +163,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className
                           >
                             {item.badge}
                           </span>
-                        )}
+                        ) : null}
                       </Link>
                     );
                   })}

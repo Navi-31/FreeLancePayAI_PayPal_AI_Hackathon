@@ -3,10 +3,11 @@ import { z } from "zod";
 
 const envSchema = z.object({
   DATABASE_URL: z.string().optional(),
+  DATABASE_URL_UNPOOLED: z.string().optional(),
   JWT_SECRET: z.string().default("freelancepay_jwt_secret_dev_key_super_safe_99214"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   NEXT_PUBLIC_APP_URL: z.string().default("http://localhost:3000"),
-  ENABLE_OFFLINE_DEMO_FALLBACK: z.string().default("true"),
+  ENABLE_OFFLINE_DEMO_FALLBACK: z.string().default("false"),
   PAYPAL_CLIENT_ID: z.string().optional(),
   PAYPAL_CLIENT_SECRET: z.string().optional(),
   PAYPAL_BASE_URL: z.string().default("https://api-m.sandbox.paypal.com"),
@@ -29,10 +30,12 @@ const envSchema = z.object({
   SMTP_USER: z.string().optional(),
   SMTP_PASS: z.string().optional(),
   CRON_SECRET: z.string().default("dev_cron_secret_freelancepay_secure_key_10293"),
+  PRIMARY_ACCOUNT_EMAIL: z.string().optional(),
 });
 
 export const env = envSchema.parse({
   DATABASE_URL: process.env.DATABASE_URL,
+  DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_UNPOOLED || process.env.DIRECT_URL,
   JWT_SECRET: process.env.JWT_SECRET,
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -59,6 +62,7 @@ export const env = envSchema.parse({
   SMTP_USER: process.env.SMTP_USER,
   SMTP_PASS: process.env.SMTP_PASS,
   CRON_SECRET: process.env.CRON_SECRET || "dev_cron_secret_freelancepay_secure_key_10293",
+  PRIMARY_ACCOUNT_EMAIL: process.env.PRIMARY_ACCOUNT_EMAIL,
 });
 
 export function isLiveDatabaseConfigured(): boolean {
