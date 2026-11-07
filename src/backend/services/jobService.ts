@@ -51,6 +51,8 @@ export async function enqueueJob(params: EnqueueJobParams) {
       payload: JSON.stringify(params.payload),
       status: "pending",
       priority: params.priority ?? 0,
+      attempts: 0,
+      maxAttempts: 5,
       runAt: params.runAt || new Date(),
       idempotencyKey: params.idempotencyKey,
     },
@@ -146,7 +148,8 @@ export async function processPendingJobs(options?: {
           });
 
           for (const inv of overdueInvoices) {
-            const hasPendingOrScheduled = inv.reminders.some(
+            const reminders = Array.isArray(inv.reminders) ? inv.reminders : [];
+            const hasPendingOrScheduled = reminders.some(
               (r) => r.status === "pending_approval" || r.status === "scheduled"
             );
 
@@ -155,7 +158,7 @@ export async function processPendingJobs(options?: {
               const overdueDays = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
               const baseCode = `REM-${inv.code.replace("INV-", "")}`;
               const reminderCode =
-                inv.reminders.length === 0 ? baseCode : `${baseCode}-W${inv.reminders.length + 1}`;
+                reminders.length === 0 ? baseCode : `${baseCode}-W${reminders.length + 1}`;
 
               // Create DRAFT reminder in 'pending_approval' status.
               // CRITICAL: NEVER automatically send or schedule real dispatch without human signoff!
@@ -166,14 +169,14 @@ export async function processPendingJobs(options?: {
                   invoiceId: inv.id,
                   clientName: inv.clientName,
                   clientEmail: inv.clientEmail,
-                  amount: inv.total,
-                  currency: inv.currency,
+                  amount: inv.total || 0,
+                  currency: inv.currency || "USD",
                   dueDate: inv.dueDate,
                   overdueDays,
                   recommendedTone: overdueDays > 14 ? "firm" : "polite",
                   activeTone: overdueDays > 14 ? "firm" : "polite",
                   status: "pending_approval", // Human-in-the-loop enforced
-                  subject: `Follow-up: Overdue Invoice #${inv.code} (${inv.currencySymbol}${Number(inv.total).toFixed(2)})`,
+                  subject: `Follow-up: Overdue Invoice #${inv.code} (${inv.currencySymbol || "$"}${Number(inv.total).toFixed(2)})`,
                   messageBody: `Hi ${inv.clientName},\n\nWe noticed invoice #${inv.code} is currently ${overdueDays} days past its due date. Please confirm when settlement will be executed.\n\nThank you,`,
                   paymentLink: `https://freelancepay.ai/pay/${inv.code}`,
                 },
@@ -236,11 +239,13 @@ export async function processPendingJobs(options?: {
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
-      const newAttempts = job.attempts + 1;
+      const currentAttempts = typeof job.attempts === "number" ? job.attempts : 0;
+      const maxAttempts = typeof job.maxAttempts === "number" ? job.maxAttempts : 5;
+      const newAttempts = currentAttempts + 1;
 
-      if (newAttempts < job.maxAttempts) {
+      if (newAttempts < maxAttempts) {
         // Exponential backoff: 30s * 2^attempts
-        const backoffSeconds = 30 * Math.pow(2, job.attempts);
+        const backoffSeconds = 30 * Math.pow(2, currentAttempts);
         const nextRunAt = new Date(Date.now() + backoffSeconds * 1000);
 
         await prisma.backgroundJob.update({

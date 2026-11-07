@@ -6,6 +6,10 @@
 *.pem
 *.key
 *.cert
+*service-account*.json
+*adminsdk*.json
+*backup*.json
+neon-backup.json
 
 # Dependencies
 /node_modules

@@ -9,7 +9,7 @@ export async function GET() {
   let dbStatus = "disconnected";
   let dbLatencyMs: number | null = null;
 
-  // 1. Check Neon PostgreSQL Database Connectivity
+  // 1. Check Firebase Firestore Database Connectivity
   if (isLiveDatabaseConfigured()) {
     try {
       const dbStart = Date.now();
@@ -49,7 +49,8 @@ export async function GET() {
         database: {
           status: dbStatus,
           latencyMs: dbLatencyMs,
-          engine: "Neon PostgreSQL",
+          engine: "Firebase Firestore",
+          provider: "Firebase Admin SDK",
         },
         ai: {
           provider: ai.provider,

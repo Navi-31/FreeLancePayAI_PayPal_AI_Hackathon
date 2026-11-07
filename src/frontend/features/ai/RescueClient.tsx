@@ -143,7 +143,7 @@ export const RescueClient: React.FC = () => {
             </h1>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-error-container/40 border border-error/40 text-error text-xs font-semibold">
               <span className="w-2 h-2 rounded-full bg-error animate-ping" />
-              <span>{isLiveDb ? "Live Neon Risk Sentinel Active" : "Active Risk Sentinel: 1 Liquidity Squeeze Detected"}</span>
+              <span>{isLiveDb ? "Live Firestore Risk Sentinel Active" : "Active Risk Sentinel: 1 Liquidity Squeeze Detected"}</span>
             </div>
           </div>
           <p className="mt-1 font-body-md text-sm text-on-surface-variant max-w-2xl">

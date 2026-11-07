@@ -174,7 +174,7 @@ export function ForecastClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-xs font-semibold flex items-center gap-1.5 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {isLiveDb ? "Live Neon Inflow Radar" : "Algorithmic Projection v4.2"}
+              {isLiveDb ? "Live Firestore Inflow Radar" : "Algorithmic Projection v4.2"}
             </span>
           </div>
           <p className="text-sm text-outline mt-1">

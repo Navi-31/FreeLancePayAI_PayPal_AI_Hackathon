@@ -19,7 +19,7 @@ import {
 } from "@/backend/services/financialIntelligence";
 import { generateCopilotResponse } from "@/backend/services/aiService";
 import { calculateInvoiceTotals, calculateTaxReserveAllocation } from "@/shared/financialCalculations";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/backend/db/db";
 
 export async function runPhase5FFinalValidationTests(): Promise<{ passed: number; failed: number }> {
   console.log("\n▶ Running Phase 5F Final Comprehensive QA & Hackathon Demo Validation Suite...");

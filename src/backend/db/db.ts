@@ -1,37 +1,8 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { Pool } from "pg";
-import { env, isLiveDatabaseConfigured } from "@/backend/validation/env";
+import { firestoreDb, FirestoreDatabase, Prisma, PrismaClient, Decimal } from "./firestoreDb";
+import { isLiveDatabaseConfigured } from "@/backend/validation/env";
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-  pool: Pool | undefined;
-};
+export const prisma = firestoreDb;
+export const db = firestoreDb;
 
-const connectionString =
-  env.DATABASE_URL ||
-  "postgresql://postgres:postgres@localhost:5432/freelancepay_db?schema=public";
-
-const pool =
-  globalForPrisma.pool ??
-  new Pool({
-    connectionString,
-    connectionTimeoutMillis: 15000,
-    idleTimeoutMillis: 30000,
-    max: 10,
-  });
-
-const adapter = new PrismaPg(pool);
-
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter,
-    log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
-  });
-
-// Always preserve pool & client on globalThis to prevent connection churn across route invocations
-globalForPrisma.prisma = prisma;
-globalForPrisma.pool = pool;
-
-export { isLiveDatabaseConfigured };
+export { firestoreDb, FirestoreDatabase, Prisma, PrismaClient, Decimal, isLiveDatabaseConfigured };
+export default firestoreDb;

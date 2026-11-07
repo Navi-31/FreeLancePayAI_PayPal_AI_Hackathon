@@ -1,5 +1,4 @@
-import { prisma } from "@/backend/db/db";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/backend/db/db";
 import {
   createPayPalOrder,
   capturePayPalOrder,
@@ -374,7 +373,7 @@ export async function createMilestoneAuthorizationOrder(
   const order = await createPayPalOrder({
     referenceId: milestone.code,
     amount,
-    currency: milestone.project.currency,
+    currency: milestone.project?.currency || "USD",
     description: `Milestone Authorization: ${milestone.title} (${milestone.code})`,
     intent: "AUTHORIZE",
     customId: milestone.id,
@@ -401,7 +400,7 @@ export async function createMilestoneAuthorizationOrder(
     approveUrl: order.approveUrl,
     milestoneId: milestone.id,
     amount,
-    currency: milestone.project.currency,
+    currency: milestone.project?.currency || "USD",
     isSandbox: true,
   };
 }
@@ -505,7 +504,7 @@ export async function captureMilestonePayment(userId: string, milestoneId: strin
   const gross = Number(milestone.amount);
   const capture = await capturePayPalAuthorization(authId, {
     value: gross,
-    currency: milestone.project.currency,
+    currency: milestone.project?.currency || "USD",
   });
 
   if (capture.status !== "COMPLETED") {
@@ -547,12 +546,12 @@ export async function captureMilestonePayment(userId: string, milestoneId: strin
         code: txCode,
         userId,
         hash,
-        description: `Milestone Settlement: ${milestone.project.title} (${milestone.code})`,
-        clientName: milestone.project.client.name,
+        description: `Milestone Settlement: ${milestone.project?.title || "Project"} (${milestone.code})`,
+        clientName: milestone.project?.client?.name || milestone.project?.title || "Client",
         type: "milestone_capture",
         status: "settled",
-        currency: milestone.project.currency,
-        currencySymbol: milestone.project.currencySymbol,
+        currency: milestone.project?.currency || "USD",
+        currencySymbol: milestone.project?.currencySymbol || "$",
         grossAmount: new Prisma.Decimal(gross),
         feeAmount: new Prisma.Decimal(fee),
         netAmount: new Prisma.Decimal(net),
@@ -619,9 +618,9 @@ export async function refundPayment(userId: string, input: RefundPaymentInput) {
     if (!ms) throw new Error("Milestone not found or unauthorized");
     captureId = ms.paypalCaptureId;
     grossAmount = Number(ms.amount);
-    currency = ms.project.currency;
+    currency = ms.project?.currency || "USD";
     targetMilestoneId = ms.id;
-    clientName = ms.project.client.name;
+    clientName = ms.project?.client?.name || "Client";
   } else if (input.transactionId) {
     const tx = await prisma.transaction.findFirst({
       where: {

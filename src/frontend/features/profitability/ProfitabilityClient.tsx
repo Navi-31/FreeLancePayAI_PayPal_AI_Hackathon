@@ -156,7 +156,7 @@ export function ProfitabilityClient() {
             </h1>
             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/30 border border-secondary/40 text-secondary text-xs font-semibold font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {isLiveDb ? "Live Neon Project Yields" : "Real-Time Margin Telemetry"}
+              {isLiveDb ? "Live Firestore Project Yields" : "Real-Time Margin Telemetry"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">

@@ -156,7 +156,7 @@ export function ReportsClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-semibold flex items-center gap-1 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              {isLiveDb ? "Live Neon Database Ledger" : "Demo Profile Statement"}
+              {isLiveDb ? "Live Firestore Database Ledger" : "Demo Profile Statement"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1 max-w-3xl">

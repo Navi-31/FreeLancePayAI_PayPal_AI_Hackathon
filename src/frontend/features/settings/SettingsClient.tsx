@@ -58,7 +58,7 @@ export function SettingsClient() {
 
       if (res.ok) {
         setIsLiveDb(true);
-        setToastMessage("[NEON DB] All workspace configurations and autonomous guardrails persisted successfully.");
+        setToastMessage("[FIRESTORE] All workspace configurations and autonomous guardrails persisted successfully.");
       } else {
         setToastMessage("All workspace configurations saved in local workspace.");
       }
@@ -113,7 +113,7 @@ export function SettingsClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-surface-container-high border border-primary/30 text-primary text-xs font-semibold flex items-center gap-1.5 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              {isLiveDb ? "Live Neon Database Config" : "Demo Settings Active"}
+              {isLiveDb ? "Live Firestore Database Config" : "Demo Settings Active"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1 max-w-3xl">

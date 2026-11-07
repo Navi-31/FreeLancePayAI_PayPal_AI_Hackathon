@@ -283,12 +283,14 @@ export async function sendReminderEmailWorkflow(
       year: "numeric",
     });
 
+    const invoiceCode = reminder.invoice?.code || reminder.invoiceId || "INV";
+
     const { text, html } = renderReminderEmail({
       clientName: reminder.clientName,
-      invoiceCode: reminder.invoice.code,
+      invoiceCode,
       amountFormatted,
       dueDateFormatted,
-      paymentUrl: reminder.paymentLink || `https://freelancepay.ai/pay/${reminder.invoice.code}`,
+      paymentUrl: reminder.paymentLink || `https://freelancepay.ai/pay/${invoiceCode}`,
       tone: (reminder.activeTone as "polite" | "firm" | "final") || "polite",
       bodyText: targetBody,
     });
@@ -309,6 +311,7 @@ export async function sendReminderEmailWorkflow(
 
     if (result.success) {
       const now = new Date();
+      const activeTone = (reminder.activeTone as string) || "polite";
       await prisma.$transaction([
         prisma.paymentReminder.update({
           where: { id: reminder.id },
@@ -320,14 +323,14 @@ export async function sendReminderEmailWorkflow(
             realSentAt: now,
             emailDeliveryId: result.deliveryId,
             lastOutreachDate: now,
-            lastOutreachType: `${reminder.activeTone.toUpperCase()} Email`,
+            lastOutreachType: `${activeTone.toUpperCase()} Email`,
           },
         }),
         prisma.reminderHistory.create({
           data: {
             reminderId: reminder.id,
             action: "email_sent",
-            tone: reminder.activeTone,
+            tone: activeTone,
             notes: `Reminder delivered to ${targetTo} via ${result.provider} provider (${result.status}).`,
             userApproved,
           },

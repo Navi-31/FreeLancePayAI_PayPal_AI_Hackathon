@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       ...result,
-      mode: "neon_database",
+      mode: "firebase_firestore",
     });
   } catch (error) {
     console.error("Demo seed error:", error);

@@ -50,7 +50,7 @@ export function TaxEstimatorClient() {
       });
       if (res.ok) {
         setIsLiveDb(true);
-        setToastMessage(`[NEON DB] Tax vault funded to 100% target ($${suggestedReserve.toLocaleString()}). Reserve deficit resolved.`);
+        setToastMessage(`[FIRESTORE] Tax vault funded to 100% target ($${suggestedReserve.toLocaleString()}). Reserve deficit resolved.`);
       } else {
         setToastMessage("Tax vault funded to 100% target in local workspace.");
       }
@@ -80,7 +80,7 @@ export function TaxEstimatorClient() {
           setVaultSetAside(Number(data.estimate.vaultSetAside));
         }
         setIsLiveDb(true);
-        setToastMessage("[NEON DB] Deterministic tax parameters updated and persisted to database.");
+        setToastMessage("[FIRESTORE] Deterministic tax parameters updated and persisted to database.");
       } else {
         setToastMessage("Deterministic tax calculations refreshed across local ledger.");
       }
@@ -119,7 +119,7 @@ export function TaxEstimatorClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-container/30 text-secondary border border-secondary/30 flex items-center gap-1 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {isLiveDb ? "Live Neon Tax Guard" : "Demo Profile Active"}
+              {isLiveDb ? "Live Firestore Tax Guard" : "Demo Profile Active"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">

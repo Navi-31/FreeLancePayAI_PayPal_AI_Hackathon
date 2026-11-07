@@ -83,7 +83,7 @@ export function DashboardLiveBannerAndMetrics() {
               >
                 auto_awesome
               </span>
-              <span>{isAuthenticated ? "Live Neon Database Synchronized" : "Autonomous Guardian (Demo Profile)"}</span>
+              <span>{isAuthenticated ? "Live Firebase Database Synchronized" : "Autonomous Guardian (Demo Profile)"}</span>
             </span>
 
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono">

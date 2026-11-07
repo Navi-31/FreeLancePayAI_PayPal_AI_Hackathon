@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/backend/auth/auth";
-import { prisma } from "@/backend/db/db";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/backend/db/db";
 import { recordAuditLog } from "@/backend/services/auditService";
 
 export async function POST(request: NextRequest) {

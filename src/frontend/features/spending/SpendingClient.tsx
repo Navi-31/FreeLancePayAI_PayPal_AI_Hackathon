@@ -180,7 +180,7 @@ export function SpendingClient() {
           );
         }
         setIsLiveDb(true);
-        setActionNotice(`[NEON DB] Outflow of $${amt.toFixed(2)} for ${newEntry.merchant} recorded.`);
+        setActionNotice(`[FIRESTORE] Outflow of $${amt.toFixed(2)} for ${newEntry.merchant} recorded.`);
       } else {
         setActionNotice(`Outflow of $${amt.toFixed(2)} recorded to local workspace.`);
       }
@@ -220,7 +220,7 @@ export function SpendingClient() {
             Spending Intelligence & Outflows
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary/10 border border-primary/30 text-primary flex items-center gap-1 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              {isLiveDb ? "Live Neon Database" : "Demo Baseline"}
+              {isLiveDb ? "Live Firestore Database" : "Demo Baseline"}
             </span>
           </h1>
           <p className="text-sm text-on-surface-variant mt-1">
@@ -953,7 +953,7 @@ export function SpendingClient() {
                   type="submit"
                   className="px-4 py-1.5 rounded-lg bg-primary text-on-primary-fixed font-semibold hover:brightness-110 shadow"
                 >
-                  Save to Neon DB
+                  Save to Firestore Database
                 </button>
               </div>
             </form>

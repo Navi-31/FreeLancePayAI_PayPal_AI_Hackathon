@@ -100,11 +100,11 @@ export const TransactionsClient: React.FC = () => {
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px] flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            {isLiveDb ? "Live Neon Database Ledger" : "Demo Ledger"}
+            {isLiveDb ? "Live Firestore Database Ledger" : "Demo Ledger"}
           </span>
           <span className="text-on-surface-variant">
             {isLiveDb
-              ? "Reconciled ledger from your Neon PostgreSQL database with deterministic fee splits and RFC-4180 CSV export."
+              ? "Reconciled ledger from your Firestore database with deterministic fee splits and RFC-4180 CSV export."
               : "Simulated institutional transactions ledger with deterministic fee breakdowns and RFC-4180 CSV export. Not an actual payment processor statement."}
           </span>
         </div>

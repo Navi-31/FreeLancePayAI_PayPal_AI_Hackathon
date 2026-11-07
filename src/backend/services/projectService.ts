@@ -1,5 +1,4 @@
-import { prisma } from "@/backend/db/db";
-import { Prisma } from "@prisma/client";
+import { prisma, Prisma } from "@/backend/db/db";
 import {
   isValidMilestoneTransition,
   MilestoneStatusType,

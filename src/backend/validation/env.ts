@@ -2,8 +2,19 @@ import "dotenv/config";
 import { z } from "zod";
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().optional(),
-  DATABASE_URL_UNPOOLED: z.string().optional(),
+  FIREBASE_PROJECT_ID: z.string().default("freelancepay-ai"),
+  FIREBASE_CLIENT_EMAIL: z.string().optional(),
+  FIREBASE_PRIVATE_KEY_ID: z.string().optional(),
+  FIREBASE_PRIVATE_KEY: z.string().optional(),
+  FIREBASE_STORAGE_BUCKET: z.string().default("freelancepay-ai.firebasestorage.app"),
+
+  NEXT_PUBLIC_FIREBASE_API_KEY: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: z.string().default("freelancepay-ai.firebaseapp.com"),
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string().default("freelancepay-ai"),
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: z.string().default("freelancepay-ai.firebasestorage.app"),
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_APP_ID: z.string().optional(),
+
   JWT_SECRET: z.string().default("freelancepay_jwt_secret_dev_key_super_safe_99214"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   NEXT_PUBLIC_APP_URL: z.string().default("http://localhost:3000"),
@@ -13,14 +24,12 @@ const envSchema = z.object({
   PAYPAL_BASE_URL: z.string().default("https://api-m.sandbox.paypal.com"),
   PAYPAL_WEBHOOK_ID: z.string().optional(),
   PAYPAL_ENVIRONMENT: z.string().default("sandbox"),
-  AI_PROVIDER: z.enum(["auto", "gemini", "openai", "neon", "fallback"]).default("auto"),
+  AI_PROVIDER: z.enum(["auto", "gemini", "openai", "fallback"]).default("auto"),
   GEMINI_API_KEY: z.string().optional(),
   GEMINI_MODEL: z.string().default("gemini-3.5-flash"),
   OPENAI_API_KEY: z.string().optional(),
   OPENAI_MODEL: z.string().default("gpt-4o-mini"),
   OPENAI_BASE_URL: z.string().default("https://api.openai.com/v1"),
-  NEON_AI_GATEWAY_URL: z.string().optional(),
-  NEON_AI_KEY: z.string().optional(),
   EMAIL_PROVIDER: z.enum(["auto", "resend", "smtp", "mock"]).default("auto"),
   RESEND_API_KEY: z.string().optional(),
   EMAIL_FROM: z.string().default("FreelancePay AI <notifications@freelancepay.ai>"),
@@ -34,8 +43,19 @@ const envSchema = z.object({
 });
 
 export const env = envSchema.parse({
-  DATABASE_URL: process.env.DATABASE_URL,
-  DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_UNPOOLED || process.env.DIRECT_URL,
+  FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID || "freelancepay-ai",
+  FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL,
+  FIREBASE_PRIVATE_KEY_ID: process.env.FIREBASE_PRIVATE_KEY_ID,
+  FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY,
+  FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET || "freelancepay-ai.firebasestorage.app",
+
+  NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "freelancepay-ai.firebaseapp.com",
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "freelancepay-ai",
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "freelancepay-ai.firebasestorage.app",
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+
   JWT_SECRET: process.env.JWT_SECRET,
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -45,14 +65,12 @@ export const env = envSchema.parse({
   PAYPAL_BASE_URL: process.env.PAYPAL_BASE_URL || "https://api-m.sandbox.paypal.com",
   PAYPAL_WEBHOOK_ID: process.env.PAYPAL_WEBHOOK_ID,
   PAYPAL_ENVIRONMENT: process.env.PAYPAL_ENVIRONMENT || "sandbox",
-  AI_PROVIDER: (process.env.AI_PROVIDER as "auto" | "gemini" | "openai" | "neon" | "fallback") || "auto",
+  AI_PROVIDER: (process.env.AI_PROVIDER as "auto" | "gemini" | "openai" | "fallback") || "auto",
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
   GEMINI_MODEL: process.env.GEMINI_MODEL || "gemini-3.5-flash",
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   OPENAI_MODEL: process.env.OPENAI_MODEL || "gpt-4o-mini",
   OPENAI_BASE_URL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
-  NEON_AI_GATEWAY_URL: process.env.NEON_AI_GATEWAY_URL,
-  NEON_AI_KEY: process.env.NEON_AI_KEY,
   EMAIL_PROVIDER: (process.env.EMAIL_PROVIDER as "auto" | "resend" | "smtp" | "mock") || "auto",
   RESEND_API_KEY: process.env.RESEND_API_KEY,
   EMAIL_FROM: process.env.EMAIL_FROM || "FreelancePay AI <notifications@freelancepay.ai>",
@@ -66,5 +84,5 @@ export const env = envSchema.parse({
 });
 
 export function isLiveDatabaseConfigured(): boolean {
-  return Boolean(env.DATABASE_URL && env.DATABASE_URL.startsWith("postgres"));
+  return Boolean(process.env.FIREBASE_PROJECT_ID && (process.env.FIREBASE_PRIVATE_KEY || process.env.FIREBASE_CLIENT_EMAIL));
 }

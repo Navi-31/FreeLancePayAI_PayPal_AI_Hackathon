@@ -134,7 +134,7 @@ export function CurrencyIntelligenceClient() {
             </h1>
             <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 border border-secondary/30 text-secondary text-xs font-semibold flex items-center gap-1.5 font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {isLiveDb ? "Live Neon Currency Telemetry" : "Algorithmic Audit Active"}
+              {isLiveDb ? "Live Firestore Currency Telemetry" : "Algorithmic Audit Active"}
             </span>
           </div>
           <p className="text-sm text-on-surface-variant mt-1">

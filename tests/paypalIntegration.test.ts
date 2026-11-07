@@ -1,4 +1,5 @@
 import "dotenv/config";
+(process.env as Record<string, string | undefined>).NODE_ENV = "test";
 import { prisma } from "@/backend/db/db";
 import { hashPassword } from "@/backend/auth/auth";
 import { createClient } from "@/backend/services/clientService";

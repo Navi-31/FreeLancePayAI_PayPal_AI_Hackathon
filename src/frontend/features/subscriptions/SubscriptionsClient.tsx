@@ -190,7 +190,7 @@ export function SubscriptionsClient() {
         method: "DELETE",
       });
       if (res.ok) {
-        setToastMessage("[NEON DB] Subscription removed and audit log recorded.");
+        setToastMessage("[FIRESTORE] Subscription removed and audit log recorded.");
       } else {
         setToastMessage("Subscription archived locally from active monitoring run-rate.");
       }
@@ -252,7 +252,7 @@ export function SubscriptionsClient() {
           );
         }
         setIsLiveDb(true);
-        setToastMessage(`[NEON DB] Subscription '${newEntry.name}' persisted to database.`);
+        setToastMessage(`[FIRESTORE] Subscription '${newEntry.name}' persisted to database.`);
       } else {
         setToastMessage(`Subscription '${newEntry.name}' added to local monitoring workspace.`);
       }
@@ -292,7 +292,7 @@ export function SubscriptionsClient() {
             Subscription Intelligence & SaaS Audit
             <span className="px-2.5 py-0.5 rounded-full text-xs bg-secondary-container/20 text-secondary border border-secondary/30 flex items-center gap-1 font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {isLiveDb ? "Live Neon Database" : "Demo Baseline"}
+              {isLiveDb ? "Live Firestore Database" : "Demo Baseline"}
             </span>
           </h1>
           <p className="text-sm text-outline mt-1">
@@ -939,7 +939,7 @@ export function SubscriptionsClient() {
                   type="submit"
                   className="px-4 py-1.5 rounded-lg bg-primary text-on-primary-fixed font-semibold hover:brightness-110 shadow"
                 >
-                  Save to Neon DB
+                  Save to Firestore Database
                 </button>
               </div>
             </form>

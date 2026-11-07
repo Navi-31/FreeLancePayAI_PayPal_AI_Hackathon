@@ -9,7 +9,7 @@ import {
   DEMO_REMINDER_CODES,
 } from "@/backend/services/demoSeedService";
 import { generateCopilotResponse } from "@/backend/services/aiService";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/backend/db/db";
 
 export async function runPhase5DDemoReadinessTests(): Promise<{ passed: number; failed: number }> {
   console.log("\n▶ Running Phase 5D & 5D.1 Demo Readiness & Reset Safety Audit Suite...");

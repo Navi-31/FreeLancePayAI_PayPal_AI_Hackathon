@@ -1,4 +1,4 @@
-// User-scoped in-memory cache to accelerate navigation checks & eliminate duplicate Neon DB lookups
+// User-scoped in-memory cache to accelerate navigation checks & eliminate duplicate database lookups
 
 export interface CachedUserSession {
   user: unknown;

@@ -282,11 +282,11 @@ export const RemindersClient: React.FC = () => {
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 rounded bg-primary/20 text-primary font-mono font-semibold uppercase tracking-wider text-[10px] flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-            {isLiveDb ? "Live Neon Database Queue" : "Simulation Engine"}
+            {isLiveDb ? "Live Firestore Database Queue" : "Simulation Engine"}
           </span>
           <span className="text-on-surface-variant">
             {isLiveDb
-              ? "Payment reminders synchronized with your Neon database receivables. Approval required before dispatch."
+              ? "Payment reminders synchronized with your Firestore database receivables. Approval required before dispatch."
               : "Payment reminders are interactive sandbox drafts. Client communications are simulated locally; no external emails, SMS, or webhooks are triggered."}
           </span>
         </div>

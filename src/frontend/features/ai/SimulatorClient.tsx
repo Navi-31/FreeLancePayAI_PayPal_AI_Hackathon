@@ -203,7 +203,7 @@ export const SimulatorClient: React.FC = () => {
             </h1>
             <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-secondary-container/20 text-secondary border border-secondary/30 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
-              {isLiveDb ? "Live Neon Simulation Base" : "Deterministic Sandbox — Zero Real-World Execution"}
+              {isLiveDb ? "Live Firestore Simulation Base" : "Deterministic Sandbox — Zero Real-World Execution"}
             </span>
           </div>
           <p className="text-on-surface-variant text-sm font-body-md mt-1">

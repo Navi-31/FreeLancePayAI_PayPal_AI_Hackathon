@@ -13,7 +13,7 @@ import {
 } from "@/backend/services/financialIntelligence";
 import { sanitizePromptInput } from "@/backend/security/promptSanitizer";
 import { checkAiRateLimit } from "@/backend/security/rateLimiter";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/backend/db/db";
 
 export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: number; failed: number }> {
   console.log("\n▶ Running Phase 5E AI Differentiation & Advanced Financial Intelligence Suite...");
