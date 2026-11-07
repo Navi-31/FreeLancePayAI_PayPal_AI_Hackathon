@@ -22,7 +22,12 @@ const envSchema = z.object({
   NEON_AI_KEY: z.string().optional(),
   EMAIL_PROVIDER: z.enum(["auto", "resend", "smtp", "mock"]).default("auto"),
   RESEND_API_KEY: z.string().optional(),
-  EMAIL_FROM: z.string().default("FreelancePay AI <notifications@freelancepay.ai>"),
+  EMAIL_FROM: z.string().default("FreelancePay AI <navaniinc@gmail.com>"),
+  SMTP_HOST: z.string().default("smtp.gmail.com"),
+  SMTP_PORT: z.coerce.number().default(465),
+  SMTP_SECURE: z.coerce.boolean().default(true),
+  SMTP_USER: z.string().optional(),
+  SMTP_PASS: z.string().optional(),
   CRON_SECRET: z.string().default("dev_cron_secret_freelancepay_secure_key_10293"),
 });
 
@@ -47,7 +52,12 @@ export const env = envSchema.parse({
   NEON_AI_KEY: process.env.NEON_AI_KEY,
   EMAIL_PROVIDER: (process.env.EMAIL_PROVIDER as "auto" | "resend" | "smtp" | "mock") || "auto",
   RESEND_API_KEY: process.env.RESEND_API_KEY,
-  EMAIL_FROM: process.env.EMAIL_FROM || "FreelancePay AI <notifications@freelancepay.ai>",
+  EMAIL_FROM: process.env.EMAIL_FROM || "FreelancePay AI <navaniinc@gmail.com>",
+  SMTP_HOST: process.env.SMTP_HOST || "smtp.gmail.com",
+  SMTP_PORT: process.env.SMTP_PORT || 465,
+  SMTP_SECURE: process.env.SMTP_SECURE !== undefined ? process.env.SMTP_SECURE === "true" || process.env.SMTP_SECURE === "1" : true,
+  SMTP_USER: process.env.SMTP_USER,
+  SMTP_PASS: process.env.SMTP_PASS,
   CRON_SECRET: process.env.CRON_SECRET || "dev_cron_secret_freelancepay_secure_key_10293",
 });
 

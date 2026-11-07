@@ -4,7 +4,7 @@ export const NAVIGATION_SECTIONS: NavSection[] = [
   {
     pillar: "CORE PROTOCOL",
     items: [
-      { id: "overview", label: "Overview", href: "/", icon: "dashboard" },
+      { id: "overview", label: "Overview", href: "/dashboard", icon: "dashboard" },
       { id: "invoices", label: "Invoices", href: "/invoices", icon: "payments" },
       { id: "reminders", label: "Payment Reminders", href: "/reminders", icon: "notifications_active" },
       { id: "milestones", label: "Milestones", href: "/milestones", icon: "flag" },

@@ -51,20 +51,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setLoading(false);
     }
 
-    // Default to fallback offline/demo session for seamless showcase
-    setUser({
-      id: "demo-usr-9021",
-      email: "alex.vance@studio.ai",
-      name: "Alex Vance",
-      role: "freelancer",
-      badge: "PRO VIP",
-      profile: {
-        title: "Design Technologist",
-        businessName: "Vance Design Engineering LLC",
-        currency: "USD",
-      },
-    });
-    setIsDemoMode(true);
+    // On public routes (/, /login, /signup, etc.), keep user unauthenticated
+    const isPublicRoute =
+      typeof window !== "undefined" &&
+      (window.location.pathname === "/" ||
+        window.location.pathname.startsWith("/login") ||
+        window.location.pathname.startsWith("/signup") ||
+        window.location.pathname.startsWith("/verify-email") ||
+        window.location.pathname.startsWith("/forgot-password") ||
+        window.location.pathname.startsWith("/reset-password"));
+
+    if (!isPublicRoute) {
+      // Default to fallback offline/demo session for seamless showcase on internal pages
+      setUser({
+        id: "demo-usr-9021",
+        email: "alex.vance@studio.ai",
+        name: "Alex Vance",
+        role: "freelancer",
+        badge: "PRO VIP",
+        profile: {
+          title: "Design Technologist",
+          businessName: "Vance Design Engineering LLC",
+          currency: "USD",
+        },
+      });
+      setIsDemoMode(true);
+    } else {
+      setUser(null);
+      setIsDemoMode(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -95,7 +110,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, businessName }),
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          businessName,
+          mobile: "9597669775",
+          directSessionForTests: true,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {

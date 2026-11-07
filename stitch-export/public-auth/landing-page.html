@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — Autonomous Wealth Engine for Freelancers</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary": "#3b0092",
+            "primary-fixed-dim": "#ebc166",
+            "primary-fixed": "#ffdea0",
+            "inverse-primary": "#795902",
+            "error-container": "#93000a",
+            "tertiary-container": "#ff8dd2",
+            "primary": "#f4c86d",
+            "on-secondary-fixed": "#22005c",
+            "outline-variant": "#4e4637",
+            "secondary": "#d0bcff",
+            "secondary-container": "#561cc1",
+            "on-primary-fixed-variant": "#5c4300",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "surface-bright": "#39383f",
+            "on-tertiary-fixed-variant": "#880067",
+            "on-primary-container": "#594100",
+            "surface": "#131319",
+            "background": "#131319",
+            "on-tertiary": "#610048",
+            "on-primary": "#402d00",
+            "on-tertiary-container": "#850065",
+            "on-surface": "#e4e1ea",
+            "inverse-surface": "#e4e1ea",
+            "surface-tint": "#ebc166",
+            "on-error": "#690005",
+            "on-background": "#e4e1ea",
+            "surface-variant": "#35343b",
+            "tertiary-fixed-dim": "#ffaedb",
+            "error": "#ffb4ab",
+            "outline": "#9a8f7e",
+            "inverse-on-surface": "#303036",
+            "surface-container-high": "#2a2930",
+            "tertiary-fixed": "#ffd8eb",
+            "primary-container": "#d6ad55",
+            "on-surface-variant": "#d1c5b2",
+            "on-primary-fixed": "#261a00",
+            "on-tertiary-fixed": "#3c002b",
+            "on-error-container": "#ffdad6",
+            "surface-dim": "#131319",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container": "#1f1f25",
+            "surface-container-low": "#1b1b21",
+            "tertiary": "#ffbadf",
+            "secondary-fixed": "#e9ddff",
+            "surface-container-highest": "#35343b",
+            "on-secondary-fixed-variant": "#5417be"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1.25rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "gutter": "1.5rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "display": ["Geist"],
+            "headline-md": ["Geist"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "numeric-metric": ["Geist"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Geist"],
+            "label-sm": ["Geist"],
+            "display-mobile": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      vertical-align: middle;
+      font-feature-settings: 'liga';
+    }
+    
+    .gold-gradient-bg {
+      background: linear-gradient(135deg, #F0D48B 0%, #D6AD55 100%);
+    }
+
+    .auric-glow {
+      box-shadow: 0 0 25px -5px rgba(240, 212, 139, 0.35);
+    }
+
+    .violet-glow {
+      box-shadow: 0 0 35px -10px rgba(150, 101, 255, 0.4);
+    }
+
+    .glass-base {
+      background: rgba(23, 23, 32, 0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .glass-elevated {
+      background: rgba(30, 29, 41, 0.82);
+      backdrop-filter: blur(28px);
+      border: 1px solid rgba(240, 212, 139, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased overflow-x-hidden selection:bg-primary-container selection:text-surface-container-lowest">
+<!-- Ambient Light Fields -->
+<div class="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-gradient-to-b from-secondary-container/20 via-primary/5 to-transparent blur-[140px] pointer-events-none -z-10"></div>
+<div class="fixed top-[40%] right-[-10%] w-[600px] h-[600px] bg-secondary-container/15 blur-[160px] pointer-events-none -z-10"></div>
+<div class="fixed top-[70%] left-[-10%] w-[600px] h-[600px] bg-primary-container/10 blur-[160px] pointer-events-none -z-10"></div>
+<!-- 1. STICKY TOP NAVIGATION -->
+<header class="sticky top-0 z-50 w-full backdrop-blur-2xl bg-surface-container-lowest/80 border-b border-outline-variant/20 transition-all duration-200">
+<div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+<!-- Brand Logo -->
+<a class="flex items-center gap-3 group" href="#">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-fixed to-primary-container p-[1px] flex items-center justify-center shadow-lg shadow-primary/10 group-hover:shadow-primary/25 transition-all">
+<div class="w-full h-full bg-surface-container-lowest rounded-[11px] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-semibold text-primary tracking-tight">FreelancePay</span>
+<span class="px-1.5 py-0.5 text-[10px] font-label-sm font-semibold rounded bg-secondary-container/40 text-secondary border border-secondary/30">AI</span>
+</div>
+</a>
+<!-- Center Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#features">Features</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#how-it-works">How It Works</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#value">Why FreelancePay</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#security">Security</a>
+</nav>
+<!-- Right CTAs -->
+<div class="flex items-center gap-3.5">
+<a class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" href="#">
+          Login
+        </a>
+<a class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg font-label-md text-label-md font-semibold text-surface-container-lowest gold-gradient-bg auric-glow hover:opacity-95 transition-all active:scale-[0.98]" href="#cta">
+<span>Get Started</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</a>
+</div>
+</div>
+</header>
+<!-- 2. HERO SECTION -->
+<section class="relative pt-20 pb-28 md:pt-28 md:pb-36 px-6 overflow-hidden">
+<div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+<!-- Eyebrow Pill -->
+<div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-surface-container border border-secondary/25 backdrop-blur-md mb-8">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-wide">Next-Gen Autonomous Wealth Engine for Freelancers</span>
+</div>
+<!-- Main Headline -->
+<h1 class="font-display text-display-mobile md:text-display max-w-4xl text-on-surface font-semibold tracking-tight leading-tight mb-6">
+        Your Freelance Business. <br class="hidden sm:inline"/>
+<span class="bg-gradient-to-r from-primary via-primary-fixed to-secondary bg-clip-text text-transparent">Under Financial Control.</span>
+</h1>
+<!-- Subtitle -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10 text-balance">
+        Get paid faster, understand your money better, and make smarter financial decisions with your AI-powered freelance finance assistant.
+      </p>
+<!-- Action Triggers -->
+<div class="flex flex-col sm:flex-row items-center gap-4 mb-14 w-full sm:w-auto">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-label-md text-label-md font-semibold text-surface-container-lowest gold-gradient-bg auric-glow hover:scale-[1.01] active:scale-[0.98] transition-all" href="#cta">
+<span>Get Started — It's Free</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-label-md text-label-md font-medium text-on-surface bg-surface-container/70 border border-outline-variant/30 hover:bg-surface-container hover:border-outline/40 transition-all" href="#features">
+<span class="material-symbols-outlined text-primary text-xl">play_circle</span>
+<span>Explore Features</span>
+</a>
+</div>
+<!-- Social Proof Statement -->
+<div class="flex items-center gap-3 text-on-surface-variant/80 font-label-sm text-label-sm mb-16">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full bg-surface-container border border-primary/40 flex items-center justify-center text-[10px] text-primary font-bold">AK</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-high border border-secondary/40 flex items-center justify-center text-[10px] text-secondary font-bold">LX</div>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-primary/40 flex items-center justify-center text-[10px] text-primary-fixed-dim font-bold">RT</div>
+</div>
+<span>Trusted by 12,000+ elite independent contractors, consultants, and studios worldwide</span>
+</div>
+<!-- 3D High-Fidelity Product Interactive Dashboard Preview -->
+<div class="w-full max-w-5xl rounded-2xl glass-elevated p-2 md:p-3 shadow-2xl relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/20 via-secondary/25 to-primary/10 rounded-2xl blur-xl opacity-75 group-hover:opacity-100 transition duration-700 -z-10"></div>
+<div class="rounded-xl bg-surface-container-lowest border border-outline-variant/20 overflow-hidden">
+<!-- Mock Top Bar of App Shell -->
+<div class="h-12 bg-surface-container-low px-4 flex items-center justify-between border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-error/70"></span>
+<span class="w-3 h-3 rounded-full bg-primary/70"></span>
+<span class="w-3 h-3 rounded-full bg-secondary/70"></span>
+<div class="h-4 w-px bg-outline-variant/40 mx-2"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary">lock</span>
+                telemetry.freelancepay.ai/v2/stream
+              </span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2.5 py-1 rounded">USD / EUR</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-label-sm bg-secondary-container/30 text-secondary border border-secondary/20">Autonomous Engine Online</span>
+</div>
+</div>
+<!-- Mock Dashboard Canvas -->
+<div class="p-6 md:p-8 grid grid-cols-1 md:grid-cols-12 gap-6 text-left">
+<!-- Metric Card 1: Revenue -->
+<div class="md:col-span-4 rounded-xl p-5 bg-surface-container/50 border border-outline-variant/20 relative overflow-hidden">
+<div class="flex items-center justify-between mb-3">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Total Liquid Revenue</span>
+<span class="px-2 py-0.5 rounded-full text-xs font-label-sm bg-primary/10 text-primary border border-primary/20">+19.4% MoM</span>
+</div>
+<div class="font-numeric-metric text-numeric-metric text-on-surface tracking-tight mb-2">$142,650.00</div>
+<div class="flex items-center gap-1.5 text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-xs text-primary">verified</span>
+<span>$32,400.00 settled this week</span>
+</div>
+</div>
+<!-- Metric Card 2: Cashflow Velocity -->
+<div class="md:col-span-4 rounded-xl p-5 bg-surface-container/50 border border-outline-variant/20 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Cashflow Velocity Radar</span>
+<span class="material-symbols-outlined text-secondary text-sm">speed</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-baseline justify-between">
+<span class="font-headline-sm text-headline-sm text-secondary">4.2 Days</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Industry Avg: 28 Days</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-secondary to-primary h-full rounded-full" style="width: 86%"></div>
+</div>
+</div>
+<span class="text-xs text-on-surface-variant mt-2">Zero collection latency detected</span>
+</div>
+<!-- Metric Card 3: Collection Probability -->
+<div class="md:col-span-4 rounded-xl p-5 bg-surface-container/50 border border-outline-variant/20 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Active Invoice Recovery</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<div class="flex items-center gap-3">
+<div class="font-numeric-metric text-numeric-metric text-primary">94%</div>
+<div class="text-xs text-on-surface-variant">
+<div class="font-medium text-on-surface">Optimal Liquidity</div>
+<span>4 Invoices pending client approval</span>
+</div>
+</div>
+<div class="text-xs text-on-surface-variant/80 border-t border-outline-variant/20 pt-2">
+                Next scheduled batch: Today, 18:00 UTC
+              </div>
+</div>
+<!-- AI Copilot Live Recommendation Pill -->
+<div class="md:col-span-12 rounded-xl p-4 bg-gradient-to-r from-secondary-container/20 via-surface-container-high to-secondary-container/10 border border-secondary/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+<div class="flex items-start sm:items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-secondary/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-base">auto_awesome</span>
+</div>
+<div>
+<div class="font-label-md text-label-md text-on-surface font-medium flex items-center gap-2">
+<span>AI Copilot Recommendation</span>
+<span class="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-secondary-container/60 text-secondary">Autonomous Yield</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Studio Apex tends to settle on Thursday mornings. Suggest queuing payment ping tomorrow at 09:30 AM CET with 1.5% prompt settlement rebate.
+                  </p>
+</div>
+</div>
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-1.5 rounded-lg text-xs font-label-sm font-medium bg-surface-container-highest text-on-surface hover:bg-surface-bright transition-all">Dismiss</button>
+<button class="px-3.5 py-1.5 rounded-lg text-xs font-label-sm font-medium gold-gradient-bg text-surface-container-lowest font-semibold hover:opacity-90 transition-all">Apply Recommendation</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. VALUE PROPOSITION & FEATURE MATRIX (Bento Grid) -->
+<section class="py-24 px-6 border-t border-outline-variant/20 relative" id="features">
+<div class="max-w-7xl mx-auto">
+<div class="text-center max-w-3xl mx-auto mb-16">
+<span class="font-label-sm text-label-sm text-primary tracking-widest uppercase font-semibold">Institutional Grade Capabilities</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold tracking-tight mt-3 mb-4">
+          Everything High-Performing Operators Need
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Engineered to eliminate administrative drag and maximize bottom-line retaining power without manual spreadsheets.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Smart Invoicing -->
+<div class="group p-8 rounded-2xl glass-base hover:glass-elevated border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 relative flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl">receipt_long</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Smart Invoicing</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Create professional invoices and track payments effortlessly. Multi-currency settlement, automated milestone triggers, and dynamic itemized breakdowns.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-primary">
+<span>Instant PDF &amp; Live Web Link</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Card 2: AI Financial Copilot -->
+<div class="group p-8 rounded-2xl glass-base hover:glass-elevated border border-outline-variant/20 hover:border-secondary/40 transition-all duration-300 relative flex flex-col justify-between">
+<div class="absolute -top-3 right-6 px-2.5 py-0.5 rounded-full bg-secondary-container text-secondary text-[11px] font-label-sm font-semibold border border-secondary/30">
+            Autonomous
+          </div>
+<div>
+<div class="w-12 h-12 rounded-xl bg-secondary/10 border border-secondary/25 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-2xl">neurology</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">AI Financial Copilot</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Ask questions about your finances and receive actionable insights. Natural language audits: "How much tax reserve should I hold for Q3 retainers?"
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-secondary">
+<span>Sub-second Context Retrieval</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Card 3: Payment Intelligence -->
+<div class="group p-8 rounded-2xl glass-base hover:glass-elevated border border-outline-variant/20 hover:border-primary-fixed-dim/40 transition-all duration-300 relative flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary-fixed-dim/10 border border-primary-fixed-dim/25 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim text-2xl">timelapse</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Payment Intelligence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Track overdue invoices and prepare professional payment reminders. Predict payment likelihoods and execute polite, diplomatic auto-escalations.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-primary-fixed-dim">
+<span>Dynamic Gentle Escrow Alerts</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Card 4: Cashflow Forecasting -->
+<div class="group p-8 rounded-2xl glass-base hover:glass-elevated border border-outline-variant/20 hover:border-outline/40 transition-all duration-300 relative flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/30 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-surface text-2xl">trending_up</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Cashflow Forecasting</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Understand expected income, expenses and upcoming financial pressure with high-confidence probabilistic Monte Carlo simulation curves.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-on-surface-variant">
+<span>90-Day Runway Projection</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Card 5: Fee & Currency Intelligence -->
+<div class="group p-8 rounded-2xl glass-base hover:glass-elevated border border-outline-variant/20 hover:border-secondary/40 transition-all duration-300 relative flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-secondary/10 border border-secondary/25 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary text-2xl">currency_exchange</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Fee &amp; Currency Intelligence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Understand payment fees, currency conversion and estimated net earnings across global banking rails, Wise, Stripe, and decentralized accounts.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-secondary">
+<span>Zero Hidden Spread Auditing</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<!-- Card 6: Client Intelligence -->
+<div class="group p-8 rounded-2xl glass-base hover:glass-elevated border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 relative flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl">badge</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Client Intelligence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Understand client payment behaviour, project profitability ratios, and hourly realization rate real-time benchmarking per client contract.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center justify-between text-xs font-label-sm text-primary">
+<span>Client Health Scorecard</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. HOW IT WORKS SECTION (Interactive 3-Step Process) -->
+<section class="py-24 px-6 bg-surface-container-low/40 relative" id="how-it-works">
+<div class="max-w-7xl mx-auto">
+<div class="text-center max-w-2xl mx-auto mb-20">
+<span class="font-label-sm text-label-sm text-secondary tracking-widest uppercase font-semibold">Effortless Automation</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold tracking-tight mt-3 mb-4">
+          How FreelancePay AI Powers Your Treasury
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Three frictionless steps to bring institutional precision to your independent consultancy.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+<!-- Step 1 -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/20 hover:border-primary/30 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-8">
+<span class="font-numeric-metric text-numeric-metric text-outline-variant/40 font-bold">01</span>
+<span class="w-10 h-10 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">hub</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">
+              Connect and organize your freelance finances
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Link multi-rail merchant processors, bank accounts, retainer schedules, and contract deliverables in under two minutes via zero-retention feeds.
+            </p>
+</div>
+<div class="space-y-2 pt-4 border-t border-outline-variant/20 text-xs font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xs">check_circle</span>
+<span>Plaid, Stripe, Wise, and crypto rails</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xs">check_circle</span>
+<span>Automatic client categorization</span>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/20 hover:border-secondary/30 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-8">
+<span class="font-numeric-metric text-numeric-metric text-outline-variant/40 font-bold">02</span>
+<span class="w-10 h-10 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">psychology</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">
+              Let AI analyze your financial activity
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Autonomous neural parsing identifies payment habits, forecasts cashflow dry spells, categorizes business deductions, and tags deductible VAT/GST.
+            </p>
+</div>
+<div class="space-y-2 pt-4 border-t border-outline-variant/20 text-xs font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xs">check_circle</span>
+<span>Predictive settlement day clustering</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xs">check_circle</span>
+<span>Continuous tax shield estimation</span>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/20 hover:border-primary/30 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-8">
+<span class="font-numeric-metric text-numeric-metric text-outline-variant/40 font-bold">03</span>
+<span class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified_user</span>
+</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">
+              Make informed decisions with your approval
+            </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+              Review synthesized actions before any trigger is executed. Dispatch automated follow-ups, lock in fx yields, or route funds with a single passkey tap.
+            </p>
+</div>
+<div class="space-y-2 pt-4 border-t border-outline-variant/20 text-xs font-label-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xs">check_circle</span>
+<span>Strict human-in-the-loop sovereign veto</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xs">check_circle</span>
+<span>One-click passkey cryptographic sign</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. SECURITY & CONTROL ARCHITECTURE -->
+<section class="py-24 px-6 border-t border-outline-variant/20 relative" id="security">
+<div class="max-w-7xl mx-auto">
+<div class="rounded-3xl glass-elevated border border-outline-variant/30 p-8 md:p-14 relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-7">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-surface-container border border-primary/30 mb-6">
+<span class="material-symbols-outlined text-primary text-sm">shield</span>
+<span class="font-label-sm text-label-sm text-primary uppercase font-semibold">Institutional Custody Standard</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface font-semibold tracking-tight mb-4">
+              Your Money. Your Decisions. Always.
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+              We believe in non-custodial intelligence. FreelancePay AI never holds your funds, never initiates unconfirmed transfers, and enforces mathematical transparency across every recommendation.
+            </p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20">
+<div class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-base">check_circle</span>
+                  Approval-First Actions
+                </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Zero payments dispatched without deliberate user biometric confirmation.</p>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20">
+<div class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-secondary text-base">key</span>
+                  Passkey &amp; Hardware Auth
+                </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">FIDO2 WebAuthn authentication directly anchored to your secure enclave.</p>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20">
+<div class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-base">lock</span>
+                  End-to-End Encryption
+                </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Client-side AES-256-GCM encryption for invoices, client terms, and statements.</p>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-lowest/80 border border-outline-variant/20">
+<div class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-secondary text-base">terminal</span>
+                  Verifiable AI Audits
+                </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Full deterministic trace log available for every tax and cashflow projection.</p>
+</div>
+</div>
+</div>
+<!-- Graphic Emblem Card -->
+<div class="lg:col-span-5 flex justify-center">
+<div class="w-full max-w-sm p-8 rounded-2xl bg-surface-container-lowest border border-outline-variant/30 text-center relative">
+<div class="w-20 h-20 rounded-full bg-gradient-to-br from-primary/20 via-surface-container to-secondary/20 mx-auto flex items-center justify-center mb-6 auric-glow border border-primary/30">
+<span class="material-symbols-outlined text-primary text-4xl">lock_person</span>
+</div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">Cryptographic Vault</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mb-6">Continuous 24/7 autonomous surveillance against unauthorized fee leaks or latency breaches.</div>
+<div class="flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container text-xs text-primary font-label-sm border border-outline-variant/20">
+<span class="material-symbols-outlined text-xs">encrypted</span>
+<span>Zero Custodial Risk Verified</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. BOTTOM CONVERSION CTA SECTION -->
+<section class="py-28 px-6 relative overflow-hidden text-center" id="cta">
+<div class="max-w-4xl mx-auto relative z-10">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container border border-primary/30 mb-8">
+<span class="material-symbols-outlined text-primary text-sm">bolt</span>
+<span class="font-label-sm text-label-sm text-primary font-medium">Instant Setup • No Credit Card Required</span>
+</div>
+<h2 class="font-display text-display-mobile md:text-display text-on-surface font-semibold tracking-tight leading-tight mb-6">
+        Take Control of Your <br/>
+<span class="bg-gradient-to-r from-primary via-primary-fixed to-secondary bg-clip-text text-transparent">Freelance Finances.</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto mb-10">
+        Join the private network of consultants, engineers, and digital agencies accelerating revenue velocity and tax readiness with FreelancePay AI.
+      </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-9 py-4 rounded-xl font-label-md text-label-md font-semibold text-surface-container-lowest gold-gradient-bg auric-glow hover:scale-[1.01] active:scale-[0.98] transition-all" href="#">
+<span>Create Your Free Account</span>
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</a>
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-label-md text-label-md font-medium text-on-surface bg-surface-container border border-outline-variant/30 hover:bg-surface-container-high transition-all" href="#">
+<span>Book Institutional Concierge</span>
+</a>
+</div>
+<div class="mt-12 flex flex-wrap items-center justify-center gap-8 text-on-surface-variant/70 font-label-sm text-label-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">check_circle</span>
+<span>Free 14-day full telemetry trial</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">check_circle</span>
+<span>Cancel anytime in 1-click</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">check_circle</span>
+<span>SOC2 Type II certified pipeline</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 7. REFINED FOOTER -->
+<footer class="border-t border-outline-variant/20 bg-surface-container-lowest py-16 px-6">
+<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-10 mb-14 text-left">
+<!-- Brand column -->
+<div class="col-span-2">
+<a class="flex items-center gap-3 mb-4" href="#">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-fixed to-primary-container p-[1px] flex items-center justify-center">
+<div class="w-full h-full bg-surface-container-lowest rounded-[7px] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold text-primary">FreelancePay AI</span>
+</a>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-sm mb-6">
+          The autonomous private wealth engine built specifically for independent operators, global specialists, and sovereign technology consultants.
+        </p>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<a class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-base">terminal</span>
+</a>
+<a class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-base">share</span>
+</a>
+<a class="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-base">shield_lock</span>
+</a>
+</div>
+</div>
+<!-- Links 1: Product -->
+<div>
+<h4 class="font-label-md text-label-md font-semibold text-on-surface mb-4">Product</h4>
+<ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#features">Smart Invoicing</a></li>
+<li><a class="hover:text-primary transition-colors" href="#features">AI Copilot</a></li>
+<li><a class="hover:text-primary transition-colors" href="#features">Yield Radar</a></li>
+<li><a class="hover:text-primary transition-colors" href="#features">Tax Shield</a></li>
+<li><a class="hover:text-primary transition-colors" href="#features">Global Settlement</a></li>
+</ul>
+</div>
+<!-- Links 2: Company -->
+<div>
+<h4 class="font-label-md text-label-md font-semibold text-on-surface mb-4">Company</h4>
+<ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">About</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Security Architecture</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Telemetry Logs</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Careers</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<!-- Links 3: Legal & Trust -->
+<div>
+<h4 class="font-label-md text-label-md font-semibold text-on-surface mb-4">Governance</h4>
+<ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Non-Custodial Mandate</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Security Whitepaper</a></li>
+</ul>
+</div>
+</div>
+<!-- Bottom copyright -->
+<div class="max-w-7xl mx-auto pt-8 border-t border-outline-variant/15 flex flex-col sm:flex-row items-center justify-between gap-4 font-label-sm text-label-sm text-on-surface-variant/60">
+<div>© 2025 FreelancePay AI Inc. All sovereign financial rights reserved.</div>
+<div class="flex items-center gap-6">
+<span class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+          All Systems Functional
+        </span>
+<span>Build 2.4.9-prod</span>
+</div>
+</div>
+</footer>
+</body></html>

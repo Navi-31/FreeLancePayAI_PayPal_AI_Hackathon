@@ -471,6 +471,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
                   onClick={async () => {
                     await logout();
                     setShowProfileMenu(false);
+                    router.push("/login");
                   }}
                   className="w-full text-left flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-error-container/20 text-error hover:text-error transition-colors"
                 >

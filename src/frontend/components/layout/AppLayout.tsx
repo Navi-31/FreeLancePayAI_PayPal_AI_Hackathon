@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { SideNavBar } from "./SideNavBar";
 import { TopNavBar } from "./TopNavBar";
 import { SupportedCurrency } from "@/shared/types/navigation";
-import { AuthProvider } from "@/frontend/features/auth/AuthContext";
 
 export interface AppLayoutProps {
   children: React.ReactNode;
@@ -23,9 +22,8 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   const [currency, setCurrency] = useState<SupportedCurrency>("USD");
 
   return (
-    <AuthProvider>
-      <div className="min-h-screen bg-surface-container-lowest text-on-surface flex selection:bg-primary selection:text-on-primary">
-        {/* 1. Desktop Persistent Sidebar */}
+    <div className="min-h-screen bg-surface-container-lowest text-on-surface flex selection:bg-primary selection:text-on-primary">
+      {/* 1. Desktop Persistent Sidebar */}
         <div className="hidden lg:block fixed left-0 top-0 h-screen w-64 z-40">
           <SideNavBar />
         </div>
@@ -65,6 +63,5 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           </main>
         </div>
       </div>
-    </AuthProvider>
   );
 };

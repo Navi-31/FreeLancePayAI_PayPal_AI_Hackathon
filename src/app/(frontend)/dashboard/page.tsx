@@ -1,3 +1,5 @@
-import DashboardPage from "../page";
+import { DashboardClient } from "@/frontend/features/dashboard/DashboardClient";
 
-export default DashboardPage;
+export default function DashboardPage() {
+  return <DashboardClient />;
+}

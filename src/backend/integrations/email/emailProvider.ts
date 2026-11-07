@@ -1,4 +1,5 @@
 import { env } from "@/backend/validation/env";
+import nodemailer, { type Transporter } from "nodemailer";
 
 export interface EmailRecipient {
   email: string;
@@ -11,8 +12,8 @@ export interface EmailPayload {
   subject: string;
   text: string;
   html?: string;
-  workflow: "invoice_delivery" | "payment_reminder" | "payment_receipt" | "account_alert";
-  entityType?: "Invoice" | "PaymentReminder" | "Transaction";
+  workflow: "invoice_delivery" | "payment_reminder" | "payment_receipt" | "account_alert" | "signup_verification" | "login_otp" | "password_reset";
+  entityType?: "Invoice" | "PaymentReminder" | "Transaction" | "EmailOtp" | "PasswordResetToken";
   entityId?: string;
   idempotencyKey?: string;
   userApproved?: boolean;
@@ -21,7 +22,7 @@ export interface EmailPayload {
 export interface EmailSendResult {
   success: boolean;
   status: "sent" | "delivered" | "failed" | "simulated" | "awaiting_approval";
-  provider: "resend" | "mock";
+  provider: "smtp" | "resend" | "mock";
   providerMessageId?: string;
   error?: string;
   isConfigured: boolean;
@@ -45,14 +46,26 @@ export function sanitizeHeaderValue(value: string): string {
 
 /**
  * Determines whether the email provider is configured with live credentials.
+ * Priority: SMTP (Gmail or custom) -> Resend -> Mock.
  */
 export function getActiveEmailProvider(): {
-  provider: "resend" | "mock";
+  provider: "smtp" | "resend" | "mock";
   isConfigured: boolean;
 } {
   const providerChoice = env.EMAIL_PROVIDER;
-  const resendKey = env.RESEND_API_KEY;
 
+  // Check SMTP credentials first if explicitly selected or auto
+  if (
+    (providerChoice === "smtp" || providerChoice === "auto") &&
+    env.SMTP_USER &&
+    env.SMTP_PASS &&
+    env.SMTP_PASS.trim().length > 0
+  ) {
+    return { provider: "smtp", isConfigured: true };
+  }
+
+  // Check Resend
+  const resendKey = env.RESEND_API_KEY;
   if (
     (providerChoice === "resend" || providerChoice === "auto") &&
     resendKey &&
@@ -65,7 +78,27 @@ export function getActiveEmailProvider(): {
 }
 
 /**
- * Dispatches an email via Resend API or safe mock provider.
+ * Creates a cached nodemailer transporter instance when SMTP is active.
+ */
+let smtpTransporter: Transporter | null = null;
+
+function getSmtpTransporter(): Transporter {
+  if (!smtpTransporter) {
+    smtpTransporter = nodemailer.createTransport({
+      host: env.SMTP_HOST,
+      port: env.SMTP_PORT,
+      secure: env.SMTP_SECURE, // true for port 465 (SSL)
+      auth: {
+        user: env.SMTP_USER,
+        pass: env.SMTP_PASS,
+      },
+    });
+  }
+  return smtpTransporter;
+}
+
+/**
+ * Dispatches an email via SMTP (Nodemailer), Resend API, or safe mock provider.
  * Never throws unhandled network errors; returns structured result.
  */
 export async function dispatchEmailThroughProvider(
@@ -87,7 +120,39 @@ export async function dispatchEmailThroughProvider(
   const safeSubject = sanitizeHeaderValue(payload.subject);
   const active = getActiveEmailProvider();
 
-  // If Resend API credentials are valid, execute HTTP call
+  // 1. Dispatch via SMTP (e.g. Gmail SSL)
+  if (active.provider === "smtp" && active.isConfigured) {
+    try {
+      const transporter = getSmtpTransporter();
+      const info = await transporter.sendMail({
+        from: fromAddress,
+        to: recipient,
+        subject: safeSubject,
+        text: payload.text,
+        html: payload.html || payload.text,
+      });
+
+      return {
+        success: true,
+        status: "sent",
+        provider: "smtp",
+        providerMessageId: info.messageId || `smtp_${Date.now()}`,
+        isConfigured: true,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (err) {
+      return {
+        success: false,
+        status: "failed",
+        provider: "smtp",
+        error: err instanceof Error ? err.message : "Unknown SMTP transmission error",
+        isConfigured: true,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  // 2. Dispatch via Resend API
   if (active.provider === "resend" && active.isConfigured) {
     try {
       const response = await fetch("https://api.resend.com/emails", {
@@ -138,7 +203,7 @@ export async function dispatchEmailThroughProvider(
     }
   }
 
-  // Safe Mock / Simulated Provider Fallback
+  // 3. Safe Mock / Simulated Provider Fallback
   // Clearly states "simulated" so UI and audit logs never pretend a live email was dispatched.
   return {
     success: true,

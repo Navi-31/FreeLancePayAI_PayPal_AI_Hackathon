@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FreelancePay AI — Institutional Financial Concierge Sign Up</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Geist & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary": "#3b0092",
+            "primary-fixed-dim": "#ebc166",
+            "primary-fixed": "#ffdea0",
+            "inverse-primary": "#795902",
+            "error-container": "#93000a",
+            "tertiary-container": "#ff8dd2",
+            "primary": "#f4c86d",
+            "on-secondary-fixed": "#22005c",
+            "outline-variant": "#4e4637",
+            "secondary": "#d0bcff",
+            "secondary-container": "#561cc1",
+            "on-primary-fixed-variant": "#5c4300",
+            "surface-container-lowest": "#0e0e14",
+            "on-secondary-container": "#c3abff",
+            "surface-bright": "#39383f",
+            "on-tertiary-fixed-variant": "#880067",
+            "on-primary-container": "#594100",
+            "surface": "#131319",
+            "background": "#131319",
+            "on-tertiary": "#610048",
+            "on-primary": "#402d00",
+            "on-tertiary-container": "#850065",
+            "on-surface": "#e4e1ea",
+            "inverse-surface": "#e4e1ea",
+            "surface-tint": "#ebc166",
+            "on-error": "#690005",
+            "on-background": "#e4e1ea",
+            "surface-variant": "#35343b",
+            "tertiary-fixed-dim": "#ffaedb",
+            "error": "#ffb4ab",
+            "outline": "#9a8f7e",
+            "inverse-on-surface": "#303036",
+            "surface-container-high": "#2a2930",
+            "tertiary-fixed": "#ffd8eb",
+            "primary-container": "#d6ad55",
+            "on-surface-variant": "#d1c5b2",
+            "on-primary-fixed": "#261a00",
+            "on-tertiary-fixed": "#3c002b",
+            "on-error-container": "#ffdad6",
+            "surface-dim": "#131319",
+            "secondary-fixed-dim": "#d0bcff",
+            "surface-container": "#1f1f25",
+            "surface-container-low": "#1b1b21",
+            "tertiary": "#ffbadf",
+            "secondary-fixed": "#e9ddff",
+            "surface-container-highest": "#35343b",
+            "on-secondary-fixed-variant": "#5417be"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1.25rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin": "2.5rem",
+            "gutter": "1.5rem",
+            "gutter-sm": "1rem"
+          },
+          "fontFamily": {
+            "display": ["Geist"],
+            "headline-md": ["Geist"],
+            "label-md": ["Geist"],
+            "body-md": ["Inter"],
+            "numeric-metric": ["Geist"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Geist"],
+            "label-sm": ["Geist"],
+            "display-mobile": ["Geist"],
+            "headline-lg": ["Geist"],
+            "headline-lg-mobile": ["Geist"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "display": ["3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "headline-md": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "500" }],
+            "label-md": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "body-md": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "0", "fontWeight": "400" }],
+            "numeric-metric": ["2rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.03em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-sm": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "500" }],
+            "label-sm": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.025em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["0.8125rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    
+    /* Atmospheric Gradients & Reflections */
+    .bg-obsidian-void {
+      background-color: #08080d;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(112, 64, 219, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 80%, rgba(214, 173, 85, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(23, 23, 32, 0.7) 0%, transparent 100%);
+    }
+
+    .glass-panel-elevated {
+      background: rgba(30, 29, 41, 0.85);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-top: 1px solid rgba(240, 212, 139, 0.22);
+      border-left: 1px solid rgba(255, 255, 255, 0.06);
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8), 0 0 50px -15px rgba(112, 64, 219, 0.15);
+    }
+
+    .auric-btn-glow {
+      background: linear-gradient(135deg, #F0D48B 0%, #D6AD55 100%);
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.35), 0 4px 20px rgba(240, 212, 139, 0.25);
+    }
+    .auric-btn-glow:hover {
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.35), 0 0 28px rgba(240, 212, 139, 0.45);
+      transform: translateY(-1px);
+    }
+    .auric-btn-glow:active {
+      transform: scale(0.99);
+    }
+
+    /* Custom Form Dropdown Styles */
+    select option {
+      background-color: #171720;
+      color: #e4e1ea;
+    }
+  </style>
+</head>
+<body class="bg-obsidian-void text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-primary selection:text-on-primary font-body-md text-body-md overflow-x-hidden">
+<!-- Top Security Badging Banner (Linear Onboarding Context) -->
+<header class="w-full border-b border-outline-variant/30 py-2.5 px-space-lg bg-surface-container-lowest/80 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-surface-container-high border border-primary/20 flex items-center justify-center text-primary shadow-inner">
+<span class="material-symbols-outlined text-primary text-[18px]">account_balance</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+<span class="hidden sm:inline-block mx-2 text-outline-variant">•</span>
+<span class="hidden sm:inline-block font-label-sm text-label-sm text-on-surface-variant">Autonomous Wealth Engine</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/20 border border-secondary/30">
+<span class="inline-block w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-secondary">256-Bit Encrypted Vault</span>
+</div>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#signin">
+        Sign In
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</header>
+<!-- Main Split Architecture Viewport -->
+<main class="flex-grow flex items-center justify-center p-space-md md:p-space-lg lg:p-space-xl">
+<div class="w-full max-w-[1400px] grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+<!-- LEFT COLUMN: Brand Showcase Banner & Telemetry Intelligence Deck -->
+<section class="lg:col-span-5 flex flex-col justify-between rounded-xl bg-surface-container-lowest/90 border border-outline-variant/30 p-space-lg md:p-space-xl relative overflow-hidden backdrop-blur-2xl">
+<!-- Ambient radial sheen overlay -->
+<div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-secondary-container/25 blur-[90px] pointer-events-none"></div>
+<div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-primary-container/15 blur-[90px] pointer-events-none"></div>
+<div>
+<!-- Status Pill -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-primary/30 mb-space-lg shadow-sm">
+<span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Institutional Standard v4.2</span>
+</div>
+<!-- Main Lead Header -->
+<h1 class="font-display text-display text-on-surface font-semibold tracking-tight leading-tight mb-space-md">
+            Start managing your freelance finances with <span class="bg-gradient-to-r from-primary via-primary-fixed-dim to-secondary bg-clip-text text-transparent">institutional precision</span>.
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-space-xl">
+            Autonomous wealth orchestration designed exclusively for high-billing consultants, fractional executives, and elite tech independent operators.
+          </p>
+<!-- Core Capability Bento Cards -->
+<div class="space-y-space-md">
+<!-- Feature 1 -->
+<div class="p-space-md rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-start gap-4 hover:border-primary/40 transition-colors">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary flex-shrink-0 border border-primary/20">
+<span class="material-symbols-outlined text-[22px]">timer</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm font-medium text-on-surface">14-Day Telemetry Trial</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Full predictive cash-flow modeling, tax shielding simulations, and automated contract parsing with zero commitment.
+                </p>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="p-space-md rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-start gap-4 hover:border-primary/40 transition-colors">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary flex-shrink-0 border border-secondary/20">
+<span class="material-symbols-outlined text-[22px]">credit_card_off</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm font-medium text-on-surface">Zero Credit Card Required</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Activate algorithmic telemetry immediately. Keep your ledger private with no friction or pre-authorized billing.
+                </p>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="p-space-md rounded-lg bg-surface-container/60 border border-outline-variant/20 flex items-start gap-4 hover:border-primary/40 transition-colors">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary-container flex-shrink-0 border border-primary-container/20">
+<span class="material-symbols-outlined text-[22px]">currency_exchange</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm font-medium text-on-surface">Instant Multi-Currency Vaults</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                  Auto-settle across 9 global reserve currencies with fractional tax withholding deposited directly into segregated sub-accounts.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric Telemetry Micro-Widget -->
+<div class="mt-space-xl pt-space-md border-t border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-2 overflow-hidden">
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-high flex items-center justify-center text-xs font-semibold text-primary">NY</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface-container-lowest bg-surface-container-highest flex items-center justify-center text-xs font-semibold text-secondary">LDN</div>
+<div class="inline-block h-8 w-8 rounded-full ring-2 ring-surface-container-lowest bg-primary-container flex items-center justify-center text-xs font-semibold text-on-primary-container">SGP</div>
+</div>
+<div class="text-left">
+<p class="font-label-sm text-label-sm text-on-surface font-semibold">$48.2M+ Invoiced</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-[11px]">Under autonomous management</p>
+</div>
+</div>
+<div class="text-right">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[14px]">shield_lock</span>
+              SOC2 Type II
+            </span>
+</div>
+</div>
+</section>
+<!-- RIGHT COLUMN: Registration Form Card -->
+<section class="lg:col-span-7 flex flex-col justify-center">
+<div class="glass-panel-elevated rounded-xl p-space-md sm:p-space-lg md:p-space-xl relative">
+<!-- Header Area -->
+<div class="mb-space-lg">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-container to-surface-container-highest p-0.5 shadow-md">
+<div class="w-full h-full bg-surface-container-lowest rounded-[10px] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[24px]">auto_awesome</span>
+</div>
+</div>
+<span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-primary">FreelancePay AI</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">
+              Create Your FreelancePay Account
+            </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+              Start managing your freelance finances intelligently.
+            </p>
+</div>
+<!-- Main Input Form -->
+<form class="space-y-space-md" id="signupForm" onsubmit="event.preventDefault();">
+<!-- Grid: Full Name & Email -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Field 1: Full Name -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="fullName">
+                  Full Name <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+<input class="w-full pl-10 pr-3 py-2.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md transition-all" id="fullName" name="fullName" placeholder="Enter your full name" required="" type="text"/>
+</div>
+</div>
+<!-- Field 2: Email Address -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="email">
+                  Email Address <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+</div>
+<input class="w-full pl-10 pr-3 py-2.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md transition-all" id="email" name="email" placeholder="Enter your email" required="" type="email"/>
+</div>
+</div>
+</div>
+<!-- Field 3: Mobile Number with Country Dial Code -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="mobileNumber">
+                Mobile Number <span class="text-primary">*</span>
+</label>
+<div class="flex rounded-lg border border-outline-variant/40 bg-surface-container-lowest overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary transition-all">
+<!-- Country Calling Code Selector -->
+<div class="relative flex items-center border-r border-outline-variant/30 bg-surface-container-low">
+<div class="pl-3 pr-1 text-primary pointer-events-none">
+<span class="material-symbols-outlined text-[18px]">phone</span>
+</div>
+<select class="bg-transparent border-0 py-2.5 pl-1 pr-7 text-on-surface font-label-md text-label-md focus:ring-0 cursor-pointer appearance-none" id="countryCode" name="countryCode">
+<option value="+91">India (+91)</option>
+<option selected="" value="+1">USA (+1)</option>
+<option value="+44">UK (+44)</option>
+<option value="+65">Singapore (+65)</option>
+<option value="+971">UAE (+971)</option>
+</select>
+<div class="absolute inset-y-0 right-1 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+</div>
+<!-- Number Input -->
+<input class="flex-1 px-3.5 py-2.5 bg-transparent border-0 text-on-surface placeholder:text-outline-variant focus:ring-0 text-body-md font-body-md" id="mobileNumber" name="mobileNumber" placeholder="e.g. 555-019-2834" required="" type="tel"/>
+</div>
+</div>
+<!-- Field 4: Searchable Country & Searchable Default Currency -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Country Selector -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="countrySelect">
+                  Country of Residence <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">public</span>
+</div>
+<select class="w-full pl-10 pr-9 py-2.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md appearance-none cursor-pointer" id="countrySelect" name="countrySelect" required="">
+<option disabled="" value="">Select your jurisdiction</option>
+<option selected="" value="US">United States (US)</option>
+<option value="IN">India (IN)</option>
+<option value="GB">United Kingdom (GB)</option>
+<option value="DE">Germany (DE)</option>
+<option value="SG">Singapore (SG)</option>
+<option value="AE">United Arab Emirates (UAE)</option>
+<option value="CA">Canada (CA)</option>
+<option value="AU">Australia (AU)</option>
+<option value="JP">Japan (JP)</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Default Currency Selector (Never assumed, explicitly picked) -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="currencySelect">
+                  Default Vault Currency <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-primary">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+</div>
+<select class="w-full pl-10 pr-9 py-2.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md appearance-none cursor-pointer" id="currencySelect" name="currencySelect" required="">
+<option disabled="" selected="" value="">Select operating currency</option>
+<option value="USD">USD ($) — US Dollar</option>
+<option value="INR">INR (₹) — Indian Rupee</option>
+<option value="EUR">EUR (€) — Euro</option>
+<option value="GBP">GBP (£) — British Pound</option>
+<option value="CAD">CAD (C$) — Canadian Dollar</option>
+<option value="AUD">AUD (A$) — Australian Dollar</option>
+<option value="SGD">SGD (S$) — Singapore Dollar</option>
+<option value="AED">AED (د.إ) — UAE Dirham</option>
+<option value="JPY">JPY (¥) — Japanese Yen</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Field 5 & 6: Password & Confirm Password -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Password -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="passwordInput">
+                  Password <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+<input class="w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md transition-all" id="passwordInput" name="password" placeholder="Create a strong password" required="" type="password" value="AuricVault2025"/>
+<button aria-label="Toggle password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline-variant hover:text-on-surface" id="togglePassword" type="button">
+<span class="material-symbols-outlined text-[20px]" id="eyeIcon1">visibility</span>
+</button>
+</div>
+</div>
+<!-- Confirm Password -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface font-medium mb-1.5" for="confirmPasswordInput">
+                  Confirm Password <span class="text-primary">*</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">lock_reset</span>
+</div>
+<input class="w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest border border-outline-variant/40 rounded-lg text-on-surface placeholder:text-outline-variant focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-body-md font-body-md transition-all" id="confirmPasswordInput" name="confirmPassword" placeholder="Re-enter your password" required="" type="password" value="AuricVault2025"/>
+<button aria-label="Toggle confirm password visibility" class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline-variant hover:text-on-surface" id="toggleConfirmPassword" type="button">
+<span class="material-symbols-outlined text-[20px]" id="eyeIcon2">visibility</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Password Complexity Telemetry Bar & Checklist -->
+<div class="p-3.5 rounded-lg bg-surface-container-low/70 border border-outline-variant/20 space-y-2.5">
+<!-- Progress Bar Header -->
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">security</span>
+                  Algorithmic Entropy Index
+                </span>
+<span class="text-primary font-semibold flex items-center gap-1" id="strengthLabel">
+<span class="material-symbols-outlined text-[14px] text-primary">verified</span>
+                  Strong / 92% Complexity
+                </span>
+</div>
+<!-- Visual Meter -->
+<div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="w-1/4 h-full bg-primary/40 mr-0.5"></div>
+<div class="w-1/4 h-full bg-primary/70 mr-0.5"></div>
+<div class="w-1/4 h-full bg-primary mr-0.5"></div>
+<div class="w-[17%] h-full bg-secondary"></div>
+</div>
+<!-- Interactive Password-Strength Checklist (Active Validated States) -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-label-sm text-label-sm">
+<!-- Requirement 1 -->
+<div class="flex items-center gap-1.5 text-primary" id="req-length">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>≥ 8 characters</span>
+</div>
+<!-- Requirement 2 -->
+<div class="flex items-center gap-1.5 text-primary" id="req-upper">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Uppercase (A–Z)</span>
+</div>
+<!-- Requirement 3 -->
+<div class="flex items-center gap-1.5 text-primary" id="req-lower">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Lowercase (a–z)</span>
+</div>
+<!-- Requirement 4 -->
+<div class="flex items-center gap-1.5 text-primary" id="req-num">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Numeric digit (0–9)</span>
+</div>
+</div>
+</div>
+<!-- Terms & Consent Checkbox -->
+<div class="flex items-start gap-3 pt-1">
+<div class="flex items-center h-5">
+<input checked="" class="w-4 h-4 rounded bg-surface-container-lowest border border-outline-variant/60 text-primary-container focus:ring-primary focus:ring-offset-surface-container cursor-pointer" id="termsConsent" name="termsConsent" required="" type="checkbox"/>
+</div>
+<label class="font-body-sm text-body-sm text-on-surface-variant cursor-pointer select-none" for="termsConsent">
+                I agree to the <a class="text-primary hover:underline" href="#terms">Terms of Service</a> and <a class="text-primary hover:underline" href="#privacy">Privacy Policy</a>.
+              </label>
+</div>
+<!-- Primary Action Trigger -->
+<div class="pt-2">
+<button class="w-full py-3 px-6 rounded-lg auric-btn-glow text-[#08080d] font-label-md text-label-md font-semibold tracking-wide flex items-center justify-center gap-2 transition-all cursor-pointer" type="submit">
+<span>Create Account</span>
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</button>
+</div>
+<!-- Footer Redirection Link -->
+<div class="text-center pt-2">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Already have an account? 
+                <a class="text-primary hover:text-primary-fixed font-medium hover:underline ml-1" href="#signin">
+                  Sign In
+                </a>
+</p>
+</div>
+</form>
+</div>
+</section>
+</div>
+</main>
+<!-- Institutional Global Micro Footer -->
+<footer class="w-full border-t border-outline-variant/20 py-4 px-space-lg text-center text-outline font-label-sm text-label-sm bg-surface-container-lowest/60 backdrop-blur-sm">
+<div class="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span>© 2025 FreelancePay AI Inc. Institutional Wealth Systems.</span>
+</div>
+<div class="flex items-center gap-6 text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#compliance">Tax Telemetry Guard</a>
+<a class="hover:text-primary transition-colors" href="#privacy">Zero-Knowledge Vaults</a>
+<a class="hover:text-primary transition-colors flex items-center gap-1.5" href="#status">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          All Systems Operational
+        </a>
+</div>
+</div>
+</footer>
+<!-- Micro-Interactions: Toggle password visibility & real-time strength evaluation -->
+<script>
+    // Eye show/hide control implementation
+    const setupEyeToggle = (toggleBtnId, inputId, iconId) => {
+      const btn = document.getElementById(toggleBtnId);
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+
+      if (btn && input && icon) {
+        btn.addEventListener('click', () => {
+          const isPassword = input.type === 'password';
+          input.type = isPassword ? 'text' : 'password';
+          icon.textContent = isPassword ? 'visibility_off' : 'visibility';
+        });
+      }
+    };
+
+    setupEyeToggle('togglePassword', 'passwordInput', 'eyeIcon1');
+    setupEyeToggle('toggleConfirmPassword', 'confirmPasswordInput', 'eyeIcon2');
+
+    // Dynamic checklist verification
+    const passInput = document.getElementById('passwordInput');
+    const reqLength = document.getElementById('req-length');
+    const reqUpper = document.getElementById('req-upper');
+    const reqLower = document.getElementById('req-lower');
+    const reqNum = document.getElementById('req-num');
+
+    const updateChecklist = () => {
+      const val = passInput.value || '';
+      
+      const hasLength = val.length >= 8;
+      const hasUpper = /[A-Z]/.test(val);
+      const hasLower = /[a-z]/.test(val);
+      const hasNum = /[0-9]/.test(val);
+
+      const setItemState = (el, valid) => {
+        const icon = el.querySelector('.material-symbols-outlined');
+        if (valid) {
+          el.className = 'flex items-center gap-1.5 text-primary';
+          icon.textContent = 'check_circle';
+        } else {
+          el.className = 'flex items-center gap-1.5 text-outline-variant';
+          icon.textContent = 'radio_button_unchecked';
+        }
+      };
+
+      setItemState(reqLength, hasLength);
+      setItemState(reqUpper, hasUpper);
+      setItemState(reqLower, hasLower);
+      setItemState(reqNum, hasNum);
+    };
+
+    if (passInput) {
+      passInput.addEventListener('input', updateChecklist);
+      updateChecklist();
+    }
+  </script>
+</body></html>

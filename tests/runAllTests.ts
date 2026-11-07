@@ -1,3 +1,5 @@
+(process.env as Record<string, string | undefined>).NODE_ENV = "test";
+
 import { runFinancialCalculationsTests } from "./financialCalculations.test";
 import { runAuthTests } from "./auth.test";
 import { runDataIsolationTests } from "./dataIsolation.test";
@@ -11,6 +13,7 @@ import { runBrowserE2ETests } from "./browserE2E.test";
 import { runPhase5DDemoReadinessTests } from "./phase5DDemoReadiness.test";
 import { runPhase5EFinancialIntelligenceTests } from "./phase5EFinancialIntelligence.test";
 import { runPhase5FFinalValidationTests } from "./phase5FFinalValidation.test";
+import { runAuthOtpFlowTests } from "./authOtpFlow.test";
 
 async function main() {
   console.log("==================================================");
@@ -85,6 +88,11 @@ async function main() {
   totalPassed += phase5F.passed;
   totalFailed += phase5F.failed;
 
+  // 14. Email OTP, Password Reset & User Mirroring (Phase 7 / Landing & Auth)
+  const authOtp = await runAuthOtpFlowTests();
+  totalPassed += authOtp.passed;
+  totalFailed += authOtp.failed;
+
   console.log("\n==================================================");
   console.log(" SUITE BREAKDOWN:");
   console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
@@ -98,6 +106,9 @@ async function main() {
   console.log(`  9. Workflows Integration (5B):          ${phase5B.passed} passed, ${phase5B.failed} failed`);
   console.log(` 10. Browser E2E Journeys (5C):           ${browserE2E.passed} passed, ${browserE2E.failed} failed`);
   console.log(` 11. Demo Readiness & Polish (5D):        ${phase5D.passed} passed, ${phase5D.failed} failed`);
+  console.log(` 12. Financial Intelligence (5E):         ${phase5E.passed} passed, ${phase5E.failed} failed`);
+  console.log(` 13. Comprehensive Final QA (5F):         ${phase5F.passed} passed, ${phase5F.failed} failed`);
+  console.log(` 14. Email OTP, Reset & Mirror (Auth):    ${authOtp.passed} passed, ${authOtp.failed} failed`);
   console.log(` 12. Advanced AI & Intelligence (5E):     ${phase5E.passed} passed, ${phase5E.failed} failed`);
   console.log(` 13. Final Validation & QA (5F):          ${phase5F.passed} passed, ${phase5F.failed} failed`);
   console.log("--------------------------------------------------");

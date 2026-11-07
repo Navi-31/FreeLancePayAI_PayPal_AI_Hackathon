@@ -88,7 +88,10 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
     // 3. Journey 1: Verify all 22 screens load successfully (HTTP 200, no crashes)
     console.log("  [Routes] Verifying all 22 screens load cleanly...");
     const routes = [
-      { path: "/", titleSnippet: "Alex Vance" },
+      { path: "/", titleSnippet: "Autonomous Wealth Engine" },
+      { path: "/dashboard", titleSnippet: "Dashboard" },
+      { path: "/login", titleSnippet: "Sign In" },
+      { path: "/signup", titleSnippet: "Create Account" },
       { path: "/invoices", titleSnippet: "Invoices" },
       { path: "/invoices/new", titleSnippet: "Create" },
       { path: "/invoices/FP-8848", titleSnippet: "FP-8848" },
@@ -130,7 +133,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
     // 4. Journey 2: User Registration, Session Persistence & Logout
     console.log("  [Auth Journey] Testing registration, session persistence & signout in browser...");
     await context.clearCookies();
-    await page.goto(`${BASE_URL}/`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/dashboard`, { waitUntil: "domcontentloaded" });
 
     // Open profile menu
     await page.click("div.cursor-pointer.group");
@@ -173,8 +176,12 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
     );
 
     // Test session persistence across page reload
-    await page.reload({ waitUntil: "networkidle" });
-    await page.waitForTimeout(1500);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    try {
+      await page.waitForSelector("text=Browser E2E Lead", { timeout: 6000 });
+    } catch {
+      await page.waitForTimeout(3000);
+    }
     const reloadedContent = await page.textContent("body");
     assert(
       reloadedContent?.includes("Browser E2E Lead") ||
@@ -186,7 +193,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 5. Journey 3: Client Creation & Dossier
     console.log("  [Clients Journey] Testing client creation in browser...");
-    await page.goto(`${BASE_URL}/clients`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/clients`, { waitUntil: "domcontentloaded" });
     await page.click("button:has-text('Add Client Profile')");
     await page.waitForTimeout(400);
 
@@ -204,7 +211,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 6. Journey 4: Invoice Creation & Details View
     console.log("  [Invoices Journey] Testing invoice form and calculation in browser...");
-    await page.goto(`${BASE_URL}/invoices/new`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/invoices/new`, { waitUntil: "domcontentloaded" });
     await page.fill("input[placeholder*='Brand Architecture']", "Browser E2E Deliverable");
     await page.waitForTimeout(300);
 
@@ -218,7 +225,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 7. Journey 5: Milestone Contract & Approval Safeguards
     console.log("  [Milestones Journey] Testing milestones view and approval safeguards...");
-    await page.goto(`${BASE_URL}/milestones`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/milestones`, { waitUntil: "domcontentloaded" });
     const milestonePageText = await page.textContent("body");
     assert(
       milestonePageText?.includes("Authorized Milestone Funds") &&
@@ -228,7 +235,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 8. Journey 6: Reminders Tone Switcher & Approval Safeguard
     console.log("  [Reminders Journey] Testing reminder tone changes & approval-first safeguards...");
-    await page.goto(`${BASE_URL}/reminders`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/reminders`, { waitUntil: "domcontentloaded" });
     await page.click("button:has-text('Firm / Escalation')");
     await page.waitForTimeout(400);
 
@@ -245,7 +252,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 9. Journey 7: Spending & Subscriptions Workflows
     console.log("  [Spending & Subs Journey] Testing spending and subscriptions CRUD...");
-    await page.goto(`${BASE_URL}/spending`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/spending`, { waitUntil: "domcontentloaded" });
     await page.click("button:has-text('+ Record Outflow')");
     await page.waitForTimeout(300);
 
@@ -259,7 +266,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
     assert(spendingText?.includes("Browser E2E Cloud"), "Outflow recorded and displayed in granular outflows ledger");
 
     // Subscriptions
-    await page.goto(`${BASE_URL}/subscriptions`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/subscriptions`, { waitUntil: "domcontentloaded" });
     await page.click("button:has-text('+ Add Subscription')");
     await page.waitForTimeout(300);
 
@@ -273,7 +280,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 10. Journey 8: Tax Estimates & Workspace Settings
     console.log("  [Tax & Settings Journey] Testing tax recalculation and settings persistence...");
-    await page.goto(`${BASE_URL}/tax`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/tax`, { waitUntil: "domcontentloaded" });
     await page.click("button:has-text('Recalculate Reserves')");
     await page.waitForTimeout(600);
     const taxToast = await page.textContent("body");
@@ -282,7 +289,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
       "Tax recalculation succeeded with deterministic safe harbor calculations"
     );
 
-    await page.goto(`${BASE_URL}/settings`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/settings`, { waitUntil: "domcontentloaded" });
     await page.click("button:has-text('Save All Preferences')");
     await page.waitForTimeout(600);
     const settingsToast = await page.textContent("body");
@@ -293,7 +300,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 11. Journey 9: Reports & CSV Export
     console.log("  [Reports Journey] Testing reports generation and CSV export...");
-    await page.goto(`${BASE_URL}/reports`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/reports`, { waitUntil: "domcontentloaded" });
     const reportsText = await page.textContent("body");
     assert(
       reportsText?.includes("Gross Billings") && reportsText?.includes("Free Retained Cash"),
@@ -309,7 +316,7 @@ export async function runBrowserE2ETests(): Promise<{ passed: number; failed: nu
 
     // 12. Journey 10: Omnisearch Navigation
     console.log("  [Omnisearch] Testing global search routing in TopNavBar...");
-    await page.goto(`${BASE_URL}/`, { waitUntil: "networkidle" });
+    await page.goto(`${BASE_URL}/dashboard`, { waitUntil: "domcontentloaded" });
     await page.fill("input[placeholder*='Search invoices']", "milestones");
     await page.keyboard.press("Enter");
     await page.waitForTimeout(600);

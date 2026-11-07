@@ -17,6 +17,8 @@ export async function GET() {
       name: true,
       role: true,
       badge: true,
+      emailVerified: true,
+      mobile: true,
       profile: true,
       financialSettings: true,
     },

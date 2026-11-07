@@ -316,3 +316,193 @@ ${opts.actionUrl ? `Review here: ${opts.actionUrl}` : ""}
 
   return { text, html };
 }
+
+export interface OtpEmailOptions {
+  recipientName?: string;
+  otp: string;
+  purpose: "SIGNUP_VERIFICATION" | "LOGIN_OTP";
+  expiryMinutes?: number;
+}
+
+export function renderOtpEmail(opts: OtpEmailOptions): { text: string; html: string } {
+  const expiry = opts.expiryMinutes || 5;
+  const isSignup = opts.purpose === "SIGNUP_VERIFICATION";
+  const title = isSignup ? "Verify Your Account" : "Your Security Verification Code";
+  const headline = isSignup
+    ? "Welcome to FreelancePay AI. Complete your verification below."
+    : "Use this one-time code to authenticate your sign-in request.";
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${title}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f4f4f5;">
+  <div style="max-width: 560px; margin: 40px auto; background-color: #18181b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+    <div style="padding: 32px 32px 24px; border-bottom: 1px solid #27272a; background: linear-gradient(135deg, #18181b 0%, #27272a 100%);">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #fbbf24; font-weight: 700; margin-bottom: 8px;">FreelancePay AI &bull; Autonomous Settlement</div>
+      <h1 style="margin: 0; font-size: 24px; color: #ffffff; font-weight: 700;">${title}</h1>
+      <p style="margin: 6px 0 0; color: #a1a1aa; font-size: 14px;">${headline}</p>
+    </div>
+
+    <div style="padding: 36px 32px; text-align: center;">
+      <p style="margin: 0 0 24px; color: #d4d4d8; font-size: 14px; text-align: left;">
+        ${opts.recipientName ? `Hi <strong>${opts.recipientName}</strong>,` : "Hello,"}<br/>
+        Please enter the single-use 6-digit code below into FreelancePay AI to proceed:
+      </p>
+
+      <div style="background-color: #09090b; border: 1px solid #3f3f46; border-radius: 12px; padding: 24px; margin: 28px 0; display: inline-block; min-width: 260px;">
+        <span style="font-family: 'Courier New', Courier, monospace; font-size: 38px; font-weight: 800; letter-spacing: 0.25em; color: #fbbf24; display: block;">
+          ${opts.otp}
+        </span>
+      </div>
+
+      <div style="background-color: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.25); border-radius: 8px; padding: 12px 16px; margin-top: 16px; text-align: left;">
+        <p style="margin: 0; color: #e4e4e7; font-size: 12px; line-height: 1.5;">
+          &bull; Code expires in <strong>${expiry} minutes</strong>.<br/>
+          &bull; Never share this code with anyone. FreelancePay AI staff will never ask for your code.
+        </p>
+      </div>
+
+      <p style="margin: 28px 0 0; color: #71717a; font-size: 12px; text-align: left;">
+        If you did not request this verification, you can safely disregard this message or secure your account.
+      </p>
+    </div>
+
+    <div style="padding: 16px 32px; background-color: #09090b; border-top: 1px solid #27272a; text-align: center; font-size: 11px; color: #71717a;">
+      Protected by FreelancePay AI Autonomous Security Engine.
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const text = `
+${title.toUpperCase()}
+
+${opts.recipientName ? `Hi ${opts.recipientName},` : "Hello,"}
+
+Your single-use 6-digit verification code is:
+
+${opts.otp}
+
+This code expires in ${expiry} minutes. Never share this code with anyone.
+If you did not request this code, you can safely ignore this email.
+`.trim();
+
+  return { text, html };
+}
+
+export interface PasswordResetEmailOptions {
+  recipientName?: string;
+  resetUrl: string;
+  expiryMinutes?: number;
+}
+
+export function renderPasswordResetEmail(opts: PasswordResetEmailOptions): { text: string; html: string } {
+  const expiry = opts.expiryMinutes || 15;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Reset Your Password</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f4f4f5;">
+  <div style="max-width: 560px; margin: 40px auto; background-color: #18181b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+    <div style="padding: 32px 32px 24px; border-bottom: 1px solid #27272a; background: linear-gradient(135deg, #18181b 0%, #27272a 100%);">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #fbbf24; font-weight: 700; margin-bottom: 8px;">FreelancePay AI &bull; Autonomous Security</div>
+      <h1 style="margin: 0; font-size: 24px; color: #ffffff; font-weight: 700;">Reset Your Password</h1>
+      <p style="margin: 6px 0 0; color: #a1a1aa; font-size: 14px;">A password reset request was initiated for your account.</p>
+    </div>
+
+    <div style="padding: 36px 32px;">
+      <p style="margin: 0 0 16px; color: #e4e4e7; font-size: 14px; line-height: 1.6;">
+        ${opts.recipientName ? `Hi <strong>${opts.recipientName}</strong>,` : "Hello,"}<br/>
+        We received a request to reset your FreelancePay AI password. Click the button below to choose a new, secure password:
+      </p>
+
+      <div style="text-align: center; margin: 32px 0;">
+        <a href="${opts.resetUrl}" style="display: inline-block; background-color: #fbbf24; color: #09090b; font-weight: 700; font-size: 14px; padding: 14px 32px; border-radius: 10px; text-decoration: none; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);">
+          Reset Password
+        </a>
+      </div>
+
+      <div style="background-color: #09090b; border: 1px solid #27272a; border-radius: 8px; padding: 14px; margin: 24px 0;">
+        <p style="margin: 0 0 6px; color: #71717a; font-size: 11px;">Or copy and paste this link into your browser:</p>
+        <p style="margin: 0; color: #fbbf24; font-size: 12px; word-break: break-all;">${opts.resetUrl}</p>
+      </div>
+
+      <p style="margin: 20px 0 0; color: #a1a1aa; font-size: 12px; line-height: 1.5;">
+        This single-use link is valid for <strong>${expiry} minutes</strong>. If you did not make this request, you can safely ignore this email; your existing password will remain unchanged.
+      </p>
+    </div>
+
+    <div style="padding: 16px 32px; background-color: #09090b; border-top: 1px solid #27272a; text-align: center; font-size: 11px; color: #71717a;">
+      Protected by FreelancePay AI Autonomous Security Engine.
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const text = `
+RESET YOUR PASSWORD
+
+${opts.recipientName ? `Hi ${opts.recipientName},` : "Hello,"}
+
+We received a request to reset your FreelancePay AI password.
+Visit the link below to choose a new password:
+
+${opts.resetUrl}
+
+This link is valid for ${expiry} minutes. If you did not request this, you can ignore this email.
+`.trim();
+
+  return { text, html };
+}
+
+export function renderPasswordChangedEmail(opts: { recipientName?: string }): { text: string; html: string } {
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Password Changed</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f4f4f5;">
+  <div style="max-width: 560px; margin: 40px auto; background-color: #18181b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);">
+    <div style="padding: 32px 32px 24px; border-bottom: 1px solid #27272a; background: linear-gradient(135deg, #18181b 0%, #27272a 100%);">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.15em; color: #10b981; font-weight: 700; margin-bottom: 8px;">Security Confirmation</div>
+      <h1 style="margin: 0; font-size: 24px; color: #ffffff; font-weight: 700;">Password Updated Successfully</h1>
+    </div>
+
+    <div style="padding: 36px 32px;">
+      <p style="margin: 0 0 16px; color: #e4e4e7; font-size: 14px; line-height: 1.6;">
+        ${opts.recipientName ? `Hi <strong>${opts.recipientName}</strong>,` : "Hello,"}<br/>
+        Your FreelancePay AI account password was changed just now. If this was you, no further action is required.
+      </p>
+      <p style="margin: 0; color: #ef4444; font-size: 12px; line-height: 1.5;">
+        If you did not make this change, please contact support or immediately trigger a password reset to secure your account.
+      </p>
+    </div>
+
+    <div style="padding: 16px 32px; background-color: #09090b; border-top: 1px solid #27272a; text-align: center; font-size: 11px; color: #71717a;">
+      Protected by FreelancePay AI Autonomous Security Engine.
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const text = `
+PASSWORD UPDATED SUCCESSFULLY
+
+${opts.recipientName ? `Hi ${opts.recipientName},` : "Hello,"}
+
+Your FreelancePay AI account password was changed just now.
+If you did not make this change, please immediately reset your password to secure your account.
+`.trim();
+
+  return { text, html };
+}

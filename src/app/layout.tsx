@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Inter } from "next/font/google";
 import "@/frontend/styles/globals.css";
+import { Providers } from "@/frontend/components/layout/Providers";
 
 const geist = Geist({
   variable: "--font-geist",
@@ -27,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geist.variable} ${inter.variable} bg-surface-container-lowest text-on-surface antialiased min-h-screen selection:bg-primary selection:text-on-primary`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
