@@ -9,6 +9,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "tsx tests/runAllTests.ts",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
     "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
