@@ -1,4 +1,4 @@
-import { prisma } from "@/backend/db/db";
+﻿import { prisma } from "@/backend/db/db";
 import {
   hashPassword,
   verifyPassword,
@@ -34,11 +34,11 @@ function assert(condition: boolean, message: string) {
   if (!condition) {
     throw new Error(`[ASSERTION FAILED] ${message}`);
   }
-  console.log(`  ✓ ${message}`);
+  console.log(`  âœ“ ${message}`);
 }
 
 export async function runSecurityAndE2ETests(): Promise<{ passed: number; failed: number }> {
-  console.log("\n▶ Running Comprehensive Security Audit & End-to-End Integration Suite (Phase 4E)...");
+  console.log("\nâ–¶ Running Comprehensive Security Audit & End-to-End Integration Suite (Phase 4E)...");
   let passed = 0;
   let failed = 0;
 
@@ -294,7 +294,7 @@ export async function runSecurityAndE2ETests(): Promise<{ passed: number; failed
     });
 
     const unreadCount = await getUnreadNotificationCount(userAId);
-    assert(unreadCount >= 1, "Unread in-app notification count tracked in Neon DB");
+    assert(unreadCount >= 1, "Unread in-app notification count tracked in Firestore");
 
     await markAllNotificationsAsRead(userAId);
     const postClearCount = await getUnreadNotificationCount(userAId);
@@ -304,7 +304,7 @@ export async function runSecurityAndE2ETests(): Promise<{ passed: number; failed
     const testJob = await enqueueJob({
       userId: userAId,
       jobType: "DISPATCH_NOTIFICATION",
-      payload: { title: "Durable Job Notification", message: "Processed from Neon queue", type: "info" },
+      payload: { title: "Durable Job Notification", message: "Processed from Firestore queue", type: "info" },
       idempotencyKey: `audit_job_${timestamp}`,
     });
     const batchResult = await processPendingJobs({ limit: 5 });
@@ -320,9 +320,9 @@ export async function runSecurityAndE2ETests(): Promise<{ passed: number; failed
     await prisma.user.deleteMany({
       where: { id: { in: [userAId, userBId] } },
     });
-    console.log("  ✓ Test users, invoices, milestones, notifications & jobs cleaned up from Neon DB");
+    console.log("  âœ“ Test users, invoices, milestones, notifications & jobs cleaned up from Firestore");
   } catch (error) {
-    console.error("  ✗ Test failure in Phase 4E security & E2E suite:", error);
+    console.error("  âœ— Test failure in Phase 4E security & E2E suite:", error);
     failed++;
     if (userAId || userBId) {
       await prisma.user

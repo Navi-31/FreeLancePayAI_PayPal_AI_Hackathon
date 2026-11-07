@@ -12,7 +12,7 @@ export interface AICompletionOptions<T> {
 
 export interface AICompletionResult<T> {
   data: T;
-  provider: "gemini" | "openai" | "neon" | "deterministic-fallback";
+  provider: "gemini" | "openai" | "deterministic-fallback";
   isFallback: boolean;
   model: string;
 }
@@ -21,7 +21,7 @@ export interface AICompletionResult<T> {
  * Determine the active AI provider based on environment configuration and available keys.
  */
 export function getActiveAiProvider(): {
-  provider: "gemini" | "openai" | "neon" | "fallback";
+  provider: "gemini" | "openai" | "fallback";
   model: string;
   isConfigured: boolean;
 } {
@@ -41,20 +41,11 @@ export function getActiveAiProvider(): {
       !env.OPENAI_API_KEY.startsWith("placeholder")
   );
 
-  // 3. Neon AI Gateway
-  const hasNeonGateway = Boolean(
-    env.NEON_AI_GATEWAY_URL &&
-      !env.NEON_AI_GATEWAY_URL.startsWith("placeholder")
-  );
-
   if (configuredChoice === "gemini" && hasGeminiKey) {
     return { provider: "gemini", model: env.GEMINI_MODEL, isConfigured: true };
   }
   if (configuredChoice === "openai" && hasOpenAIKey) {
     return { provider: "openai", model: env.OPENAI_MODEL, isConfigured: true };
-  }
-  if (configuredChoice === "neon" && hasNeonGateway) {
-    return { provider: "neon", model: "neon-gateway", isConfigured: true };
   }
 
   // Auto-detection
@@ -63,9 +54,6 @@ export function getActiveAiProvider(): {
   }
   if (hasOpenAIKey) {
     return { provider: "openai", model: env.OPENAI_MODEL, isConfigured: true };
-  }
-  if (hasNeonGateway) {
-    return { provider: "neon", model: "neon-gateway", isConfigured: true };
   }
 
   return { provider: "fallback", model: "deterministic-rule-engine", isConfigured: false };
@@ -149,7 +137,7 @@ async function callGeminiApi<T>(
 }
 
 /**
- * Call OpenAI / Neon AI Gateway API with JSON response formatting.
+ * Call OpenAI API with JSON response formatting.
  */
 async function callOpenAIApi<T>(
   options: AICompletionOptions<T>,
@@ -222,16 +210,6 @@ export async function runAICompletion<T>(
           env.OPENAI_BASE_URL
         );
         return { data, provider: "openai", isFallback: false, model: active.model };
-      }
-
-      if (active.provider === "neon") {
-        const data = await callOpenAIApi(
-          options,
-          active.model,
-          env.NEON_AI_KEY || "neon",
-          env.NEON_AI_GATEWAY_URL!
-        );
-        return { data, provider: "neon", isFallback: false, model: active.model };
       }
     } catch (err) {
       console.warn("Primary AI provider failed, engaging resilient fallback engine:", err);

@@ -2,7 +2,6 @@ import "dotenv/config";
 import { initializeApp, getApps, cert, App } from "firebase-admin/app";
 import { getFirestore, Firestore } from "firebase-admin/firestore";
 import { getStorage, Storage } from "firebase-admin/storage";
-import { env } from "@/backend/validation/env";
 
 const globalForFirebase = globalThis as unknown as {
   firebaseApp?: App;

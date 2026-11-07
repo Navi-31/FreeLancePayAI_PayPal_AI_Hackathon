@@ -1,4 +1,4 @@
-import assert from "assert";
+﻿import assert from "assert";
 import { performance } from "perf_hooks";
 import { prisma } from "@/backend/db/db";
 import { createSessionToken, verifySessionToken } from "@/backend/auth/auth";
@@ -9,17 +9,17 @@ import { getDashboardMetrics, invalidateDashboardMetricsCache } from "@/backend/
 import { validateEmailAddress } from "@/backend/integrations/email/emailProvider";
 
 export async function runPerformanceAndRemindersTests() {
-  console.log("\n▶ Running Performance Optimization & Direct Payment Reminder Tests...");
+  console.log("\nâ–¶ Running Performance Optimization & Direct Payment Reminder Tests...");
   let passed = 0;
   let failed = 0;
 
   async function test(name: string, fn: () => Promise<void> | void) {
     try {
       await fn();
-      console.log(`  ✓ ${name}`);
+      console.log(`  âœ“ ${name}`);
       passed++;
     } catch (err) {
-      console.error(`  ✗ FAIL: ${name}`);
+      console.error(`  âœ— FAIL: ${name}`);
       console.error(err);
       failed++;
     }
@@ -28,7 +28,7 @@ export async function runPerformanceAndRemindersTests() {
   const testEmail = `perf.test.${Date.now()}@freelancepay.ai`;
   const primaryEmail = process.env.PRIMARY_ACCOUNT_EMAIL || "navaneethanr0831@gmail.com";
 
-  // Warm up Neon connection pool
+  // Warm up Firestore connection
   await prisma.$queryRaw`SELECT 1`;
   const existingUser = await prisma.user.findFirst();
   const validUserId = existingUser?.id || "usr_fallback_id";
@@ -52,7 +52,7 @@ export async function runPerformanceAndRemindersTests() {
   });
 
   // 2. Performance: Notification In-Memory Cache
-  await test("2. Cached notifications return in under 20ms avoiding redundant Neon queries", async () => {
+  await test("2. Cached notifications return in under 20ms avoiding redundant Firestore queries", async () => {
     // Cold load
     invalidateNotificationCache();
     await getCachedNotificationsData("test_usr_cached", 10);
@@ -94,7 +94,7 @@ export async function runPerformanceAndRemindersTests() {
   // 5. Direct Reminder Email Delivery with Custom Edited Fields
   await test("5. sendReminderEmailWorkflow dispatches email with custom edited recipient, subject, and body", async () => {
     const customRecipient = primaryEmail;
-    const customSubject = "Urgent Settlement Required — Q2 Deliverables";
+    const customSubject = "Urgent Settlement Required â€” Q2 Deliverables";
     const customBody = "Hi Accounts Payable, Please find our revised invoice details and confirm settlement today.";
 
     const result = await sendReminderEmailWorkflow(

@@ -72,7 +72,7 @@ export function checkAiRateLimit(
 }
 
 /**
- * Persistent distributed rate limiter using indexed Neon PostgreSQL audit logs.
+ * Persistent distributed rate limiter using indexed Firestore audit logs.
  * Provides cluster-wide protection across horizontal serverless functions.
  */
 export async function checkPersistentRateLimit(
@@ -87,7 +87,7 @@ export async function checkPersistentRateLimit(
       where: {
         userId,
         action,
-        timestamp: { gte: windowStart },
+        createdAt: { gte: windowStart },
       },
     });
 

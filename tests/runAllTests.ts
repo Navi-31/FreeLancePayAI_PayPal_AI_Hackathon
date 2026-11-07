@@ -1,4 +1,4 @@
-(process.env as Record<string, string | undefined>).NODE_ENV = "test";
+﻿(process.env as Record<string, string | undefined>).NODE_ENV = "test";
 
 import { runFinancialCalculationsTests } from "./financialCalculations.test";
 import { runAuthTests } from "./auth.test";
@@ -19,7 +19,7 @@ import { runPerformanceAndRemindersTests } from "./performanceAndReminders.test"
 
 async function main() {
   console.log("==================================================");
-  console.log(" FREELANCEPAY AI — PRODUCTION BACKEND TEST SUITE  ");
+  console.log(" FREELANCEPAY AI â€” PRODUCTION BACKEND TEST SUITE  ");
   console.log("==================================================");
 
   let totalPassed = 0;
@@ -40,7 +40,7 @@ async function main() {
   totalPassed += iso.passed;
   totalFailed += iso.failed;
 
-  // 4. Real Live End-to-End Tests against Neon PostgreSQL
+  // 4. Real Live End-to-End Tests against Firebase Firestore
   const live = await runLiveNeonIntegrationTests();
   totalPassed += live.passed;
   totalFailed += live.failed;
@@ -110,7 +110,7 @@ async function main() {
   console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
   console.log(`  2. Authentication & Token Verification: ${auth.passed} passed, ${auth.failed} failed`);
   console.log(`  3. Data Isolation & Architecture:       ${iso.passed} passed, ${iso.failed} failed`);
-  console.log(`  4. Live Neon Integration:               ${live.passed} passed, ${live.failed} failed`);
+  console.log(`  4. Live Firebase Integration:               ${live.passed} passed, ${live.failed} failed`);
   console.log(`  5. PayPal Sandbox Integration & Rails:  ${paypal.passed} passed, ${paypal.failed} failed`);
   console.log(`  6. AI Integration & Safety Guardrails:  ${ai.passed} passed, ${ai.failed} failed`);
   console.log(`  7. Email Delivery, Notifications & Jobs:${emailJobs.passed} passed, ${emailJobs.failed} failed`);

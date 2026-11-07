@@ -1,4 +1,4 @@
-import { prisma } from "@/backend/db/db";
+﻿import { prisma } from "@/backend/db/db";
 import {
   getActiveEmailProvider,
   validateEmailAddress,
@@ -31,11 +31,11 @@ function assert(condition: boolean, message: string) {
   if (!condition) {
     throw new Error(`[ASSERTION FAILED] ${message}`);
   }
-  console.log(`  ✓ ${message}`);
+  console.log(`  âœ“ ${message}`);
 }
 
 export async function runEmailNotificationJobsTests(): Promise<{ passed: number; failed: number }> {
-  console.log("\n▶ Running Email Delivery, Notifications & Background Jobs Suite (Phase 4D)...");
+  console.log("\nâ–¶ Running Email Delivery, Notifications & Background Jobs Suite (Phase 4D)...");
   let passed = 0;
   let failed = 0;
 
@@ -49,7 +49,7 @@ export async function runEmailNotificationJobsTests(): Promise<{ passed: number;
 
   try {
     // -------------------------------------------------------------
-    // SETUP: Create isolated test users in Neon DB
+    // SETUP: Create isolated test users in Firestore
     // -------------------------------------------------------------
     const passwordHash = await hashPassword("SafeSecretPassword123!");
     const userA = await prisma.user.create({
@@ -171,11 +171,11 @@ export async function runEmailNotificationJobsTests(): Promise<{ passed: number;
     assert(blockedReminder.status === "awaiting_approval", "Unapproved payment reminder blocked and marked awaiting_approval");
     assert(blockedReminder.success === false, "Unapproved payment reminder returned success = false");
 
-    // Verify record in Neon DB holds status awaiting_approval
+    // Verify record in Firestore holds status awaiting_approval
     const savedBlockedRecord = await prisma.emailDelivery.findUnique({
       where: { id: blockedReminder.deliveryId },
     });
-    assert(Boolean(savedBlockedRecord && savedBlockedRecord.status === "awaiting_approval"), "Unapproved dispatch persisted as awaiting_approval in Neon DB");
+    assert(Boolean(savedBlockedRecord && savedBlockedRecord.status === "awaiting_approval"), "Unapproved dispatch persisted as awaiting_approval in Firestore");
     passed += 3;
 
     // -------------------------------------------------------------
@@ -380,7 +380,7 @@ export async function runEmailNotificationJobsTests(): Promise<{ passed: number;
     // TEST 9: Email Delivery History Scoping
     // -------------------------------------------------------------
     const deliveriesA = await listEmailDeliveries(userAId);
-    assert(deliveriesA.length >= 3, `Email deliveries recorded in Neon DB for User A (${deliveriesA.length} records)`);
+    assert(deliveriesA.length >= 3, `Email deliveries recorded in Firestore for User A (${deliveriesA.length} records)`);
 
     const deliveriesB = await listEmailDeliveries(userBId);
     assert(deliveriesB.length === 0, "User B cannot view User A's email delivery history (Tenant Isolation)");
@@ -392,9 +392,9 @@ export async function runEmailNotificationJobsTests(): Promise<{ passed: number;
     await prisma.user.deleteMany({
       where: { id: { in: [userAId, userBId] } },
     });
-    console.log("  ✓ Test users, email records, notifications, and background jobs cleaned up from Neon DB");
+    console.log("  âœ“ Test users, email records, notifications, and background jobs cleaned up from Firestore");
   } catch (error) {
-    console.error("  ✗ Test failure in Phase 4D suite:", error);
+    console.error("  âœ— Test failure in Phase 4D suite:", error);
     failed++;
     // Attempt teardown on error
     if (userAId || userBId) {

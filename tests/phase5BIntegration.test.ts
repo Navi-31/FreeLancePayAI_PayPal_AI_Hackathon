@@ -1,4 +1,4 @@
-import { prisma } from "@/backend/db/db";
+﻿import { prisma } from "@/backend/db/db";
 import { hashPassword } from "@/backend/auth/auth";
 import { createSubscription, listSubscriptions, deleteSubscription } from "@/backend/services/subscriptionService";
 import { createExpense, listExpenses } from "@/backend/services/spendingService";
@@ -10,16 +10,16 @@ import { createInvoice } from "@/backend/services/invoiceService";
 import { createProject, listProjects } from "@/backend/services/projectService";
 
 export async function runPhase5BIntegrationTests(): Promise<{ passed: number; failed: number }> {
-  console.log("\n▶ Running Phase 5B Frontend, API & Database Workflows Integration Suite...");
+  console.log("\nâ–¶ Running Phase 5B Frontend, API & Database Workflows Integration Suite...");
   let passed = 0;
   let failed = 0;
 
   const assert = (condition: boolean, msg: string) => {
     if (condition) {
-      console.log(`  ✓ ${msg}`);
+      console.log(`  âœ“ ${msg}`);
       passed++;
     } else {
-      console.error(`  ✗ FAIL: ${msg}`);
+      console.error(`  âœ— FAIL: ${msg}`);
       failed++;
     }
   };
@@ -55,7 +55,7 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
     // 1. Subscriptions Workflow & Tenant Isolation
     const sub = await createSubscription(userAId, {
       name: "Cursor Pro",
-      subTitle: "AI IDE • Individual Seat",
+      subTitle: "AI IDE â€¢ Individual Seat",
       category: "AI",
       costMonthly: 20.0,
       lastActive: "Today",
@@ -65,7 +65,7 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
       dueCategory: "30d",
       initials: "CU",
     });
-    assert(sub.id.length > 0, "Subscription created in Neon DB with generated ID");
+    assert(sub.id.length > 0, "Subscription created in Firestore with generated ID");
     assert(Number(sub.costMonthly) === 20.0, "Subscription costMonthly matches input");
 
     const userASubs = await listSubscriptions(userAId);
@@ -84,10 +84,10 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
     assert(unauthorizedDeleteBlocked, "User B blocked from deleting User A's subscription");
 
     const deleteRes = await deleteSubscription(userAId, sub.id);
-    assert(deleteRes.success, "User A successfully deleted their subscription from Neon DB");
+    assert(deleteRes.success, "User A successfully deleted their subscription from Firestore");
 
     const postDeleteSubs = await listSubscriptions(userAId);
-    assert(!postDeleteSubs.some((s) => s.id === sub.id), "Subscription confirmed removed from Neon DB");
+    assert(!postDeleteSubs.some((s) => s.id === sub.id), "Subscription confirmed removed from Firestore");
 
     // 2. Spending & Expenses Workflow & Tenant Isolation
     const expense = await createExpense(userAId, {
@@ -99,7 +99,7 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
       isRecurring: true,
       amount: 45.0,
     });
-    assert(expense.id.length > 0, "Expense recorded in Neon DB with generated ID");
+    assert(expense.id.length > 0, "Expense recorded in Firestore with generated ID");
     assert(Number(expense.amount) === 45.0, "Expense amount stored deterministically");
 
     const userAExpenses = await listExpenses(userAId);
@@ -119,8 +119,8 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
       deductibleOffset: 15000,
       vaultSetAside: 12000,
     });
-    assert(updatedTax.jurisdiction === "US-NY", "Updated tax jurisdiction persisted in Neon DB");
-    assert(Number(updatedTax.taxRatio) === 28, "Tax ratio updated to 28% in Neon DB");
+    assert(updatedTax.jurisdiction === "US-NY", "Updated tax jurisdiction persisted in Firestore");
+    assert(Number(updatedTax.taxRatio) === 28, "Tax ratio updated to 28% in Firestore");
     assert(Number(updatedTax.suggestedReserve) > 0, "Suggested reserve deterministically recalculated");
 
     const userBTax = await getTaxEstimate(userBId);
@@ -168,7 +168,7 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
         },
       ],
     });
-    assert(milestoneProject.id.length > 0, "Milestone project created in Neon DB");
+    assert(milestoneProject.id.length > 0, "Milestone project created in Firestore");
     assert(milestoneProject.milestones.length === 1, "Milestone child deliverable persisted");
 
     const userAProjects = await listProjects(userAId);
@@ -207,10 +207,10 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
         paymentLink: `https://freelancepay.ai/pay/${invoice.code}`,
       },
     });
-    assert(reminder.id.length > 0, "Payment reminder created in Neon DB");
+    assert(reminder.id.length > 0, "Payment reminder created in Firestore");
 
     const updatedReminder = await updateReminderTone(userAId, reminder.id, "firm", true, "Escalated tone");
-    assert(updatedReminder.activeTone === "firm", "Reminder tone escalated to 'firm' in Neon DB");
+    assert(updatedReminder.activeTone === "firm", "Reminder tone escalated to 'firm' in Firestore");
 
     const userAReminders = await listReminders(userAId);
     assert(userAReminders.some((r) => r.id === reminder.id), "User A lists active reminders");
@@ -220,7 +220,7 @@ export async function runPhase5BIntegrationTests(): Promise<{ passed: number; fa
 
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error("  ✗ Execution exception in Phase 5B suite:", errorMsg);
+    console.error("  âœ— Execution exception in Phase 5B suite:", errorMsg);
     failed++;
   } finally {
     // Clean up test data

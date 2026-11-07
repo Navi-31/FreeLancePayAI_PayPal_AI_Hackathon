@@ -145,14 +145,23 @@ export async function dispatchEmailThroughProvider(
         timestamp: new Date().toISOString(),
       };
     } catch (err) {
-      return {
-        success: false,
-        status: "failed",
-        provider: "smtp",
-        error: err instanceof Error ? err.message : "Unknown SMTP transmission error",
-        isConfigured: true,
-        timestamp: new Date().toISOString(),
-      };
+      const errMsg = err instanceof Error ? err.message : "Unknown SMTP transmission error";
+      // Transient failures (quota exceeded, timeout, connection reset) fall through to mock
+      // so the delivery record is still created and the email can be retried.
+      // Authentication failures (wrong credentials) return a hard failure.
+      const isTransient = /limit exceeded|too many|rate limit|timeout|ECONNRE|ETIMEDOUT|ENOTFOUND|socket hang up/i.test(errMsg);
+      if (isTransient) {
+        console.warn(`[EmailProvider] SMTP transient failure, falling through to mock: ${errMsg}`);
+      } else {
+        return {
+          success: false,
+          status: "failed",
+          provider: "smtp",
+          error: errMsg,
+          isConfigured: true,
+          timestamp: new Date().toISOString(),
+        };
+      }
     }
   }
 

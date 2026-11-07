@@ -43,21 +43,27 @@ export interface DemoSeedResult {
 }
 
 export async function seedDemoDataForUser(userId: string, isReset = false): Promise<DemoSeedResult> {
-  return await prisma.$transaction(
+  return await prisma.$transaction<DemoSeedResult>(
     async (tx) => {
     if (isReset) {
       // Safely delete ONLY demo-seeded records belonging to this user.
       // Genuine user-created records (custom codes, custom descriptions) are strictly preserved.
+      // Uses Firestore-compatible queries: first resolve parent IDs, then delete children by those IDs.
 
       // 1. Payment Reminders & History
-      await tx.reminderHistory.deleteMany({
-        where: {
-          reminder: {
-            userId,
-            code: { in: [...DEMO_REMINDER_CODES] },
-          },
-        },
+      // Find demo reminder IDs first, then delete their histories
+      const demoReminders = await tx.paymentReminder.findMany({
+        where: { userId, code: { in: [...DEMO_REMINDER_CODES] } },
       });
+      const demoReminderIds = demoReminders.map((r: Record<string, unknown>) => r.id as string);
+      if (demoReminderIds.length > 0) {
+        const reminderHistories = await tx.reminderHistory.findMany({
+          where: { reminderId: { in: demoReminderIds } },
+        });
+        for (const rh of reminderHistories) {
+          await tx.reminderHistory.delete({ where: { id: (rh as Record<string, unknown>).id as string } });
+        }
+      }
       await tx.paymentReminder.deleteMany({
         where: {
           userId,
@@ -66,24 +72,29 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       });
 
       // 2. Milestones & History
-      await tx.milestoneHistory.deleteMany({
-        where: {
-          milestone: {
-            project: {
-              userId,
-              code: { in: [...DEMO_PROJECT_CODES] },
-            },
-          },
-        },
+      // Find demo projects first, then find their milestones, then delete milestone histories
+      const demoProjects = await tx.project.findMany({
+        where: { userId, code: { in: [...DEMO_PROJECT_CODES] } },
       });
-      await tx.milestone.deleteMany({
-        where: {
-          project: {
-            userId,
-            code: { in: [...DEMO_PROJECT_CODES] },
-          },
-        },
-      });
+      const demoProjectIds = demoProjects.map((p: Record<string, unknown>) => p.id as string);
+      if (demoProjectIds.length > 0) {
+        const demoMilestones = await tx.milestone.findMany({
+          where: { projectId: { in: demoProjectIds } },
+        });
+        const demoMilestoneIds = demoMilestones.map((m: Record<string, unknown>) => m.id as string);
+        if (demoMilestoneIds.length > 0) {
+          const milestoneHistories = await tx.milestoneHistory.findMany({
+            where: { milestoneId: { in: demoMilestoneIds } },
+          });
+          for (const mh of milestoneHistories) {
+            await tx.milestoneHistory.delete({ where: { id: (mh as Record<string, unknown>).id as string } });
+          }
+        }
+        // Delete milestones belonging to demo projects
+        for (const pid of demoProjectIds) {
+          await tx.milestone.deleteMany({ where: { projectId: pid } });
+        }
+      }
       await tx.project.deleteMany({
         where: {
           userId,
@@ -104,14 +115,16 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       });
 
       // 4. Invoices & Line Items
-      await tx.invoiceLineItem.deleteMany({
-        where: {
-          invoice: {
-            userId,
-            code: { in: [...DEMO_INVOICE_CODES] },
-          },
-        },
+      // Find demo invoices first, then delete their line items by invoiceId
+      const demoInvoices = await tx.invoice.findMany({
+        where: { userId, code: { in: [...DEMO_INVOICE_CODES] } },
       });
+      const demoInvoiceIds = demoInvoices.map((i: Record<string, unknown>) => i.id as string);
+      if (demoInvoiceIds.length > 0) {
+        for (const invId of demoInvoiceIds) {
+          await tx.invoiceLineItem.deleteMany({ where: { invoiceId: invId } });
+        }
+      }
       await tx.invoice.deleteMany({
         where: {
           userId,
@@ -120,14 +133,16 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
       });
 
       // 5. Client Payment History & Clients
-      await tx.clientPaymentHistory.deleteMany({
-        where: {
-          client: {
-            userId,
-            code: { in: [...DEMO_CLIENT_CODES] },
-          },
-        },
+      // Find demo clients first, then delete their payment histories by clientId
+      const demoClients = await tx.client.findMany({
+        where: { userId, code: { in: [...DEMO_CLIENT_CODES] } },
       });
+      const demoClientIds = demoClients.map((c: Record<string, unknown>) => c.id as string);
+      if (demoClientIds.length > 0) {
+        for (const cid of demoClientIds) {
+          await tx.clientPaymentHistory.deleteMany({ where: { clientId: cid } });
+        }
+      }
       await tx.client.deleteMany({
         where: {
           userId,
@@ -844,8 +859,8 @@ export async function seedDemoDataForUser(userId: string, isReset = false): Prom
     return {
       success: true,
       message: isReset
-        ? "Demo portfolio reset and re-seeded cleanly in Neon DB (genuine user records preserved)."
-        : "Realistic demo portfolio successfully seeded into Neon DB.",
+        ? "Demo portfolio reset and re-seeded cleanly in Firestore (genuine user records preserved)."
+        : "Realistic demo portfolio successfully seeded into Firestore.",
       counts: {
         clients: seededClients.length,
         invoices: seededInvoices.length,

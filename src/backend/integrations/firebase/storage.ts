@@ -1,4 +1,4 @@
-import { getFirebaseStorage, firestore } from "@/backend/firebase/admin";
+import { getFirebaseStorage } from "@/backend/firebase/admin";
 import { firestoreDb } from "@/backend/db/firestoreDb";
 
 export interface StoredDocument {

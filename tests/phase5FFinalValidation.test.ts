@@ -1,4 +1,4 @@
-import { prisma } from "@/backend/db/db";
+﻿import { prisma } from "@/backend/db/db";
 import { hashPassword } from "@/backend/auth/auth";
 import { createInvoice, updateInvoiceStatus } from "@/backend/services/invoiceService";
 import { createClient } from "@/backend/services/clientService";
@@ -22,16 +22,16 @@ import { calculateInvoiceTotals, calculateTaxReserveAllocation } from "@/shared/
 import { Prisma } from "@/backend/db/db";
 
 export async function runPhase5FFinalValidationTests(): Promise<{ passed: number; failed: number }> {
-  console.log("\n▶ Running Phase 5F Final Comprehensive QA & Hackathon Demo Validation Suite...");
+  console.log("\nâ–¶ Running Phase 5F Final Comprehensive QA & Hackathon Demo Validation Suite...");
   let passed = 0;
   let failed = 0;
 
   const assert = (condition: unknown, msg: string) => {
     if (Boolean(condition)) {
-      console.log(`  ✓ ${msg}`);
+      console.log(`  âœ“ ${msg}`);
       passed++;
     } else {
-      console.error(`  ✗ FAIL: ${msg}`);
+      console.error(`  âœ— FAIL: ${msg}`);
       failed++;
     }
   };
@@ -84,7 +84,7 @@ export async function runPhase5FFinalValidationTests(): Promise<{ passed: number
       lifetimeRevenue: 50000,
       disputeHistory: "0 Disputes",
     });
-    assert(clientA.id !== undefined, "Client created in Neon DB with verified user tenancy");
+    assert(clientA.id !== undefined, "Client created in Firestore with verified user tenancy");
 
     const invoiceA = await createInvoice(userA.id, {
       clientId: clientA.id,
@@ -189,7 +189,7 @@ export async function runPhase5FFinalValidationTests(): Promise<{ passed: number
         method: "Corporate Card",
       },
     });
-    assert(genuineExpense.id !== undefined, "Genuine user expense created in Neon DB");
+    assert(genuineExpense.id !== undefined, "Genuine user expense created in Firestore");
 
     // Execute demo seed and reset
     await seedDemoDataForUser(userA.id, false);

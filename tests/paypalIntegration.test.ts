@@ -1,4 +1,4 @@
-import "dotenv/config";
+﻿import "dotenv/config";
 (process.env as Record<string, string | undefined>).NODE_ENV = "test";
 import { prisma } from "@/backend/db/db";
 import { hashPassword } from "@/backend/auth/auth";
@@ -17,16 +17,16 @@ import {
 import { verifyPayPalWebhookSignature } from "@/backend/integrations/paypal/paypal";
 
 export async function runPayPalIntegrationTests() {
-  console.log("\n▶ Running PayPal Sandbox Integration & Security Suite...");
+  console.log("\nâ–¶ Running PayPal Sandbox Integration & Security Suite...");
   let passed = 0;
   let failed = 0;
 
   function assert(condition: boolean, desc: string) {
     if (condition) {
-      console.log(`  ✓ ${desc}`);
+      console.log(`  âœ“ ${desc}`);
       passed++;
     } else {
-      console.error(`  ✗ FAIL: ${desc}`);
+      console.error(`  âœ— FAIL: ${desc}`);
       failed++;
     }
   }
@@ -291,13 +291,13 @@ export async function runPayPalIntegrationTests() {
     });
     assert(whRes2.status === "duplicate", "Duplicate webhook event detected and safely ignored (Durable Idempotency)");
 
-    // Cleanup test users (cascades to all test records in Neon DB)
+    // Cleanup test users (cascades to all test records in Firestore)
     await prisma.user.delete({ where: { id: userAId } });
     await prisma.user.delete({ where: { id: userBId } });
-    console.log("  ✓ Test users and all related PayPal records cleaned up from Neon DB");
+    console.log("  âœ“ Test users and all related PayPal records cleaned up from Firestore");
     passed++;
   } catch (err) {
-    console.error("  ✗ PayPal integration test suite encountered error:", err);
+    console.error("  âœ— PayPal integration test suite encountered error:", err);
     failed++;
     if (userAId) await prisma.user.delete({ where: { id: userAId } }).catch(() => {});
     if (userBId) await prisma.user.delete({ where: { id: userBId } }).catch(() => {});

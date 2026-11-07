@@ -152,7 +152,7 @@ export const financialInsightsOutputSchema = z.object({
 
 /**
  * 1. AI Financial Intelligence Copilot
- * Answers complex questions using the authenticated user's actual Neon database figures,
+ * Answers complex questions using the authenticated user's actual Firestore database figures,
  * clearly distinguishing historical facts, estimates, and forecasts.
  */
 export async function generateCopilotResponse(userId: string, userPrompt: string) {

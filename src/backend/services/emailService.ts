@@ -27,7 +27,7 @@ export interface SendEmailOptions {
 /**
  * Core email delivery coordinator.
  * Strictly enforces human-in-the-loop authorization, duplicate-send prevention,
- * and immutable delivery logging in Neon PostgreSQL.
+ * and immutable delivery logging in Firestore.
  */
 export async function sendEmail(
   userId: string,
@@ -118,7 +118,7 @@ export async function sendEmail(
 
   const now = new Date();
 
-  // Persist delivery record in Neon DB
+  // Persist delivery record in Firestore
   const delivery = await prisma.emailDelivery.create({
     data: {
       userId,
@@ -341,7 +341,7 @@ export async function sendReminderEmailWorkflow(
     return result;
   }
 
-  // Fallback for custom / local reminder drafts not yet persisted to Neon DB
+  // Fallback for custom / local reminder drafts not yet persisted to Firestore
   if (customOverrides?.to && customOverrides?.subject && customOverrides?.text) {
     const idempotencyKey = `email_rem_custom_${Date.now()}`;
     return await sendEmail(userId, {

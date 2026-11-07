@@ -31,7 +31,7 @@ export interface JobExecutionSummary {
 }
 
 /**
- * Enqueue a new durable background task into Neon PostgreSQL.
+ * Enqueue a new durable background task into Firestore.
  * Deduplicates using idempotencyKey to prevent duplicate queuing.
  */
 export async function enqueueJob(params: EnqueueJobParams) {

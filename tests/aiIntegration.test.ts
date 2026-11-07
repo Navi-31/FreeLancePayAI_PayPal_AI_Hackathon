@@ -1,4 +1,4 @@
-import "dotenv/config";
+﻿import "dotenv/config";
 import { prisma } from "@/backend/db/db";
 import { hashPassword } from "@/backend/auth/auth";
 import { createClient } from "@/backend/services/clientService";
@@ -18,16 +18,16 @@ import { getActiveAiProvider, runAICompletion } from "@/backend/integrations/gem
 import { z } from "zod";
 
 export async function runAIIntegrationTests() {
-  console.log("\n▶ Running AI Provider Integration, Security & Safeguards Suite...");
+  console.log("\nâ–¶ Running AI Provider Integration, Security & Safeguards Suite...");
   let passed = 0;
   let failed = 0;
 
   function assert(condition: boolean, desc: string) {
     if (condition) {
-      console.log(`  ✓ ${desc}`);
+      console.log(`  âœ“ ${desc}`);
       passed++;
     } else {
-      console.error(`  ✗ FAIL: ${desc}`);
+      console.error(`  âœ— FAIL: ${desc}`);
       failed++;
     }
   }
@@ -228,13 +228,13 @@ export async function runAIIntegrationTests() {
     assert(insightsRes.data.verifiedFigures.receivables >= 4500, "Explanation uses verified database receivables");
     assert(insightsRes.data.keyRisks.length > 0, "Identified actionable risk factors");
 
-    // Cleanup test users from Neon DB
+    // Cleanup test users from Firestore
     await prisma.user.delete({ where: { id: userAId } });
     await prisma.user.delete({ where: { id: userBId } });
-    console.log("  ✓ Test users and related AI test records cleaned up from Neon DB");
+    console.log("  âœ“ Test users and related AI test records cleaned up from Firestore");
     passed++;
   } catch (err) {
-    console.error("  ✗ AI integration suite error:", err);
+    console.error("  âœ— AI integration suite error:", err);
     failed++;
     if (userAId) await prisma.user.delete({ where: { id: userAId } }).catch(() => {});
     if (userBId) await prisma.user.delete({ where: { id: userBId } }).catch(() => {});

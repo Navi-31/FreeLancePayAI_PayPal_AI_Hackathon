@@ -15,7 +15,7 @@ export interface DashboardMetrics {
   activeMilestonesCount: number;
 }
 
-// User-scoped in-memory cache (20s TTL) to prevent repeated Neon DB queries during navigation
+// User-scoped in-memory cache (20s TTL) to prevent repeated Firestore queries during navigation
 interface CachedMetricsEntry {
   data: DashboardMetrics;
   expiresAt: number;

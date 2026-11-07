@@ -1,4 +1,4 @@
-import { prisma } from "@/backend/db/db";
+﻿import { prisma } from "@/backend/db/db";
 import { hashPassword } from "@/backend/auth/auth";
 import {
   generateCopilotResponse,
@@ -16,16 +16,16 @@ import { checkAiRateLimit } from "@/backend/security/rateLimiter";
 import { Prisma } from "@/backend/db/db";
 
 export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: number; failed: number }> {
-  console.log("\n▶ Running Phase 5E AI Differentiation & Advanced Financial Intelligence Suite...");
+  console.log("\nâ–¶ Running Phase 5E AI Differentiation & Advanced Financial Intelligence Suite...");
   let passed = 0;
   let failed = 0;
 
   const assert = (condition: unknown, msg: string) => {
     if (Boolean(condition)) {
-      console.log(`  ✓ ${msg}`);
+      console.log(`  âœ“ ${msg}`);
       passed++;
     } else {
-      console.error(`  ✗ FAIL: ${msg}`);
+      console.error(`  âœ— FAIL: ${msg}`);
       failed++;
     }
   };
@@ -53,7 +53,7 @@ export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: 
       },
     });
 
-    // 1. Setup User A Financial Context in Neon DB
+    // 1. Setup User A Financial Context in Firestore
     const clientA = await prisma.client.create({
       data: {
         userId: userA.id,
@@ -197,7 +197,7 @@ export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: 
     });
 
     // =========================================================================
-    // TEST 1: Copilot Answers Grounded in Authenticated Neon DB Data
+    // TEST 1: Copilot Answers Grounded in Authenticated Firestore Data
     // =========================================================================
     const copilotRes = await generateCopilotResponse(userA.id, "What is my total revenue, overdue receivables, and runway?");
     assert(copilotOutputSchema.safeParse(copilotRes.data).success, "Copilot output validates strictly against Zod schema");
@@ -323,7 +323,7 @@ export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: 
 
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : String(err);
-    console.error("  ✗ Execution exception in Phase 5E suite:", errorMsg);
+    console.error("  âœ— Execution exception in Phase 5E suite:", errorMsg);
     failed++;
   } finally {
     // Teardown test records

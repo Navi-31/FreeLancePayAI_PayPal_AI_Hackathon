@@ -1,5 +1,5 @@
 import { firestore } from "@/backend/firebase/admin";
-import { DocumentData, Query, Timestamp, FieldValue } from "firebase-admin/firestore";
+import { DocumentData, Query, FieldValue } from "firebase-admin/firestore";
 
 // Helper to convert Firestore Timestamps or ISO strings to Date or string
 function serializeDoc<T = Record<string, unknown>>(data: DocumentData | undefined, id: string): T {
@@ -88,7 +88,14 @@ function matchesWhere(doc: Record<string, unknown>, where?: Record<string, unkno
 
     if (key === "project" && typeof condition === "object" && condition !== null) {
       const cond = condition as Record<string, unknown>;
-      if (cond.userId && doc.userId && doc.userId !== cond.userId) return false;
+      if (cond.userId) {
+        // For milestones: check denormalized userId on the doc, fail if missing or mismatched
+        if (!doc.userId || doc.userId !== cond.userId) return false;
+      }
+      if (cond.code) {
+        // project.code filter — skip, can't resolve without project lookup
+        // The caller should resolve these to projectIds before calling deleteMany
+      }
       continue;
     }
 
@@ -106,13 +113,13 @@ function matchesWhere(doc: Record<string, unknown>, where?: Record<string, unkno
       if ("not" in cond && val === cond.not) return false;
       if ("in" in cond && Array.isArray(cond.in) && !cond.in.includes(val)) return false;
       if ("notIn" in cond && Array.isArray(cond.notIn) && cond.notIn.includes(val)) return false;
-      if ("lt" in cond && !(val < (cond.lt as string | number | Date))) return false;
-      if ("lte" in cond && !(val <= (cond.lte as string | number | Date))) return false;
-      if ("gt" in cond && !(val > (cond.gt as string | number | Date))) return false;
-      if ("gte" in cond && !(val >= (cond.gte as string | number | Date))) return false;
-      if ("contains" in cond && typeof val === "string" && !val.includes(cond.contains as string)) return false;
-      if ("startsWith" in cond && typeof val === "string" && !val.startsWith(cond.startsWith as string)) return false;
-      if ("endsWith" in cond && typeof val === "string" && !val.endsWith(cond.endsWith as string)) return false;
+      if ("lt" in cond && !((val as string | number | Date) < (cond.lt as string | number | Date))) return false;
+      if ("lte" in cond && !((val as string | number | Date) <= (cond.lte as string | number | Date))) return false;
+      if ("gt" in cond && !((val as string | number | Date) > (cond.gt as string | number | Date))) return false;
+      if ("gte" in cond && !((val as string | number | Date) >= (cond.gte as string | number | Date))) return false;
+      if ("contains" in cond && (typeof val !== "string" || !val.includes(cond.contains as string))) return false;
+      if ("startsWith" in cond && (typeof val !== "string" || !val.startsWith(cond.startsWith as string))) return false;
+      if ("endsWith" in cond && (typeof val !== "string" || !val.endsWith(cond.endsWith as string))) return false;
       if ("mode" in cond && cond.mode === "insensitive" && typeof val === "string" && typeof cond.equals === "string") {
         if (val.toLowerCase() !== (cond.equals as string).toLowerCase()) return false;
       }
@@ -172,14 +179,14 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
   async findUnique(params: {
     where: { id?: string; email?: string; [key: string]: unknown };
     select?: Record<string, boolean>;
-    include?: Record<string, boolean>;
+    include?: Record<string, unknown>;
   }): Promise<T | null> {
     const { where, select, include } = params;
 
     if (where.id && typeof where.id === "string") {
       const snap = await this.col.doc(where.id).get();
       if (!snap.exists) return null;
-      let data = serializeDoc<T>(snap.data(), snap.id);
+      const data = serializeDoc<T>(snap.data(), snap.id);
       if (!matchesWhere(data as Record<string, unknown>, where)) return null;
       return this.postProcess(data, include, select);
     }
@@ -190,10 +197,10 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
         // Fallback for case-sensitive match
         const snapExact = await this.col.where("email", "==", where.email).limit(1).get();
         if (snapExact.empty) return null;
-        let data = serializeDoc<T>(snapExact.docs[0].data(), snapExact.docs[0].id);
+        const data = serializeDoc<T>(snapExact.docs[0].data(), snapExact.docs[0].id);
         return this.postProcess(data, include, select);
       }
-      let data = serializeDoc<T>(snap.docs[0].data(), snap.docs[0].id);
+      const data = serializeDoc<T>(snap.docs[0].data(), snap.docs[0].id);
       return this.postProcess(data, include, select);
     }
 
@@ -204,7 +211,7 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
     where?: Record<string, unknown>;
     orderBy?: Record<string, "asc" | "desc"> | Array<Record<string, "asc" | "desc">>;
     select?: Record<string, boolean>;
-    include?: Record<string, boolean>;
+    include?: Record<string, unknown>;
   }): Promise<T | null> {
     const items = await this.findMany({ ...params, take: 1 });
     return items.length > 0 ? items[0] : null;
@@ -216,7 +223,7 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
     skip?: number;
     take?: number;
     select?: Record<string, boolean>;
-    include?: Record<string, boolean>;
+    include?: Record<string, unknown>;
   } = {}): Promise<T[]> {
     const { where, orderBy, skip = 0, take, select, include } = params;
 
@@ -274,7 +281,7 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
       updatedAt: params.data.updatedAt ?? now,
     });
 
-    let docId = (data.id as string) || this.col.doc().id;
+    const docId = (data.id as string) || this.col.doc().id;
     delete data.id;
 
     await this.col.doc(docId).set(data);
@@ -309,7 +316,7 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
     select?: Record<string, boolean>;
   }): Promise<T> {
     // Flatten Prisma composite unique keys (e.g. { userId_code: { userId, code } })
-    let flatWhere: Record<string, unknown> = {};
+    const flatWhere: Record<string, unknown> = {};
     for (const [key, val] of Object.entries(params.where)) {
       if (val !== null && typeof val === "object" && !Array.isArray(val) && !(val instanceof Date)) {
         // Composite key — spread its inner fields
@@ -319,9 +326,9 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
       }
     }
     const existing = await this.findFirst({ where: flatWhere });
-    if (existing && (existing as { id: string }).id) {
+    if (existing && (existing as unknown as { id: string }).id) {
       return this.update({
-        where: { id: (existing as { id: string }).id },
+        where: { id: (existing as unknown as { id: string }).id },
         data: params.update,
         select: params.select,
       });
@@ -412,7 +419,7 @@ export class FirestoreCollection<T extends Record<string, unknown> = Record<stri
 
   protected async resolveIncludes(
     item: Record<string, unknown>,
-    _include: Record<string, boolean>
+    _include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     return item;
   }
@@ -480,7 +487,7 @@ export class UserCollection extends FirestoreCollection {
 
   protected override async resolveIncludes(
     item: Record<string, unknown>,
-    include: Record<string, boolean>
+    include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const userId = item.id as string;
     if (!userId) return item;
@@ -512,7 +519,7 @@ export class InvoiceCollection extends FirestoreCollection {
   override async create(params: {
     data: Record<string, unknown>;
     select?: Record<string, boolean>;
-    include?: Record<string, boolean>;
+    include?: Record<string, unknown>;
   }) {
     const data = { ...params.data };
     let lineItemsToCreate: Array<Record<string, unknown>> = [];
@@ -551,7 +558,7 @@ export class InvoiceCollection extends FirestoreCollection {
 
   protected override async resolveIncludes(
     item: Record<string, unknown>,
-    include: Record<string, boolean>
+    include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const invoiceId = item.id as string;
     if (!invoiceId) return item;
@@ -596,7 +603,7 @@ export class ProjectCollection extends FirestoreCollection {
   override async create(params: {
     data: Record<string, unknown>;
     select?: Record<string, boolean>;
-    include?: Record<string, boolean>;
+    include?: Record<string, unknown>;
   }) {
     const data = { ...params.data };
     let milestonesToCreate: Array<Record<string, unknown>> = [];
@@ -636,7 +643,7 @@ export class ProjectCollection extends FirestoreCollection {
 
   protected override async resolveIncludes(
     item: Record<string, unknown>,
-    include: Record<string, boolean>
+    include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const projectId = item.id as string;
     if (!projectId) return item;
@@ -656,9 +663,21 @@ export class MilestoneCollection extends FirestoreCollection {
     super("milestones");
   }
 
+  // Denormalize userId from parent project onto milestone for ownership queries
+  override async create(params: { data: Record<string, unknown>; select?: Record<string, boolean> }) {
+    const data = { ...params.data };
+    if (!data.userId && data.projectId && typeof data.projectId === "string") {
+      const projectSnap = await firestore.collection("projects").doc(data.projectId).get();
+      if (projectSnap.exists) {
+        data.userId = projectSnap.data()?.userId;
+      }
+    }
+    return super.create({ data, select: params.select });
+  }
+
   protected override async resolveIncludes(
     item: Record<string, unknown>,
-    include: Record<string, boolean>
+    include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const milestoneId = item.id as string;
     if (!milestoneId) return item;
@@ -694,7 +713,7 @@ export class ReminderCollection extends FirestoreCollection {
 
   protected override async resolveIncludes(
     item: Record<string, unknown>,
-    include: Record<string, boolean>
+    include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const reminderId = item.id as string;
     if (!reminderId) return item;
@@ -730,7 +749,7 @@ export class ClientCollection extends FirestoreCollection {
 
   protected override async resolveIncludes(
     item: Record<string, unknown>,
-    include: Record<string, boolean>
+    include: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     const clientId = item.id as string;
     if (!clientId) return item;
@@ -791,14 +810,14 @@ export class FirestoreDatabase {
   }
 
   // Transactions handler (supports both interactive callback and Promise.all array)
-  async $transaction<T>(input: ((tx: FirestoreDatabase) => Promise<T>) | Promise<unknown>[]): Promise<unknown> {
+  async $transaction<T>(input: ((tx: FirestoreDatabase) => Promise<T>) | Promise<unknown>[], _options?: Record<string, unknown>): Promise<T> {
     if (Array.isArray(input)) {
-      return Promise.all(input);
+      return Promise.all(input) as unknown as T;
     }
     if (typeof input === "function") {
       return input(this);
     }
-    return input;
+    return input as T;
   }
 
   async $disconnect(): Promise<void> {
@@ -834,9 +853,20 @@ export class Decimal {
   }
 }
 
-export const Prisma = {
-  Decimal,
-};
+const _Decimal = Decimal;
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace Prisma {
+  export type ClientWhereInput = Record<string, unknown>;
+  export type InvoiceWhereInput = Record<string, unknown>;
+  export type ProjectWhereInput = Record<string, unknown>;
+  export type TransactionWhereInput = Record<string, unknown>;
+  export type MilestoneWhereInput = Record<string, unknown>;
+  export type ExpenseWhereInput = Record<string, unknown>;
+  export type DecimalJsLike = { toNumber(): number; toString(): string; valueOf(): number };
+  // Re-export Decimal as a type + value constructor
+  export const Decimal = _Decimal;
+}
 
 export class PrismaClient extends FirestoreDatabase {}
 
