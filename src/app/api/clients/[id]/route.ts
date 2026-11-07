@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { getClientById, updateClient, deleteClient } from "@/services/clientService";
+import { getServerSession } from "@/backend/auth/auth";
+import { getClientById, updateClient, deleteClient } from "@/backend/services/clientService";
 
 export async function GET(
   request: NextRequest,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { listExpenses, createExpense } from "@/services/spendingService";
+import { getServerSession } from "@/backend/auth/auth";
+import { listExpenses, createExpense } from "@/backend/services/spendingService";
 import { z } from "zod";
 
 const createExpenseSchema = z.object({

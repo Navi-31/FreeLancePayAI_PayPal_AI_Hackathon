@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
+import { getServerSession } from "@/backend/auth/auth";
 import {
   listSubscriptions,
   createSubscription,
   updateSubscription,
   deleteSubscription,
-} from "@/services/subscriptionService";
+} from "@/backend/services/subscriptionService";
 import { z } from "zod";
 
 const createSubscriptionSchema = z.object({

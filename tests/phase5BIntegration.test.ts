@@ -1,13 +1,13 @@
-import { prisma } from "@/lib/db";
-import { hashPassword } from "@/lib/auth";
-import { createSubscription, listSubscriptions, deleteSubscription } from "@/services/subscriptionService";
-import { createExpense, listExpenses } from "@/services/spendingService";
-import { getTaxEstimate, updateTaxEstimate } from "@/services/taxService";
-import { getFinancialSettings, updateFinancialSettings } from "@/services/settingsService";
-import { listReminders, updateReminderTone } from "@/services/reminderService";
-import { createClient } from "@/services/clientService";
-import { createInvoice } from "@/services/invoiceService";
-import { createProject, listProjects } from "@/services/projectService";
+import { prisma } from "@/backend/db/db";
+import { hashPassword } from "@/backend/auth/auth";
+import { createSubscription, listSubscriptions, deleteSubscription } from "@/backend/services/subscriptionService";
+import { createExpense, listExpenses } from "@/backend/services/spendingService";
+import { getTaxEstimate, updateTaxEstimate } from "@/backend/services/taxService";
+import { getFinancialSettings, updateFinancialSettings } from "@/backend/services/settingsService";
+import { listReminders, updateReminderTone } from "@/backend/services/reminderService";
+import { createClient } from "@/backend/services/clientService";
+import { createInvoice } from "@/backend/services/invoiceService";
+import { createProject, listProjects } from "@/backend/services/projectService";
 
 export async function runPhase5BIntegrationTests(): Promise<{ passed: number; failed: number }> {
   console.log("\n▶ Running Phase 5B Frontend, API & Database Workflows Integration Suite...");

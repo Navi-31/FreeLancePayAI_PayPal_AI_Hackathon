@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { getTaxEstimate, updateTaxEstimate } from "@/services/taxService";
+import { getServerSession } from "@/backend/auth/auth";
+import { getTaxEstimate, updateTaxEstimate } from "@/backend/services/taxService";
 
 export async function GET() {
   const session = await getServerSession();

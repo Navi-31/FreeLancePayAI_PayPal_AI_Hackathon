@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { refundPayment } from "@/services/paypalService";
+import { getServerSession } from "@/backend/auth/auth";
+import { refundPayment } from "@/backend/services/paypalService";
 import { z } from "zod";
 
 const refundSchema = z.object({

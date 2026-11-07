@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
+import { getServerSession } from "@/backend/auth/auth";
 import {
   listReminders,
   updateReminderTone,
   simulateSendReminder,
-} from "@/services/reminderService";
-import { sendReminderEmailWorkflow } from "@/services/emailService";
+} from "@/backend/services/reminderService";
+import { sendReminderEmailWorkflow } from "@/backend/services/emailService";
 import { z } from "zod";
 
 const updateToneSchema = z.object({

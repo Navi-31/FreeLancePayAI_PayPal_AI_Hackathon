@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { generateNegotiationProposal } from "@/services/aiService";
+import { getServerSession } from "@/backend/auth/auth";
+import { generateNegotiationProposal } from "@/backend/services/aiService";
 import { z } from "zod";
 
 const negotiatorRequestSchema = z.object({

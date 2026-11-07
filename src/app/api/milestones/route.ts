@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { listProjects, createProject } from "@/services/projectService";
+import { getServerSession } from "@/backend/auth/auth";
+import { listProjects, createProject } from "@/backend/services/projectService";
 import { z } from "zod";
 
 const createProjectSchema = z.object({

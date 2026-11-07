@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
+import { getServerSession } from "@/backend/auth/auth";
 import {
   sendInvoiceEmailWorkflow,
   sendReminderEmailWorkflow,
   sendEmail,
-} from "@/services/emailService";
+} from "@/backend/services/emailService";
 import { z } from "zod";
 
 const sendEmailSchema = z.object({

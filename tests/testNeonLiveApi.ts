@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { prisma } from "../src/lib/db";
-import { hashPassword, verifyPassword, createSessionToken, verifySessionToken } from "../src/lib/auth";
-import { createInvoice, listInvoices, getInvoiceById } from "../src/services/invoiceService";
-import { createClient, listClients } from "../src/services/clientService";
-import { createTransaction, listTransactions } from "../src/services/transactionService";
+import { prisma } from "@/backend/db/db";
+import { hashPassword, verifyPassword, createSessionToken, verifySessionToken } from "@/backend/auth/auth";
+import { createInvoice, listInvoices, getInvoiceById } from "@/backend/services/invoiceService";
+import { createClient, listClients } from "@/backend/services/clientService";
+import { createTransaction, listTransactions } from "@/backend/services/transactionService";
 
 export async function runLiveNeonIntegrationTests() {
   console.log("\n▶ Running Real End-to-End Tests against live Neon PostgreSQL...");

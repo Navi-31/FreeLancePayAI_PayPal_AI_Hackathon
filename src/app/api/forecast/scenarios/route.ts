@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { prisma } from "@/lib/db";
-import { computeCashflowForecastScenarios } from "@/lib/financialIntelligence";
-import { roundToTwoDecimals } from "@/lib/financialCalculations";
+import { getServerSession } from "@/backend/auth/auth";
+import { prisma } from "@/backend/db/db";
+import { computeCashflowForecastScenarios } from "@/backend/services/financialIntelligence";
+import { roundToTwoDecimals } from "@/shared/financialCalculations";
 
 export async function GET() {
   const session = await getServerSession();

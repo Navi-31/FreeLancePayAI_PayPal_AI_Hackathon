@@ -1,5 +1,5 @@
-import { prisma } from "@/lib/db";
-import { hashPassword } from "@/lib/auth";
+import { prisma } from "@/backend/db/db";
+import { hashPassword } from "@/backend/auth/auth";
 import {
   seedDemoDataForUser,
   DEMO_SYNTHETIC_MARKER,
@@ -7,8 +7,8 @@ import {
   DEMO_INVOICE_CODES,
   DEMO_PROJECT_CODES,
   DEMO_REMINDER_CODES,
-} from "@/services/demoSeedService";
-import { generateCopilotResponse } from "@/services/aiService";
+} from "@/backend/services/demoSeedService";
+import { generateCopilotResponse } from "@/backend/services/aiService";
 import { Prisma } from "@prisma/client";
 
 export async function runPhase5DDemoReadinessTests(): Promise<{ passed: number; failed: number }> {

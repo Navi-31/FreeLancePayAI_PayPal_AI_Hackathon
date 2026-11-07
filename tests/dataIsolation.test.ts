@@ -17,7 +17,7 @@ export function runDataIsolationTests() {
   }
 
   // 1. Verify all domain services require userId
-  const servicesDir = path.join(__dirname, "../src/services");
+  const servicesDir = path.join(__dirname, "../src/backend/services");
   const serviceFiles = [
     "invoiceService.ts",
     "clientService.ts",

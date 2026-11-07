@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { listEmailDeliveries } from "@/services/emailService";
+import { getServerSession } from "@/backend/auth/auth";
+import { listEmailDeliveries } from "@/backend/services/emailService";
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession();

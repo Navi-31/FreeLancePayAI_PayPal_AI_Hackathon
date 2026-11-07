@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { computeFeeAndCurrencyScenarios } from "@/lib/financialIntelligence";
+import { getServerSession } from "@/backend/auth/auth";
+import { computeFeeAndCurrencyScenarios } from "@/backend/services/financialIntelligence";
 
 export async function GET(request: NextRequest) {
   const session = await getServerSession();

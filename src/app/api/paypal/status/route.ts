@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPayPalIntegrationStatus } from "@/services/paypalService";
+import { getPayPalIntegrationStatus } from "@/backend/services/paypalService";
 
 export async function GET() {
   try {

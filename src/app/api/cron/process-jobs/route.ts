@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { env } from "@/lib/env";
-import { processPendingJobs } from "@/services/jobService";
+import { env } from "@/backend/validation/env";
+import { processPendingJobs } from "@/backend/services/jobService";
 
 function verifyCronSecret(request: NextRequest): boolean {
   const authHeader = request.headers.get("authorization");

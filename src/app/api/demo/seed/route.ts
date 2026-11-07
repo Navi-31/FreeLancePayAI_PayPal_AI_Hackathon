@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { seedDemoDataForUser, DEMO_SYNTHETIC_MARKER } from "@/services/demoSeedService";
-import { recordAuditLog } from "@/services/auditService";
+import { getServerSession } from "@/backend/auth/auth";
+import { seedDemoDataForUser, DEMO_SYNTHETIC_MARKER } from "@/backend/services/demoSeedService";
+import { recordAuditLog } from "@/backend/services/auditService";
 import { z } from "zod";
 
 const seedRequestSchema = z

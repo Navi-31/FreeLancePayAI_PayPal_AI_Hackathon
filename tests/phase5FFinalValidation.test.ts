@@ -1,24 +1,24 @@
-import { prisma } from "@/lib/db";
-import { hashPassword } from "@/lib/auth";
-import { createInvoice, updateInvoiceStatus } from "@/services/invoiceService";
-import { createClient } from "@/services/clientService";
+import { prisma } from "@/backend/db/db";
+import { hashPassword } from "@/backend/auth/auth";
+import { createInvoice, updateInvoiceStatus } from "@/backend/services/invoiceService";
+import { createClient } from "@/backend/services/clientService";
 import {
   createInvoicePaymentOrder,
   captureInvoicePayment,
   refundPayment,
   handlePayPalWebhook,
-} from "@/services/paypalService";
+} from "@/backend/services/paypalService";
 import {
   seedDemoDataForUser,
   DEMO_SYNTHETIC_MARKER,
-} from "@/services/demoSeedService";
+} from "@/backend/services/demoSeedService";
 import {
   computeClientReliability,
   computeFeeAndCurrencyScenarios,
   computeCashflowForecastScenarios,
-} from "@/lib/financialIntelligence";
-import { generateCopilotResponse } from "@/services/aiService";
-import { calculateInvoiceTotals, calculateTaxReserveAllocation } from "@/lib/financialCalculations";
+} from "@/backend/services/financialIntelligence";
+import { generateCopilotResponse } from "@/backend/services/aiService";
+import { calculateInvoiceTotals, calculateTaxReserveAllocation } from "@/shared/financialCalculations";
 import { Prisma } from "@prisma/client";
 
 export async function runPhase5FFinalValidationTests(): Promise<{ passed: number; failed: number }> {

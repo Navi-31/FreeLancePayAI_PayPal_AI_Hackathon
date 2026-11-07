@@ -1,17 +1,17 @@
-import { prisma } from "../src/lib/db";
+import { prisma } from "@/backend/db/db";
 import {
   getActiveEmailProvider,
   validateEmailAddress,
   sanitizeHeaderValue,
   dispatchEmailThroughProvider,
-} from "../src/lib/email/emailProvider";
+} from "@/backend/integrations/email/emailProvider";
 import {
   sendEmail,
   sendInvoiceEmailWorkflow,
   sendReminderEmailWorkflow,
   sendPaymentReceiptEmailWorkflow,
   listEmailDeliveries,
-} from "../src/services/emailService";
+} from "@/backend/services/emailService";
 import {
   createNotification,
   listNotifications,
@@ -19,13 +19,13 @@ import {
   markNotificationAsRead,
   markAllNotificationsAsRead,
   deleteNotification,
-} from "../src/services/notificationService";
+} from "@/backend/services/notificationService";
 import {
   enqueueJob,
   processPendingJobs,
   listJobs,
-} from "../src/services/jobService";
-import { hashPassword } from "../src/lib/auth";
+} from "@/backend/services/jobService";
+import { hashPassword } from "@/backend/auth/auth";
 
 function assert(condition: boolean, message: string) {
   if (!condition) {

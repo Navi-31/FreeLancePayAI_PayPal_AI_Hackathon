@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
+import { getServerSession } from "@/backend/auth/auth";
 import {
   getInvoiceById,
   updateInvoiceStatus,
   deleteInvoice,
-} from "@/services/invoiceService";
-import { InvoiceStatusType } from "@/lib/financialCalculations";
+} from "@/backend/services/invoiceService";
+import { InvoiceStatusType } from "@/shared/financialCalculations";
 import { z } from "zod";
 
 const patchStatusSchema = z.object({

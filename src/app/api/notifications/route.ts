@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
+import { getServerSession } from "@/backend/auth/auth";
 import {
   listNotifications,
   getUnreadNotificationCount,
   markNotificationAsRead,
   markAllNotificationsAsRead,
-} from "@/services/notificationService";
+} from "@/backend/services/notificationService";
 import { z } from "zod";
 
 const patchSchema = z.object({

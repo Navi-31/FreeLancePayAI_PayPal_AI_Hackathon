@@ -3,7 +3,7 @@ import {
   verifyPassword,
   createSessionToken,
   verifySessionToken,
-} from "../src/lib/auth";
+} from "@/backend/auth/auth";
 
 export async function runAuthTests() {
   console.log("\n▶ Running Authentication & Token Verification Tests...");

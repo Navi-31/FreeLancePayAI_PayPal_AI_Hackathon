@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { authorizeMilestonePayment } from "@/services/paypalService";
+import { getServerSession } from "@/backend/auth/auth";
+import { authorizeMilestonePayment } from "@/backend/services/paypalService";
 import { z } from "zod";
 
 const authorizeOrderSchema = z.object({

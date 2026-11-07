@@ -8,7 +8,7 @@ import {
   calculateTaxReserveAllocation,
   isValidInvoiceTransition,
   isValidMilestoneTransition,
-} from "../src/lib/financialCalculations";
+} from "@/shared/financialCalculations";
 
 export function runFinancialCalculationsTests() {
   console.log("\n▶ Running Financial Calculations & Precision Tests...");

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { getServerSession } from "@/backend/auth/auth";
+import { prisma } from "@/backend/db/db";
 
 export async function GET() {
   const session = await getServerSession();

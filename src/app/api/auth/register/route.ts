@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "@/lib/db";
-import { hashPassword, createSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth";
-import { recordAuditLog } from "@/services/auditService";
+import { prisma } from "@/backend/db/db";
+import { hashPassword, createSessionToken, SESSION_COOKIE_NAME } from "@/backend/auth/auth";
+import { recordAuditLog } from "@/backend/services/auditService";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

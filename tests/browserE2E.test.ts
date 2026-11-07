@@ -1,7 +1,7 @@
 import path from "path";
 import { spawn, ChildProcess } from "child_process";
 import { chromium, Browser, Page } from "playwright";
-import { prisma } from "@/lib/db";
+import { prisma } from "@/backend/db/db";
 
 const PORT = 3005;
 const BASE_URL = `http://127.0.0.1:${PORT}`;

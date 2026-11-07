@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { listTransactions, createTransaction } from "@/services/transactionService";
+import { getServerSession } from "@/backend/auth/auth";
+import { listTransactions, createTransaction } from "@/backend/services/transactionService";
 import { z } from "zod";
 
 const createTransactionSchema = z.object({

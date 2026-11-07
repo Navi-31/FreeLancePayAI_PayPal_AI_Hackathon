@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { handlePayPalWebhook } from "@/services/paypalService";
+import { handlePayPalWebhook } from "@/backend/services/paypalService";
 
 export async function POST(request: NextRequest) {
   try {

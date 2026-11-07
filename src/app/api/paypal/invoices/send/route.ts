@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { createAndSendPayPalInvoiceRecord } from "@/services/paypalService";
+import { getServerSession } from "@/backend/auth/auth";
+import { createAndSendPayPalInvoiceRecord } from "@/backend/services/paypalService";
 import { z } from "zod";
 
 const sendInvoiceSchema = z.object({

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { parseInvoicePrompt } from "@/services/aiService";
+import { getServerSession } from "@/backend/auth/auth";
+import { parseInvoicePrompt } from "@/backend/services/aiService";
 import { z } from "zod";
 
 const parseRequestSchema = z.object({

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME, getServerSession } from "@/lib/auth";
-import { recordAuditLog } from "@/services/auditService";
+import { SESSION_COOKIE_NAME, getServerSession } from "@/backend/auth/auth";
+import { recordAuditLog } from "@/backend/services/auditService";
 
 export async function POST() {
   const session = await getServerSession();

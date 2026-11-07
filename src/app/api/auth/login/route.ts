@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { prisma } from "@/lib/db";
-import { verifyPassword, createSessionToken, SESSION_COOKIE_NAME } from "@/lib/auth";
-import { recordAuditLog } from "@/services/auditService";
+import { prisma } from "@/backend/db/db";
+import { verifyPassword, createSessionToken, SESSION_COOKIE_NAME } from "@/backend/auth/auth";
+import { recordAuditLog } from "@/backend/services/auditService";
 
 const loginSchema = z.object({
   email: z.string().email(),

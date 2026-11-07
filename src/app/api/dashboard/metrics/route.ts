@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { getDashboardMetrics } from "@/services/dashboardService";
+import { getServerSession } from "@/backend/auth/auth";
+import { getDashboardMetrics } from "@/backend/services/dashboardService";
 
 export async function GET() {
   const session = await getServerSession();

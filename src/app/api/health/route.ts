@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
-import { env, isLiveDatabaseConfigured } from "@/lib/env";
-import { getActiveAiProvider } from "@/lib/ai/aiProvider";
-import { getActiveEmailProvider } from "@/lib/email/emailProvider";
+import { prisma } from "@/backend/db/db";
+import { env, isLiveDatabaseConfigured } from "@/backend/validation/env";
+import { getActiveAiProvider } from "@/backend/integrations/gemini/aiProvider";
+import { getActiveEmailProvider } from "@/backend/integrations/email/emailProvider";
 
 export async function GET() {
   const startTime = Date.now();

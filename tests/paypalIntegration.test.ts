@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { prisma } from "../src/lib/db";
-import { hashPassword } from "../src/lib/auth";
-import { createClient } from "../src/services/clientService";
-import { createInvoice } from "../src/services/invoiceService";
-import { createProject } from "../src/services/projectService";
+import { prisma } from "@/backend/db/db";
+import { hashPassword } from "@/backend/auth/auth";
+import { createClient } from "@/backend/services/clientService";
+import { createInvoice } from "@/backend/services/invoiceService";
+import { createProject } from "@/backend/services/projectService";
 import {
   createInvoicePaymentOrder,
   captureInvoicePayment,
@@ -12,8 +12,8 @@ import {
   captureMilestonePayment,
   refundPayment,
   handlePayPalWebhook,
-} from "../src/services/paypalService";
-import { verifyPayPalWebhookSignature } from "../src/lib/paypal";
+} from "@/backend/services/paypalService";
+import { verifyPayPalWebhookSignature } from "@/backend/integrations/paypal/paypal";
 
 export async function runPayPalIntegrationTests() {
   console.log("\n▶ Running PayPal Sandbox Integration & Security Suite...");

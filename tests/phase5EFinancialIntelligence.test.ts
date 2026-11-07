@@ -1,18 +1,18 @@
-import { prisma } from "@/lib/db";
-import { hashPassword } from "@/lib/auth";
+import { prisma } from "@/backend/db/db";
+import { hashPassword } from "@/backend/auth/auth";
 import {
   generateCopilotResponse,
   explainFinancialMetrics,
   copilotOutputSchema,
   financialInsightsOutputSchema,
-} from "@/services/aiService";
+} from "@/backend/services/aiService";
 import {
   computeClientReliability,
   computeFeeAndCurrencyScenarios,
   computeCashflowForecastScenarios,
-} from "@/lib/financialIntelligence";
-import { sanitizePromptInput } from "@/lib/ai/promptSanitizer";
-import { checkAiRateLimit } from "@/lib/ai/rateLimiter";
+} from "@/backend/services/financialIntelligence";
+import { sanitizePromptInput } from "@/backend/security/promptSanitizer";
+import { checkAiRateLimit } from "@/backend/security/rateLimiter";
 import { Prisma } from "@prisma/client";
 
 export async function runPhase5EFinancialIntelligenceTests(): Promise<{ passed: number; failed: number }> {

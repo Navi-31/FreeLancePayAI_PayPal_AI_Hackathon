@@ -1,34 +1,34 @@
-import { prisma } from "../src/lib/db";
+import { prisma } from "@/backend/db/db";
 import {
   hashPassword,
   verifyPassword,
   createSessionToken,
   verifySessionToken,
-} from "../src/lib/auth";
+} from "@/backend/auth/auth";
 import {
   calculateInvoiceTotals,
   calculateTransactionNet,
   calculateTaxReserveAllocation,
-} from "../src/lib/financialCalculations";
-import { createInvoice, getInvoiceById } from "../src/services/invoiceService";
-import { createClient } from "../src/services/clientService";
+} from "@/shared/financialCalculations";
+import { createInvoice, getInvoiceById } from "@/backend/services/invoiceService";
+import { createClient } from "@/backend/services/clientService";
 import {
   createMilestoneAuthorizationOrder,
   authorizeMilestonePayment,
   captureMilestonePayment,
   refundPayment,
-} from "../src/services/paypalService";
+} from "@/backend/services/paypalService";
 import {
   sendReminderEmailWorkflow,
-} from "../src/services/emailService";
+} from "@/backend/services/emailService";
 import {
   createNotification,
   getUnreadNotificationCount,
   markAllNotificationsAsRead,
-} from "../src/services/notificationService";
-import { enqueueJob, processPendingJobs } from "../src/services/jobService";
-import { checkPersistentRateLimit } from "../src/lib/ai/rateLimiter";
-import { recordAuditLog } from "../src/services/auditService";
+} from "@/backend/services/notificationService";
+import { enqueueJob, processPendingJobs } from "@/backend/services/jobService";
+import { checkPersistentRateLimit } from "@/backend/security/rateLimiter";
+import { recordAuditLog } from "@/backend/services/auditService";
 
 function assert(condition: boolean, message: string) {
   if (!condition) {

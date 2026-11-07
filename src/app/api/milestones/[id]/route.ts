@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { updateMilestoneStatus } from "@/services/projectService";
-import { MilestoneStatusType } from "@/lib/financialCalculations";
+import { getServerSession } from "@/backend/auth/auth";
+import { updateMilestoneStatus } from "@/backend/services/projectService";
+import { MilestoneStatusType } from "@/shared/financialCalculations";
 import { z } from "zod";
 
 const updateMilestoneSchema = z.object({

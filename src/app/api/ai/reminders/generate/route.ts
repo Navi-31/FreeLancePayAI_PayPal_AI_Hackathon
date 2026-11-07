@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { generateReminderDraft } from "@/services/aiService";
+import { getServerSession } from "@/backend/auth/auth";
+import { generateReminderDraft } from "@/backend/services/aiService";
 import { z } from "zod";
 
 const reminderRequestSchema = z.object({

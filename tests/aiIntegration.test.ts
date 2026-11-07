@@ -1,8 +1,8 @@
 import "dotenv/config";
-import { prisma } from "../src/lib/db";
-import { hashPassword } from "../src/lib/auth";
-import { createClient } from "../src/services/clientService";
-import { createInvoice } from "../src/services/invoiceService";
+import { prisma } from "@/backend/db/db";
+import { hashPassword } from "@/backend/auth/auth";
+import { createClient } from "@/backend/services/clientService";
+import { createInvoice } from "@/backend/services/invoiceService";
 import {
   generateCopilotResponse,
   parseInvoicePrompt,
@@ -10,11 +10,11 @@ import {
   generateNegotiationProposal,
   analyzeDocumentContent,
   explainFinancialMetrics,
-} from "../src/services/aiService";
-import { sanitizePromptInput, wrapUntrustedData } from "../src/lib/ai/promptSanitizer";
-import { checkAiRateLimit } from "../src/lib/ai/rateLimiter";
-import { validateDocumentFile, extractTextFromBuffer } from "../src/lib/ai/documentExtractor";
-import { getActiveAiProvider, runAICompletion } from "../src/lib/ai/aiProvider";
+} from "@/backend/services/aiService";
+import { sanitizePromptInput, wrapUntrustedData } from "@/backend/security/promptSanitizer";
+import { checkAiRateLimit } from "@/backend/security/rateLimiter";
+import { validateDocumentFile, extractTextFromBuffer } from "@/backend/integrations/gemini/documentExtractor";
+import { getActiveAiProvider, runAICompletion } from "@/backend/integrations/gemini/aiProvider";
 import { z } from "zod";
 
 export async function runAIIntegrationTests() {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { getActiveAiProvider } from "@/lib/ai/aiProvider";
+import { getServerSession } from "@/backend/auth/auth";
+import { getActiveAiProvider } from "@/backend/integrations/gemini/aiProvider";
 
 export async function GET() {
   const session = await getServerSession();

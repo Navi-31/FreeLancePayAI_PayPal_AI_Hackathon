@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "@/lib/auth";
-import { analyzeDocumentContent } from "@/services/aiService";
+import { getServerSession } from "@/backend/auth/auth";
+import { analyzeDocumentContent } from "@/backend/services/aiService";
 import {
   validateDocumentFile,
   extractTextFromBuffer,
-} from "@/lib/ai/documentExtractor";
+} from "@/backend/integrations/gemini/documentExtractor";
 import { z } from "zod";
 
 const jsonScanSchema = z.object({
