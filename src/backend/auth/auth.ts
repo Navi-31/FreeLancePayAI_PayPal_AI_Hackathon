@@ -5,7 +5,22 @@ import { env } from "@/backend/validation/env";
 
 export const SESSION_COOKIE_NAME = "freelancepay_session";
 const JWT_SECRET_ENCODED = new TextEncoder().encode(env.JWT_SECRET);
-const SESSION_DURATION_SECONDS = 7 * 24 * 60 * 60; // 7 days
+export const SESSION_DURATION_SECONDS = 7 * 24 * 60 * 60; // 7 days
+
+/**
+ * Returns normalized session cookie configuration compatible with both local development and production.
+ */
+export function getSessionCookieConfig(options?: { maxAge?: number; expires?: Date }) {
+  return {
+    name: SESSION_COOKIE_NAME,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax" as const,
+    path: "/",
+    maxAge: options?.maxAge ?? SESSION_DURATION_SECONDS,
+    ...(options?.expires ? { expires: options.expires } : {}),
+  };
+}
 
 export interface AuthSessionPayload {
   userId: string;

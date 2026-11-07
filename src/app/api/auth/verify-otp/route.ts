@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/backend/db/db";
-import { createSessionToken, SESSION_COOKIE_NAME } from "@/backend/auth/auth";
+import { createSessionToken, getSessionCookieConfig } from "@/backend/auth/auth";
 import { verifyOtpCode } from "@/backend/services/otpService";
 import { mirrorUserDataset } from "@/backend/services/userMigrationService";
 import { recordAuditLog } from "@/backend/services/auditService";
@@ -106,13 +106,8 @@ export async function POST(request: Request) {
     });
 
     response.cookies.set({
-      name: SESSION_COOKIE_NAME,
+      ...getSessionCookieConfig(),
       value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60,
-      path: "/",
     });
 
     return response;

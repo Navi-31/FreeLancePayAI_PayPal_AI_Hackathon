@@ -35,8 +35,8 @@ export async function runAuthTests() {
   // 2. JWT Session Token Lifecycle
   const payload = {
     userId: "usr_test_99214",
-    email: "alex.vance@studio.ai",
-    name: "Alex Vance",
+    email: "operator@freelancepay.ai",
+    name: "Autonomous Operator",
     role: "freelancer",
     badge: "PRO VIP",
   };

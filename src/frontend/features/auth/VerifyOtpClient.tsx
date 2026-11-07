@@ -3,12 +3,21 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/frontend/features/auth/AuthContext";
 
 export function VerifyOtpClient() {
   const router = useRouter();
+  const { user, loading: authLoading, setSessionUser, refreshSession } = useAuth();
   const searchParams = useSearchParams();
   const emailParam = searchParams.get("email") || "";
   const purpose = (searchParams.get("purpose") as "SIGNUP_VERIFICATION" | "LOGIN_OTP") || "SIGNUP_VERIFICATION";
+
+  // If already authenticated, redirect to dashboard
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [authLoading, user, router]);
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [loading, setLoading] = useState(false);
@@ -105,15 +114,24 @@ export function VerifyOtpClient() {
         return;
       }
 
+      if (data.user) {
+        setSessionUser(data.user);
+      }
+      const confirmed = await refreshSession();
+
       setSuccessMsg("Account verified successfully! Initializing command center...");
       setTimeout(() => {
-        router.push("/dashboard");
-      }, 1200);
+        if (confirmed) {
+          router.push("/dashboard");
+        } else {
+          window.location.href = "/dashboard";
+        }
+      }, 800);
     } catch {
       setError("Network error communicating with verification service.");
       setLoading(false);
     }
-  }, [otp, emailParam, purpose, router]);
+  }, [otp, emailParam, purpose, router, setSessionUser, refreshSession]);
 
   const handleResend = async () => {
     if (cooldownSeconds > 0 || resending) return;

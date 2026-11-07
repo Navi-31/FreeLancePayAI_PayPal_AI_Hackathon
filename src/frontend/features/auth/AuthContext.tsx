@@ -20,11 +20,13 @@ interface AuthContextType {
   loading: boolean;
   isAuthenticated: boolean;
   isDemoMode: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string; requireOtp?: boolean; requireVerification?: boolean; email?: string }>;
   register: (name: string, email: string, password: string, businessName?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   toggleDemoMode: () => void;
   syncLocalDataToCloud: () => Promise<{ success: boolean; message: string }>;
+  refreshSession: () => Promise<UserSession | null>;
+  setSessionUser: (user: UserSession | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -34,7 +36,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   const [isDemoMode, setIsDemoMode] = useState(false);
 
-  const checkSession = useCallback(async () => {
+  const checkSession = useCallback(async (showLoading = false): Promise<UserSession | null> => {
+    if (showLoading) setLoading(true);
     try {
       const res = await fetch("/api/auth/me", { cache: "no-store" });
       if (res.ok) {
@@ -42,7 +45,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (data.authenticated && data.user) {
           setUser(data.user);
           setIsDemoMode(false);
-          return;
+          setLoading(false);
+          return data.user;
         }
       }
     } catch {
@@ -54,6 +58,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // If not authenticated, ensure user state is completely null
     setUser(null);
     setIsDemoMode(false);
+    return null;
+  }, []);
+
+  const refreshSession = useCallback(async (): Promise<UserSession | null> => {
+    return await checkSession(true);
+  }, [checkSession]);
+
+  const setSessionUser = useCallback((newUser: UserSession | null) => {
+    setUser(newUser);
+    if (newUser) {
+      setIsDemoMode(false);
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -71,8 +88,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!res.ok) {
         return { success: false, error: data.error || "Login failed" };
       }
-      setUser(data.user);
-      setIsDemoMode(false);
+      if (data.requireOtp) {
+        return { success: true, requireOtp: true, email: data.email };
+      }
+      if (data.requireVerification) {
+        return { success: true, requireVerification: true, email: data.email };
+      }
+      if (data.user) {
+        setUser(data.user);
+        setIsDemoMode(false);
+      }
       return { success: true };
     } catch {
       return { success: false, error: "Network error during authentication" };
@@ -174,6 +199,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         toggleDemoMode,
         syncLocalDataToCloud,
+        refreshSession,
+        setSessionUser,
       }}
     >
       {children}

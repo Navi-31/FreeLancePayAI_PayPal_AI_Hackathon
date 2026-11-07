@@ -1,16 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/frontend/features/auth/AuthContext";
 
 export function LoginClient() {
   const router = useRouter();
+  const { user, loading: authLoading, setSessionUser, refreshSession } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // If already authenticated, redirect immediately to dashboard
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [authLoading, user, router]);
 
   // OTP Step State (if 2FA challenge is returned)
   const [requireOtp, setRequireOtp] = useState(false);
@@ -52,7 +61,15 @@ export function LoginClient() {
       }
 
       // Direct success
-      router.push("/dashboard");
+      if (data.user) {
+        setSessionUser(data.user);
+      }
+      const confirmed = await refreshSession();
+      if (confirmed) {
+        router.push("/dashboard");
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch {
       setError("Network error contacting authentication servers.");
       setLoading(false);
@@ -120,7 +137,15 @@ export function LoginClient() {
         return;
       }
 
-      router.push("/dashboard");
+      if (data.user) {
+        setSessionUser(data.user);
+      }
+      const confirmed = await refreshSession();
+      if (confirmed) {
+        router.push("/dashboard");
+      } else {
+        window.location.href = "/dashboard";
+      }
     } catch {
       setOtpError("Network error verifying security code.");
       setOtpLoading(false);

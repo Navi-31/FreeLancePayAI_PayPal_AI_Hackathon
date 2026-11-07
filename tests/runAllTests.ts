@@ -14,6 +14,7 @@ import { runPhase5DDemoReadinessTests } from "./phase5DDemoReadiness.test";
 import { runPhase5EFinancialIntelligenceTests } from "./phase5EFinancialIntelligence.test";
 import { runPhase5FFinalValidationTests } from "./phase5FFinalValidation.test";
 import { runAuthOtpFlowTests } from "./authOtpFlow.test";
+import { runAuth2FASessionTests } from "./auth2FASession.test";
 
 async function main() {
   console.log("==================================================");
@@ -93,6 +94,11 @@ async function main() {
   totalPassed += authOtp.passed;
   totalFailed += authOtp.failed;
 
+  // 15. Focused Authentication & 2FA Session Flow Tests
+  const auth2FA = await runAuth2FASessionTests();
+  totalPassed += auth2FA.passed;
+  totalFailed += auth2FA.failed;
+
   console.log("\n==================================================");
   console.log(" SUITE BREAKDOWN:");
   console.log(`  1. Financial Calculations:              ${fin.passed} passed, ${fin.failed} failed`);
@@ -109,8 +115,7 @@ async function main() {
   console.log(` 12. Financial Intelligence (5E):         ${phase5E.passed} passed, ${phase5E.failed} failed`);
   console.log(` 13. Comprehensive Final QA (5F):         ${phase5F.passed} passed, ${phase5F.failed} failed`);
   console.log(` 14. Email OTP, Reset & Mirror (Auth):    ${authOtp.passed} passed, ${authOtp.failed} failed`);
-  console.log(` 12. Advanced AI & Intelligence (5E):     ${phase5E.passed} passed, ${phase5E.failed} failed`);
-  console.log(` 13. Final Validation & QA (5F):          ${phase5F.passed} passed, ${phase5F.failed} failed`);
+  console.log(` 15. Focused Auth & 2FA Session Flow:     ${auth2FA.passed} passed, ${auth2FA.failed} failed`);
   console.log("--------------------------------------------------");
   console.log(`TOTAL SUITE RESULTS: ${totalPassed} passed, ${totalFailed} failed.`);
   console.log("==================================================");

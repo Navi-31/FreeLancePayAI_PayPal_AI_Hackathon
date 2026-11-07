@@ -21,18 +21,40 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   userBadge,
 }) => {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, loading, refreshSession } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currency, setCurrency] = useState<SupportedCurrency>("USD");
+  const [isVerifying, setIsVerifying] = useState(false);
+  const checkedRef = React.useRef(false);
 
   useEffect(() => {
+    let active = true;
+
     if (!loading && !user) {
-      router.replace("/login");
+      if (checkedRef.current) {
+        router.replace("/login");
+        return;
+      }
+      setIsVerifying(true);
+      refreshSession().then((sessionUser) => {
+        if (!active) return;
+        checkedRef.current = true;
+        setIsVerifying(false);
+        if (!sessionUser) {
+          router.replace("/login");
+        }
+      });
+    } else if (user) {
+      checkedRef.current = false;
     }
-  }, [loading, user, router]);
+
+    return () => {
+      active = false;
+    };
+  }, [loading, user, refreshSession, router]);
 
   // While checking authentication or if unauthenticated, prevent showing private layout
-  if (loading || !user) {
+  if (loading || isVerifying || !user) {
     return (
       <div className="min-h-screen bg-surface-container-lowest flex items-center justify-center p-6 text-on-surface">
         <div className="flex flex-col items-center gap-3">

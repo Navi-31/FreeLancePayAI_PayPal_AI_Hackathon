@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME, getServerSession } from "@/backend/auth/auth";
+import { getSessionCookieConfig, getServerSession } from "@/backend/auth/auth";
 import { recordAuditLog } from "@/backend/services/auditService";
 import { invalidateDashboardMetricsCache } from "@/backend/services/dashboardService";
 import { invalidateAiInsightsCache } from "@/backend/services/aiService";
@@ -21,14 +21,8 @@ export async function POST() {
   const response = NextResponse.json({ success: true, message: "Logged out successfully" });
 
   response.cookies.set({
-    name: SESSION_COOKIE_NAME,
+    ...getSessionCookieConfig({ maxAge: 0, expires: new Date(0) }),
     value: "",
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 0,
-    expires: new Date(0),
-    path: "/",
   });
 
   return response;
