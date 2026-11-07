@@ -15,7 +15,7 @@
 
 ## 1. Executive Summary & Problem
 
-Independent operators lose an average of **4.2% of annual revenue** to payment delays, hidden gateway friction, manual bookkeeping, and inaccurate cashflow forecasting. Furthermore, standard AI wrappers frequently hallucinate financial figures and move money without human oversight.
+Independent professionals, contractors, and boutique agencies face persistent cashflow friction throughout their client engagements: unpredictable settlement lags, hidden gateway fees, cross-border FX drag, manual bookkeeping, and unreliable cashflow forecasting. Furthermore, standard AI wrappers frequently hallucinate financial figures and propose disbursements without human oversight.
 
 **FreelancePay AI** solves this with an enterprise-grade financial operating system that combines:
 - **Autonomous Financial Telemetry:** Real-time visibility into liquid cash, tax vaults, receivables, and burn rates.
@@ -99,9 +99,16 @@ Independent operators lose an average of **4.2% of annual revenue** to payment d
    *Edit `.env` to provide your database URL and optional API credentials (see Section 5 below).*
 
 4. **Initialize database schema:**
-   ```bash
-   npm run db:push
-   ```
+   - **Local Development / Prototyping:**
+     ```bash
+     npm run db:push
+     ```
+     *(Synchronizes the Prisma schema directly against your database without generating migration files).*
+   - **Production Environments:**
+     ```bash
+     npm run db:migrate
+     ```
+     *(Applies versioned, tracked SQL migrations safely with zero unreviewed DDL execution).*
 
 5. **Start local development server:**
    ```bash
@@ -127,13 +134,26 @@ FreelancePay AI is designed with **transparent fallback resilience**: it operate
 | `RESEND_API_KEY` | Resend email API key | Optional. When omitted, logs dispatches to audit ledger with `[SIMULATED]` status. |
 | `CRON_SECRET` | Bearer secret for `/api/cron/process-jobs` | Default provided for local background job testing. |
 
-### Integration Truth Matrix
+### Integration Truth Matrix & Execution Tiers
 
-- **Neon PostgreSQL:** **LIVE TESTED**. Verified on real Neon serverless instance. Cross-tenant isolation, cascade deletions, and database transactions verified.
-- **Gemini AI:** **LIVE TESTED + FALLBACK VERIFIED**. Calls Gemini API with structured JSON output; handles 429 quota exhaustion gracefully via deterministic fallback.
-- **PayPal Rails:** **SANDBOX TESTED**. Uses official PayPal REST APIs (Order creation, authorization, capture, refund).
-- **Milestone Mechanism:** **AUTHORIZATION/CAPTURE (NOT ESCROW)**. Complies with PayPal acceptable use policies; explicitly non-escrow.
-- **Email Delivery:** **SIMULATED / AUDIT LOGGED**. Dispatches are recorded in user audit logs; never sends unapproved emails.
+- **Neon PostgreSQL:** **LIVE TESTED**. Verified on a live Neon serverless instance. Validated connection, Prisma schema DDL, foreign key cascade rules, strict tenant query scoping, and transactional rollbacks.
+- **Google Gemini AI (`gemini-3.5-flash`):** **LIVE TESTED + FALLBACK VERIFIED**.
+  - *Live Responses:* When active quota is available, calls Google's Generative Language API with structured JSON output schemas (`responseMimeType: "application/json"`).
+  - *Quota Exhaustion / High-Demand (HTTP 429 / 503):* Free-tier Gemini accounts enforce strict rate limits (where Google internally attributes requests to models such as `gemini-3.6-flash` or `gemini-3.8-flash-medium`). When quota is exhausted, `runAICompletion` automatically engages `DeterministicFinancialFallback`. All metrics and schemas conform strictly to Zod definitions, guaranteeing zero application downtime or crashes.
+- **PayPal Commerce Rails:** **SANDBOX TESTED (NON-ESCROW)**.
+  - *Mocked / Unit Tests:* Test status state-machines, ledger arithmetic, and offline transition errors without external dependencies.
+  - *API-Client Sandbox Integration:* Executes live against PayPal Orders v2 APIs (`ORD-SANDBOX-*`), 2-phase authorization hold, capture (`CAP-*`), and partial refunds.
+  - *Non-Escrow Compliance:* Uses standard commercial checkout and authorization APIs; never claims to be an escrow agent or escrow service.
+  - *Production Credentials:* Real money movement requires active PayPal merchant credentials from the PayPal Developer Portal.
+- **Email Delivery:** **SIMULATED / AUDIT LOGGED**. Dispatches are recorded in user audit logs; never sends unapproved emails. Production delivery requires a verified Resend domain.
+- **Background Jobs:** **INTERNAL QUEUE VERIFIED**. Authenticated `/api/cron/process-jobs` endpoint verified with bearer secret tokens and transactional idempotency. External scheduling requires configuring a cron runner.
+
+### Deployment Readiness vs. Public Production Deployment
+The application is **deployment-ready** (including an optimized standalone Next.js build, multi-stage Docker container, `/api/health` monitoring, and production Prisma migrations). However, it is currently hosted and tested locally in development/demo mode and has **NOT** been deployed to a public domain. Full public production requires the following manual external setups:
+1. **Public HTTPS Domain:** Deployment to a host (Vercel, Render, AWS, Fly.io) with SSL/TLS certificate termination.
+2. **PayPal Webhook Ingress:** Public registration of `https://<domain>/api/webhooks/paypal` in the PayPal Developer Dashboard and assigning `PAYPAL_WEBHOOK_ID`.
+3. **Resend Domain Verification:** Creating an API key and adding SPF/DKIM DNS records for an official sending domain in Resend.
+4. **External Cron Trigger:** Setting up an automated scheduler (e.g. Vercel Cron, GitHub Actions, AWS EventBridge) to trigger `/api/cron/process-jobs` periodically with the `CRON_SECRET` bearer token.
 
 ---
 
@@ -143,7 +163,7 @@ For hackathon judges and evaluators, FreelancePay AI provides a realistic enterp
 
 1. **Access Demo Account:** Navigate to [http://localhost:3000](http://localhost:3000). The app automatically provisions an initial demo context if unauthenticated.
 2. **Safe Reset:** Click the **Demo Actions** menu in the top navigation bar and select **Reset Demo Data**.
-3. **Data Safety Guarantee:** The reset mechanism exclusively targets records carrying the `DEMO_SYNTHETIC` marker. Genuine user accounts, invoices, and expenses are **never deleted or overwritten**.
+3. **Targeted Deletion Scope:** The reset mechanism exclusively deletes records carrying the `DEMO_SYNTHETIC` marker or designated synthetic demo identifiers. Genuine user accounts, client dossiers, invoices, expenses, and transactions are **never deleted or modified**.
 
 ---
 
