@@ -70,9 +70,9 @@ A critical architectural pillar of FreelancePay AI is **strict separation betwee
 ## 5. PayPal Rails & Milestone Compliance Truth
 
 ### Verified PayPal Execution Tiers
-- **Mocked & Offline Tests:** Unit and state-machine tests verify status transitions (`draft` → `sent` → `viewed` → `paid`), transaction ledger balances, and error handling in isolation without external API dependencies.
-- **API-Client Sandbox Integration Tests:** Suites 5 (`tests/paypalIntegration.test.ts`) and 13 (`tests/phase5FFinalValidation.test.ts`) execute end-to-end sandbox workflows against the PayPal Orders v2 API client: order creation (`ORD-SANDBOX-*`), two-step milestone authorization, capture (`CAP-*`), and partial refunds.
-- **Production Credentials:** Real payment processing requires active PayPal merchant credentials (`PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET`) provisioned from the PayPal Developer Portal.
+- **Deterministic Client-Level Simulation / Mock Mode:** Because `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` were unconfigured in the local test environment, all 40 automated tests across Suites 5 (`tests/paypalIntegration.test.ts`) and 13 (`tests/phase5FFinalValidation.test.ts`) executed against the application's built-in simulation adapter. No live HTTP network requests were dispatched to `api-m.sandbox.paypal.com`.
+- **Protocol & Lifecycle Verification:** The simulation adapter rigorously verifies status state machines, ledger entries, and Orders v2 semantics: order creation (`ORD-SANDBOX-*`), two-step milestone authorization hold, deliverable capture (`CAP-*`), and partial refunds.
+- **Production / Live Sandbox Credentials:** Connecting to live PayPal Sandbox servers requires provisioning and configuring active credentials (`PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET`) in `.env`.
 
 ### Milestone Compliance & Non-Escrow Policy
 - **Direct Invoicing & Checkout:** Invoices generate PayPal Orders via `/v2/checkout/orders` with intent `CAPTURE`. Client approvals trigger backend capture, creating auditable settlement ledger entries.
@@ -84,11 +84,11 @@ A critical architectural pillar of FreelancePay AI is **strict separation betwee
 
 ## 6. AI Model Configuration & Resilient Fallback
 
-- **Configured Model:** The primary AI engine is configured to **Google Gemini** using model identifier `gemini-3.5-flash` in `src/lib/env.ts` and `.env.example`.
+- **Configured Model:** The primary application AI engine is configured for **Google Gemini** using model identifier `gemini-3.5-flash` in `src/lib/env.ts` and `src/lib/ai/aiProvider.ts`.
+- **Infrastructure vs. Application Errors:** Diagnostic log entries showing 503 capacity errors for `gemini-3.8-flash-medium` were emitted by Antigravity's internal assistant harness infrastructure, not by FreelancePay AI application code.
 - **Live vs. Fallback Behavior:**
-  - *Live Mode:* When active API quota is available, the system calls Google's Generative Language API with structured JSON output schemas (`responseMimeType: "application/json"`).
-  - *Quota Exhaustion / High-Demand Handling:* Free-tier Gemini accounts frequently encounter daily quota limits (HTTP 429) or transient server load (HTTP 503), in which Google internally attributes requests to models such as `gemini-3.6-flash` or `gemini-3.8-flash-medium`.
-  - *Deterministic Rule Engine:* When the Gemini API returns 429 or 503, `runAICompletion` automatically engages `DeterministicFinancialFallback`. All metrics and response structures conform strictly to Zod schemas, guaranteeing zero application crashes, zero floating-point errors, and continuous uptime during hackathon judging.
+  - *Live Mode:* When active API quota is available, the application calls Google's Generative Language API (`gemini-3.5-flash`) with structured JSON output schemas (`responseMimeType: "application/json"`).
+  - *Quota Exhaustion Handling:* When free-tier Gemini API quota is depleted (HTTP 429 `RESOURCE_EXHAUSTED`) or network connectivity is unavailable, `runAICompletion` automatically engages `DeterministicFinancialFallback`. All metrics and response structures conform strictly to Zod schemas, guaranteeing zero application crashes, zero floating-point errors, and continuous uptime during hackathon judging.
 
 ---
 

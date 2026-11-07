@@ -137,14 +137,15 @@ FreelancePay AI is designed with **transparent fallback resilience**: it operate
 ### Integration Truth Matrix & Execution Tiers
 
 - **Neon PostgreSQL:** **LIVE TESTED**. Verified on a live Neon serverless instance. Validated connection, Prisma schema DDL, foreign key cascade rules, strict tenant query scoping, and transactional rollbacks.
-- **Google Gemini AI (`gemini-3.5-flash`):** **LIVE TESTED + FALLBACK VERIFIED**.
-  - *Live Responses:* When active quota is available, calls Google's Generative Language API with structured JSON output schemas (`responseMimeType: "application/json"`).
-  - *Quota Exhaustion / High-Demand (HTTP 429 / 503):* Free-tier Gemini accounts enforce strict rate limits (where Google internally attributes requests to models such as `gemini-3.6-flash` or `gemini-3.8-flash-medium`). When quota is exhausted, `runAICompletion` automatically engages `DeterministicFinancialFallback`. All metrics and schemas conform strictly to Zod definitions, guaranteeing zero application downtime or crashes.
-- **PayPal Commerce Rails:** **SANDBOX TESTED (NON-ESCROW)**.
-  - *Mocked / Unit Tests:* Test status state-machines, ledger arithmetic, and offline transition errors without external dependencies.
-  - *API-Client Sandbox Integration:* Executes live against PayPal Orders v2 APIs (`ORD-SANDBOX-*`), 2-phase authorization hold, capture (`CAP-*`), and partial refunds.
+- **Google Gemini AI (`gemini-3.5-flash`):** **CONFIGURED & FALLBACK VERIFIED**.
+  - *Application Configuration:* The application code strictly targets `gemini-3.5-flash` (`src/lib/env.ts` and `src/lib/ai/aiProvider.ts`) using structured JSON schemas (`responseMimeType: "application/json"`).
+  - *Infrastructure vs. Application Errors:* Transient 503 errors referencing `gemini-3.8-flash-medium` in earlier diagnostic logs originated from Antigravity's internal assistant harness infrastructure, not from FreelancePay AI application code.
+  - *Quota Exhaustion Handling:* When free-tier Gemini API quota is depleted (HTTP 429 `RESOURCE_EXHAUSTED`) or network connectivity is unavailable, `runAICompletion` automatically engages `DeterministicFinancialFallback`. All metrics and schemas conform strictly to Zod definitions, guaranteeing zero application downtime or crashes.
+- **PayPal Commerce Rails:** **CLIENT-LEVEL SIMULATION & MOCK TESTED (NON-ESCROW)**.
+  - *Automated Test Execution:* Because `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` were unconfigured in the test environment, the 40 automated PayPal tests in Suites 5 and 13 ran against the client adapter's deterministic simulation/mock mode. No live HTTP network requests were dispatched to `api-m.sandbox.paypal.com`.
+  - *Protocol Verification:* Verified complete Orders v2 lifecycle semantics: order creation (`ORD-SANDBOX-*`), two-step milestone authorization hold, deliverable capture (`CAP-*`), and partial refunds.
   - *Non-Escrow Compliance:* Uses standard commercial checkout and authorization APIs; never claims to be an escrow agent or escrow service.
-  - *Production Credentials:* Real money movement requires active PayPal merchant credentials from the PayPal Developer Portal.
+  - *Live Sandbox / Production:* Connecting to live PayPal Sandbox endpoints requires supplying active credentials from the PayPal Developer Portal in `.env`.
 - **Email Delivery:** **SIMULATED / AUDIT LOGGED**. Dispatches are recorded in user audit logs; never sends unapproved emails. Production delivery requires a verified Resend domain.
 - **Background Jobs:** **INTERNAL QUEUE VERIFIED**. Authenticated `/api/cron/process-jobs` endpoint verified with bearer secret tokens and transactional idempotency. External scheduling requires configuring a cron runner.
 
