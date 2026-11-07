@@ -30,9 +30,8 @@ export const prisma =
     log: process.env.NODE_ENV === "development" ? ["warn", "error"] : ["error"],
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-  globalForPrisma.pool = pool;
-}
+// Always preserve pool & client on globalThis to prevent connection churn across route invocations
+globalForPrisma.prisma = prisma;
+globalForPrisma.pool = pool;
 
 export { isLiveDatabaseConfigured };

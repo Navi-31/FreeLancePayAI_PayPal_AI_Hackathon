@@ -7,6 +7,8 @@ import {
   InvoiceStatusType,
 } from "@/shared/financialCalculations";
 import { recordAuditLog } from "./auditService";
+import { invalidateDashboardMetricsCache } from "./dashboardService";
+import { invalidateAiInsightsCache } from "./aiService";
 
 export interface CreateInvoiceInput {
   code?: string;
@@ -141,6 +143,9 @@ export async function createInvoice(userId: string, input: CreateInvoiceInput) {
     details: { code: invoice.code, total: totals.total },
   });
 
+  invalidateDashboardMetricsCache(userId);
+  invalidateAiInsightsCache(userId);
+
   return invoice;
 }
 
@@ -180,6 +185,9 @@ export async function updateInvoiceStatus(
     entityId: updated.id,
     details: { fromStatus: existing.status, toStatus: newStatus },
   });
+
+  invalidateDashboardMetricsCache(userId);
+  invalidateAiInsightsCache(userId);
 
   return updated;
 }

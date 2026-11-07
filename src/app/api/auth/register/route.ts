@@ -9,9 +9,9 @@ const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  mobile: z.string().min(7, "Valid mobile number is required").optional().default("9597669775"),
-  callingCode: z.string().optional().default("+91"),
-  country: z.string().optional().default("India"),
+  mobile: z.string().optional().default(""),
+  callingCode: z.string().optional().default("+1"),
+  country: z.string().optional().default("United States"),
   currency: z.string().optional().default("USD"),
   businessName: z.string().optional(),
   directSessionForTests: z.boolean().optional(),
@@ -31,7 +31,12 @@ export async function POST(request: Request) {
 
     const { name, email, password, mobile, callingCode, country, currency, businessName } = result.data;
     const normalizedEmail = email.toLowerCase().trim();
-    const fullMobile = mobile.startsWith("+") ? mobile : `${callingCode} ${mobile}`.trim();
+    const rawMobile = mobile?.trim();
+    const fullMobile = rawMobile
+      ? rawMobile.startsWith("+")
+        ? rawMobile
+        : `${callingCode} ${rawMobile}`.trim()
+      : null;
 
     // Check existing user
     const existing = await prisma.user.findUnique({

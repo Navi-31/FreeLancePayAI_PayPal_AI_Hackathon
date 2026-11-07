@@ -313,12 +313,35 @@ CRITICAL MANDATES:
   return result;
 }
 
+// User-scoped in-memory cache (60s TTL) to prevent repeated remote LLM network requests on navigation
+interface CachedInsightsEntry {
+  data: unknown;
+  expiresAt: number;
+}
+
+const aiInsightsCache = new Map<string, CachedInsightsEntry>();
+const INSIGHTS_TTL_MS = 60_000;
+
+export function invalidateAiInsightsCache(userId?: string) {
+  if (userId) {
+    aiInsightsCache.delete(userId);
+  } else {
+    aiInsightsCache.clear();
+  }
+}
+
 /**
  * 2. Proactive Financial Insights Engine
  * Audits user financial state, identifying overdue invoices, concentration risk,
  * dormant subscriptions, fee optimization, and runway risks with zero duplication.
  */
 export async function explainFinancialMetrics(userId: string) {
+  const now = Date.now();
+  const cached = aiInsightsCache.get(userId);
+  if (cached && cached.expiresAt > now) {
+    return cached.data;
+  }
+
   const rateLimit = checkAiRateLimit(userId);
   if (!rateLimit.allowed) {
     throw new Error(`Rate limit exceeded. Please wait ${rateLimit.resetSeconds}s.`);
@@ -476,6 +499,7 @@ Provide concise, actionable insights conforming to schema.`;
     }),
   });
 
+  aiInsightsCache.set(userId, { data: result, expiresAt: now + INSIGHTS_TTL_MS });
   return result;
 }
 

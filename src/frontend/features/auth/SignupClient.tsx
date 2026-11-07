@@ -10,9 +10,9 @@ export function SignupClient() {
   // Form State
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
-  const [callingCode, setCallingCode] = useState("+91");
+  const [callingCode, setCallingCode] = useState("+1");
   const [mobileNumber, setMobileNumber] = useState("");
-  const [country, setCountry] = useState("India");
+  const [country, setCountry] = useState("United States");
   const [currency, setCurrency] = useState("USD");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -209,7 +209,7 @@ export function SignupClient() {
                       required
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      placeholder="e.g. Navaneethan"
+                      placeholder="Enter your full name"
                       className="w-full px-4 py-2.5 bg-[#101016] border border-white/10 rounded-lg text-white placeholder:text-[#9a8f7e]/50 focus:outline-none focus:border-[#f4c86d] focus:ring-1 focus:ring-[#f4c86d] text-sm"
                     />
                   </div>
@@ -224,7 +224,7 @@ export function SignupClient() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. navaneethanr0831@gmail.com"
+                      placeholder="Enter your email address"
                       className="w-full px-4 py-2.5 bg-[#101016] border border-white/10 rounded-lg text-white placeholder:text-[#9a8f7e]/50 focus:outline-none focus:border-[#f4c86d] focus:ring-1 focus:ring-[#f4c86d] text-sm"
                     />
                   </div>
@@ -241,8 +241,8 @@ export function SignupClient() {
                       onChange={(e) => setCallingCode(e.target.value)}
                       className="bg-[#1b1b21] border-r border-white/10 py-2.5 px-3 text-white text-sm outline-none cursor-pointer"
                     >
-                      <option value="+91">India (+91)</option>
                       <option value="+1">USA (+1)</option>
+                      <option value="+91">India (+91)</option>
                       <option value="+44">UK (+44)</option>
                       <option value="+65">Singapore (+65)</option>
                       <option value="+971">UAE (+971)</option>
@@ -253,7 +253,7 @@ export function SignupClient() {
                       required
                       value={mobileNumber}
                       onChange={(e) => setMobileNumber(e.target.value)}
-                      placeholder="e.g. 9597669775"
+                      placeholder="Enter your mobile number"
                       className="flex-1 px-4 py-2.5 bg-transparent border-0 text-white placeholder:text-[#9a8f7e]/50 focus:ring-0 text-sm outline-none"
                     />
                   </div>
@@ -320,7 +320,7 @@ export function SignupClient() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Min 8 characters"
+                      placeholder="Enter your password"
                       className="w-full px-4 py-2.5 bg-[#101016] border border-white/10 rounded-lg text-white placeholder:text-[#9a8f7e]/50 focus:outline-none focus:border-[#f4c86d] focus:ring-1 focus:ring-[#f4c86d] text-sm"
                     />
                   </div>
@@ -335,7 +335,7 @@ export function SignupClient() {
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      placeholder="Re-enter password"
+                      placeholder="Confirm your password"
                       className="w-full px-4 py-2.5 bg-[#101016] border border-white/10 rounded-lg text-white placeholder:text-[#9a8f7e]/50 focus:outline-none focus:border-[#f4c86d] focus:ring-1 focus:ring-[#f4c86d] text-sm"
                     />
                   </div>
@@ -391,7 +391,10 @@ export function SignupClient() {
                   className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:opacity-95 hover:shadow-[0_0_25px_rgba(240,212,139,0.35)] transition-all active:scale-[0.98] disabled:opacity-50 mt-4 cursor-pointer"
                 >
                   {loading ? (
-                    <span className="inline-block w-5 h-5 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                    <span className="flex items-center gap-2">
+                      <span className="inline-block w-4 h-4 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                      <span>Creating Account...</span>
+                    </span>
                   ) : (
                     <>
                       <span>Create Account & Send Code</span>

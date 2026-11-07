@@ -69,6 +69,7 @@ export const InvoiceForm: React.FC = () => {
   // Validation & Error states
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Current client
   const client = SAMPLE_CLIENTS[selectedClientIndex] || SAMPLE_CLIENTS[0];
@@ -121,7 +122,8 @@ export const InvoiceForm: React.FC = () => {
 
   // AI Prompt Parser (Connects to server-side AI Parser with resilient local fallback)
   const handleAiGenerate = async () => {
-    if (!aiPrompt.trim()) return;
+    if (!aiPrompt.trim() || isGenerating) return;
+    setIsGenerating(true);
 
     try {
       const res = await fetch("/api/ai/invoices/parse", {
@@ -155,6 +157,7 @@ export const InvoiceForm: React.FC = () => {
         if (clientIdx >= 0) setSelectedClientIndex(clientIdx);
 
         setValidationError(null);
+        setIsGenerating(false);
         return;
       }
     } catch {
@@ -178,6 +181,7 @@ export const InvoiceForm: React.FC = () => {
       setPaymentChannel("Stripe Connect");
     }
     setValidationError(null);
+    setIsGenerating(false);
   };
 
   // Form Submission
@@ -337,10 +341,20 @@ export const InvoiceForm: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleAiGenerate}
-                  className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-secondary-container via-surface-container-high to-surface-container border border-secondary/40 text-secondary hover:text-white font-label-md text-xs font-semibold flex items-center gap-1.5 violet-glow transition-all active:scale-95"
+                  disabled={isGenerating}
+                  className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-secondary-container via-surface-container-high to-surface-container border border-secondary/40 text-secondary hover:text-white font-label-md text-xs font-semibold flex items-center gap-1.5 violet-glow transition-all active:scale-95 disabled:opacity-50"
                 >
-                  <span className="material-symbols-outlined text-sm leading-none">bolt</span>
-                  <span>Populate from Prompt</span>
+                  {isGenerating ? (
+                    <>
+                      <span className="inline-block w-3.5 h-3.5 border-2 border-secondary border-t-transparent rounded-full animate-spin" />
+                      <span>Parsing Prompt...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-sm leading-none">bolt</span>
+                      <span>Populate from Prompt</span>
+                    </>
+                  )}
                 </button>
               </div>
             </GlassPanel>

@@ -115,7 +115,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email,
           password,
           businessName,
-          mobile: "9597669775",
           directSessionForTests: true,
         }),
       });

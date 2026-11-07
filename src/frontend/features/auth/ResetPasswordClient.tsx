@@ -215,7 +215,10 @@ export function ResetPasswordClient() {
                     className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-bold text-sm tracking-wide shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-4"
                   >
                     {loading ? (
-                      <span className="inline-block w-5 h-5 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                      <span className="flex items-center gap-2">
+                        <span className="inline-block w-4 h-4 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                        <span>Resetting Password...</span>
+                      </span>
                     ) : (
                       <>
                         <span>Reset Password</span>

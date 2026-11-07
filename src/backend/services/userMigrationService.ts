@@ -20,7 +20,7 @@ export interface MigrationSummary {
 
 /**
  * Idempotently clones the sample/historical dataset from a source user (e.g. Alex Vance)
- * to a target user (e.g. Navaneethan), mapping all relational foreign keys properly.
+ * to a target user, mapping all relational foreign keys properly.
  * Does NOT copy passwords, credentials, tokens, or sessions.
  * Preserves the original source dataset untouched.
  */

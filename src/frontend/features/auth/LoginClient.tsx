@@ -351,7 +351,10 @@ export function LoginClient() {
                     className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:opacity-95 hover:shadow-[0_0_25px_rgba(240,212,139,0.35)] transition-all active:scale-[0.98] mt-2 disabled:opacity-50"
                   >
                     {loading ? (
-                      <span className="inline-block w-5 h-5 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                      <span className="flex items-center gap-2">
+                        <span className="inline-block w-4 h-4 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                        <span>Signing in...</span>
+                      </span>
                     ) : (
                       <>
                         <span>Continue</span>
@@ -392,7 +395,10 @@ export function LoginClient() {
                     className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-bold text-sm tracking-wide flex items-center justify-center gap-2 hover:opacity-95 hover:shadow-[0_0_25px_rgba(240,212,139,0.35)] transition-all active:scale-[0.98] disabled:opacity-50"
                   >
                     {otpLoading ? (
-                      <span className="inline-block w-5 h-5 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                      <span className="flex items-center gap-2">
+                        <span className="inline-block w-4 h-4 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                        <span>Verifying Code...</span>
+                      </span>
                     ) : (
                       <>
                         <span>Verify & Sign In</span>

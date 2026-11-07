@@ -9,7 +9,7 @@ import { useAuth } from "@/frontend/features/auth/AuthContext";
 
 export function DashboardClient() {
   const { user } = useAuth();
-  const displayName = user?.name ? user.name.split(" ")[0] : "Navaneethan";
+  const displayName = user?.name ? user.name.split(" ")[0] : "Operator";
 
   return (
     <AppLayout

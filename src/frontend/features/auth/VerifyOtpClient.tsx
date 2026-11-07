@@ -317,7 +317,10 @@ export function VerifyOtpClient() {
                 className="w-full py-3.5 px-6 rounded-lg bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-bold text-sm tracking-wide shadow-lg shadow-[#f4c86d]/20 hover:brightness-110 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
-                  <span className="inline-block w-5 h-5 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                  <span className="flex items-center gap-2">
+                    <span className="inline-block w-4 h-4 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                    <span>Verifying Code...</span>
+                  </span>
                 ) : (
                   <>
                     <span>Verify Email</span>

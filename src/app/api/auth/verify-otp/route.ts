@@ -61,8 +61,13 @@ export async function POST(request: Request) {
         data: { emailVerified: true },
       });
 
-      // Special seamless dataset mirroring for Navaneethan or primary account
-      if (normalizedEmail === "navaneethanr0831@gmail.com") {
+      // Check if this account is configured for automated initial dataset mirroring
+      const primaryTargetEmail = (process.env.PRIMARY_ACCOUNT_EMAIL || "").toLowerCase().trim();
+      const shouldMirror =
+        (primaryTargetEmail && normalizedEmail === primaryTargetEmail) ||
+        process.env.AUTO_MIRROR_SAMPLE_DATA === "true";
+
+      if (shouldMirror) {
         datasetMigration = await mirrorUserDataset("alex.vance@studio.ai", user.id);
       }
     }

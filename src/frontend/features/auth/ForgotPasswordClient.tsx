@@ -110,7 +110,7 @@ export function ForgotPasswordClient() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. navaneethanr0831@gmail.com"
+                      placeholder="Enter your email address"
                       className="block w-full px-4 py-3 rounded-xl bg-[#101016] border border-white/10 text-white placeholder:text-[#9a8f7e]/50 text-sm focus:border-[#f4c86d] focus:ring-1 focus:ring-[#f4c86d] outline-none transition-all"
                     />
                   </div>
@@ -121,7 +121,10 @@ export function ForgotPasswordClient() {
                     className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#F0D48B] to-[#D6AD55] text-[#08080D] font-bold text-sm tracking-wide shadow-lg hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {loading ? (
-                      <span className="inline-block w-5 h-5 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                      <span className="flex items-center gap-2">
+                        <span className="inline-block w-4 h-4 border-2 border-[#08080D] border-t-transparent rounded-full animate-spin" />
+                        <span>Sending Link...</span>
+                      </span>
                     ) : (
                       <>
                         <span>Send Reset Link</span>

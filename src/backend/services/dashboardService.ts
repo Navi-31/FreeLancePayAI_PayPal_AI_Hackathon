@@ -15,7 +15,30 @@ export interface DashboardMetrics {
   activeMilestonesCount: number;
 }
 
+// User-scoped in-memory cache (20s TTL) to prevent repeated Neon DB queries during navigation
+interface CachedMetricsEntry {
+  data: DashboardMetrics;
+  expiresAt: number;
+}
+
+const metricsCache = new Map<string, CachedMetricsEntry>();
+const METRICS_TTL_MS = 20_000;
+
+export function invalidateDashboardMetricsCache(userId?: string) {
+  if (userId) {
+    metricsCache.delete(userId);
+  } else {
+    metricsCache.clear();
+  }
+}
+
 export async function getDashboardMetrics(userId: string): Promise<DashboardMetrics> {
+  const now = Date.now();
+  const cached = metricsCache.get(userId);
+  if (cached && cached.expiresAt > now) {
+    return cached.data;
+  }
+
   const [invoices, transactions, expenses, clients, milestones] = await Promise.all([
     prisma.invoice.findMany({
       where: { userId },
@@ -91,7 +114,7 @@ export async function getDashboardMetrics(userId: string): Promise<DashboardMetr
   const overdueRatio = outstandingCents > 0 ? overdueCents / outstandingCents : 0;
   const healthScore = Math.max(70, Math.min(99, Math.round(98 - overdueRatio * 20)));
 
-  return {
+  const result: DashboardMetrics = {
     totalGrossRevenue: finalGross,
     outstandingInvoicesAmount: outstandingCents > 0 ? fromCents(outstandingCents) : 14200.0,
     outstandingInvoicesCount: outstandingCount > 0 ? outstandingCount : 3,
@@ -104,4 +127,7 @@ export async function getDashboardMetrics(userId: string): Promise<DashboardMetr
     activeClientsCount: clients > 0 ? clients : 6,
     activeMilestonesCount: milestones > 0 ? milestones : 2,
   };
+
+  metricsCache.set(userId, { data: result, expiresAt: now + METRICS_TTL_MS });
+  return result;
 }

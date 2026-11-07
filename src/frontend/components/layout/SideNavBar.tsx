@@ -13,6 +13,18 @@ export interface SideNavBarProps {
 
 export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className }) => {
   const pathname = usePathname();
+  const [navigatingTo, setNavigatingTo] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    setNavigatingTo(null);
+  }, [pathname]);
+
+  const handleLinkClick = (href: string) => {
+    if (href !== pathname) {
+      setNavigatingTo(href);
+    }
+    if (onCloseMobile) onCloseMobile();
+  };
 
   const isRouteActive = (href: string) => {
     if (href === "/") {
@@ -107,15 +119,18 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className
                 <nav className="space-y-0.5">
                   {section.items.map((item) => {
                     const active = isRouteActive(item.href);
+                    const isPendingNav = navigatingTo === item.href && !active;
                     return (
                       <Link
                         key={item.id}
                         href={item.href}
-                        onClick={onCloseMobile}
+                        onClick={() => handleLinkClick(item.href)}
                         className={cn(
                           "nav-link flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-all duration-150",
                           active
                             ? "bg-surface-container-high text-primary font-medium border-l-2 border-primary shadow-sm"
+                            : isPendingNav
+                            ? "bg-surface-container-high/60 text-primary/80 animate-pulse border-l-2 border-primary/50"
                             : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container/60 font-normal"
                         )}
                       >
@@ -123,7 +138,7 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className
                           <span
                             className={cn(
                               "material-symbols-outlined text-[18px] leading-none shrink-0",
-                              active
+                              active || isPendingNav
                                 ? "text-primary"
                                 : section.isAiPillar
                                 ? "text-secondary"
@@ -136,7 +151,9 @@ export const SideNavBar: React.FC<SideNavBarProps> = ({ onCloseMobile, className
                           <span className="truncate">{item.label}</span>
                         </div>
 
-                        {item.badge && (
+                        {isPendingNav ? (
+                          <span className="w-2.5 h-2.5 rounded-full border border-primary border-t-transparent animate-spin shrink-0" />
+                        ) : item.badge ? (
                           <span
                             className={cn(
                               "text-[9px] px-1.5 py-0.2 rounded font-mono font-semibold tracking-wider",
