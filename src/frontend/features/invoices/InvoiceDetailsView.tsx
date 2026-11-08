@@ -9,12 +9,15 @@ import { AuricButton } from "@/frontend/components/ui/AuricButton";
 import { VioletButton } from "@/frontend/components/ui/VioletButton";
 import { GlassPanel } from "@/frontend/components/glass/GlassPanel";
 import { StatusBadge } from "@/frontend/components/ui/StatusBadge";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
+import { formatCurrencyAmount } from "@/shared/currency";
 
 export interface InvoiceDetailsViewProps {
   initialInvoice: Invoice;
 }
 
 export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialInvoice }) => {
+  const { currency: displayCurrency, format } = useCurrency();
   const [invoice, setInvoice] = useState<Invoice>(initialInvoice);
   const [notification, setNotification] = useState<string | null>(null);
   const [isProcessingPayPal, setIsProcessingPayPal] = useState(false);
@@ -178,6 +181,11 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
               >
                 {invoice.status === "paid" ? "COLLECTED" : invoice.status.toUpperCase()}
               </StatusBadge>
+              {invoice.currency && invoice.currency.toUpperCase() !== displayCurrency && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-primary/10 text-primary border border-primary/25">
+                  Converted: {format(invoice.total, invoice.currency)}
+                </span>
+              )}
             </div>
 
             <p className="font-body-lg text-sm text-on-surface-variant flex flex-wrap items-center gap-2">
@@ -462,7 +470,7 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
               <div>
                 <span className="text-outline text-[10px] uppercase block">Tax Shield Allocation</span>
                 <span className="font-mono text-secondary">
-                  ${invoice.taxAmount > 0 ? invoice.taxAmount.toFixed(2) : ((invoice.total * 0.20)).toFixed(2)} (20% set aside)
+                  {formatCurrencyAmount(invoice.taxAmount > 0 ? invoice.taxAmount : (invoice.total * 0.20), invoice.currency || "USD")} (20% set aside)
                 </span>
               </div>
             </div>
@@ -531,7 +539,7 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
                   className="w-full px-3 py-2 rounded-lg bg-surface-container border border-outline-variant/40 text-on-surface font-mono"
                 />
                 <span className="text-[10px] text-outline mt-1 block">
-                  Original Invoice Total: ${invoice.total.toFixed(2)}
+                  Original Invoice Total: {formatCurrencyAmount(invoice.total, invoice.currency || "USD")}
                 </span>
               </div>
 

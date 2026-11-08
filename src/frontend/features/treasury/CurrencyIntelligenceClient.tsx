@@ -23,13 +23,13 @@ const FX_PAIRS: FxPair[] = [
     mitigation: "Activate SEPA Multi-Currency IBAN",
   },
   {
-    currency: "GBP / USD",
-    flag: "🇬🇧",
-    midMarket: "1.2980",
-    gatewayRate: "1.2810",
-    spreadBleed: "1.31% Spread",
-    annualSlippage: "-$80.50/yr",
-    mitigation: "Route via Wise Borderless Wire",
+    currency: "USD / INR",
+    flag: "🇮🇳",
+    midMarket: "94.11",
+    gatewayRate: "92.85",
+    spreadBleed: "1.34% Spread",
+    annualSlippage: "-₹3,200.00/yr",
+    mitigation: "Route via Local Direct INR Rail",
   },
   {
     currency: "CAD / USD",
@@ -220,7 +220,7 @@ export function CurrencyIntelligenceClient() {
               <span className="text-rose-400 font-semibold flex items-center gap-0.5">
                 <span className="material-symbols-outlined text-xs">trending_down</span> -0.29%
               </span>
-              <span className="text-outline">EUR & GBP Spread bleed</span>
+              <span className="text-outline">EUR & INR Spread bleed</span>
             </div>
           </div>
         </div>

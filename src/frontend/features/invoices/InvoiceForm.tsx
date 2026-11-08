@@ -12,6 +12,7 @@ import { InvoicePaperPreview } from "./InvoicePaperPreview";
 import { AuricButton } from "@/frontend/components/ui/AuricButton";
 import { GlassPanel } from "@/frontend/components/glass/GlassPanel";
 import { cn } from "@/shared/utils";
+import { getCurrencySymbol, SUPPORTED_CURRENCIES } from "@/shared/currency";
 
 const SAMPLE_CLIENTS = [
   { name: "Acme Corp", email: "billing@acmecorp.com", address: "100 Innovation Way, Chicago, IL" },
@@ -217,7 +218,7 @@ export const InvoiceForm: React.FC = () => {
       status: "sent",
       paymentChannel,
       currency,
-      currencySymbol: currency === "EUR" ? "€" : currency === "GBP" ? "£" : "$",
+      currencySymbol: getCurrencySymbol(currency),
       lineItems,
       subtotal,
       taxRatePercent,
@@ -438,7 +439,7 @@ export const InvoiceForm: React.FC = () => {
                 >
                   <option value="USD">USD ($)</option>
                   <option value="EUR">EUR (€)</option>
-                  <option value="GBP">GBP (£)</option>
+                  <option value="INR">INR (₹)</option>
                 </select>
               </div>
 

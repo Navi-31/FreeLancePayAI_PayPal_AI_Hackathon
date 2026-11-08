@@ -15,4 +15,4 @@ export interface NavSection {
   items: NavItem[];
 }
 
-export type SupportedCurrency = 'USD' | 'EUR' | 'GBP';
+export type SupportedCurrency = 'USD' | 'EUR' | 'INR';

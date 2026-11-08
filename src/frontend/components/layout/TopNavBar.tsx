@@ -6,8 +6,10 @@ import { useRouter } from "next/navigation";
 import { SearchInput } from "@/frontend/components/ui/SearchInput";
 import { AuricButton } from "@/frontend/components/ui/AuricButton";
 import { SupportedCurrency } from "@/shared/types/navigation";
+import { SUPPORTED_CURRENCIES } from "@/shared/currency";
 import { cn } from "@/shared/utils";
 import { useAuth } from "@/frontend/features/auth/AuthContext";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
 import { AuthModal } from "@/frontend/components/modals/AuthModal";
 
 export interface TopNavBarProps {
@@ -28,7 +30,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   userBadge = "PRO VIP",
 }) => {
   const { user, isDemoMode, logout, syncLocalDataToCloud } = useAuth();
-  const [selectedCurrency, setSelectedCurrency] = useState<SupportedCurrency>(currency);
+  const { currency: activeCurrency, setCurrency } = useCurrency();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -102,7 +104,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
   };
 
   const handleCurrencySelect = (curr: SupportedCurrency) => {
-    setSelectedCurrency(curr);
+    setCurrency(curr);
     onCurrencyChange?.(curr);
   };
 
@@ -197,13 +199,13 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
       <div className="flex items-center gap-2 lg:gap-3 shrink-0">
         {/* Currency Switcher */}
         <div className="flex items-center bg-surface-container-lowest border border-outline-variant/30 rounded-lg p-0.5 text-xs">
-          {(["USD", "EUR", "GBP"] as SupportedCurrency[]).map((c) => (
+          {SUPPORTED_CURRENCIES.map((c) => (
             <button
               key={c}
               onClick={() => handleCurrencySelect(c)}
               className={cn(
                 "px-2.5 py-1 rounded text-xs font-medium transition-all duration-150",
-                selectedCurrency === c
+                activeCurrency === c
                   ? "bg-primary text-on-primary shadow-xs font-semibold"
                   : "text-on-surface-variant hover:text-on-surface"
               )}

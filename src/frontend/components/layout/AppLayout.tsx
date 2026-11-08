@@ -23,7 +23,6 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   const router = useRouter();
   const { user, loading, refreshSession } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currency, setCurrency] = useState<SupportedCurrency>("USD");
   const [isVerifying, setIsVerifying] = useState(false);
   const checkedRef = React.useRef(false);
 
@@ -94,8 +93,6 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
           {/* Top Header */}
           <TopNavBar
             onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            currency={currency}
-            onCurrencyChange={setCurrency}
             title={pageTitle}
             subtitle={pageSubtitle}
             userBadge={userBadge}

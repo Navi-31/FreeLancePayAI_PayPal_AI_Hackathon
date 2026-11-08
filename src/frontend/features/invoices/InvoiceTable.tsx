@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { Invoice, InvoiceStatus } from "@/shared/types/invoice";
 import { StatusBadge, StatusVariant } from "@/frontend/components/ui/StatusBadge";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
+import { formatCurrencyAmount } from "@/shared/currency";
 
 export interface InvoiceTableProps {
   invoices: Invoice[];
@@ -9,6 +11,7 @@ export interface InvoiceTableProps {
 }
 
 export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
+  const { currency, format } = useCurrency();
   const mapStatusToVariant = (status: string): StatusVariant => {
     switch (status) {
       case "paid":
@@ -118,8 +121,15 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
                 </td>
 
                 {/* Amount */}
-                <td className="py-4 px-5 font-mono font-semibold text-right text-sm">
-                  ${inv.total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                <td className="py-4 px-5 font-mono text-right">
+                  <div className="font-semibold text-sm text-on-surface">
+                    {format(inv.total, inv.currency || "USD")}
+                  </div>
+                  {inv.currency && inv.currency.toUpperCase() !== currency && (
+                    <div className="text-[10px] text-on-surface-variant font-normal">
+                      Orig: {formatCurrencyAmount(inv.total, inv.currency)}
+                    </div>
+                  )}
                 </td>
 
                 {/* Channel Rail */}

@@ -1,18 +1,21 @@
 import React from "react";
 import { Invoice } from "@/shared/types/invoice";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
 
 export interface InvoiceKpiCardsProps {
   invoices: Invoice[];
 }
 
 export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) => {
-  // Deterministic aggregates
-  const totalBilled = invoices.reduce((sum, inv) => sum + inv.total, 0);
+  const { currency, convert, format } = useCurrency();
+
+  // Convert each invoice to selected display currency before summing
+  const totalBilled = invoices.reduce((sum, inv) => sum + convert(inv.total, inv.currency || "USD"), 0);
   const openInvoices = invoices.filter((inv) => inv.status === "sent" || inv.status === "viewed" || inv.status === "overdue");
-  const awaitingPayment = openInvoices.reduce((sum, inv) => sum + inv.total, 0);
+  const awaitingPayment = openInvoices.reduce((sum, inv) => sum + convert(inv.total, inv.currency || "USD"), 0);
   const overdueInvoices = invoices.filter((inv) => inv.status === "overdue");
   const paidInvoices = invoices.filter((inv) => inv.status === "paid");
-  const collectedAmount = paidInvoices.reduce((sum, inv) => sum + inv.total, 0);
+  const collectedAmount = paidInvoices.reduce((sum, inv) => sum + convert(inv.total, inv.currency || "USD"), 0);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -31,7 +34,7 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
 
         <div className="space-y-1 mb-3">
           <div className="font-numeric-metric text-numeric-metric font-semibold text-on-surface tracking-tight">
-            ${totalBilled.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {format(totalBilled, currency)}
           </div>
           <div className="flex items-center gap-1.5 font-label-sm text-xs text-emerald-400">
             <span className="material-symbols-outlined text-sm leading-none" data-icon="trending_up">
@@ -77,7 +80,7 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
 
         <div className="space-y-1 mb-3">
           <div className="font-numeric-metric text-numeric-metric font-semibold text-primary tracking-tight">
-            ${awaitingPayment.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {format(awaitingPayment, currency)}
           </div>
           <div className="flex items-center gap-1.5 font-label-sm text-xs text-amber-400">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
@@ -112,7 +115,7 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
 
         <div className="space-y-1 mb-3">
           <div className="font-numeric-metric text-numeric-metric font-semibold text-emerald-400 tracking-tight">
-            ${collectedAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {format(collectedAmount, currency)}
           </div>
           <div className="flex items-center gap-1.5 font-label-sm text-xs text-emerald-400">
             <span className="material-symbols-outlined text-sm leading-none" data-icon="check_circle">

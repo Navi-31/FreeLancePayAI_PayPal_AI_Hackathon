@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import { ToggleSwitch } from "@/frontend/components/ui/ToggleSwitch";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
+import { SupportedCurrency } from "@/shared/types/navigation";
 
 export function SettingsClient() {
+  const { currency: contextCurrency, setCurrency } = useCurrency();
   const [activeTab, setActiveTab] = useState<string>("payment-rails");
   const [taxRoutingEnabled, setTaxRoutingEnabled] = useState<boolean>(true);
   const [lateFeeEnabled, setLateFeeEnabled] = useState<boolean>(true);
   const [recoveryThreshold, setRecoveryThreshold] = useState<number>(6.0);
-  const [baseCurrency, setBaseCurrency] = useState<string>("USD");
+  const [baseCurrency, setBaseCurrency] = useState<string>(contextCurrency || "USD");
   const [defaultTerms, setDefaultTerms] = useState<string>("Net-14");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
@@ -56,6 +59,10 @@ export function SettingsClient() {
           defaultTerms,
         }),
       });
+
+      if (baseCurrency) {
+        setCurrency(baseCurrency as SupportedCurrency);
+      }
 
       if (res.ok) {
         setIsLiveDb(true);
@@ -371,12 +378,15 @@ export function SettingsClient() {
                 <label className="text-outline font-medium block">Default Base Currency</label>
                 <select
                   value={baseCurrency}
-                  onChange={(e) => setBaseCurrency(e.target.value)}
+                  onChange={(e) => {
+                    setBaseCurrency(e.target.value);
+                    setCurrency(e.target.value as SupportedCurrency);
+                  }}
                   className="w-full bg-surface-container-lowest border border-outline-variant/40 rounded-lg py-2 px-3 text-on-surface focus:border-primary focus:outline-none"
                 >
                   <option value="USD">USD ($) — United States Dollar</option>
                   <option value="EUR">EUR (€) — Euro Area</option>
-                  <option value="GBP">GBP (£) — British Pound</option>
+                  <option value="INR">INR (₹) — Indian Rupee</option>
                 </select>
               </div>
 

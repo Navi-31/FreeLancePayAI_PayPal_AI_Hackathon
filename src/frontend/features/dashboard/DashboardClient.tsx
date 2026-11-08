@@ -6,9 +6,11 @@ import { AppLayout } from "@/frontend/components/layout/AppLayout";
 import { GlassPanel } from "@/frontend/components/glass/GlassPanel";
 import { DashboardLiveBannerAndMetrics } from "@/frontend/features/dashboard/DashboardLiveMetrics";
 import { useAuth } from "@/frontend/features/auth/AuthContext";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
 
 export function DashboardClient() {
   const { user } = useAuth();
+  const { format } = useCurrency();
   const displayName = user?.name ? user.name.split(" ")[0] : "Operator";
 
   return (
@@ -88,12 +90,12 @@ export function DashboardClient() {
             </div>
 
             <div className="flex items-center justify-between text-[11px] text-on-surface-variant pt-3 border-t border-outline-variant/20 mt-3 font-mono">
-              <span>JAN ($14.2k)</span>
-              <span>FEB ($18.9k)</span>
-              <span>MAR ($22.1k)</span>
-              <span>APR ($28.5k)</span>
-              <span>MAY ($34.0k)</span>
-              <span className="text-primary font-semibold">JUN (Projected $42k)</span>
+              <span>JAN ({format(14200, "USD")})</span>
+              <span>FEB ({format(18900, "USD")})</span>
+              <span>MAR ({format(22100, "USD")})</span>
+              <span>APR ({format(28500, "USD")})</span>
+              <span>MAY ({format(34000, "USD")})</span>
+              <span className="text-primary font-semibold">JUN (Projected {format(42000, "USD")})</span>
             </div>
           </GlassPanel>
 
@@ -116,7 +118,7 @@ export function DashboardClient() {
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-on-surface font-medium">Operating &amp; Living Expenses</span>
-                    <span className="font-mono text-on-surface font-semibold">$24,800 (62%)</span>
+                    <span className="font-mono text-on-surface font-semibold">{format(24800, "USD")} (62%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
                     <div className="bg-[#9665FF] h-2 rounded-full" style={{ width: "62%" }}></div>
@@ -126,7 +128,7 @@ export function DashboardClient() {
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-on-surface font-medium">Tax Savings Reserve (25%)</span>
-                    <span className="font-mono text-[#f4c86d] font-semibold">$10,000 (25%)</span>
+                    <span className="font-mono text-[#f4c86d] font-semibold">{format(10000, "USD")} (25%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
                     <div className="bg-[#f4c86d] h-2 rounded-full" style={{ width: "25%" }}></div>
@@ -136,7 +138,7 @@ export function DashboardClient() {
                 <div>
                   <div className="flex justify-between text-xs mb-1">
                     <span className="text-on-surface font-medium">Take-Home Pay / Owner Draw</span>
-                    <span className="font-mono text-[#10b981] font-semibold">$5,200 (13%)</span>
+                    <span className="font-mono text-[#10b981] font-semibold">{format(5200, "USD")} (13%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
                     <div className="bg-[#10b981] h-2 rounded-full" style={{ width: "13%" }}></div>

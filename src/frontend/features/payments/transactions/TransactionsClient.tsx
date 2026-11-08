@@ -10,8 +10,11 @@ import {
   downloadCsvFile,
 } from "../transactionStore";
 import { cn } from "@/shared/utils";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
+import { formatCurrencyAmount } from "@/shared/currency";
 
 export const TransactionsClient: React.FC = () => {
+  const { currency: displayCurrency, rates, lastUpdated, rateNotice, format } = useCurrency();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("This Quarter");
@@ -58,8 +61,8 @@ export const TransactionsClient: React.FC = () => {
   }, []);
 
   const kpis = useMemo(() => {
-    return calculateTransactionKpis(transactions, currencyFilter);
-  }, [transactions, currencyFilter]);
+    return calculateTransactionKpis(transactions, currencyFilter, rates, displayCurrency);
+  }, [transactions, currencyFilter, rates, displayCurrency]);
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((t) => {
@@ -216,13 +219,27 @@ export const TransactionsClient: React.FC = () => {
         </div>
       </section>
 
-      {/* Multi-Currency Warning Notice (if multiple currencies present without automated conversion rates) */}
-      {kpis.isMultiCurrency && (
+      {/* Live Exchange Conversion Banner or Multi-Currency Fallback Notice */}
+      {kpis.isMultiCurrency ? (
         <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2.5">
           <span className="material-symbols-outlined text-base text-amber-400">info</span>
           <span>
-            Multiple currencies detected ({kpis.currencies.join(", ")}). Conversion rates between these currencies are unavailable; select a currency below to view exact single-currency totals without improper cross-currency addition.
+            Multiple currencies detected ({kpis.currencies.join(", ")}). Live exchange rates are currently unreachable; select a currency filter below to view exact single-currency totals.
           </span>
+        </div>
+      ) : (
+        <div className="p-3 rounded-xl bg-surface-container-low/70 border border-outline-variant/30 text-xs flex flex-wrap items-center justify-between gap-2 text-on-surface-variant">
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-sm text-primary">currency_exchange</span>
+            <span>
+              Display Currency Conversion Active: <strong className="font-mono text-primary font-semibold">{rateNotice}</strong> ({displayCurrency})
+            </span>
+          </div>
+          {lastUpdated && (
+            <span className="text-[11px] font-mono text-outline">
+              Source: open.er-api.com • {lastUpdated.replace("UTC", "").trim()}
+            </span>
+          )}
         </div>
       )}
 
@@ -419,7 +436,7 @@ export const TransactionsClient: React.FC = () => {
 
           {/* Currency Pills */}
           <div className="flex items-center rounded-lg bg-surface-container-high/60 p-0.5 border border-outline-variant/30 text-xs">
-            {["All", "USD", "EUR", "GBP"].map((curr) => (
+            {["All", "USD", "EUR", "INR"].map((curr) => (
               <button
                 key={curr}
                 onClick={() => setCurrencyFilter(curr)}
@@ -532,28 +549,31 @@ export const TransactionsClient: React.FC = () => {
                     </td>
 
                     {/* Gross */}
-                    <td className="py-3 px-3 text-right font-medium text-on-surface">
-                      {t.grossAmount < 0 ? "-" : ""}
-                      {t.currencySymbol || "$"}
-                      {Math.abs(t.grossAmount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    <td className="py-3 px-3 text-right font-medium text-on-surface font-mono">
+                      {formatCurrencyAmount(t.grossAmount, t.currency || "USD")}
                     </td>
 
                     {/* Fee & FX */}
-                    <td className="py-3 px-3 text-right text-on-surface-variant">
+                    <td className="py-3 px-3 text-right text-on-surface-variant font-mono">
                       {t.feeAmount > 0 || t.fxCost > 0 ? (
                         <span className="text-error font-medium">
-                          -{t.currencySymbol || "$"}{(t.feeAmount + t.fxCost).toFixed(2)}
+                          -{formatCurrencyAmount(t.feeAmount + t.fxCost, t.currency || "USD")}
                         </span>
                       ) : (
-                        <span className="text-on-surface-variant/60">{t.currencySymbol || "$"}0.00</span>
+                        <span className="text-on-surface-variant/60">{formatCurrencyAmount(0, t.currency || "USD")}</span>
                       )}
                     </td>
 
                     {/* Net Amount */}
-                    <td className="py-3 px-3 text-right font-semibold text-primary">
-                      {t.netAmount < 0 ? "-" : ""}
-                      {t.currencySymbol || "$"}
-                      {Math.abs(t.netAmount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    <td className="py-3 px-3 text-right font-mono">
+                      <div className="font-semibold text-primary">
+                        {format(t.netAmount, t.currency || "USD")}
+                      </div>
+                      {t.currency && t.currency.toUpperCase() !== displayCurrency && (
+                        <div className="text-[10px] text-on-surface-variant font-normal">
+                          Orig: {formatCurrencyAmount(t.netAmount, t.currency)}
+                        </div>
+                      )}
                     </td>
 
                     {/* Status */}
@@ -643,49 +663,54 @@ export const TransactionsClient: React.FC = () => {
               </div>
 
               {/* Financial Math */}
-              <div className="pt-2 mt-2 border-t border-outline-variant/20 space-y-1.5">
+              <div className="pt-2 mt-2 border-t border-outline-variant/20 space-y-1.5 font-mono">
                 <div className="flex justify-between">
-                  <span className="text-on-surface-variant">Gross Amount</span>
+                  <span className="text-on-surface-variant font-sans">Gross Amount</span>
                   <span className="text-on-surface font-medium">
-                    {selectedTxn.grossAmount < 0 ? "-" : ""}
-                    {selectedTxn.currencySymbol || "$"}
-                    {Math.abs(selectedTxn.grossAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    {formatCurrencyAmount(selectedTxn.grossAmount, selectedTxn.currency || "USD")}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-error">
-                  <span>Gateway Processing Fee</span>
+                  <span className="font-sans">Gateway Processing Fee</span>
                   <span>
                     {selectedTxn.feeAmount > 0
-                      ? `-${selectedTxn.currencySymbol || "$"}${selectedTxn.feeAmount.toFixed(2)}`
-                      : "$0.00"}
+                      ? `-${formatCurrencyAmount(selectedTxn.feeAmount, selectedTxn.currency || "USD")}`
+                      : formatCurrencyAmount(0, selectedTxn.currency || "USD")}
                   </span>
                 </div>
 
                 {selectedTxn.fxCost > 0 && (
                   <div className="flex justify-between text-secondary">
-                    <span>FX Spread / Conversion Cost</span>
-                    <span>-{selectedTxn.currencySymbol || "$"}{selectedTxn.fxCost.toFixed(2)}</span>
+                    <span className="font-sans">FX Spread / Conversion Cost</span>
+                    <span>-{formatCurrencyAmount(selectedTxn.fxCost, selectedTxn.currency || "USD")}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between font-bold text-sm text-primary pt-1.5 border-t border-outline-variant/20">
-                  <span>
+                  <span className="font-sans">
                     {selectedTxn.status === "held" || selectedTxn.status === "authorized"
                       ? "Authorized Pre-Release Amount"
                       : "Net Settled Amount"}
                   </span>
                   <span>
-                    {selectedTxn.netAmount < 0 ? "-" : ""}
-                    {selectedTxn.currencySymbol || "$"}
-                    {Math.abs(selectedTxn.netAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    {formatCurrencyAmount(selectedTxn.netAmount, selectedTxn.currency || "USD")}
                   </span>
                 </div>
 
+                {selectedTxn.currency && selectedTxn.currency.toUpperCase() !== displayCurrency && (
+                  <div className="flex justify-between text-xs text-primary font-sans bg-primary/10 p-2 rounded-lg mt-1 border border-primary/20">
+                    <span>Display ({displayCurrency})</span>
+                    <span className="font-mono font-bold">
+                      {format(selectedTxn.netAmount, selectedTxn.currency || "USD")}
+                    </span>
+                  </div>
+                )}
+
                 {selectedTxn.taxReserveSplitAmount > 0 && selectedTxn.status === "settled" && (
                   <div className="flex justify-between text-[11px] text-emerald-400 pt-1">
-                    <span>Autonomous 20% Tax Vault Allocation</span>
-                    <span>+{selectedTxn.currencySymbol || "$"}{selectedTxn.taxReserveSplitAmount.toFixed(2)}</span>
+                    <span className="font-sans">Autonomous 20% Tax Vault Allocation</span>
+                    <span>+{formatCurrencyAmount(selectedTxn.taxReserveSplitAmount, selectedTxn.currency || "USD")}</span>
                   </div>
                 )}
               </div>

@@ -288,9 +288,11 @@ export async function fetchTransactionsWithFallback(): Promise<Transaction[]> {
 
 export function calculateTransactionKpis(
   transactions: Transaction[],
-  targetCurrency: string = "All"
+  targetCurrency: string = "All",
+  rates?: Record<string, number>,
+  displayCurrency: string = "USD"
 ): LedgerFinancialMetrics {
-  return calculateLedgerFinancialMetrics(transactions, targetCurrency);
+  return calculateLedgerFinancialMetrics(transactions, targetCurrency, rates, displayCurrency);
 }
 
 /**

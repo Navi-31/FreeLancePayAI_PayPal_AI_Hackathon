@@ -1,6 +1,7 @@
 import React from "react";
 import { Invoice } from "@/shared/types/invoice";
 import { StatusBadge } from "@/frontend/components/ui/StatusBadge";
+import { formatCurrencyAmount } from "@/shared/currency";
 
 export interface InvoicePaperPreviewProps {
   invoice: Partial<Invoice>;
@@ -115,10 +116,10 @@ export const InvoicePaperPreview: React.FC<InvoicePaperPreviewProps> = ({ invoic
                     {item.quantity}
                   </td>
                   <td className="py-3 px-3 text-right font-mono text-on-surface-variant">
-                    ${item.rate.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {formatCurrencyAmount(item.rate, invoice.currency || "USD")}
                   </td>
                   <td className="py-3 px-3 text-right font-mono font-medium text-on-surface">
-                    ${item.amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {formatCurrencyAmount(item.amount, invoice.currency || "USD")}
                   </td>
                 </tr>
               ))
@@ -138,7 +139,7 @@ export const InvoicePaperPreview: React.FC<InvoicePaperPreviewProps> = ({ invoic
         <div className="flex justify-between w-64 text-on-surface-variant">
           <span>Subtotal:</span>
           <span className="font-mono text-on-surface font-medium">
-            ${subtotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatCurrencyAmount(subtotal, invoice.currency || "USD")}
           </span>
         </div>
 
@@ -146,15 +147,15 @@ export const InvoicePaperPreview: React.FC<InvoicePaperPreviewProps> = ({ invoic
           <div className="flex justify-between w-64 text-on-surface-variant">
             <span>Tax Shield ({taxRate}%):</span>
             <span className="font-mono text-secondary">
-              ${taxAmount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatCurrencyAmount(taxAmount, invoice.currency || "USD")}
             </span>
           </div>
         )}
 
         <div className="flex justify-between w-64 pt-2 border-t border-outline-variant/20 text-sm">
-          <span className="font-semibold text-on-surface">Grand Total:</span>
+          <span className="font-semibold text-on-surface">Grand Total ({invoice.currency || "USD"}):</span>
           <span className="font-numeric-metric font-bold text-primary text-base">
-            ${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            {formatCurrencyAmount(total, invoice.currency || "USD")}
           </span>
         </div>
       </div>

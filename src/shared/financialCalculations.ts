@@ -1,3 +1,5 @@
+import { getCurrencySymbol, convertCurrency } from "./currency";
+
 /**
  * Authoritative Financial Calculations Engine for FreelancePay AI
  * 
@@ -197,17 +199,20 @@ export interface LedgerFinancialMetrics {
  */
 export function calculateLedgerFinancialMetrics(
   transactions: RawTransactionRecord[],
-  targetCurrency: string = "All"
+  targetCurrency: string = "All",
+  rates?: Record<string, number>,
+  displayCurrency: string = "USD"
 ): LedgerFinancialMetrics {
   // 1. Detect currencies
   const distinctCurrencies = Array.from(
     new Set(transactions.map((t) => (t.currency || "USD").toUpperCase()))
   );
 
-  const isMulti = targetCurrency === "All" && distinctCurrencies.length > 1;
+  const effectiveCurrency = targetCurrency && targetCurrency !== "All" ? targetCurrency : displayCurrency;
+  const isMulti = !rates && targetCurrency === "All" && distinctCurrencies.length > 1;
 
-  // Filter by currency if specific currency selected
-  const filtered = targetCurrency && targetCurrency !== "All"
+  // Filter by currency if specific currency selected and no rates provided
+  const filtered = targetCurrency && targetCurrency !== "All" && !rates
     ? transactions.filter((t) => (t.currency || "USD").toUpperCase() === targetCurrency.toUpperCase())
     : transactions;
 
@@ -221,11 +226,22 @@ export function calculateLedgerFinancialMetrics(
   let refundCount = 0;
 
   for (const t of filtered) {
+    const origCurrency = (t.currency || "USD").toUpperCase();
     const status = (t.status || "").toLowerCase();
     const type = (t.type || "").toLowerCase();
-    const gross = Number(t.grossAmount) || 0;
-    const fee = Number(t.feeAmount) || 0;
-    const fx = Number(t.fxCost) || 0;
+    
+    let gross = Number(t.grossAmount) || 0;
+    let fee = Number(t.feeAmount) || 0;
+    let fx = Number(t.fxCost) || 0;
+    let net = Number(t.netAmount) || 0;
+
+    // Convert to target/display currency using live rates if provided
+    if (rates && effectiveCurrency) {
+      gross = convertCurrency(gross, origCurrency, effectiveCurrency, rates);
+      fee = convertCurrency(fee, origCurrency, effectiveCurrency, rates);
+      fx = convertCurrency(fx, origCurrency, effectiveCurrency, rates);
+      net = convertCurrency(net, origCurrency, effectiveCurrency, rates);
+    }
 
     // Rule: Pending Authorizations (authorized but uncaptured payments shown separately)
     // Never count an authorization as a captured payment or received income!
@@ -255,7 +271,7 @@ export function calculateLedgerFinancialMetrics(
       status === "reversed";
 
     if (isRefundOrReversal) {
-      refundsAndReversalsCents += toCents(Math.abs(gross || Number(t.netAmount) || 0));
+      refundsAndReversalsCents += toCents(Math.abs(gross || net || 0));
       refundCount++;
       continue;
     }
@@ -289,11 +305,13 @@ export function calculateLedgerFinancialMetrics(
     grossSettledCents - processingFeesCents - fxCostsCents - refundsAndReversalsCents
   );
 
-  const primaryCurrency = targetCurrency && targetCurrency !== "All"
-    ? targetCurrency
-    : distinctCurrencies[0] || "USD";
+  const primaryCurrency = rates
+    ? effectiveCurrency
+    : (targetCurrency && targetCurrency !== "All"
+        ? targetCurrency
+        : distinctCurrencies[0] || "USD");
 
-  const currencySymbol = primaryCurrency === "EUR" ? "€" : primaryCurrency === "GBP" ? "£" : "$";
+  const currencySymbol = getCurrencySymbol(primaryCurrency);
 
   return {
     grossSettledInflows: fromCents(grossSettledCents),

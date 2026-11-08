@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { MetricCard } from "@/frontend/components/glass/MetricCard";
 import { GlassPanel } from "@/frontend/components/glass/GlassPanel";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
 import Link from "next/link";
 
 interface DashboardMetricsData {
@@ -36,6 +37,7 @@ export function DashboardLiveBannerAndMetrics() {
 
   const [aiExplanation, setAiExplanation] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const { format } = useCurrency();
 
   useEffect(() => {
     fetch("/api/dashboard/metrics")
@@ -60,11 +62,7 @@ export function DashboardLiveBannerAndMetrics() {
   }, []);
 
   const formatCurrency = (val: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 2,
-    }).format(val);
+    return format(val, "USD");
   };
 
   return (

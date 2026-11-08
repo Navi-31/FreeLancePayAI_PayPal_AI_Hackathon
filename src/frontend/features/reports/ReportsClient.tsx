@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useCurrency } from "@/frontend/features/currency/CurrencyContext";
+import { convertCurrency, formatCurrencyAmount } from "@/shared/currency";
+import { SupportedCurrency } from "@/shared/types/navigation";
 
 interface TemplateCard {
   id: string;
@@ -63,9 +66,10 @@ const TEMPLATES: TemplateCard[] = [
 ];
 
 export function ReportsClient() {
+  const { currency: contextCurrency, setCurrency: setContextCurrency, rates } = useCurrency();
   const [activeTemplate, setActiveTemplate] = useState<string>("pnl");
   const [period, setPeriod] = useState<string>("Q3");
-  const [currency, setCurrency] = useState<string>("USD");
+  const [currency, setCurrencyState] = useState<string>(contextCurrency || "USD");
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLiveDb, setIsLiveDb] = useState<boolean>(false);
   const [liveMetrics, setLiveMetrics] = useState<{
@@ -74,6 +78,19 @@ export function ReportsClient() {
     availableLiquidity: number;
     activeClientsCount: number;
   } | null>(null);
+
+  useEffect(() => {
+    if (contextCurrency) {
+      setCurrencyState(contextCurrency);
+    }
+  }, [contextCurrency]);
+
+  const handleCurrencySelect = (val: string) => {
+    setCurrencyState(val);
+    if (val === "USD" || val === "EUR" || val === "INR") {
+      setContextCurrency(val as SupportedCurrency);
+    }
+  };
 
   useEffect(() => {
     fetch("/api/dashboard/metrics")
@@ -87,12 +104,16 @@ export function ReportsClient() {
       .catch(() => {});
   }, []);
 
-  const grossBillings = liveMetrics ? liveMetrics.totalGrossRevenue : 142650.0;
+  const targetCurr = currency === "MULTI" ? "USD" : currency;
+  const rawGross = liveMetrics ? liveMetrics.totalGrossRevenue : 142650.0;
+  const grossBillings = convertCurrency(rawGross, "USD", targetCurr, rates);
   const processingFees = Math.round(grossBillings * 0.0269 * 100) / 100;
   const operatingOpex = Math.round(grossBillings * 0.1565 * 100) / 100;
   const netBusinessIncome = Math.round((grossBillings - processingFees - operatingOpex) * 100) / 100;
-  const taxVault = liveMetrics ? liveMetrics.taxVaultAmount : Math.round(netBusinessIncome * 0.25 * 100) / 100;
-  const freeRetained = liveMetrics ? liveMetrics.availableLiquidity : Math.round((netBusinessIncome - taxVault) * 100) / 100;
+  const taxVault = Math.round(netBusinessIncome * 0.25 * 100) / 100;
+  const freeRetained = Math.round((netBusinessIncome - taxVault) * 100) / 100;
+
+  const fmt = (val: number) => formatCurrencyAmount(val, targetCurr);
 
   const handleDownloadPdf = () => {
     setToastMessage("Generated CPA-compliant Audit PDF with SHA-256 seal. Ready for download.");
@@ -179,12 +200,12 @@ export function ReportsClient() {
 
           <select
             value={currency}
-            onChange={(e) => setCurrency(e.target.value)}
+            onChange={(e) => handleCurrencySelect(e.target.value)}
             className="bg-surface-container border border-outline-variant/40 rounded-lg px-3 py-2 text-on-surface focus:outline-none"
           >
             <option value="USD">USD ($)</option>
             <option value="EUR">EUR (€)</option>
-            <option value="GBP">GBP (£)</option>
+            <option value="INR">INR (₹)</option>
             <option value="MULTI">Multi-Currency Consolidated</option>
           </select>
 
@@ -323,7 +344,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
             <span className="text-outline font-medium">Gross Billings (ARR)</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-primary">${grossBillings.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-lg font-bold font-mono text-primary">{fmt(grossBillings)}</div>
               <div className="text-[10px] text-emerald-400 mt-0.5">+18.4% vs Q2</div>
             </div>
             <span className="text-[10px] text-outline font-mono">{liveMetrics?.activeClientsCount ?? 14} Client Retainers</span>
@@ -333,7 +354,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
             <span className="text-outline font-medium">Processing Fees</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-rose-400">-${processingFees.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-lg font-bold font-mono text-rose-400">-{fmt(processingFees)}</div>
               <div className="text-[10px] text-outline mt-0.5">2.69% effective drag</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Auto-Deducted</span>
@@ -343,7 +364,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col justify-between">
             <span className="text-outline font-medium">Operating OPEX</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-on-surface">-${operatingOpex.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-lg font-bold font-mono text-on-surface">-{fmt(operatingOpex)}</div>
               <div className="text-[10px] text-outline mt-0.5">Cloud, seats & ops</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Verified Receipts</span>
@@ -353,7 +374,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container border border-primary/40 flex flex-col justify-between">
             <span className="text-primary font-semibold">Net Business Income</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-on-surface">${netBusinessIncome.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-lg font-bold font-mono text-on-surface">{fmt(netBusinessIncome)}</div>
               <div className="text-[10px] text-primary mt-0.5">81.6% Net Margin</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Pre-Tax Operating</span>
@@ -363,7 +384,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-low border border-secondary/30 flex flex-col justify-between">
             <span className="text-secondary font-medium">Tax Reserve Vault (25%)</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-secondary">-${taxVault.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-lg font-bold font-mono text-secondary">-{fmt(taxVault)}</div>
               <div className="text-[10px] text-secondary mt-0.5">Vault Allocated</div>
             </div>
             <span className="text-[10px] text-outline font-mono">IRS Safe Harbor</span>
@@ -373,7 +394,7 @@ export function ReportsClient() {
           <div className="p-3 rounded-xl bg-surface-container-high border border-primary ring-1 ring-primary/30 flex flex-col justify-between">
             <span className="text-primary font-bold">Free Retained Cash</span>
             <div className="my-1.5">
-              <div className="text-lg font-bold font-mono text-primary">${freeRetained.toLocaleString("en-US", { minimumFractionDigits: 2 })}</div>
+              <div className="text-lg font-bold font-mono text-primary">{fmt(freeRetained)}</div>
               <div className="text-[10px] text-emerald-400 mt-0.5 font-medium">Cleared Owner Draw</div>
             </div>
             <span className="text-[10px] text-outline font-mono">Liquid Treasury</span>
@@ -415,15 +436,15 @@ export function ReportsClient() {
                 <div className="space-y-1.5 font-mono text-[11px]">
                   <div className="flex justify-between">
                     <span className="text-outline">Gross:</span>
-                    <span className="text-primary font-bold">${m.rev.toLocaleString()}</span>
+                    <span className="text-primary font-bold">{fmt(convertCurrency(m.rev, "USD", targetCurr, rates))}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-outline">Expenses:</span>
-                    <span className="text-rose-400 font-medium">-${m.exp.toLocaleString()}</span>
+                    <span className="text-rose-400 font-medium">-{fmt(convertCurrency(m.exp, "USD", targetCurr, rates))}</span>
                   </div>
                   <div className="flex justify-between pt-1 border-t border-outline-variant/20 font-bold">
                     <span className="text-secondary">Net:</span>
-                    <span className="text-white">${m.net.toLocaleString()}</span>
+                    <span className="text-white">{fmt(convertCurrency(m.net, "USD", targetCurr, rates))}</span>
                   </div>
                 </div>
               </div>
