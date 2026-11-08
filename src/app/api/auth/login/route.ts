@@ -11,14 +11,6 @@ const loginSchema = z.object({
   directSessionForTests: z.boolean().optional(),
 });
 
-function maskEmail(email: string): string {
-  const parts = email.split("@");
-  if (parts.length !== 2) return email;
-  const [name, domain] = parts;
-  if (name.length <= 2) return `${name}•••@${domain}`;
-  return `${name[0]}••••${name.slice(-1)}@${domain}`;
-}
-
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -28,7 +20,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid credentials format" }, { status: 400 });
     }
 
-    const { email, password, directSessionForTests } = result.data;
+    const { email, password } = result.data;
     const normalizedEmail = email.toLowerCase().trim();
 
     const user = await prisma.user.findUnique({
@@ -63,78 +55,41 @@ export async function POST(request: Request) {
       });
     }
 
-    // If running with explicit directSessionForTests flag
-    if (directSessionForTests) {
-      const token = await createSessionToken({
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        badge: user.badge,
-      });
-
-      const response = NextResponse.json({
-        success: true,
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          badge: user.badge,
-        },
-      });
-
-      response.cookies.set({
-        ...getSessionCookieConfig(),
-        value: token,
-      });
-
-      return response;
-    }
-
-    // Standard 2-Factor Email OTP step for Login (await live SMTP delivery)
-    const otpResult = await createAndSendOtp({
-      email: normalizedEmail,
-      purpose: "LOGIN_OTP",
-      recipientName: user.name,
+    // Direct Login: Immediately establish authenticated session and issue secure session cookie
+    const token = await createSessionToken({
       userId: user.id,
-      awaitDelivery: true,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      badge: user.badge,
     });
-
-    if (!otpResult.success) {
-      if (otpResult.cooldownSecondsRemaining) {
-        // Cooldown active, but user already has an active pending code
-        return NextResponse.json({
-          success: true,
-          requireOtp: true,
-          email: normalizedEmail,
-          maskedEmail: maskEmail(normalizedEmail),
-          message: `A security code was recently dispatched. Please check your inbox or wait ${otpResult.cooldownSecondsRemaining}s to resend.`,
-          cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining,
-        });
-      }
-      return NextResponse.json(
-        { error: otpResult.error || "Failed to deliver 2FA verification email. Please check your SMTP settings." },
-        { status: 500 }
-      );
-    }
 
     // Record audit log asynchronously
     recordAuditLog({
       userId: user.id,
-      action: "user_login_otp_dispatched",
+      action: "user_login_success",
       entityType: "User",
       entityId: user.id,
     }).catch(() => {});
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
-      requireOtp: true,
-      email: normalizedEmail,
-      maskedEmail: maskEmail(normalizedEmail),
-      message: "A 6-digit security verification code has been sent to your email.",
-      cooldownSecondsRemaining: otpResult.cooldownSecondsRemaining || 60,
+      message: "Login successful",
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        badge: user.badge,
+      },
     });
+
+    response.cookies.set({
+      ...getSessionCookieConfig(),
+      value: token,
+    });
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json({ error: "Internal server error during login" }, { status: 500 });

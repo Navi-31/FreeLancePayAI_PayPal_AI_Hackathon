@@ -22,7 +22,7 @@ export interface EmailPayload {
 export interface EmailSendResult {
   success: boolean;
   status: "sent" | "delivered" | "failed" | "simulated" | "awaiting_approval";
-  provider: "smtp" | "resend" | "mock";
+  provider: "resend" | "smtp" | "mock";
   providerMessageId?: string;
   error?: string;
   isConfigured: boolean;
@@ -46,32 +46,38 @@ export function sanitizeHeaderValue(value: string): string {
 
 /**
  * Determines whether the email provider is configured with live credentials.
- * Priority: SMTP (Gmail or custom) -> Resend -> Mock.
+ * Resend is the primary transactional email provider.
+ * Priority: Resend -> SMTP -> Mock (unconfigured).
  */
 export function getActiveEmailProvider(): {
-  provider: "smtp" | "resend" | "mock";
+  provider: "resend" | "smtp" | "mock";
   isConfigured: boolean;
 } {
   const providerChoice = env.EMAIL_PROVIDER;
+  const resendKey = env.RESEND_API_KEY;
+  const hasResend = Boolean(resendKey && resendKey.trim().startsWith("re_"));
+  const hasSmtp = Boolean(env.SMTP_USER && env.SMTP_PASS && env.SMTP_PASS.trim().length > 0);
 
-  // Check SMTP credentials first if explicitly selected or auto
-  if (
-    (providerChoice === "smtp" || providerChoice === "auto") &&
-    env.SMTP_USER &&
-    env.SMTP_PASS &&
-    env.SMTP_PASS.trim().length > 0
-  ) {
-    return { provider: "smtp", isConfigured: true };
+  // 1. Explicit Resend selection
+  if (providerChoice === "resend") {
+    return { provider: "resend", isConfigured: hasResend };
   }
 
-  // Check Resend
-  const resendKey = env.RESEND_API_KEY;
-  if (
-    (providerChoice === "resend" || providerChoice === "auto") &&
-    resendKey &&
-    resendKey.trim().startsWith("re_")
-  ) {
-    return { provider: "resend", isConfigured: true };
+  // 2. Explicit SMTP selection
+  if (providerChoice === "smtp") {
+    return { provider: "smtp", isConfigured: hasSmtp };
+  }
+
+  // 3. Auto mode: Resend takes precedence as primary provider
+  if (providerChoice === "auto") {
+    if (hasResend) {
+      return { provider: "resend", isConfigured: true };
+    }
+    if (hasSmtp) {
+      return { provider: "smtp", isConfigured: true };
+    }
+    // Default to Resend unconfigured
+    return { provider: "resend", isConfigured: false };
   }
 
   return { provider: "mock", isConfigured: false };
@@ -119,8 +125,8 @@ function getSmtpTransporter(): Transporter {
 }
 
 /**
- * Dispatches an email via SMTP (Nodemailer), Resend API, or fails if not configured.
- * Never silently reports simulated delivery as success when live delivery fails.
+ * Dispatches an email via Resend API or SMTP (Nodemailer).
+ * Shows actual provider errors when delivery fails. Never silently switches to mock.
  */
 export async function dispatchEmailThroughProvider(
   payload: EmailPayload
@@ -130,53 +136,42 @@ export async function dispatchEmailThroughProvider(
     return {
       success: false,
       status: "failed",
-      provider: "smtp",
+      provider: "resend",
       error: `Invalid recipient email address: "${recipient}"`,
       isConfigured: false,
       timestamp: new Date().toISOString(),
     };
   }
 
-  const fromAddress = sanitizeHeaderValue(payload.from || env.EMAIL_FROM);
   const safeSubject = sanitizeHeaderValue(payload.subject);
   const active = getActiveEmailProvider();
 
-  // 1. Dispatch via SMTP (e.g. Gmail SSL)
-  if (active.provider === "smtp" && active.isConfigured) {
-    try {
-      const transporter = getSmtpTransporter();
-      const info = await transporter.sendMail({
-        from: fromAddress,
-        to: recipient,
-        subject: safeSubject,
-        text: payload.text,
-        html: payload.html || payload.text,
-      });
+  // Configure sender identity based on active provider
+  let fromAddress = sanitizeHeaderValue(payload.from || env.EMAIL_FROM);
 
-      return {
-        success: true,
-        status: "sent",
-        provider: "smtp",
-        providerMessageId: info.messageId || `smtp_${Date.now()}`,
-        isConfigured: true,
-        timestamp: new Date().toISOString(),
-      };
-    } catch (err) {
-      const errMsg = err instanceof Error ? err.message : "Unknown SMTP transmission error";
-      console.error(`[EmailProvider] SMTP delivery failure to ${recipient}:`, errMsg);
+  // 1. Primary: Dispatch via Resend API
+  if (active.provider === "resend") {
+    if (!active.isConfigured) {
+      const err = "Resend is configured as the primary email provider, but RESEND_API_KEY is missing or invalid. Please configure RESEND_API_KEY in your environment.";
+      console.error(`[EmailProvider] ${err}`);
       return {
         success: false,
         status: "failed",
-        provider: "smtp",
-        error: errMsg,
-        isConfigured: true,
+        provider: "resend",
+        error: err,
+        isConfigured: false,
         timestamp: new Date().toISOString(),
       };
     }
-  }
 
-  // 2. Dispatch via Resend API
-  if (active.provider === "resend" && active.isConfigured) {
+    // Check if configured from address is an unverified public mailbox (e.g. @gmail.com)
+    // Resend strictly blocks sending from @gmail.com or other public email domains.
+    const isPublicEmail = /@(gmail\.com|googlemail\.com|yahoo\.com|hotmail\.com|outlook\.com)/i.test(fromAddress);
+    if (isPublicEmail) {
+      // Use Resend's verified onboarding sender for testing when no custom domain is verified
+      fromAddress = "FreelancePay AI <onboarding@resend.dev>";
+    }
+
     try {
       const response = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -197,7 +192,7 @@ export async function dispatchEmailThroughProvider(
 
       if (!response.ok) {
         const resendErr = data?.message || `Resend HTTP error ${response.status}`;
-        console.error(`[EmailProvider] Resend delivery failure:`, resendErr);
+        console.error(`[EmailProvider] Resend delivery failure to ${recipient}:`, resendErr);
         return {
           success: false,
           status: "failed",
@@ -230,13 +225,61 @@ export async function dispatchEmailThroughProvider(
     }
   }
 
-  // 3. Fallback when no live email provider is configured
-  console.warn(`[EmailProvider] No active email provider configured for ${recipient}`);
+  // 2. Secondary: Dispatch via SMTP (e.g. Gmail SSL)
+  if (active.provider === "smtp") {
+    if (!active.isConfigured) {
+      const err = "SMTP is selected as email provider, but SMTP_USER or SMTP_PASS is missing in environment.";
+      console.error(`[EmailProvider] ${err}`);
+      return {
+        success: false,
+        status: "failed",
+        provider: "smtp",
+        error: err,
+        isConfigured: false,
+        timestamp: new Date().toISOString(),
+      };
+    }
+
+    try {
+      const transporter = getSmtpTransporter();
+      const info = await transporter.sendMail({
+        from: fromAddress,
+        to: recipient,
+        subject: safeSubject,
+        text: payload.text,
+        html: payload.html || payload.text,
+      });
+
+      return {
+        success: true,
+        status: "sent",
+        provider: "smtp",
+        providerMessageId: info.messageId || `smtp_${Date.now()}`,
+        isConfigured: true,
+        timestamp: new Date().toISOString(),
+      };
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : "Unknown SMTP transmission error";
+      console.error(`[EmailProvider] SMTP delivery failure to ${recipient}:`, errMsg);
+      return {
+        success: false,
+        status: "failed",
+        provider: "smtp",
+        error: errMsg,
+        isConfigured: true,
+        timestamp: new Date().toISOString(),
+      };
+    }
+  }
+
+  // 3. Fallback when no live provider credentials are set
+  const err = "No active email provider configured. Please configure RESEND_API_KEY in environment variables.";
+  console.warn(`[EmailProvider] ${err}`);
   return {
     success: false,
     status: "failed",
     provider: "mock",
-    error: "No live email provider configured. Please configure SMTP_USER and SMTP_PASS.",
+    error: err,
     providerMessageId: `sim_msg_${Date.now()}`,
     isConfigured: false,
     timestamp: new Date().toISOString(),
