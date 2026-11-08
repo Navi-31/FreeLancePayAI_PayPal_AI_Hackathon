@@ -151,7 +151,7 @@ export const InvoicesClient: React.FC = () => {
 
           <Link href="/invoices/new">
             <AuricButton size="md" icon="add">
-              + Create Invoice
+              Create Invoice
             </AuricButton>
           </Link>
         </div>

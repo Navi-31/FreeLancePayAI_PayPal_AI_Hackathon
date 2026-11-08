@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { ToggleSwitch } from "@/frontend/components/ui/ToggleSwitch";
 
 export function SettingsClient() {
   const [activeTab, setActiveTab] = useState<string>("payment-rails");
@@ -300,17 +301,11 @@ export function SettingsClient() {
                     Instantly transfer 25% of cleared client invoices to isolated high-yield tax vault.
                   </p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={taxRoutingEnabled}
-                    onChange={(e) => setTaxRoutingEnabled(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-10 h-5 bg-surface-container-highest peer-checked:bg-primary rounded-full transition-colors flex items-center px-0.5">
-                    <div className="w-4 h-4 bg-surface-container-lowest peer-checked:translate-x-5 rounded-full transition-transform" />
-                  </div>
-                </label>
+                <ToggleSwitch
+                  checked={taxRoutingEnabled}
+                  onChange={setTaxRoutingEnabled}
+                  aria-label="Autonomous Tax Shield Routing"
+                />
               </div>
 
               {/* Late Fee Calculation */}
@@ -321,17 +316,11 @@ export function SettingsClient() {
                     Embed contractual 1.5% late fee in overdue reminders after Net-14 maturity.
                   </p>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={lateFeeEnabled}
-                    onChange={(e) => setLateFeeEnabled(e.target.checked)}
-                    className="sr-only peer"
-                  />
-                  <div className="w-10 h-5 bg-surface-container-highest peer-checked:bg-primary rounded-full transition-colors flex items-center px-0.5">
-                    <div className="w-4 h-4 bg-surface-container-lowest peer-checked:translate-x-5 rounded-full transition-transform" />
-                  </div>
-                </label>
+                <ToggleSwitch
+                  checked={lateFeeEnabled}
+                  onChange={setLateFeeEnabled}
+                  aria-label="Automated Late Fee Calculation"
+                />
               </div>
 
               {/* Autonomous Recovery Threshold */}

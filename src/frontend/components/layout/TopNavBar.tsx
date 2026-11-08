@@ -227,7 +227,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = ({
         {/* New Invoice Primary Action */}
         <Link href="/invoices/new">
           <AuricButton size="sm" icon="add">
-            + New Invoice
+            New Invoice
           </AuricButton>
         </Link>
 

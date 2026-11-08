@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/shared/utils";
+import { ToggleSwitch } from "@/frontend/components/ui/ToggleSwitch";
 
 interface RescueAction {
   id: string;
@@ -308,20 +309,12 @@ export const RescueClient: React.FC = () => {
                 </div>
               </div>
 
-              {/* Custom Toggle Switch */}
-              <div
-                className={cn(
-                  "w-11 h-6 rounded-full p-1 transition-colors shrink-0",
-                  act.enabled ? "bg-secondary" : "bg-surface-container-highest"
-                )}
-              >
-                <div
-                  className={cn(
-                    "w-4 h-4 rounded-full bg-white transition-transform",
-                    act.enabled ? "translate-x-5" : "translate-x-0"
-                  )}
-                />
-              </div>
+              {/* Toggle Switch */}
+              <ToggleSwitch
+                checked={act.enabled}
+                onChange={() => toggleAction(act.id)}
+                aria-label={`Toggle ${act.title}`}
+              />
             </div>
           ))}
         </div>

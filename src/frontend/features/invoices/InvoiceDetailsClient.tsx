@@ -107,9 +107,10 @@ export const InvoiceDetailsClient: React.FC<InvoiceDetailsClientProps> = ({ invo
             </Link>
             <Link
               href="/invoices/new"
-              className="px-3.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface hover:text-primary text-xs font-medium transition-colors"
+              className="px-3.5 py-1.5 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface hover:text-primary text-xs font-medium transition-colors inline-flex items-center gap-1"
             >
-              + Create New Invoice
+              <span className="material-symbols-outlined text-sm leading-none">add</span>
+              <span>Create New Invoice</span>
             </Link>
           </div>
         </GlassPanel>

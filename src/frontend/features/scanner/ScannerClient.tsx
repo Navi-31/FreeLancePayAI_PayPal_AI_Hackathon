@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { loadInvoicesFromStorage, saveInvoicesToStorage } from "@/frontend/features/invoices/invoiceStore";
 import { Invoice } from "@/shared/types/invoice";
+import { ToggleSwitch } from "@/frontend/components/ui/ToggleSwitch";
 
 interface LineItem {
   id: string;
@@ -413,17 +414,16 @@ export function ScannerClient() {
                 </div>
               </div>
 
-              {/* Tax Set-aside Checkbox */}
+              {/* Tax Set-aside Toggle */}
               <div className="p-3 rounded-lg bg-surface-container border border-secondary/30 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
+                <div className="flex items-center gap-3">
+                  <ToggleSwitch
                     checked={taxWithholding}
-                    onChange={(e) => setTaxWithholding(e.target.checked)}
-                    className="accent-primary"
+                    onChange={setTaxWithholding}
+                    aria-label="Auto Tax Vault Set-Aside"
                   />
                   <div>
-                    <span className="font-semibold text-white block">Auto Tax Vault Set-Aside (25%)</span>
+                    <span className="font-semibold text-white block text-xs">Auto Tax Vault Set-Aside (25%)</span>
                     <span className="text-[10px] text-outline">Isolates into cryptographic tax vault</span>
                   </div>
                 </div>
