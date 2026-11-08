@@ -14,7 +14,7 @@ export function DashboardClient() {
   return (
     <AppLayout
       pageTitle={`Good evening, ${displayName}`}
-      pageSubtitle="Autonomous fiscal guardian is operational"
+      pageSubtitle="Your freelance financial assistant is active"
       userBadge={user?.badge || "PRO VIP"}
     >
       <div className="space-y-6">
@@ -29,10 +29,10 @@ export function DashboardClient() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="font-headline-sm text-sm lg:text-base font-semibold text-on-surface">
-                  Revenue Velocity & Inflow Radar
+                  Income &amp; Cash Inflows
                 </h3>
                 <p className="font-body-sm text-xs text-on-surface-variant">
-                  Real-time PayPal Sandbox, ACH & International settlement clearance
+                  Real-time income tracking, client payments &amp; payouts
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -102,20 +102,20 @@ export function DashboardClient() {
             <div>
               <div className="flex items-center justify-between mb-3">
                 <h3 className="font-headline-sm text-sm lg:text-base font-semibold text-on-surface">
-                  Capital Allocation
+                  Income Allocation &amp; Savings
                 </h3>
                 <span className="text-[11px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">
-                  REAL-TIME SWEEP
+                  AUTOMATED ALLOCATION
                 </span>
               </div>
               <p className="font-body-sm text-xs text-on-surface-variant mb-4">
-                Automated fractional quarantine across operational runway, tax vault, and profit sweep.
+                Automatically sets aside money for business expenses, taxes, and take-home pay.
               </p>
 
               <div className="space-y-3.5">
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-on-surface font-medium">Operational Runway</span>
+                    <span className="text-on-surface font-medium">Operating &amp; Living Expenses</span>
                     <span className="font-mono text-on-surface font-semibold">$24,800 (62%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
@@ -125,7 +125,7 @@ export function DashboardClient() {
 
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-on-surface font-medium">Tax Reserve Vault (25%)</span>
+                    <span className="text-on-surface font-medium">Tax Savings Reserve (25%)</span>
                     <span className="font-mono text-[#f4c86d] font-semibold">$10,000 (25%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
@@ -135,7 +135,7 @@ export function DashboardClient() {
 
                 <div>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-on-surface font-medium">Discretionary Profit Sweep</span>
+                    <span className="text-on-surface font-medium">Take-Home Pay / Owner Draw</span>
                     <span className="font-mono text-[#10b981] font-semibold">$5,200 (13%)</span>
                   </div>
                   <div className="w-full bg-surface-container-high rounded-full h-2 overflow-hidden">
@@ -150,7 +150,7 @@ export function DashboardClient() {
                 href="/tax"
                 className="w-full py-2.5 px-3 rounded-lg bg-surface-container-high hover:bg-surface-container-highest border border-outline-variant/30 text-xs text-on-surface font-medium flex items-center justify-between transition-colors"
               >
-                <span>Adjust Vault Allocation Rules</span>
+                <span>Adjust Tax &amp; Savings Rules</span>
                 <span className="text-primary">&rarr;</span>
               </Link>
             </div>
@@ -168,7 +168,7 @@ export function DashboardClient() {
             </div>
             <div>
               <div className="text-xs font-semibold text-on-surface group-hover:text-primary transition-colors">Invoices</div>
-              <div className="text-[11px] text-on-surface-variant">Create & dispatch</div>
+              <div className="text-[11px] text-on-surface-variant">Create &amp; send to clients</div>
             </div>
           </Link>
 
@@ -207,7 +207,7 @@ export function DashboardClient() {
             </div>
             <div>
               <div className="text-xs font-semibold text-on-surface group-hover:text-[#f4c86d] transition-colors">Treasury</div>
-              <div className="text-[11px] text-on-surface-variant">Realtime liquidity</div>
+              <div className="text-[11px] text-on-surface-variant">Cash flow &amp; liquidity</div>
             </div>
           </Link>
         </div>

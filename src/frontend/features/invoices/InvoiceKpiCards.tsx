@@ -16,11 +16,11 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {/* Card 1: Total Billed */}
+      {/* Card 1: Total Invoiced */}
       <div className="relative overflow-hidden rounded-xl bg-surface-container-lowest/90 backdrop-blur-xl p-5 border border-white/5 hover:border-primary/30 transition-all auric-glow group">
         <div className="flex items-center justify-between mb-3">
           <span className="font-label-md text-label-md text-on-surface-variant font-medium">
-            Total Billed
+            Total Invoiced
           </span>
           <div className="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
             <span className="material-symbols-outlined text-lg" data-icon="account_balance_wallet">
@@ -62,11 +62,11 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
         </div>
       </div>
 
-      {/* Card 2: Awaiting Payment */}
+      {/* Card 2: Amount to Collect */}
       <div className="relative overflow-hidden rounded-xl bg-surface-container-lowest/90 backdrop-blur-xl p-5 border border-white/5 hover:border-amber-400/30 transition-all group">
         <div className="flex items-center justify-between mb-3">
           <span className="font-label-md text-label-md text-on-surface-variant font-medium">
-            Awaiting Payment
+            Amount to Collect (Outstanding)
           </span>
           <div className="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-amber-400 group-hover:scale-105 transition-transform">
             <span className="material-symbols-outlined text-lg" data-icon="hourglass_top">
@@ -81,7 +81,7 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
           </div>
           <div className="flex items-center gap-1.5 font-label-sm text-xs text-amber-400">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <span>{openInvoices.length} open invoices</span>
+            <span>{openInvoices.length} outstanding invoices</span>
             {overdueInvoices.length > 0 && (
               <span className="text-error font-medium">• {overdueInvoices.length} overdue</span>
             )}
@@ -97,11 +97,11 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
         </div>
       </div>
 
-      {/* Card 3: Collected This Month */}
+      {/* Card 3: Collected */}
       <div className="relative overflow-hidden rounded-xl bg-surface-container-lowest/90 backdrop-blur-xl p-5 border border-white/5 hover:border-emerald-400/30 transition-all group">
         <div className="flex items-center justify-between mb-3">
           <span className="font-label-md text-label-md text-on-surface-variant font-medium">
-            Collected This Month
+            Collected (Settled)
           </span>
           <div className="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
             <span className="material-symbols-outlined text-lg" data-icon="verified">
@@ -118,7 +118,7 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
             <span className="material-symbols-outlined text-sm leading-none" data-icon="check_circle">
               check_circle
             </span>
-            <span>98.2% on-time settlement</span>
+            <span>{paidInvoices.length} invoices paid in full</span>
           </div>
         </div>
 
@@ -128,11 +128,11 @@ export const InvoiceKpiCards: React.FC<InvoiceKpiCardsProps> = ({ invoices }) =>
         </div>
       </div>
 
-      {/* Card 4: Average Days to Pay */}
+      {/* Card 4: Average Payment Time */}
       <div className="relative overflow-hidden rounded-xl bg-surface-container-lowest/90 backdrop-blur-xl p-5 border border-white/5 hover:border-secondary/30 transition-all violet-glow group">
         <div className="flex items-center justify-between mb-3">
           <span className="font-label-md text-label-md text-on-surface-variant font-medium">
-            Average Days to Pay
+            Average Payment Time
           </span>
           <div className="w-8 h-8 rounded-lg bg-secondary-container/40 flex items-center justify-center text-secondary group-hover:scale-105 transition-transform">
             <span className="material-symbols-outlined text-lg" data-icon="speed">

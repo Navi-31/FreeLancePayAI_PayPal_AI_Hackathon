@@ -83,7 +83,7 @@ export function DashboardLiveBannerAndMetrics() {
               >
                 auto_awesome
               </span>
-              <span>{isAuthenticated ? "Live Firebase Database Synchronized" : "Autonomous Guardian (Demo Profile)"}</span>
+              <span>{isAuthenticated ? "Live Firebase Database Synchronized" : "Freelancer Demo Profile Active"}</span>
             </span>
 
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs font-mono">
@@ -98,7 +98,7 @@ export function DashboardLiveBannerAndMetrics() {
           </div>
 
           <h2 className="font-headline-md text-xl lg:text-2xl text-on-surface font-semibold">
-            Institutional Financial Health:{" "}
+            Freelancer Financial Health:{" "}
             <span className="text-primary font-numeric-metric font-bold">
               {metrics.institutionalHealthScore}/100
             </span>
@@ -109,11 +109,11 @@ export function DashboardLiveBannerAndMetrics() {
               <span>{aiExplanation}</span>
             ) : (
               <>
-                Your liquidity runway is secure through Q4. Runway is calculated at{" "}
+                Your business cash runway is secure. Based on your current income and expenses, your runway is{" "}
                 <strong className="text-on-surface font-medium">{metrics.runwayMonths} months</strong>.{" "}
                 {metrics.overdueInvoicesCount > 0
-                  ? `${metrics.overdueInvoicesCount} prompt action recommended for Acme Corp to mitigate an 18-day projected pinch.`
-                  : "All active receivables are on-schedule."}
+                  ? `${metrics.overdueInvoicesCount} overdue invoice needs follow-up to maintain healthy cash flow.`
+                  : "All client invoices are currently on schedule."}
               </>
             )}
           </p>
@@ -138,7 +138,7 @@ export function DashboardLiveBannerAndMetrics() {
             >
               auto_awesome
             </span>
-            <span>Audit Cash Pipeline</span>
+            <span>Review Cash Flow</span>
           </Link>
         </div>
 
@@ -203,7 +203,7 @@ export function DashboardLiveBannerAndMetrics() {
       {/* 2. METRIC BENTO 4-CARDS GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <MetricCard
-          label="Total Gross Revenue"
+          label="Total Revenue Collected"
           value={formatCurrency(metrics.totalGrossRevenue)}
           icon="trending_up"
           iconColor="text-primary"
@@ -212,32 +212,32 @@ export function DashboardLiveBannerAndMetrics() {
           trendPositive={true}
         />
         <MetricCard
-          label="Outstanding Invoices"
+          label="Amount to Collect (Outstanding)"
           value={formatCurrency(metrics.outstandingInvoicesAmount)}
           icon="hourglass_top"
           iconColor="text-amber-400"
           valueColor="text-primary"
-          trend={`${metrics.outstandingInvoicesCount} invoices`}
+          trend={`${metrics.outstandingInvoicesCount} open invoices`}
           trendLabel={`• ${formatCurrency(metrics.overdueInvoicesAmount)} overdue`}
           trendPositive={false}
         />
         <MetricCard
-          label="Available Liquidity"
+          label="Cash on Hand"
           value={formatCurrency(metrics.availableLiquidity)}
           icon="account_balance_wallet"
           iconColor="text-secondary"
-          trend="Ready for wire"
+          trend="Available to spend"
           trendLabel={`• ${formatCurrency(metrics.taxVaultAmount)} tax set aside`}
           trendPositive={true}
         />
         <MetricCard
-          label="Calculated Runway"
+          label="Expense Runway"
           value={`${metrics.runwayMonths} Months`}
           icon="flight_takeoff"
           iconColor="text-emerald-400"
           valueColor="text-emerald-400"
-          trend="Zero zero-balance risk"
-          trendLabel="until Feb 2026"
+          trend="Healthy cushion"
+          trendLabel="at current burn rate"
           trendPositive={true}
         />
       </div>

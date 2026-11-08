@@ -130,14 +130,14 @@ export const InvoicesClient: React.FC = () => {
         <div className="space-y-1">
           <div className="flex items-center gap-3">
             <h1 className="font-headline-lg text-xl lg:text-2xl font-semibold tracking-tight text-on-surface">
-              Invoices
+              Client Invoices
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-label-sm font-semibold bg-surface-container-high text-primary border border-primary/25">
-              Live Feed
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-label-sm font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              Receivables (Money Owed to You)
             </span>
           </div>
           <p className="font-body-md text-xs lg:text-sm text-on-surface-variant max-w-2xl">
-            Manage, track, and dispatch AI-monitored client invoices with behavioral settlement tracking.
+            Outgoing invoices issued to your clients. Track amounts to collect, payment status, and automated client follow-ups.
           </p>
         </div>
 
@@ -145,8 +145,8 @@ export const InvoicesClient: React.FC = () => {
           {/* Autonomous Telemetry Widget */}
           <div className="hidden sm:flex items-center gap-2.5 bg-surface-container-lowest/80 px-3.5 py-2 rounded-xl border border-outline-variant/30 text-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-on-surface-variant text-[11px]">Auto-Settlement:</span>
-            <span className="font-semibold text-primary font-mono text-[11px]">Smart Protocol Active</span>
+            <span className="text-on-surface-variant text-[11px]">Payment Direction:</span>
+            <span className="font-semibold text-emerald-400 font-mono text-[11px]">Client Receivables</span>
           </div>
 
           <Link href="/invoices/new">

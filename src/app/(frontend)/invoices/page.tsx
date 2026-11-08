@@ -6,7 +6,7 @@ export default function InvoicesPage() {
   return (
     <AppLayout
       pageTitle="Invoices"
-      pageSubtitle="CORE PROTOCOL • Autonomous Wealth Engine"
+      pageSubtitle="Client Invoices (Receivables) • Track money clients owe you"
     >
       <InvoicesClient />
     </AppLayout>

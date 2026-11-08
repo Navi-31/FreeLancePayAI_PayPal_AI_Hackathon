@@ -168,11 +168,15 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
               <h1 className="font-headline-lg text-xl lg:text-2xl font-semibold text-on-surface tracking-tight">
                 Invoice #{invoice.id}
               </h1>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span className="material-symbols-outlined text-sm leading-none">arrow_downward</span>
+                <span>RECEIVABLE — Client owes you</span>
+              </span>
               <StatusBadge
                 variant={invoice.status === "paid" ? "paid" : invoice.status === "overdue" ? "overdue" : "viewed"}
                 pulse={invoice.status === "viewed" || invoice.status === "overdue"}
               >
-                {invoice.status.toUpperCase()}
+                {invoice.status === "paid" ? "COLLECTED" : invoice.status.toUpperCase()}
               </StatusBadge>
             </div>
 
@@ -334,11 +338,11 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
                   AI Behavioral Risk Telemetry
                 </span>
                 <span className="px-2 py-0.2 rounded text-[10px] bg-primary/20 text-primary border border-primary/30">
-                  {invoice.status === "paid" ? "Settlement Finalized" : invoice.status === "overdue" ? "Delayed Sign-Off Detected" : "Active Inflow"}
+                  {invoice.status === "paid" ? "Payment Collected" : invoice.status === "overdue" ? "Delayed Sign-Off Detected" : "Awaiting Client Payment"}
                 </span>
               </div>
               <p className="font-body-md text-xs lg:text-sm text-on-surface leading-relaxed max-w-4xl">
-                {invoice.aiTelemetryNote || "Invoice telemetry continuously audited by neural protocol."}
+                {invoice.aiTelemetryNote || "Invoice payment monitoring actively tracked by FreelancePay AI."}
               </p>
             </div>
           </div>
@@ -411,14 +415,14 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
           <GlassPanel elevation={1} className="p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-2.5">
               <span className="font-label-md text-xs font-semibold text-on-surface">
-                Settlement Channel Rail
+                Payment Method &amp; Rail
               </span>
               <span className="material-symbols-outlined text-primary text-base">payments</span>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <span className="text-outline text-[10px] uppercase block">Rail Protocol</span>
+                <span className="text-outline text-[10px] uppercase block">Payment Rail</span>
                 <span className="font-medium text-primary text-sm flex items-center gap-1.5">
                   <span>{invoice.paymentChannel}</span>
                   <span className="px-1.5 py-0.5 rounded text-[10px] bg-primary/20 text-primary border border-primary/30">
@@ -428,9 +432,9 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
               </div>
 
               <div>
-                <span className="text-outline text-[10px] uppercase block">Authorization & Settlement</span>
+                <span className="text-outline text-[10px] uppercase block">Payment Status</span>
                 <span className="text-emerald-400 font-medium">
-                  {invoice.status === "paid" ? "Captured & Reconciled" : "Milestone Authorization Ready"}
+                  {invoice.status === "paid" ? "Captured & Paid in Full" : "Ready for Client Payment"}
                 </span>
               </div>
 
@@ -474,7 +478,7 @@ export const InvoiceDetailsView: React.FC<InvoiceDetailsViewProps> = ({ initialI
               {invoice.status === "overdue"
                 ? "Dispatch Follow-Up Level 2 via verified relay to prompt sign-off before Friday payroll obligations."
                 : invoice.status === "paid"
-                ? "Settlement complete. Allocate fractional retainers into yield reserves."
+                ? "Payment collected. Funds ready to allocate into your tax and business reserves."
                 : "Monitor client read receipts over the next 48 hours."}
             </p>
             <div className="pt-1">

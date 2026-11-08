@@ -29,9 +29,9 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
   const formatStatusLabel = (status: string): string => {
     switch (status) {
       case "paid":
-        return "Settled";
+        return "Collected";
       case "viewed":
-        return "Viewed (Active)";
+        return "Viewed by Client";
       case "overdue":
         return "Overdue";
       case "sent":
@@ -74,12 +74,12 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
         <table className="w-full text-left text-xs border-collapse">
           <thead className="bg-surface-container text-on-surface-variant font-label-sm border-b border-outline-variant/20 uppercase tracking-wider text-[11px]">
             <tr>
-              <th className="py-3.5 px-5 font-semibold">Invoice Protocol</th>
-              <th className="py-3.5 px-5 font-semibold">Client & Project</th>
-              <th className="py-3.5 px-5 font-semibold text-right">Total Amount</th>
-              <th className="py-3.5 px-5 font-semibold">Channel Rail</th>
-              <th className="py-3.5 px-5 font-semibold">Settlement Status</th>
-              <th className="py-3.5 px-5 font-semibold">AI Risk Score</th>
+              <th className="py-3.5 px-5 font-semibold">Invoice ID</th>
+              <th className="py-3.5 px-5 font-semibold">Client &amp; Project</th>
+              <th className="py-3.5 px-5 font-semibold text-right">Amount to Collect</th>
+              <th className="py-3.5 px-5 font-semibold">Payment Rail</th>
+              <th className="py-3.5 px-5 font-semibold">Payment Status</th>
+              <th className="py-3.5 px-5 font-semibold">Payment Risk</th>
               <th className="py-3.5 px-5 font-semibold text-right">Action</th>
             </tr>
           </thead>
@@ -89,14 +89,22 @@ export const InvoiceTable: React.FC<InvoiceTableProps> = ({ invoices }) => {
                 key={inv.id}
                 className="hover:bg-surface-container-high/40 transition-colors group"
               >
-                {/* Invoice Protocol ID */}
-                <td className="py-4 px-5 font-mono font-medium text-primary">
-                  <Link
-                    href={`/invoices/${inv.id}`}
-                    className="hover:underline flex items-center gap-1.5"
-                  >
-                    <span>#{inv.id}</span>
-                  </Link>
+                {/* Invoice ID & Direction */}
+                <td className="py-4 px-5">
+                  <div className="flex flex-col gap-1.5">
+                    <Link
+                      href={`/invoices/${inv.id}`}
+                      className="font-mono font-medium text-primary hover:underline flex items-center gap-1.5"
+                    >
+                      <span>#{inv.id}</span>
+                    </Link>
+                    <div>
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 whitespace-nowrap">
+                        <span className="material-symbols-outlined text-[12px] leading-none">arrow_downward</span>
+                        <span>RECEIVABLE — Client owes you</span>
+                      </span>
+                    </div>
+                  </div>
                 </td>
 
                 {/* Client & Project */}
