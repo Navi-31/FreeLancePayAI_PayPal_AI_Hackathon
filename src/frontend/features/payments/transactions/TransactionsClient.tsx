@@ -16,6 +16,7 @@ export const TransactionsClient: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dateRange, setDateRange] = useState("This Quarter");
   const [typeFilter, setTypeFilter] = useState<string>("All");
+  const [statusFilter, setStatusFilter] = useState<string>("All");
   const [currencyFilter, setCurrencyFilter] = useState("All");
   const [selectedTxn, setSelectedTxn] = useState<Transaction | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -28,11 +29,11 @@ export const TransactionsClient: React.FC = () => {
     fetch("/api/transactions")
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data?.transactions && Array.isArray(data.transactions) && data.transactions.length > 0) {
+        if (data && Array.isArray(data.transactions)) {
           const mapped: Transaction[] = data.transactions.map((t: Record<string, unknown>) => ({
             id: String(t.code || t.id),
             hash: String(t.hash || "0x98a1..bc7e"),
-            timestamp: typeof t.timestamp === "string" ? t.timestamp : new Date().toISOString(),
+            timestamp: typeof t.timestamp === "string" ? t.timestamp.replace("T", " ").substring(0, 19) : new Date().toISOString().substring(0, 19),
             description: String(t.description || ""),
             clientName: String(t.clientName || "Client"),
             type: t.type as Transaction["type"],
@@ -44,7 +45,7 @@ export const TransactionsClient: React.FC = () => {
             fxCost: Number(t.fxCost || 0),
             netAmount: Number(t.netAmount),
             taxReserveSplitAmount: Number(t.taxReserveSplitAmount || 0),
-            paymentChannel: String(t.paymentChannel || "PayPal Direct"),
+            paymentChannel: String(t.paymentChannel || "PayPal Direct") as Transaction["paymentChannel"],
             linkedInvoiceId: t.linkedInvoiceId ? String(t.linkedInvoiceId) : undefined,
             linkedMilestoneId: t.linkedMilestoneId ? String(t.linkedMilestoneId) : undefined,
             notes: t.notes ? String(t.notes) : undefined,
@@ -57,8 +58,8 @@ export const TransactionsClient: React.FC = () => {
   }, []);
 
   const kpis = useMemo(() => {
-    return calculateTransactionKpis(transactions);
-  }, [transactions]);
+    return calculateTransactionKpis(transactions, currencyFilter);
+  }, [transactions, currencyFilter]);
 
   const filteredTransactions = useMemo(() => {
     return transactions.filter((t) => {
@@ -77,12 +78,17 @@ export const TransactionsClient: React.FC = () => {
         (typeFilter === "milestone_capture" && t.type === "escrow_capture") ||
         (typeFilter === "milestone_authorization" && t.type === "escrow_authorization");
 
+      const matchesStatus =
+        statusFilter === "All" ||
+        (statusFilter === "authorized_held" && (t.status === "held" || t.status === "authorized")) ||
+        t.status === statusFilter;
+
       const matchesCurrency =
         currencyFilter === "All" || t.currency === currencyFilter;
 
-      return matchesSearch && matchesType && matchesCurrency;
+      return matchesSearch && matchesType && matchesStatus && matchesCurrency;
     });
-  }, [transactions, searchQuery, typeFilter, currencyFilter]);
+  }, [transactions, searchQuery, typeFilter, statusFilter, currencyFilter]);
 
   const handleExportCsv = () => {
     const csvData = exportTransactionsToCsv(filteredTransactions);
@@ -91,6 +97,61 @@ export const TransactionsClient: React.FC = () => {
 
     setToastMessage(`[EXPORT SUCCESS] Generated RFC-4180 CSV with ${filteredTransactions.length} records.`);
     setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  const renderStatusBadge = (status: string) => {
+    switch (status) {
+      case "settled":
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            Settled
+          </span>
+        );
+      case "held":
+      case "authorized":
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1 bg-amber-500/10 text-amber-300 border border-amber-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            Authorized / Held
+          </span>
+        );
+      case "pending":
+      case "processing":
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1 bg-sky-500/10 text-sky-400 border border-sky-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />
+            Pending
+          </span>
+        );
+      case "failed":
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1 bg-red-500/10 text-red-400 border border-red-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
+            Failed
+          </span>
+        );
+      case "refunded":
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1 bg-rose-500/10 text-rose-400 border border-rose-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+            Refunded
+          </span>
+        );
+      case "reversed":
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1 bg-orange-500/10 text-orange-400 border border-orange-500/30">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+            Reversed
+          </span>
+        );
+      default:
+        return (
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-block bg-surface-container-high text-on-surface-variant border border-outline-variant/30">
+            {status}
+          </span>
+        );
+    }
   };
 
   return (
@@ -155,93 +216,145 @@ export const TransactionsClient: React.FC = () => {
         </div>
       </section>
 
-      {/* 5-Card Financial Telemetry Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-        {/* Card 1: Total Transactions */}
-        <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-primary/30 transition-all shadow-md">
-          <div className="flex items-center justify-between text-on-surface-variant mb-2 text-xs">
-            <span className="font-medium">Total Transactions</span>
-            <div className="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant">
-              <span className="material-symbols-outlined text-sm">receipt_long</span>
-            </div>
-          </div>
-          <div className="font-numeric-metric text-2xl font-semibold text-on-surface tracking-tight">
-            {kpis.totalCount}
-          </div>
-          <div className="mt-1 flex items-center gap-1 text-[11px] text-on-surface-variant">
-            <span className="text-primary font-medium">{kpis.successRate}%</span> settlement success
-          </div>
-          <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-primary/5 rounded-full blur-xl pointer-events-none" />
+      {/* Multi-Currency Warning Notice (if multiple currencies present without automated conversion rates) */}
+      {kpis.isMultiCurrency && (
+        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center gap-2.5">
+          <span className="material-symbols-outlined text-base text-amber-400">info</span>
+          <span>
+            Multiple currencies detected ({kpis.currencies.join(", ")}). Conversion rates between these currencies are unavailable; select a currency below to view exact single-currency totals without improper cross-currency addition.
+          </span>
         </div>
+      )}
 
-        {/* Card 2: Gross Received */}
-        <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-primary/30 transition-all shadow-md">
+      {/* 6-Card Financial Metrics Grid */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3.5">
+        {/* Card 1: Gross Settled Inflows */}
+        <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-emerald-500/30 transition-all shadow-md">
           <div className="flex items-center justify-between text-on-surface-variant mb-2 text-xs">
-            <span className="font-medium">Gross Received</span>
-            <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+            <span className="font-semibold text-on-surface">Gross Settled Inflows</span>
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
               <span className="material-symbols-outlined text-sm">trending_up</span>
             </div>
           </div>
-          <div className="font-numeric-metric text-2xl font-semibold text-primary tracking-tight">
-            ${kpis.grossReceived.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          <div className="font-numeric-metric text-xl lg:text-2xl font-bold text-on-surface tracking-tight">
+            {kpis.isMultiCurrency ? (
+              <span className="text-xs font-normal text-amber-400">Multi-Currency</span>
+            ) : (
+              `${kpis.currencySymbol}${kpis.grossSettledInflows.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            )}
           </div>
-          <div className="mt-1 flex items-center gap-1 text-[11px] text-emerald-400 font-medium">
-            <span className="material-symbols-outlined text-xs">arrow_upward</span>
-            <span>+14.2% MoM</span>
+          <div className="mt-1 flex items-center gap-1 text-[11px] text-on-surface-variant">
+            <span className="text-emerald-400 font-medium">{kpis.settledCount} settled</span>
+            <span>inflows</span>
           </div>
-          <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-primary/10 rounded-full blur-xl pointer-events-none" />
+          <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
         </div>
 
-        {/* Card 3: Processing Fees */}
+        {/* Card 2: Processing Fees */}
         <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-error/30 transition-all shadow-md">
           <div className="flex items-center justify-between text-on-surface-variant mb-2 text-xs">
-            <span className="font-medium">Processing Fees</span>
+            <span className="font-semibold text-on-surface">Processing Fees</span>
             <div className="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-error/80">
               <span className="material-symbols-outlined text-sm">price_change</span>
             </div>
           </div>
-          <div className="font-numeric-metric text-2xl font-semibold text-on-surface tracking-tight">
-            -${kpis.processingFees.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          <div className="font-numeric-metric text-xl lg:text-2xl font-bold text-error tracking-tight">
+            {kpis.isMultiCurrency ? (
+              <span className="text-xs font-normal text-amber-400">Multi-Currency</span>
+            ) : (
+              `-${kpis.currencySymbol}${kpis.processingFees.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            )}
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-[11px] text-on-surface-variant">
-            <span>2.69% blended rate</span>
+            <span>On settled payments</span>
           </div>
           <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-error/5 rounded-full blur-xl pointer-events-none" />
         </div>
 
-        {/* Card 4: FX Conversion Drag */}
+        {/* Card 3: FX Costs */}
         <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-secondary/30 transition-all shadow-md">
           <div className="flex items-center justify-between text-on-surface-variant mb-2 text-xs">
-            <span className="font-medium">FX Conversion Drag</span>
+            <span className="font-semibold text-on-surface">FX Costs</span>
             <div className="w-7 h-7 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
               <span className="material-symbols-outlined text-sm">currency_exchange</span>
             </div>
           </div>
-          <div className="font-numeric-metric text-2xl font-semibold text-on-surface tracking-tight">
-            -${kpis.fxConversionDrag.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          <div className="font-numeric-metric text-xl lg:text-2xl font-bold text-on-surface tracking-tight">
+            {kpis.isMultiCurrency ? (
+              <span className="text-xs font-normal text-amber-400">Multi-Currency</span>
+            ) : (
+              `-${kpis.currencySymbol}${kpis.fxCosts.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            )}
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-[11px] text-on-surface-variant">
-            <span>EUR/USD, GBP/USD</span>
+            <span>Conversion costs</span>
           </div>
           <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-secondary/10 rounded-full blur-xl pointer-events-none" />
         </div>
 
-        {/* Card 5: Net Received */}
-        <div className="p-4 rounded-xl bg-gradient-to-br from-surface-container-high/60 to-surface-container-lowest backdrop-blur-md border border-primary/30 relative overflow-hidden group shadow-md">
+        {/* Card 4: Refunds & Reversals */}
+        <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-amber-400/30 transition-all shadow-md">
+          <div className="flex items-center justify-between text-on-surface-variant mb-2 text-xs">
+            <span className="font-semibold text-on-surface">Refunds &amp; Reversals</span>
+            <div className="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-amber-400">
+              <span className="material-symbols-outlined text-sm">assignment_return</span>
+            </div>
+          </div>
+          <div className="font-numeric-metric text-xl lg:text-2xl font-bold text-amber-400 tracking-tight">
+            {kpis.isMultiCurrency ? (
+              <span className="text-xs font-normal text-amber-400">Multi-Currency</span>
+            ) : (
+              `-${kpis.currencySymbol}${kpis.refundsAndReversals.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            )}
+          </div>
+          <div className="mt-1 flex items-center gap-1 text-[11px] text-on-surface-variant">
+            <span>{kpis.refundCount} returned or reversed</span>
+          </div>
+          <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-amber-500/5 rounded-full blur-xl pointer-events-none" />
+        </div>
+
+        {/* Card 5: Net Cash Received */}
+        <div className="p-4 rounded-xl bg-gradient-to-br from-surface-container-high/60 to-surface-container-lowest backdrop-blur-md border border-primary/40 relative overflow-hidden group shadow-md auric-glow">
           <div className="flex items-center justify-between text-primary mb-2 text-xs">
-            <span className="font-semibold">Net Received</span>
+            <span className="font-bold text-primary">Net Cash Received</span>
             <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
               <span className="material-symbols-outlined text-sm">account_balance_wallet</span>
             </div>
           </div>
-          <div className="font-numeric-metric text-2xl font-bold text-primary tracking-tight">
-            ${kpis.netReceived.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          <div className="font-numeric-metric text-xl lg:text-2xl font-bold text-primary tracking-tight">
+            {kpis.isMultiCurrency ? (
+              <span className="text-xs font-normal text-amber-400">Multi-Currency</span>
+            ) : (
+              `${kpis.currencySymbol}${kpis.netCashReceived.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            )}
           </div>
           <div className="mt-1 flex items-center gap-1 text-[11px] text-on-surface-variant">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>Deposited to Vault</span>
+            <span>Settled - Fees - FX - Refunds</span>
           </div>
           <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/15 rounded-full blur-xl pointer-events-none" />
+        </div>
+
+        {/* Card 6: Pending Authorizations */}
+        <div className="p-4 rounded-xl bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant/20 relative overflow-hidden group hover:border-amber-500/30 transition-all shadow-md">
+          <div className="flex items-center justify-between text-on-surface-variant mb-2 text-xs">
+            <span className="font-semibold text-on-surface">Pending Authorizations</span>
+            <div className="w-7 h-7 rounded-lg bg-surface-container flex items-center justify-center text-amber-300">
+              <span className="material-symbols-outlined text-sm">lock_clock</span>
+            </div>
+          </div>
+          <div className="font-numeric-metric text-xl lg:text-2xl font-bold text-amber-300 tracking-tight">
+            {kpis.isMultiCurrency ? (
+              <span className="text-xs font-normal text-amber-400">Multi-Currency</span>
+            ) : (
+              `${kpis.currencySymbol}${kpis.pendingAuthorizations.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            )}
+          </div>
+          <div className="mt-1 flex items-center gap-1 text-[11px] text-on-surface-variant">
+            <span className="text-amber-300 font-medium">{kpis.authorizedCount} authorized</span>
+            <span>(uncaptured)</span>
+          </div>
+          <div className="absolute -right-4 -bottom-4 w-16 h-16 bg-amber-500/5 rounded-full blur-xl pointer-events-none" />
         </div>
       </section>
 
@@ -283,9 +396,25 @@ export const TransactionsClient: React.FC = () => {
             <option value="All">All Types</option>
             <option value="client_settlement">Client Settlement</option>
             <option value="milestone_capture">Milestone Capture</option>
-            <option value="milestone_authorization">Milestone Authorization (Hold)</option>
+            <option value="milestone_authorization">Milestone Authorization</option>
             <option value="refund">Refund</option>
+            <option value="reversal">Reversal</option>
             <option value="payout">Payout</option>
+          </select>
+
+          {/* Status Filter */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="bg-surface-container-high/60 border border-outline-variant/30 rounded-lg px-2.5 py-1.5 text-xs text-on-surface focus:outline-none focus:border-primary"
+          >
+            <option value="All">All Statuses</option>
+            <option value="settled">Settled</option>
+            <option value="authorized_held">Authorized / Held</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+            <option value="refunded">Refunded</option>
+            <option value="reversed">Reversed</option>
           </select>
 
           {/* Currency Pills */}
@@ -404,44 +533,32 @@ export const TransactionsClient: React.FC = () => {
 
                     {/* Gross */}
                     <td className="py-3 px-3 text-right font-medium text-on-surface">
-                      {t.grossAmount < 0 ? "-" : ""}$
-                      {Math.abs(t.grossAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      {t.grossAmount < 0 ? "-" : ""}
+                      {t.currencySymbol || "$"}
+                      {Math.abs(t.grossAmount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
 
                     {/* Fee & FX */}
                     <td className="py-3 px-3 text-right text-on-surface-variant">
                       {t.feeAmount > 0 || t.fxCost > 0 ? (
-                        <span className="text-error">
-                          -${(t.feeAmount + t.fxCost).toFixed(2)}
+                        <span className="text-error font-medium">
+                          -{t.currencySymbol || "$"}{(t.feeAmount + t.fxCost).toFixed(2)}
                         </span>
                       ) : (
-                        <span>$0.00</span>
+                        <span className="text-on-surface-variant/60">{t.currencySymbol || "$"}0.00</span>
                       )}
                     </td>
 
                     {/* Net Amount */}
                     <td className="py-3 px-3 text-right font-semibold text-primary">
-                      {t.netAmount < 0 ? "-" : ""}$
-                      {Math.abs(t.netAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                      {t.netAmount < 0 ? "-" : ""}
+                      {t.currencySymbol || "$"}
+                      {Math.abs(t.netAmount).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
 
                     {/* Status */}
                     <td className="py-3 px-3 text-center">
-                      <span
-                        className={cn(
-                          "px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider inline-block",
-                          t.status === "settled" &&
-                            "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30",
-                          t.status === "held" &&
-                            "bg-amber-500/10 text-amber-300 border border-amber-500/30",
-                          t.status === "refunded" &&
-                            "bg-error/10 text-error border border-error/30",
-                          t.status === "processing" &&
-                            "bg-secondary/10 text-secondary border border-secondary/30"
-                        )}
-                      >
-                        {t.status}
-                      </span>
+                      {renderStatusBadge(t.status)}
                     </td>
 
                     {/* Action */}
@@ -482,7 +599,10 @@ export const TransactionsClient: React.FC = () => {
                   <h3 className="font-headline-sm text-base font-semibold text-on-surface">
                     Transaction Inspection
                   </h3>
-                  <span className="text-xs text-primary font-mono">{selectedTxn.id}</span>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="text-xs text-primary font-mono">{selectedTxn.id}</span>
+                    {renderStatusBadge(selectedTxn.status)}
+                  </div>
                 </div>
               </div>
               <button
@@ -527,31 +647,45 @@ export const TransactionsClient: React.FC = () => {
                 <div className="flex justify-between">
                   <span className="text-on-surface-variant">Gross Amount</span>
                   <span className="text-on-surface font-medium">
-                    ${selectedTxn.grossAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                    {selectedTxn.grossAmount < 0 ? "-" : ""}
+                    {selectedTxn.currencySymbol || "$"}
+                    {Math.abs(selectedTxn.grossAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-error">
                   <span>Gateway Processing Fee</span>
-                  <span>-${selectedTxn.feeAmount.toFixed(2)}</span>
+                  <span>
+                    {selectedTxn.feeAmount > 0
+                      ? `-${selectedTxn.currencySymbol || "$"}${selectedTxn.feeAmount.toFixed(2)}`
+                      : "$0.00"}
+                  </span>
                 </div>
 
                 {selectedTxn.fxCost > 0 && (
                   <div className="flex justify-between text-secondary">
-                    <span>FX Spread / Conversion Drag</span>
-                    <span>-${selectedTxn.fxCost.toFixed(2)}</span>
+                    <span>FX Spread / Conversion Cost</span>
+                    <span>-{selectedTxn.currencySymbol || "$"}{selectedTxn.fxCost.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between font-bold text-sm text-primary pt-1.5 border-t border-outline-variant/20">
-                  <span>Net Settled Amount</span>
-                  <span>${selectedTxn.netAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}</span>
+                  <span>
+                    {selectedTxn.status === "held" || selectedTxn.status === "authorized"
+                      ? "Authorized Pre-Release Amount"
+                      : "Net Settled Amount"}
+                  </span>
+                  <span>
+                    {selectedTxn.netAmount < 0 ? "-" : ""}
+                    {selectedTxn.currencySymbol || "$"}
+                    {Math.abs(selectedTxn.netAmount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                  </span>
                 </div>
 
-                {selectedTxn.taxReserveSplitAmount > 0 && (
+                {selectedTxn.taxReserveSplitAmount > 0 && selectedTxn.status === "settled" && (
                   <div className="flex justify-between text-[11px] text-emerald-400 pt-1">
                     <span>Autonomous 20% Tax Vault Allocation</span>
-                    <span>+${selectedTxn.taxReserveSplitAmount.toFixed(2)}</span>
+                    <span>+{selectedTxn.currencySymbol || "$"}{selectedTxn.taxReserveSplitAmount.toFixed(2)}</span>
                   </div>
                 )}
               </div>

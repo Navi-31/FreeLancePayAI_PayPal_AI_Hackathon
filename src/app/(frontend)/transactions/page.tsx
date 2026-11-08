@@ -6,8 +6,8 @@ export default function TransactionsPage() {
   return (
     <AppLayout
       pageTitle="Transactions Ledger"
-      pageSubtitle="CORE PROTOCOL • Autonomous Real-time Settlement Registry"
-      userBadge="Private Vault Tier"
+      pageSubtitle="Reconciled Settlement Registry • Track settled client payments, fees, and authorizations"
+      userBadge="Verified Ledger"
     >
       <TransactionsClient />
     </AppLayout>

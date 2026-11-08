@@ -80,11 +80,22 @@ export type TransactionType =
   | "client_settlement"
   | "escrow_capture"
   | "escrow_authorization"
+  | "milestone_capture"
+  | "milestone_authorization"
   | "refund"
+  | "reversal"
   | "payout"
   | "fee_adjustment";
 
-export type TransactionStatus = "settled" | "processing" | "held" | "refunded";
+export type TransactionStatus =
+  | "settled"
+  | "authorized"
+  | "held"
+  | "pending"
+  | "processing"
+  | "failed"
+  | "refunded"
+  | "reversed";
 
 export interface Transaction {
   id: string; // e.g. "TXN-90214"

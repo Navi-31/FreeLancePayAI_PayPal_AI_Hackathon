@@ -1,4 +1,10 @@
 import { Transaction } from "./types";
+import {
+  calculateLedgerFinancialMetrics,
+  LedgerFinancialMetrics,
+} from "@/shared/financialCalculations";
+
+export type { LedgerFinancialMetrics };
 
 export function calculateDeterministicFees(
   grossAmount: number,
@@ -280,47 +286,11 @@ export async function fetchTransactionsWithFallback(): Promise<Transaction[]> {
   return loadTransactionsFromStorage();
 }
 
-export function calculateTransactionKpis(transactions: Transaction[]): {
-  totalCount: number;
-  grossReceived: number;
-  processingFees: number;
-  fxConversionDrag: number;
-  netReceived: number;
-  successRate: number;
-} {
-  // If list is small seed, we combine baseline ledger history metrics for high-density fidelity matching Stitch:
-  // Baseline historical metrics:
-  // Count: 148, Gross: 142650.00, Fees: 3842.10, FX: 420.50, Net: 138387.40
-  // Or calculate live dynamically from current list:
-  let gross = 0;
-  let fees = 0;
-  let fx = 0;
-
-  for (const t of transactions) {
-    if (t.type === "client_settlement" || t.type === "escrow_capture") {
-      gross += t.grossAmount;
-      fees += t.feeAmount;
-      fx += t.fxCost;
-    } else if (t.type === "refund") {
-      gross += t.grossAmount; // negative
-    }
-  }
-
-  // Blended baseline with dynamic overlay
-  const totalCount = Math.max(148, transactions.length + 138);
-  const totalGross = Math.round((112950.0 + gross) * 100) / 100;
-  const totalFees = Math.round((3139.07 + fees) * 100) / 100;
-  const totalFx = Math.round((180.5 + fx) * 100) / 100;
-  const totalNet = Math.round((totalGross - totalFees - totalFx) * 100) / 100;
-
-  return {
-    totalCount,
-    grossReceived: totalGross,
-    processingFees: totalFees,
-    fxConversionDrag: totalFx,
-    netReceived: totalNet,
-    successRate: 99.4,
-  };
+export function calculateTransactionKpis(
+  transactions: Transaction[],
+  targetCurrency: string = "All"
+): LedgerFinancialMetrics {
+  return calculateLedgerFinancialMetrics(transactions, targetCurrency);
 }
 
 /**

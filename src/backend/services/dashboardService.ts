@@ -46,7 +46,7 @@ export async function getDashboardMetrics(userId: string): Promise<DashboardMetr
     }),
     prisma.transaction.findMany({
       where: { userId, status: "settled" },
-      select: { grossAmount: true, netAmount: true, taxReserveSplitAmount: true, feeAmount: true },
+      select: { grossAmount: true, netAmount: true, taxReserveSplitAmount: true, feeAmount: true, type: true },
     }),
     prisma.expense.findMany({
       where: { userId },
@@ -63,12 +63,17 @@ export async function getDashboardMetrics(userId: string): Promise<DashboardMetr
     }),
   ]);
 
-  // Total Gross Revenue from settled transactions
+  // Total Gross Revenue from settled incoming client payments (excluding payouts, refunds, authorizations)
   let totalGrossCents = 0;
   let totalTaxReserveCents = 0;
   for (const tx of transactions) {
-    totalGrossCents += toCents(Number(tx.grossAmount));
-    totalTaxReserveCents += toCents(Number(tx.taxReserveSplitAmount));
+    const isIncomingSettlement =
+      (tx.type === "client_settlement" || tx.type === "escrow_capture" || tx.type === "milestone_capture") &&
+      Number(tx.grossAmount) > 0;
+    if (isIncomingSettlement) {
+      totalGrossCents += toCents(Number(tx.grossAmount));
+      totalTaxReserveCents += toCents(Number(tx.taxReserveSplitAmount));
+    }
   }
 
   // Outstanding & Overdue Invoices
@@ -96,9 +101,14 @@ export async function getDashboardMetrics(userId: string): Promise<DashboardMetr
     totalExpensesCents += toCents(Number(exp.amount));
   }
 
-  // Available Liquidity: (Total Gross - Total Expenses - Tax Reserve)
+  // Available Liquidity: (Net Settled Revenue - Total Expenses)
   // If baseline DB is small, provide realistic liquid minimum from transactions
-  const netSettledCents = transactions.reduce((acc, tx) => acc + toCents(Number(tx.netAmount)), 0);
+  const netSettledCents = transactions
+    .filter((tx) =>
+      (tx.type === "client_settlement" || tx.type === "escrow_capture" || tx.type === "milestone_capture") &&
+      Number(tx.grossAmount) > 0
+    )
+    .reduce((acc, tx) => acc + toCents(Number(tx.netAmount)), 0);
   const liquidCents = Math.max(0, netSettledCents - totalExpensesCents);
 
   // If no transactions yet, default to standard healthy demo base
