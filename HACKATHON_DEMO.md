@@ -13,7 +13,7 @@ Independent professionals, contractors, and boutique agencies face persistent ca
 3. **Counterparty Reliability Asymmetry:** Freelancers start work without verifiable data on whether a client settles in 3 days or defaults in 60 days.
 4. **AI Hallucination in Finance:** Generic LLM wrappers fabricate financial calculations, invent account balances, and lack auditable deterministic arithmetic.
 
-**The Solution:** **FreelancePay AI** is an autonomous financial operating system built on **Next.js 15, Neon PostgreSQL, and PayPal rails**, powered by **Gemini AI** with an immutable **deterministic arithmetic core** and strict **human-in-the-loop approval safeguards**.
+**The Solution:** **FreelancePay AI** is an autonomous financial operating system built on **Next.js 15, Cloud Firestore, and PayPal rails**, powered by **Gemini AI** with an immutable **deterministic arithmetic core**, live **multi-currency engine (USD, EUR, INR)**, and strict **human-in-the-loop approval safeguards**.
 
 ---
 
@@ -21,12 +21,12 @@ Independent professionals, contractors, and boutique agencies face persistent ca
 
 | Time | Screen / Feature | Action & Spoken Narrative | Key Technical Takeaway |
 | :--- | :--- | :--- | :--- |
-| **0:00 - 0:45** | **Dashboard & Atmospheric UI (`/`)** | *"Welcome to FreelancePay AI. As an independent operator, your dashboard instantly surfaces your liquid vault balance, tax reserve shield, and proactive financial telemetry. Everything is grounded in our live Neon PostgreSQL database."* | Material Design tokens, Geist typography, instant tenant-scoped database aggregations. |
+| **0:00 - 0:45** | **Dashboard & Atmospheric UI (`/`)** | *"Welcome to FreelancePay AI. As an independent operator, your dashboard instantly surfaces your liquid vault balance, tax reserve shield, live currency conversion across USD, EUR, and INR, and proactive financial telemetry. Everything is grounded in our live Cloud Firestore database."* | Material Design tokens, Geist typography, instant tenant-scoped database aggregations. |
 | **0:45 - 1:30** | **Invoice Generation & PayPal Rails (`/invoices/new`)** | *"Let's invoice a new enterprise client. Notice that as line items and tax rates are entered, all math is calculated deterministically down to the cent. When creating a PayPal checkout order, our backend calls the PayPal Sandbox API. Clients settle via standard PayPal rails with automated capture and ledger entry."* | Fixed-point integer math (`toCents`/`fromCents`), zero floating point errors, live PayPal Sandbox order & capture flow. |
 | **1:30 - 2:15** | **Milestone Authorization vs Escrow Safeguards (`/milestones`)** | *"For large project deliverables, FreelancePay AI provides a 2-step milestone authorization model. When the client approves, funds are authorized on PayPal rails—not deposited into an illegal third-party escrow. When deliverables are accepted, the freelancer captures the authorized funds with full ledger reconciliation."* | Compliant 2-phase authorization/capture semantics on official PayPal APIs; never mislabeled as escrow. |
-| **2:15 - 3:00** | **Client Intelligence & Empirical Reliability (`/clients`)** | *"Under Counterparty Intelligence, we don't invent client ratings. We calculate empirical reliability scores from actual payment lag, overdue frequency, and disputes. For brand new clients with fewer than two billing cycles, the system transparently shows an Insufficient Data state."* | Zero hallucinated ratings; empirical statistical confidence levels based on real Neon ledger history. |
-| **3:00 - 3:45** | **Financial Copilot & Explainable Insights (`/ai/copilot`)** | *"Let's ask the AI Copilot: 'What is my total revenue, runway, and overdue receivables?' Notice the Copilot breaks down its answer into Historical Facts, Operational Estimates, and Solvency Forecasts. Every action proposal enforces human-in-the-loop approval before moving money or emailing clients."* | Grounded Neon DB context injection; Zod schema enforcement; prompt injection neutralization; resilient fallback engine. |
-| **3:45 - 4:15** | **Treasury, Fee Optimization & Forecast Radar (`/treasury/currency`, `/forecast`)** | *"Finally, our Fee Intelligence engine benchmarks 5 payment rails—showing where switching invoices over $2,500 to Bank ACH saves nearly $100 per transaction. Multi-scenario cashflow forecasts model Conservative, Expected, and Optimistic runways while segregating liquid reserves."* | Statutory ACH fee capping ($5.00); 30/60-day multi-scenario cashflow modeling. |
+| **2:15 - 3:00** | **Client Intelligence & Empirical Reliability (`/clients`)** | *"Under Counterparty Intelligence, we don't invent client ratings. We calculate empirical reliability scores from actual payment lag, overdue frequency, and disputes. For brand new clients with fewer than two billing cycles, the system transparently shows an Insufficient Data state."* | Zero hallucinated ratings; empirical statistical confidence levels based on real ledger history. |
+| **3:00 - 3:45** | **Financial Copilot & Explainable Insights (`/ai/copilot`)** | *"Let's ask the AI Copilot: 'What is my total revenue, runway, and overdue receivables?' Notice the Copilot breaks down its answer into Historical Facts, Operational Estimates, and Solvency Forecasts. Every action proposal enforces human-in-the-loop approval before moving money or emailing clients."* | Grounded Firestore DB context injection; Zod schema enforcement; prompt injection neutralization; resilient fallback engine. |
+| **3:45 - 4:15** | **Treasury, Fee Optimization & Forecast Radar (`/treasury/currency`, `/forecast`)** | *"Finally, our Fee Intelligence engine benchmarks payment rails and currency conversions across USD, EUR, and INR—showing where cross-border fees and FX spreads can be optimized. Multi-scenario cashflow forecasts model Conservative, Expected, and Optimistic runways while segregating liquid reserves."* | Live exchange rate engine; 30/60-day multi-scenario cashflow modeling. |
 | **4:15 - 4:45** | **Q&A Wrap-Up & Repeatable Demo Reset** | *"Judges can test every screen instantly. The demo reset button safely clears synthetic demo records while preserving any genuine user accounts intact."* | Transactional, tenant-scoped demo seeding with persistent marker isolation. |
 
 ---
@@ -38,7 +38,7 @@ flowchart TD
     User["Independent Professional / Client"] -->|HTTPS / Next.js 15| Frontend["Atmospheric Glassmorphic UI (22 Screens)"]
     Frontend -->|Authenticated Session (JWT/HS256)| API["App Router API Routes (Zod Validated)"]
     
-    API -->|Authoritative Queries| DB[(Neon PostgreSQL Serverless)]
+    API -->|Authoritative Queries| DB[(Google Cloud Firestore)]
     API -->|Order & Auth Rails| PayPal["PayPal Sandbox API (Orders v2 / Webhooks)"]
     API -->|Grounded Q&A & Analysis| Gemini["Google Gemini API (with Deterministic Fallback)"]
     API -->|Transactional Email| Resend["Resend / Simulated Relay Engine"]
